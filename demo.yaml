@@ -7,3 +7,6 @@ components:
   iam:
     permissions:
     - "logs:*"
+  api:
+    method: GET    
+

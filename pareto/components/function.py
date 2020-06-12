@@ -42,7 +42,7 @@ def synth_function(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         method=hungarorise("%s-api-gw-method" % kwargs["name"])
         props={"RestApiId": restapi,
-               "Depends": [method]}               
+               "DependsOn": [method]}               
         return "AWS::ApiGateway::Deployment", props
     @resource(suffix="api-gw-stage")
     def ApiGwStage(**kwargs):
@@ -54,8 +54,8 @@ def synth_function(**kwargs):
         return "AWS::ApiGateway::Stage", props
     @resource(suffix="api-gw-method")
     def ApiGwMethod(**kwargs):
-        uri=fn_sub("arn:${AWS::Partition}:apigateway:%s:lambda:path/2015-03-31/functions/${lambda-arn}/invocations" % kwargs["region"],
-                   {"lambda-arn": fn_getatt(kwargs["name"], "Arn")})
+        uri=fn_sub("arn:${AWS::Partition}:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations" % kwargs["region"],
+                   {"lambda_arn": fn_getatt(kwargs["name"], "Arn")})
         integration={"Uri": uri,
                      "IntegrationHttpMethod": "POST",
                      "Type": "AWS_PROXY"}
@@ -74,12 +74,12 @@ def synth_function(**kwargs):
         props={"Action": "lambda:InvokeFunction",
                "FunctionName": arn,
                "Principal": "apigateway.amazonaws.com"}
-        return "AWS::ApiGateway::Permission", props
+        return "AWS::Lambda::Permission", props
     @output(suffix="url")
     def ApiGwUrl(**kwargs):
-        url="https://${rest-api}.execute-api.%s.${AWS::URLSuffix}/%s" % (kwargs["region"], kwargs["stage"])
+        url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/%s" % (kwargs["region"], kwargs["stage"])
         restapi=hungarorise("%s-api-gw-rest-api" % kwargs["name"])
-        return fn_sub(url, {"rest-api": restapi})
+        return fn_sub(url, {"rest_api": restapi})
     parameters=[Parameter(name="s3-%s-key" % kwargs["name"])]
     resources=[Function(**kwargs),
                FunctionRole(**kwargs)]

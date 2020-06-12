@@ -1,16 +1,18 @@
 ### short
 
+- api gateway DependsOn
+  - needs to be returned as an (optional) third arg alongside Type, Properties
+
+- s3 notifications
+
+### medium
+
 - deploy_stack.py
   - handle multiple lambdas
 
 - delete_stack.py
   - empty buckets
   - detach IAM policies
-
-- api gateway
-- s3 notifications
-
-### medium
 
 - cross validation of function refs
 - unique name checking
