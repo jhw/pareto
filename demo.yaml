@@ -4,3 +4,4 @@ region: eu-west-1
 components:
 - type: bucket
   name: bucket
+  website: true

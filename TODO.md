@@ -1,14 +1,18 @@
-### short
+### short [lambda]
 
-- website
+- index.py
+- deploy script
+  - push timestamped version to s3
+  - create template with bucket, key parameters
+- configure function in demo.yaml
+- script to ping lambda
+- check dashboard
+
+### medium
 
 - delete_stack.py
   - empty buckets
   - detach IAM policies
-
-- lambda + dashboard
-
-### medium
 
 - api gateway
 - table
@@ -25,6 +29,7 @@
 
 ### done
 
+- website
 - test bucket deployments
 - add stage name to all sh scripts
 - remove blank outputs, parameters

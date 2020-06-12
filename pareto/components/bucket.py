@@ -59,10 +59,10 @@ def synth_bucket(**kwargs):
                         "Principal": "*",
                         "Resource": resource,
                         "Sid": "PublicReadForGetBucketObjects"}]
-            return {"Statement": statement}
+            return {"Statement": statement,
+                    "Version": "2012-10-17"}
         props={"Bucket": ref(kwargs["name"]),
-               "PolicyDocument": policy_document(kwargs),
-               "Version": "2012-10-17"}
+               "PolicyDocument": policy_document(kwargs)}
         return "AWS::S3::BucketPolicy", props
     @output(suffix="url")
     def BucketUrl(**kwargs):
