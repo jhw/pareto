@@ -34,13 +34,22 @@ def synth_stack(config):
         fn=eval("synth_%s" % item["type"])                
         component=fn(**item)
         add_component(component, stack)
+    def has_dashboard(config):
+        functions=[component
+                   for component in config["components"]
+                   if component["type"]=="function"]
+        return len(functions) > 0
     for attr in ["dashboard"]:
+        fn=eval("has_%s" % attr)
+        if not fn(config):
+            continue
         fn=eval("synth_%s" % attr)
         config["name"]=attr
         component=fn(**config)
         add_component(component, stack)
     return {k.capitalize():dict(v)
-            for k, v in stack.items()}
+            for k, v in stack.items()
+            if len(v) > 0}
 
 if __name__=="__main__":
     pass
