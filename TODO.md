@@ -1,8 +1,5 @@
 ### short
 
-- add api gateway output to sample lambda
-- test api gateway
-
 - refactor DependsOn handling
   - avoid `len(props) > 2`
 
@@ -50,6 +47,8 @@
 
 ### done
 
+- add api gateway output to sample lambda
+- test api gateway
 - bad gateway rest api ref
 - fix bad ref to Deployment
 - api gateway DependsOn
