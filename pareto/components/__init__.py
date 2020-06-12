@@ -40,15 +40,14 @@ def parameter(suffix=None):
 
 def resource(suffix=None):
     def decorator(fn):
-        def wrapped(*args, **kwargs):
+        def wrapped(attrs=["Type", "Properties", "DependsOn"],
+                    *args, **kwargs):
             name="%s-%s" % (kwargs["name"],
                             suffix) if suffix else kwargs["name"]
             key=hungarorise(name)
-            attrs=["Type", "Properties"]
             values=fn(*args, **kwargs)
-            if len(values) > 2:
-                attrs.append("DependsOn")
-            return (key, {k:v for k, v in zip(attrs, values)})
+            return (key, {k:v for k, v in zip(attrs[:len(values)],
+                                              values)})
         return wrapped
     return decorator
 

@@ -1,20 +1,5 @@
 ### short
 
-- refactor DependsOn handling
-  - avoid `len(props) > 2`
-
-- deploy_stack.py
-  - handle multiple lambdas
-
-### medium
-
-- delete_stack.py
-  - empty buckets
-  - detach IAM policies
-
-- cross validation of function refs
-- unique name checking
-
 - table
 - queue
 - timer
@@ -22,6 +7,18 @@
 - s3 notifications
 - table event mapping
 - queue event mapping
+
+### medium
+
+- deploy_stack.py
+  - handle multiple lambdas
+
+- delete_stack.py
+  - empty buckets
+  - detach IAM policies
+
+- cross validation of function refs
+- unique name checking
 
 - git- based python deployment
 
@@ -47,6 +44,8 @@
 
 ### done
 
+- refactor DependsOn handling
+  - avoid `len(props) > 2`
 - add api gateway output to sample lambda
 - test api gateway
 - bad gateway rest api ref
