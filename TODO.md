@@ -1,14 +1,15 @@
 ### short
 
-- s3 notifications
-
-### medium
+- add api gateway output to sample lambda
+- test api gateway
 
 - refactor DependsOn handling
   - avoid `len(props) > 2`
 
 - deploy_stack.py
   - handle multiple lambdas
+
+### medium
 
 - delete_stack.py
   - empty buckets
@@ -21,6 +22,7 @@
 - queue
 - timer
 
+- s3 notifications
 - table event mapping
 - queue event mapping
 
@@ -48,6 +50,7 @@
 
 ### done
 
+- bad gateway rest api ref
 - fix bad ref to Deployment
 - api gateway DependsOn
   - needs to be returned as an (optional) third arg alongside Type, Properties

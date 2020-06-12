@@ -77,7 +77,7 @@ def synth_function(**kwargs):
     @output(suffix="url")
     def ApiGwUrl(**kwargs):
         url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/%s" % (kwargs["region"], kwargs["stage"])
-        restapi=hungarorise("%s-api-gw-rest-api" % kwargs["name"])
+        restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         return fn_sub(url, {"rest_api": restapi})
     parameters=[Parameter(name="s3-%s-key" % kwargs["name"])]
     resources=[Function(**kwargs),
