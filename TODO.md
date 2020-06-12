@@ -1,8 +1,4 @@
-### short [lambda]
-
-- move templates, lambda to tmp
-
-### medium
+### short
 
 - deploy_stack.py
   - handle multiple lambdas
@@ -12,11 +8,14 @@
   - detach IAM policies
 
 - api gateway
+- s3 notifications
+
+### medium
+
 - table
 - queue
 - timer
 
-- s3 notifications
 - table event mapping
 - queue event mapping
 
@@ -24,24 +23,27 @@
 
 ### thoughts
 
+- remove `-dashboard-` from dash name ?
+  - too much hassle to allow dash to work without a name
 - scripts to ping lambda, check logs ?
   - not really required as this is about deployment not runtime
   
 ### long
 
+- layers
 - limit calculations
 - dashboard section titles
 - queue, table charts
 - alerts
-- layers
 - CI pipeline (codepipeline, codebuild)
 - cognito
 - route 53
 - cloudfront
-- ec2+codedeploy
+- ec2, codedeploy
 
 ### done
 
+- move templates, lambda to tmp
 - dash needs with and height parameters
 - check dashboard
 - role policy doc error

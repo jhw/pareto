@@ -2,5 +2,5 @@ env
 *.pyc
 __pycache__
 app.props
-template*.yaml
-*.zip
+tmp
+

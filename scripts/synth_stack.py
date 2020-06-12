@@ -27,7 +27,9 @@ if __name__=="__main__":
         config["region"]=Config["AWSRegion"]
         config["stage"]=stagename
         stack=synth_stack(config)
-        with open("template-%s.yaml" % stagename, 'w') as f:
+        if not os.path.exists("tmp"):
+            os.mkdir("tmp")
+        with open("tmp/template-%s.yaml" % stagename, 'w') as f:
             f.write(yaml.safe_dump(stack,
                                    default_flow_style=False))
     except RuntimeError as error:
