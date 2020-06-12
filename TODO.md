@@ -12,6 +12,9 @@
 
 ### medium
 
+- cross validation of function refs
+- unique name checking
+
 - table
 - queue
 - timer
