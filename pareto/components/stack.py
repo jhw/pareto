@@ -15,8 +15,7 @@ def synth_stack(config):
                 return True
         return False
     if has_functions(config):
-        paramnames+=["s3-staging-bucket",
-                     "s3-layer-key"]
+        paramnames+=["s3-staging-bucket"]
     params=[Parameter(name=name)
             for name in paramnames]
     def add_component(component, stack):

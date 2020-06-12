@@ -1,10 +1,6 @@
 ### short [lambda]
 
-- deploy
-
-- check dashboard
-- script to ping lambda
-- script to check logs
+- dash needs with and height parameters
 
 ### medium
 
@@ -26,6 +22,11 @@
 
 - git- based python deployment
 
+### thoughts
+
+- scripts to ping lambda, check logs ?
+  - not really required as this is about deployment not runtime
+  
 ### long
 
 - limit calculations
@@ -41,6 +42,9 @@
 
 ### done
 
+- check dashboard
+- role policy doc error
+- deploy
 - deploy script to push lambda
 - deploy script to pass parameters
 - configure function in demo.yaml

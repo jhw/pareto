@@ -13,7 +13,6 @@ def synth_function(**kwargs):
         props={"Code": code,
                "FunctionName": global_name(kwargs),
                "Handler": handler,
-               "Layers": ref("s3-layer-key"),
                "MemorySize": memory,
                "Role": fn_getatt("%s-role" % kwargs["name"], "Arn"),
                "Runtime": runtime,

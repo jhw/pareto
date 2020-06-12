@@ -89,7 +89,7 @@ def IamRole(**kwargs):
         return {"PolicyDocument": {"Statement": statement,
                                    "Version": "2012-10-17"},
                 "PolicyName": name}
-    props={"AssumeRolePolicyDoc": assume_role_policy_doc()}
+    props={"AssumeRolePolicyDocument": assume_role_policy_doc()}
     if "permissions" in kwargs:
         """
         single policy only for the moment
