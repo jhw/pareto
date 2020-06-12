@@ -1,6 +1,6 @@
 ### short [lambda]
 
-- dash needs with and height parameters
+- move templates, lambda to tmp
 
 ### medium
 
@@ -42,6 +42,7 @@
 
 ### done
 
+- dash needs with and height parameters
 - check dashboard
 - role policy doc error
 - deploy
