@@ -1,0 +1,6 @@
+app: hello-world
+stage: dev
+region: eu-west-1
+components:
+- type: bucket
+  name: bucket
