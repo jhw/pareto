@@ -1,14 +1,31 @@
 ### short
 
-- test bucket deployments
+- website
 
-- bucket website
-- lambda
+- delete_stack.py
+  - empty buckets
+  - detach IAM policies
+
+- lambda + dashboard
+
+### medium
+
 - api gateway
-- s3 event notifications
+- table
+- queue
+- timer
+
+- s3 notifications
+- table event mapping
+- queue event mapping
+
+### long
+
+- limit calculations
 
 ### done
 
+- test bucket deployments
 - add stage name to all sh scripts
 - remove blank outputs, parameters
 - only add dashboard if not blank
