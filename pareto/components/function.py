@@ -41,15 +41,14 @@ def synth_function(**kwargs):
     def ApiGwDeployment(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         method=hungarorise("%s-api-gw-method" % kwargs["name"])
-        props={"RestApiId": restapi,
-               "DependsOn": [method]}               
-        return "AWS::ApiGateway::Deployment", props
+        props, depends = {"RestApiId": restapi}, [method]
+        return "AWS::ApiGateway::Deployment", props,  depends
     @resource(suffix="api-gw-stage")
     def ApiGwStage(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         deployment=ref("%s-api-gw-deployment" % kwargs["name"])
         props={"RestApiId": restapi,
-               "Deployment": deployment,
+               "DeploymentId": deployment,
                "StageName": kwargs["stage"]}
         return "AWS::ApiGateway::Stage", props
     @resource(suffix="api-gw-method")

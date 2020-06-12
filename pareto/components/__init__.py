@@ -44,9 +44,11 @@ def resource(suffix=None):
             name="%s-%s" % (kwargs["name"],
                             suffix) if suffix else kwargs["name"]
             key=hungarorise(name)
+            attrs=["Type", "Properties"]
             values=fn(*args, **kwargs)
-            return (key, {k:v for k, v in zip(["Type",
-                                               "Properties"], values)})
+            if len(values) > 2:
+                attrs.append("DependsOn")
+            return (key, {k:v for k, v in zip(attrs, values)})
         return wrapped
     return decorator
 

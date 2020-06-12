@@ -1,11 +1,11 @@
 ### short
 
-- api gateway DependsOn
-  - needs to be returned as an (optional) third arg alongside Type, Properties
-
 - s3 notifications
 
 ### medium
+
+- refactor DependsOn handling
+  - avoid `len(props) > 2`
 
 - deploy_stack.py
   - handle multiple lambdas
@@ -48,6 +48,9 @@
 
 ### done
 
+- fix bad ref to Deployment
+- api gateway DependsOn
+  - needs to be returned as an (optional) third arg alongside Type, Properties
 - move templates, lambda to tmp
 - dash needs with and height parameters
 - check dashboard
