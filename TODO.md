@@ -1,7 +1,5 @@
 ### short [lambda]
 
-- deploy script to push lambda
-- deploy script to pass parameters
 - deploy
 
 - check dashboard
@@ -43,6 +41,8 @@
 
 ### done
 
+- deploy script to push lambda
+- deploy script to pass parameters
 - configure function in demo.yaml
 - index.py
 - website
