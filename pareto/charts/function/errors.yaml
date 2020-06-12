@@ -1,0 +1,31 @@
+metrics:
+- - AWS/Lambda
+  - Errors
+  - FunctionName
+  - slow-russian-markdown-parser-dev
+  - Resource
+  - slow-russian-markdown-parser-dev
+  - color: '#d13212'
+    id: errors
+    stat: Sum
+- - .
+  - Invocations
+  - .
+  - .
+  - .
+  - .
+  - id: invocations
+    stat: Sum
+    visible: false
+- - expression: 100 - 100 * errors / MAX([errors, invocations])
+    id: availability
+    label: Success rate (%)
+    region: eu-west-1
+    yAxis: right
+region: eu-west-1
+stacked: false
+title: Error count and success rate (%)
+view: timeSeries
+yAxis:
+  right:
+    max: 100
