@@ -9,4 +9,7 @@ components:
     - "logs:*"
   api:
     method: GET    
+- type: queue
+  name: queue
+
 
