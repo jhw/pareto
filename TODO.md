@@ -10,6 +10,10 @@
 
 ### medium
 
+- eliminate params
+  - requires stack generation to be part of deploy_stack.py
+  - so convert that to python first
+
 - deploy_stack.py
   - handle multiple lambdas
 
