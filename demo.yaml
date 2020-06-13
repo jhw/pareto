@@ -10,6 +10,7 @@ components:
   iam:
     permissions:
     - "logs:*"
+    - "dynamodb:*"
   api:
     method: GET    
 - type: queue
@@ -29,5 +30,6 @@ components:
   - name: my-string
     type: string
     index: true
+  function: hello-function
 
 

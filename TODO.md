@@ -1,7 +1,6 @@
 ### short
 
 - queue event mapping
-- table event mapping
 
 - queue batch size
   - should be nested under function ?
@@ -19,10 +18,13 @@
   - empty buckets
   - detach IAM policies
 
-- cross validation of function refs
-- unique name checking
-
 - git- based python deployment
+
+### validation
+
+- unique names
+- functions references
+- functions mapped to ddb streams to include ddb in role permissions
 
 ### thoughts
 
@@ -46,6 +48,7 @@
 
 ### done
 
+- table event mapping
 - s3 notifications
 - table indexes
 - table
