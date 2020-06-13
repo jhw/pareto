@@ -17,6 +17,7 @@ components:
 - type: queue
   name: hello-queue
   function: hello-function
+  batch: 1
 - name: hello-timer
   type: timer
   function: hello-function

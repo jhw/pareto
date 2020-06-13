@@ -1,22 +1,30 @@
 ### short
 
-- queue batch size
-  - should be nested under function ?
+- python stack deployment
+  - copy of batch script
+
+- deploy multiple lambdas
+  - get, post
+  - source code to be linked to function name
+    - requires validation
+
+- unit testing
+  - per lambda
+  - call before deployment
+
+- git- based versioning
+  - python git to look up latest commit
+  - deploy latest commit unless commit specified in config
 
 ### medium
-
-- eliminate params
-  - requires stack generation to be part of deploy_stack.py
-  - so convert that to python first
-
-- deploy_stack.py
-  - handle multiple lambdas
 
 - delete_stack.py
   - empty buckets
   - detach IAM policies
 
-- git- based python deployment
+- eliminate params
+  - requires stack generation to be part of deploy_stack.py
+  - so convert that to python first
 
 ### validation
 
@@ -28,6 +36,8 @@
 
 ### thoughts
 
+- queue batch size to be nested under function ?
+  - feels like over- optimisation
 - remove `-dashboard-` from dash name ?
   - too much hassle to allow dash to work without a name
 - scripts to ping lambda, check logs ?
@@ -39,7 +49,7 @@
 - limit calculations
 - dashboard section titles
 - queue, table charts
-- alerts
+- slack alerts
 - CI pipeline (codepipeline, codebuild)
 - cognito
 - route 53
