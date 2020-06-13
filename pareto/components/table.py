@@ -19,7 +19,10 @@ def synth_table(**kwargs):
         attributes=[{"AttributeName": field["name"],
                      "AttributeType": DDBTypes[field["type"]]}
                     for field in kwargs["fields"]
-                    if field["name"]==primaryfield["name"]]
+                    if (("primary" in field and
+                         field["primary"]) or
+                        ("index" in field and
+                         field["index"]))]
         """
         - can have a hash- style GSI on any STRING field you want
         - *think* you want ProjectionType=ALL but not 100% sure
@@ -34,9 +37,6 @@ def synth_table(**kwargs):
                  if ("index" in field and
                      field["index"] and
                      field["type"]=="string")]
-        # START TEMP CODE
-        indexes=[]
-        # END TEMP CODE
         props={"BillingMode": "PAY_PER_REQUEST",
                "AttributeDefinitions": attributes,
                "KeySchema": keyschema,

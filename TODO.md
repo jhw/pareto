@@ -1,6 +1,5 @@
 ### short
 
-- table indexes
 - s3 notifications
 - queue event mapping
 - table event mapping
@@ -47,6 +46,7 @@
 
 ### done
 
+- table indexes
 - table
 
 ```
