@@ -1,19 +1,13 @@
 ### short
 
+- table indexes
 - s3 notifications
 - queue event mapping
-
-- table
-
-```
- 2020-06-13T05:11:13.573Z|  Table                   |  AWS::DynamoDB::Table        |  CREATE_FAILED                                |  One or more parameter values were invalid: Some AttributeDefinitions are not used. AttributeDefinitions: [my-string, my-int, my-hash], keys used: [my-hash, my-string] (Service: AmazonDynamoDBv2; Status Code: 400; Error Code: ValidationException; Request ID: VB2Q7GALG1S0RNLD0LPL6E6KHFVV4KQNSO5AEMVJF66Q9ASUAAJG)   |
-```
-
 - table event mapping
+- queue batch should be nested under function
 
 ### medium
 
-- queue batch should be nested under function
 
 - eliminate params
   - requires stack generation to be part of deploy_stack.py
@@ -52,6 +46,12 @@
 - ec2, codedeploy
 
 ### done
+
+- table
+
+```
+ 2020-06-13T05:11:13.573Z|  Table                   |  AWS::DynamoDB::Table        |  CREATE_FAILED                                |  One or more parameter values were invalid: Some AttributeDefinitions are not used. AttributeDefinitions: [my-string, my-int, my-hash], keys used: [my-hash, my-string] (Service: AmazonDynamoDBv2; Status Code: 400; Error Code: ValidationException; Request ID: VB2Q7GALG1S0RNLD0LPL6E6KHFVV4KQNSO5AEMVJF66Q9ASUAAJG)   |
+```
 
 - timer
 - queue

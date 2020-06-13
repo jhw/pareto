@@ -17,5 +17,14 @@ components:
   rate: "1 hour"
   payload: 
     hello: world
+- name: hello-table
+  type: table
+  fields:
+  - name: my-hash
+    type: string
+    primary: true
+  - name: my-string
+    type: string
+    index: true
 
 
