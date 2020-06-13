@@ -1,15 +1,21 @@
 components:
-- type: bucket
-  name: bucket
+- name: hello-bucket
+  type: bucket
   website: true
-- type: function
-  name: function
+- name: hello-function
+  type: function
   iam:
     permissions:
     - "logs:*"
   api:
     method: GET    
 - type: queue
-  name: queue
+  name: hello-queue
+- name: hello-timer
+  type: timer
+  function: hello-function
+  rate: "1 hour"
+  payload: 
+    hello: world
 
 

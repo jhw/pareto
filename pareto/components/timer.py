@@ -7,9 +7,10 @@ def synth_timer(**kwargs):
         - single target for the minute but could be an array
         """
         target={"Id": global_name(kwargs),
-                "Payload": json.dumps(kwargs["payload"]),
+                "Input": json.dumps(kwargs["payload"]),
                 "Arn": fn_getatt(kwargs["function"], "Arn")}
-        props={"ScheduleExpression": kwargs["rate"],
+        expr="rate(%s)" % kwargs["rate"]
+        props={"ScheduleExpression": expr,
                "Targets": [target]}
         return "AWS::Events::Rule", props
     def LambdaPermission(**kwargs):

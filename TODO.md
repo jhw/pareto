@@ -1,6 +1,7 @@
 ### short
 
-- timer
+- s3 notifications
+- queue event mapping
 
 - table
 
@@ -8,10 +9,7 @@
  2020-06-13T05:11:13.573Z|  Table                   |  AWS::DynamoDB::Table        |  CREATE_FAILED                                |  One or more parameter values were invalid: Some AttributeDefinitions are not used. AttributeDefinitions: [my-string, my-int, my-hash], keys used: [my-hash, my-string] (Service: AmazonDynamoDBv2; Status Code: 400; Error Code: ValidationException; Request ID: VB2Q7GALG1S0RNLD0LPL6E6KHFVV4KQNSO5AEMVJF66Q9ASUAAJG)   |
 ```
 
-
-- s3 notifications
 - table event mapping
-- queue event mapping
 
 ### medium
 
@@ -55,6 +53,7 @@
 
 ### done
 
+- timer
 - queue
 - refactor DependsOn handling
   - avoid `len(props) > 2`

@@ -13,4 +13,4 @@ s3key=lambda-$timestamp.zip
 mkdir tmp || true
 zip tmp/$s3key index.py
 aws s3 cp tmp/$s3key s3://$S3StagingBucket/$AppName/
-aws cloudformation deploy --stack-name $AppName-$1 --template-file tmp/template-$1.yaml --parameter-overrides S3StagingBucket=$S3StagingBucket S3FunctionKey=$AppName/$s3key S3LayerKey=undefined --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation deploy --stack-name $AppName-$1 --template-file tmp/template-$1.yaml --parameter-overrides S3StagingBucket=$S3StagingBucket S3HelloFunctionKey=$AppName/$s3key --capabilities CAPABILITY_NAMED_IAM
