@@ -1,7 +1,5 @@
 ### short
 
-- queue event mapping
-
 - queue batch size
   - should be nested under function ?
 
@@ -25,6 +23,8 @@
 - unique names
 - functions references
 - functions mapped to ddb streams to include ddb in role permissions
+  - ditto sqs
+- regex permission format
 
 ### thoughts
 
@@ -48,6 +48,7 @@
 
 ### done
 
+- queue event mapping
 - table event mapping
 - s3 notifications
 - table indexes

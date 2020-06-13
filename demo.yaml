@@ -11,10 +11,12 @@ components:
     permissions:
     - "logs:*"
     - "dynamodb:*"
+    - "sqs:*"
   api:
     method: GET    
 - type: queue
   name: hello-queue
+  function: hello-function
 - name: hello-timer
   type: timer
   function: hello-function
