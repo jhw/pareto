@@ -2,6 +2,9 @@ components:
 - name: hello-bucket
   type: bucket
   website: true
+  functions:
+  - name: hello-function
+    path: whatever
 - name: hello-function
   type: function
   iam:

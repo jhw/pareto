@@ -22,14 +22,14 @@ def synth_bucket(**kwargs):
         - event hardcoded as `s3:ObjectCreated` for now
         - could become an option later
         """
-        return {"Event": "s3:ObjectCreated",
+        return {"Event": "s3:ObjectCreated:*",
                 "Function": arn,
                 "Filter": {"S3Key": {"Rules": rules}}}
     def notifications_configs(kwargs):
         lambdaconfigs=[lambda_notification_config(function)
                       for function in kwargs["functions"]]
         notifications={"LambdaConfigurations": lambdaconfigs}
-        return {"NotificationConfigurations": notifications}
+        return {"NotificationConfiguration": notifications}
     @resource()
     def Bucket(**kwargs):
         props={"BucketName": global_name(kwargs)}

@@ -1,12 +1,12 @@
 ### short
 
-- s3 notifications
 - queue event mapping
 - table event mapping
-- queue batch should be nested under function
+
+- queue batch size
+  - should be nested under function ?
 
 ### medium
-
 
 - eliminate params
   - requires stack generation to be part of deploy_stack.py
@@ -46,6 +46,7 @@
 
 ### done
 
+- s3 notifications
 - table indexes
 - table
 
