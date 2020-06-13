@@ -1,5 +1,7 @@
 ### short
 
+- remove managed policy support
+
 - python stack deployment
   - copy of batch script
 
