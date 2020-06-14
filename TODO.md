@@ -1,20 +1,12 @@
 ### short
 
-- python stack deployment
-  - copy of batch script
+- deploy stack and wait
 
-- deploy multiple lambdas
-  - get, post
-  - source code to be linked to function name
-    - requires validation
-
-- unit testing
-  - per lambda
-  - call before deployment
-
-- git- based versioning
-  - python git to look up latest commit
-  - deploy latest commit unless commit specified in config
+- lambda directories
+- GET, POST lambdas
+- unit tests
+- replace timestamp with git version
+- deploy LATEST unless commit specified
 
 ### medium
 
@@ -61,6 +53,7 @@
 
 ### done
 
+- python lambda deployment
 - queue event mapping
 - table event mapping
 - s3 notifications
