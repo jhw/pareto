@@ -42,15 +42,16 @@
   
 ### long
 
+- skeleton generator [notes]
+- class based version [notes]
 - sns
 - dead letter queues
 - layers
 - limit calculations
 - dashboard section titles
-- skeleton generator
 - queue, table charts
 - slack alerts
-- nested stacks
+- groups [notes]
 - CI pipeline (codepipeline, codebuild)
 - github actions for lambda push
 - cognito
