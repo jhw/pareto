@@ -1,23 +1,25 @@
 ### short [deploy-stack]
 
+- integrate synth_stack.py
+- move index.py to directory and iterate over functions
+- get, post lambdas
+
 - capture waiter error
-- waiter for delete_stack.sh
-- lambda directories
-- GET, POST lambdas
 - unit tests
 - replace timestamp with git version
 - deploy LATEST unless commit specified
 
 ### medium
 
-- move scripts to pareto/scripts
-
 - delete_stack.py
   - empty buckets
   - detach IAM policies
+  - capture waiter error
 
-- generate stack as part of deploy script
-  - remove params passed to script
+### preprocessor
+
+- convert func sources to event mapping declarations
+- add ddb, sqs permissions to func roles for event mapping
 
 ### validation
 
@@ -40,8 +42,8 @@
   
 ### long
 
+- move scripts to pareto/scripts
 - skeleton generator [notes]
-- class based version [notes]
 - sns
 - dead letter queues
 - layers
