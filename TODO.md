@@ -43,9 +43,11 @@
 - layers
 - limit calculations
 - dashboard section titles
+- skeleton generator
 - queue, table charts
 - slack alerts
 - CI pipeline (codepipeline, codebuild)
+- github actions for lambda push
 - cognito
 - route 53
 - cloudfront
