@@ -2,6 +2,9 @@
 
 - deploy stack and wait
 
+- separate zfname from zipping
+- stack create vs stack update
+
 - lambda directories
 - GET, POST lambdas
 - unit tests
