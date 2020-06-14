@@ -1,9 +1,8 @@
 ### short [deploy-stack]
 
-- push_lambda to check directory exists
+- replace lambdakeys with config augmented by s3 bucket, key
 
 - replace s3 bucket/key parameters with hardcoded values
-  - means need to insert s3 details into config  
 - push_lambda to iterate over directory contents
 - separate get, post lambdas
 
@@ -22,17 +21,12 @@
   - detach IAM policies
   - capture waiter error
 
-### preprocessor
+### preprocessor/validation
 
 - convert func sources to event mapping declarations
 - add ddb, sqs permissions to func roles for event mapping
-
-### validation
-
 - unique names
-- functions references
-- functions mapped to ddb streams to include ddb in role permissions
-  - ditto sqs
+- functions refs
 - regex permission format
 
 ### thoughts
@@ -69,6 +63,7 @@
 
 ### done
 
+- push_lambda to check directory exists
 - generate lambda keys by iterating over functions
 - synth stack internally
 - make Config static and avoid passing it round

@@ -34,10 +34,8 @@ def push_lambdas(lambdakeys):
     def push_lambda(name, key):
         zfname="tmp/%s" % key.split("/")[-1]
         zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-        """
-        - check path exists
-        - iterate over directory
-        """
+        if not os.path.exists("lambda/%s" % name):
+            raise RuntimeError("%s lambda does not exist" % name)
         zf.write("lambda/%s/index.py" % name,
                  arcname="index.py")
         zf.close()
