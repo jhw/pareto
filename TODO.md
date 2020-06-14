@@ -1,12 +1,10 @@
 ### short [deploy-stack]
 
-- lambda key to be full s3key
-- pass a dict of lambda keys, with function name
+- make Config static and avoid passing it round
+- synth stack internally
+- generate lambda keys by iterating over functions
 
-- integrate synth_stack.py
-- move index.py to directory and iterate over functions
 - get, post lambdas
-
 - capture waiter error
 - unit tests
 - replace timestamp with git version
@@ -64,6 +62,8 @@
 
 ### done
 
+- lambda key to be full s3key
+- pass a dict of lambda keys, with function name
 - stack create vs update
   - call describe stacks and see if it exists
 - s3 upload failing
