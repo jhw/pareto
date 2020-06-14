@@ -1,7 +1,6 @@
 ### short [deploy-stack]
 
 - push_lambda to check directory exists
-- make Config static and avoid passing it round
 - synth stack internally
 - generate lambda keys by iterating over functions
 
@@ -65,6 +64,7 @@
 
 ### done
 
+- make Config static and avoid passing it round
 - lambda key to be full s3key
 - pass a dict of lambda keys, with function name
 - stack create vs update
