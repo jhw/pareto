@@ -96,8 +96,8 @@ def IamRole(**kwargs):
         single policy only for the moment
         """
         props["Policies"]=[policy(kwargs["permissions"])]
-    if "managed_policies" in kwargs:
-        props["ManagedPolicyArns"]=kwargs["managed_policies"]
+    if "policies" in kwargs:
+        props["ManagedPolicyArns"]=kwargs["policies"]
     return "AWS::IAM::Role", props
 
 if __name__=="__main__":

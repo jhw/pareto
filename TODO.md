@@ -1,7 +1,5 @@
 ### short
 
-- remove managed policy support
-
 - python stack deployment
   - copy of batch script
 
@@ -38,6 +36,8 @@
 
 ### thoughts
 
+- remove managed policy support ?
+  - no might be useful
 - queue batch size to be nested under function ?
   - feels like over- optimisation
 - remove `-dashboard-` from dash name ?
