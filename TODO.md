@@ -1,10 +1,11 @@
-### short
+### short [deploy-stack]
 
-- deploy stack and wait
+- s3 upload failing
+  - deploy.sh bytes => local 488 / remote 488
+  - deploy.py bytes => local 436 / remote 360
 
-- separate zfname from zipping
-- stack create vs stack update
-
+- stack create vs update
+- handle waiter error
 - lambda directories
 - GET, POST lambdas
 - unit tests
@@ -13,13 +14,14 @@
 
 ### medium
 
+- move scripts to pareto/scripts
+
 - delete_stack.py
   - empty buckets
   - detach IAM policies
 
-- eliminate params
-  - requires stack generation to be part of deploy_stack.py
-  - so convert that to python first
+- generate stack as part of deploy script
+  - remove params passed to script
 
 ### validation
 
@@ -42,6 +44,7 @@
   
 ### long
 
+- sns
 - dead letter queues
 - layers
 - limit calculations
@@ -49,6 +52,7 @@
 - skeleton generator
 - queue, table charts
 - slack alerts
+- nested stacks
 - CI pipeline (codepipeline, codebuild)
 - github actions for lambda push
 - cognito
@@ -58,6 +62,8 @@
 
 ### done
 
+- deploy stack and wait
+- separate zfname from zipping
 - python lambda deployment
 - queue event mapping
 - table event mapping

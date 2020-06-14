@@ -1,35 +1,43 @@
 #!/usr/bin/env python
 
-import datetime, boto3, yaml, zipfile
+import datetime, boto3, json, yaml, zipfile
 
 def lambda_key():
-   timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-   return "lambda-%s.zip" % timestamp
+    timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+    return "lambda-%s.zip" % timestamp
 
 def push_lambda(s3, config):
-   zfname="tmp/%s" % config["LambdaKey"]
-   zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-   zf.write("index.py", 
-            arcname="index.py")
-   s3key="%s/%s" % (config["AppName"],
-                    config["LambdaKey"])
-   s3.upload_file(zfname,
-                  config["S3StagingBucket"],
-                  s3key)
-
+    zfname="tmp/%s" % config["LambdaKey"]
+    zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
+    zf.write("index.py", 
+             arcname="index.py")
+    s3key="%s/%s" % (config["AppName"],
+                     config["LambdaKey"])
+    """
+    s3.upload_file(zfname,
+                   config["S3StagingBucket"],
+                   s3key,
+                   ExtraArgs={'ContentType': 'application/zip'})
+    """
+    with open(zfname, 'rb') as f:
+        s3.put_object(Bucket= config["S3StagingBucket"],
+                      Key=s3key,
+                      Body=f.read(),
+                      ContentType='application/zip')
+    
 def deploy_stack(cf, config, stack):
     stackname="%s-%s" % (config["AppName"],
                          config["StageName"])
     params={"S3StagingBucket": config["S3StagingBucket"],
-            "S3HelloFunctionKey": "%/%s" % (config["AppName"],
-                                            config["LambdaKey"])}
+            "S3HelloFunctionKey": "%s/%s" % (config["AppName"],
+                                             config["LambdaKey"])}
     cf.create_stack(StackName=stackname,
                     TemplateBody=json.dumps(stack),
                     Parameters=[{"ParameterKey": k,
                                  "ParameterValue": v}
                                 for k, v in params.items()],
                     Capabilities=["CAPABILITY_IAM"])
-    waiter=cf.get_deploy_waiter("stack_create_complete")
+    waiter=cf.get_waiter("stack_create_complete")
     waiter.wait(StackName=stackname)
     
 if __name__=="__main__":
@@ -50,11 +58,10 @@ if __name__=="__main__":
                      if "=" in row])
         config["StageName"]=stagename # NB
         config["LambdaKey"]=lambda_key() # NB
-        print (config["LambdaKey"])
         push_lambda(s3, config)
         with open(stackfile, 'r') as f:
            stack=yaml.load(f.read(),
                            Loader=yaml.FullLoader)
-        # deploy_stack(cf, config, stack)
+        deploy_stack(cf, config, stack)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
