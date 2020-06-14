@@ -1,19 +1,19 @@
 ### short [deploy-stack]
 
-- generate lambda keys by iterating over functions
-
 - push_lambda to check directory exists
+- replace s3 bucket/key parameters with hardcoded values       
 - push_lambda to iterate over directory contents
+- separate get, post lambdas
 
-- get, post lambdas
 - capture waiter error
-- unit tests
+- call unit tests prior to lambda deployment
+  - call global test.py if exists else local test.py
 - replace timestamp with git version
-- deploy LATEST unless commit specified
-
-- check slow_russian version of deploy_stack.py for other stuff you could usefully pillage
+  - deploy LATEST unless commit specified
 
 ### medium
+
+- python versions of scripts/*.sh using pandas
 
 - delete_stack.py
   - empty buckets
@@ -35,6 +35,8 @@
 
 ### thoughts
 
+- check slow_russian version of deploy_stack.py
+  - other stuff you could usefully pillage ?
 - remove managed policy support ?
   - no might be useful
 - queue batch size to be nested under function ?
@@ -65,6 +67,7 @@
 
 ### done
 
+- generate lambda keys by iterating over functions
 - synth stack internally
 - make Config static and avoid passing it round
 - lambda key to be full s3key

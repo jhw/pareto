@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import datetime, boto3, json, re, yaml, zipfile
+import datetime, boto3, json, os, re, yaml, zipfile
 
 from pareto.components.stack import synth_stack
 
@@ -18,12 +18,17 @@ def load_config(stackfile, stagename):
     config["region"]=Config["AWSRegion"]
     config["stage"]=stagename
     return config
-    
-def lambda_key(name):
+
+def lambda_keys(config):
+    def lambda_key(name, timestamp):
+        return "%s/%s-%s.zip" % (Config["AppName"],
+                                 name,
+                                 timestamp)
     timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-    return "%s/%s-%s.zip" % (Config["AppName"],
-                             name,
-                             timestamp)
+    return {component["name"]: lambda_key(component["name"],
+                                          timestamp)
+            for component in config["components"]
+            if component["type"]=="function"}
 
 def push_lambdas(lambdakeys):
     def push_lambda(name, key):
@@ -43,7 +48,7 @@ def push_lambdas(lambdakeys):
     for name, key in lambdakeys.items():
         push_lambda(name, key)
             
-def deploy_stack(stagename, lambdakeys, stack):
+def deploy_stack(stack, lambdakeys, stagename):
     def stack_exists(stackname):
         stacknames=[stack["StackName"]
                     for stack in CF.describe_stacks()["Stacks"]]
@@ -73,7 +78,7 @@ def deploy_stack(stagename, lambdakeys, stack):
     
 if __name__=="__main__":
     try:
-        import sys, os
+        import sys
         if len(sys.argv) < 3:
             raise RuntimeError("Please enter stack file, stage name")
         stackfile, stagename = sys.argv[1:3]
@@ -84,10 +89,10 @@ if __name__=="__main__":
         if not os.path.exists(stackfile):
             raise RuntimeError("Stack file does not exist")
         config=load_config(stackfile, stagename)
-        lambdakeys={name: lambda_key(name)
-                    for name in ["hello-function"]}
-        stack=synth_stack(config)
+        lambdakeys, stack = lambda_keys(config), synth_stack(config)
+        print (stack)
+        print (lambdakeys)
         push_lambdas(lambdakeys)
-        deploy_stack(stagename, lambdakeys, stack)
+        deploy_stack(stack, lambdakeys, stagename)
     except RuntimeError as error:
         print ("Error: %s" % str(error))
