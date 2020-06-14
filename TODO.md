@@ -1,9 +1,7 @@
 ### short [deploy-stack]
 
-- stack create vs update
-  - call describe stacks and see if it exists
-
 - capture waiter error
+- waiter for delete_stack.sh
 - lambda directories
 - GET, POST lambdas
 - unit tests
@@ -61,6 +59,8 @@
 
 ### done
 
+- stack create vs update
+  - call describe stacks and see if it exists
 - s3 upload failing
   - deploy.sh bytes => local 488 / remote 488
   - deploy.py bytes => local 436 / remote 360

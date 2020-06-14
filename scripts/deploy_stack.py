@@ -20,18 +20,25 @@ def push_lambda(s3, config):
                    ExtraArgs={'ContentType': 'application/zip'})
     
 def deploy_stack(cf, config, stack):
+    def stack_exists(cf, stackname):
+        stacknames=[stack["StackName"]
+                    for stack in cf.describe_stacks()["Stacks"]]
+        return stackname in stacknames
     stackname="%s-%s" % (config["AppName"],
                          config["StageName"])
     params={"S3StagingBucket": config["S3StagingBucket"],
             "S3HelloFunctionKey": "%s/%s" % (config["AppName"],
                                              config["LambdaKey"])}
-    cf.create_stack(StackName=stackname,
-                    TemplateBody=json.dumps(stack),
-                    Parameters=[{"ParameterKey": k,
-                                 "ParameterValue": v}
-                                for k, v in params.items()],
-                    Capabilities=["CAPABILITY_IAM"])
-    waiter=cf.get_waiter("stack_create_complete")
+    action="update" if stack_exists(cf, stackname) else "create"
+    print (action)
+    fn=getattr(cf, "%s_stack" % action)
+    fn(StackName=stackname,
+       TemplateBody=json.dumps(stack),
+       Parameters=[{"ParameterKey": k,
+                    "ParameterValue": v}
+                   for k, v in params.items()],
+       Capabilities=["CAPABILITY_IAM"])
+    waiter=cf.get_waiter("stack_%s_complete" % action)
     waiter.wait(StackName=stackname)
     
 if __name__=="__main__":
