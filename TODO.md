@@ -1,11 +1,9 @@
 ### short [deploy-stack]
 
-- s3 upload failing
-  - deploy.sh bytes => local 488 / remote 488
-  - deploy.py bytes => local 436 / remote 360
-
 - stack create vs update
-- handle waiter error
+  - call describe stacks and see if it exists
+
+- capture waiter error
 - lambda directories
 - GET, POST lambdas
 - unit tests
@@ -62,6 +60,9 @@
 
 ### done
 
+- s3 upload failing
+  - deploy.sh bytes => local 488 / remote 488
+  - deploy.py bytes => local 436 / remote 360
 - deploy stack and wait
 - separate zfname from zipping
 - python lambda deployment

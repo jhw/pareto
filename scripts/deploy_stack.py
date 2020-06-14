@@ -11,19 +11,13 @@ def push_lambda(s3, config):
     zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
     zf.write("index.py", 
              arcname="index.py")
+    zf.close() # important!
     s3key="%s/%s" % (config["AppName"],
                      config["LambdaKey"])
-    """
     s3.upload_file(zfname,
                    config["S3StagingBucket"],
                    s3key,
                    ExtraArgs={'ContentType': 'application/zip'})
-    """
-    with open(zfname, 'rb') as f:
-        s3.put_object(Bucket= config["S3StagingBucket"],
-                      Key=s3key,
-                      Body=f.read(),
-                      ContentType='application/zip')
     
 def deploy_stack(cf, config, stack):
     stackname="%s-%s" % (config["AppName"],
