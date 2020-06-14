@@ -6,31 +6,30 @@ def lambda_key():
     timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
     return "lambda-%s.zip" % timestamp
 
-def push_lambda(s3, config):
-    zfname="tmp/%s" % config["LambdaKey"]
+def push_lambda(s3, config, lambdakey):
+    zfname="tmp/%s" % lambdakey
     zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
     zf.write("index.py", 
              arcname="index.py")
     zf.close() # important!
     s3key="%s/%s" % (config["AppName"],
-                     config["LambdaKey"])
+                     lambdakey)
     s3.upload_file(zfname,
                    config["S3StagingBucket"],
                    s3key,
                    ExtraArgs={'ContentType': 'application/zip'})
     
-def deploy_stack(cf, config, stack):
+def deploy_stack(cf, config, stagename, lambdakey, stack):
     def stack_exists(cf, stackname):
         stacknames=[stack["StackName"]
                     for stack in cf.describe_stacks()["Stacks"]]
         return stackname in stacknames
     stackname="%s-%s" % (config["AppName"],
-                         config["StageName"])
+                         stagename)
     params={"S3StagingBucket": config["S3StagingBucket"],
             "S3HelloFunctionKey": "%s/%s" % (config["AppName"],
-                                             config["LambdaKey"])}
+                                             lambdakey)}
     action="update" if stack_exists(cf, stackname) else "create"
-    print (action)
     fn=getattr(cf, "%s_stack" % action)
     fn(StackName=stackname,
        TemplateBody=json.dumps(stack),
@@ -57,12 +56,11 @@ if __name__=="__main__":
         config=dict([tuple(row.split("="))
                      for row in open("app.props").read().split("\n")
                      if "=" in row])
-        config["StageName"]=stagename # NB
-        config["LambdaKey"]=lambda_key() # NB
-        push_lambda(s3, config)
+        lambdakey=lambda_key()
+        push_lambda(s3, config, lambdakey)
         with open(stackfile, 'r') as f:
            stack=yaml.load(f.read(),
                            Loader=yaml.FullLoader)
-        deploy_stack(cf, config, stack)
+        deploy_stack(cf, config, stagename, lambdakey, stack)
     except RuntimeError as error:
         print ("Error: %s" % str(error))

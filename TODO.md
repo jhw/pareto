@@ -1,5 +1,8 @@
 ### short [deploy-stack]
 
+- lambda key to be full s3key
+- pass a dict of lambda keys, with function name
+
 - integrate synth_stack.py
 - move index.py to directory and iterate over functions
 - get, post lambdas
