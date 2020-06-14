@@ -1,8 +1,11 @@
 ### short [deploy-stack]
 
+- push_lambda to check directory exists
 - make Config static and avoid passing it round
 - synth stack internally
 - generate lambda keys by iterating over functions
+
+- push_lambda to iterate over directory contents
 
 - get, post lambdas
 - capture waiter error
