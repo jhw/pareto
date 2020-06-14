@@ -1,7 +1,9 @@
 ### short [deploy-stack]
 
 - push_lambda to check directory exists
-- replace s3 bucket/key parameters with hardcoded values       
+
+- replace s3 bucket/key parameters with hardcoded values
+  - means need to insert s3 details into config  
 - push_lambda to iterate over directory contents
 - separate get, post lambdas
 
