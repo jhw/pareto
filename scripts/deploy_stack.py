@@ -2,12 +2,23 @@
 
 import datetime, boto3, json, re, yaml, zipfile
 
+from pareto.components.stack import synth_stack
+
 Config=dict([tuple(row.split("="))
              for row in open("app.props").read().split("\n")
              if "=" in row])
 
 CF, S3 = boto3.client("cloudformation"), boto3.client("s3")
 
+def load_config(stackfile, stagename):
+    with open(stackfile, 'r') as f:
+        config=yaml.load(f.read(),
+                         Loader=yaml.FullLoader)
+    config["app"]=Config["AppName"]
+    config["region"]=Config["AWSRegion"]
+    config["stage"]=stagename
+    return config
+    
 def lambda_key(name):
     timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
     return "%s/%s-%s.zip" % (Config["AppName"],
@@ -63,20 +74,20 @@ def deploy_stack(stagename, lambdakeys, stack):
 if __name__=="__main__":
     try:
         import sys, os
-        if len(sys.argv) < 2:
-            raise RuntimeError("Please enter stage name")
-        stagename=sys.argv[1]
+        if len(sys.argv) < 3:
+            raise RuntimeError("Please enter stack file, stage name")
+        stackfile, stagename = sys.argv[1:3]
         if stagename not in ["dev", "prod"]:
             raise RuntimeError("Stage name is invalid")
-        stackfile="tmp/template-%s.yaml" % stagename
+        if not stackfile.endswith(".yaml"):
+            raise RuntimeError("Stack must be a yaml file")
         if not os.path.exists(stackfile):
             raise RuntimeError("Stack file does not exist")
+        config=load_config(stackfile, stagename)
         lambdakeys={name: lambda_key(name)
                     for name in ["hello-function"]}
+        stack=synth_stack(config)
         push_lambdas(lambdakeys)
-        with open(stackfile, 'r') as f:
-           stack=yaml.load(f.read(),
-                           Loader=yaml.FullLoader)
         deploy_stack(stagename, lambdakeys, stack)
     except RuntimeError as error:
         print ("Error: %s" % str(error))

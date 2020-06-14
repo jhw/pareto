@@ -1,9 +1,9 @@
 ### short [deploy-stack]
 
-- push_lambda to check directory exists
 - synth stack internally
 - generate lambda keys by iterating over functions
 
+- push_lambda to check directory exists
 - push_lambda to iterate over directory contents
 
 - get, post lambdas
@@ -11,6 +11,8 @@
 - unit tests
 - replace timestamp with git version
 - deploy LATEST unless commit specified
+
+- check slow_russian version of deploy_stack.py for other stuff you could usefully pillage
 
 ### medium
 
