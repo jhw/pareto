@@ -1,13 +1,17 @@
 ### short
 
-- python versions of scripts/*.sh using pandas
-
-### medium
+- describe_events.py
+- describe_stacks.py
+- describe_outputs.py
 
 - delete_stack.py
   - empty buckets
   - detach IAM policies
   - capture waiter error
+
+### medium
+
+- use logical/physical_id reference names  
 - replace timestamp with git version
   - deploy LATEST unless commit specified
 - preprocessor
@@ -53,6 +57,7 @@
 
 ### done
 
+- describe_resources.py
 - deployment logger
 - capture waiter error
 - limit calculations
