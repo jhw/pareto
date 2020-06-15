@@ -35,36 +35,15 @@ def add_staging(config):
         key=lambda_key(component["name"], ts)
         component["staging"]={"bucket": bucket,
                               "key": key}
-
-"""
-def zipit(lambdaname, zfname):
-    def is_valid(filename):
-        for extension in Ignore:
-            if filename.endswith(extension):
-                return False
-        return True
-    def write_zf(zf, lambdaname):
-        path, count = "lambda/%s" % lambdaname.replace("-", "_"), 0
-        for root, dirs, files in os.walk(path):
-            for filename in files:
-                if is_valid(filename):
-                    zf.write(os.path.join(root, filename), # NB path not included!
-                             arcname=filename)
-                    count+=1
-        if not count:
-            raise RuntimeError("no files found in %s" % path)
-    zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-    write_zf(zf, lambdaname)
-"""
         
 def push_lambdas(config):
     def validate_lambda(component):
         if not os.path.exists("lambda/%s" % component["name"]):
             raise RuntimeError("%s lambda does not exist" % component["name"])
-    def is_valid(filename, ignore=["test.py",
-                                   "*.pyc"]):
+    def is_valid(filename, ignore=["test.py$",
+                                   ".pyc$"]):
         for pat in ignore:
-            if pat in filename:
+            if re.search(pat, filename)!=None:
                 return False
         return True
     def write_zipfile(component, zf):

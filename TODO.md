@@ -1,7 +1,5 @@
 ### short [deploy-stack]
 
-- sample test file
-
 - separate get, post lambdas
 
 - capture waiter error
@@ -63,6 +61,7 @@
 
 ### done
 
+- sample test file
 - push_lambda to iterate over directory contents
 - replace s3 bucket/key parameters with hardcoded values
 - replace lambdakeys with config augmented by s3 bucket, key
