@@ -1,9 +1,6 @@
 ### short
 
-- delete_stack.py
-  - empty buckets
-  - detach IAM policies
-  - capture waiter error
+- all scripts to capture client error
 
 - script to filter deployment errors
   - maybe test by removing role ddb/sqs permissions
@@ -56,6 +53,10 @@
 
 ### done
 
+- delete_stack.py
+  - empty buckets
+  - detach IAM policies
+  - capture waiter error
 - change all scripts to use __init__.py
 - move deploy code into scripts/__init__.py
 - describe_outputs.py
