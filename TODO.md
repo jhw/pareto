@@ -1,9 +1,5 @@
 ### short [deploy-stack]
 
-- common helpers
-  - filtering of functions from components
-  - replacement of "-" with "_" in function name
-- separate get, post lambdas
 - limit calculations
 - capture waiter error
 
@@ -56,6 +52,10 @@
 
 ### done
 
+- separate get, post lambdas
+- common helpers
+  - filtering of functions from components
+  - replacement of "-" with "_" in function name
 - move scripts to pareto/scripts
 - charts/functions/README
 - toggle google before running tests

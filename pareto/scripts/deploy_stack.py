@@ -39,6 +39,14 @@ def toggle_aws_profile(fn):
 def timestamp():
     return datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
 
+def filter_functions(components):
+    return [component
+            for component in components
+            if component["type"]=="function"]
+
+def underscore(text):
+    return text.replace("-", "_")
+
 def load_config(stackfile, stagename):
     with open(stackfile, 'r') as f:
         config=yaml.load(f.read(),
@@ -51,7 +59,7 @@ def load_config(stackfile, stagename):
 @toggle_aws_profile
 def run_tests(config):
     def index_test(component, klassname="IndexTest"):    
-        modname="%s.test" % component["name"].replace("-", "_")
+        modname="%s.test" % underscore(component["name"])
         try:
             mod=__import__(modname, fromlist=[klassname])
         except ModuleNotFoundError:
@@ -62,8 +70,7 @@ def run_tests(config):
                                                             modname))
         return klass
     klasses=[index_test(component)
-             for component in config["components"]
-             if component["type"]=="function"]
+             for component in filter_functions(config["components"])]
     suite=unittest.TestSuite()
     for klass in klasses:
         suite.addTest(unittest.makeSuite(klass))
@@ -80,9 +87,7 @@ def add_staging(config):
                                  name,
                                  timestamp)
     ts=timestamp()
-    for component in config["components"]:
-        if not component["type"]=="function":
-            continue
+    for component in filter_functions(config["components"]):
         bucket=Config["S3StagingBucket"]
         key=lambda_key(component["name"], ts)
         component["staging"]={"bucket": bucket,
@@ -90,7 +95,7 @@ def add_staging(config):
         
 def push_lambdas(config):
     def validate_lambda(component):
-        if not os.path.exists("lambda/%s" % component["name"].replace("-", "_")):
+        if not os.path.exists("lambda/%s" % underscore(component["name"])):
             raise RuntimeError("%s lambda does not exist" % component["name"])
     def is_valid(filename, ignore=["test.py$",
                                    ".pyc$"]):
@@ -99,7 +104,7 @@ def push_lambdas(config):
                 return False
         return True
     def write_zipfile(component, zf):
-        path, count = "lambda/%s" % component["name"].replace("-", "_"), 0
+        path, count = "lambda/%s" % underscore(component["name"]), 0
         for root, dirs, files in os.walk(path):
             for filename in files:
                 if is_valid(filename):
@@ -119,9 +124,7 @@ def push_lambdas(config):
                        component["staging"]["bucket"],
                        component["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
-    for component in config["components"]:
-        if not component["type"]=="function":
-            continue
+    for component in filter_functions(config["components"]):
         validate_lambda(component)
         zfname=init_zipfile(component)
         push_lambda(component, zfname)
