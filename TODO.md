@@ -1,27 +1,27 @@
-### short [deploy-stack]
+### short
 
-- limit calculations
 - capture waiter error
+- deployment logger
+- python versions of scripts/*.sh using pandas
 
 ### medium
 
-- deployment logger
-- preprocessor
-  - event bindings to be declared as function source
-  - add ddb, sqs permissions to func roles for event mapping
-- replace timestamp with git version
-  - deploy LATEST unless commit specified
-- find all tests rather than just index.py
-- installation of pip library dependencies
-- python versions of scripts/*.sh using pandas
-- bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
 - delete_stack.py
   - empty buckets
   - detach IAM policies
   - capture waiter error
-
+- replace timestamp with git version
+  - deploy LATEST unless commit specified
+- preprocessor
+  - event bindings to be declared as function source
+  - add ddb, sqs permissions to func roles for event mapping
+- bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
+- installation of pip library dependencies
+  
 ### thoughts
 
+- find all tests rather than just index.py ?
+  - conventions should be that all tests are in index.py
 - check slow_russian version of deploy_stack.py
   - other stuff you could usefully pillage ?
 - remove managed policy support ?
@@ -41,17 +41,21 @@
 - layers
 - dashboard section titles
 - queue, table charts
-- slack alerts
-- groups [notes]
+
 - CI pipeline (codepipeline, codebuild)
+
+- groups [notes]
 - github actions for lambda push
+- slack alerts
 - cognito
 - route 53
 - cloudfront
+
 - ec2, codedeploy
 
 ### done
 
+- limit calculations
 - separate get, post lambdas
 - common helpers
   - filtering of functions from components

@@ -2,6 +2,8 @@
 
 import datetime, boto3, json, os, re, unittest, yaml, zipfile
 
+import pandas as pd
+
 from pareto.components.stack import synth_stack
 
 Config=dict([tuple(row.split("="))
@@ -9,6 +11,16 @@ Config=dict([tuple(row.split("="))
              if "=" in row])
 
 CF, S3 = boto3.client("cloudformation"), boto3.client("s3")
+
+"""
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
+"""
+
+Metrics={
+    "resources": (lambda x: len(x["Resources"]), 200),
+    "outputs": (lambda x: len(x["Outputs"]), 60),
+    "template_size": (lambda x: len(json.dumps(x)), 51200)
+    }
 
 def list_profiles():
     config=open("%s/.aws/config" % os.path.expanduser("~")).read()
@@ -128,7 +140,32 @@ def push_lambdas(config):
         validate_lambda(component)
         zfname=init_zipfile(component)
         push_lambda(component, zfname)
-            
+
+def stack_metrics(stack, metrics=Metrics):
+    items=[]
+    for key in metrics:
+        fn, limit = metrics[key]
+        value=fn(stack)
+        pctvalue=value/limit
+        item={"name": key,
+              "value": value,
+              "limit": limit,
+              "pct": pctvalue}
+        items.append(item)
+    return items
+
+def validate_metrics(metrics):
+    for metric in metrics:
+        if metric["pct"] > 1:
+            raise RuntimeError("%s limit exceeded" % metric["name"])
+
+def dump_stack(stack):
+    filename="tmp/stack-%s.yaml" % timestamp()
+    with open(filename, 'w') as f:
+        f.write(yaml.safe_dump(stack,
+                               default_flow_style=False))
+    
+        
 def deploy_stack(config, stack, stagename):
     def stack_exists(stackname):
         stacknames=[stack["StackName"]
@@ -148,12 +185,6 @@ def deploy_stack(config, stack, stagename):
     waiter=CF.get_waiter("stack_%s_complete" % action)
     waiter.wait(StackName=stackname)
 
-def dump_stack(stack):
-    filename="tmp/stack-%s.yaml" % timestamp()
-    with open(filename, 'w') as f:
-        f.write(yaml.safe_dump(stack,
-                               default_flow_style=False))
-    
 if __name__=="__main__":
     try:
         import sys
@@ -171,6 +202,9 @@ if __name__=="__main__":
         add_staging(config)
         push_lambdas(config)
         stack=synth_stack(config)
+        metrics=stack_metrics(stack)
+        validate_metrics(metrics)
+        print (pd.DataFrame(metrics))
         dump_stack(stack)
         deploy_stack(config, stack, stagename)
     except RuntimeError as error:
