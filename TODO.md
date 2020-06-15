@@ -1,6 +1,5 @@
 ### short [deploy-stack]
 
-- move scripts to pareto/scripts
 - separate get, post lambdas
 - limit calculations
 - capture waiter error
@@ -26,6 +25,8 @@
 
 ### thoughts
 
+- script logging ?
+  - overoptimised
 - check slow_russian version of deploy_stack.py
   - other stuff you could usefully pillage ?
 - remove managed policy support ?
@@ -56,6 +57,7 @@
 
 ### done
 
+- move scripts to pareto/scripts
 - charts/functions/README
 - toggle google before running tests
 - run tests
