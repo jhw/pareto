@@ -2,9 +2,11 @@
 
 import datetime, boto3, json, os, re, unittest, yaml, zipfile
 
-import pandas as pd
-
 from pareto.components.stack import synth_stack
+
+from botocore.exceptions import WaiterError
+
+import pandas as pd
 
 Config=dict([tuple(row.split("="))
              for row in open("app.props").read().split("\n")
@@ -207,5 +209,7 @@ if __name__=="__main__":
         print (pd.DataFrame(metrics))
         dump_stack(stack)
         deploy_stack(config, stack, stagename)
+    except WaiterError as error:
+        print ("Error: %s" % str(error))        
     except RuntimeError as error:
         print ("Error: %s" % str(error))

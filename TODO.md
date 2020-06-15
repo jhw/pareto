@@ -1,7 +1,7 @@
 ### short
 
-- capture waiter error
 - deployment logger
+
 - python versions of scripts/*.sh using pandas
 
 ### medium
@@ -55,6 +55,7 @@
 
 ### done
 
+- capture waiter error
 - limit calculations
 - separate get, post lambdas
 - common helpers
