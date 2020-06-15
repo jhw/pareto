@@ -1,7 +1,8 @@
 ### short [deploy-stack]
 
-- dynamically create testing suite
-- exit prior to launch if testing fails
+- script to gather tests
+- toggle google
+- run tests
 
 - separate get, post lambdas
 - capture waiter error
