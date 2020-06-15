@@ -1,6 +1,6 @@
 ### short
 
-- add logger to stack deletion
+- how come stack deletion didn't log deleting of IAM roles ?
 
 - script to filter deployment errors
   - maybe test by removing role ddb/sqs permissions
@@ -53,6 +53,7 @@
 
 ### done
 
+- add logger to stack deletion
 - all scripts to capture client error
 - delete_stack.py
   - empty buckets

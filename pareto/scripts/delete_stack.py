@@ -2,8 +2,6 @@
 
 from pareto.scripts import *
 
-CF=boto3.client("cloudformation")
-S3=boto3.client("s3")
 IAM=boto3.client("iam")
 
 def empty_bucket(bucketname):
@@ -12,15 +10,18 @@ def empty_bucket(bucketname):
     for struct in pages:
         if "Contents" in struct:
             for obj in struct["Contents"]:
+                logging.info("deleting object %s" % obj["Key"])
                 S3.delete_object(Bucket=bucketname,
                                  Key=obj["Key"])
 
 def detach_policies(rolename):
     for policy in IAM.list_attached_role_policies(RoleName=rolename)["AttachedPolicies"]:
+        logging.info("detaching policy %s" % policy["PolicyArn"])
         IAM.detach_role_policy(RoleName=rolename,
                                PolicyArn=policy["PolicyArn"])
     
 def delete_stack(stackname):
+    logging.info("deleting stack %s" % stackname)
     resources=CF.describe_stack_resources(StackName=stackname)["StackResources"]
     for resource in resources:
         if resource["ResourceType"]=="AWS::S3::Bucket":
@@ -31,6 +32,7 @@ def delete_stack(stackname):
 
 if __name__=="__main__":
     try:
+        init_stdout_logger(logging.INFO)
         if len(sys.argv) < 2:
             raise RuntimeError("Please enter stage name")
         stagename=sys.argv[1]
