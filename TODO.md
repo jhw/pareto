@@ -12,8 +12,8 @@
 
 ### medium
 
+- installation of pip library dependencies
 - python versions of scripts/*.sh using pandas
-
 - bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
 
 - delete_stack.py
