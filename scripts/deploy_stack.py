@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import datetime, boto3, json, os, re, yaml, zipfile
+import datetime, boto3, json, os, re, unittest, yaml, zipfile
 
 from pareto.components.stack import synth_stack
 
@@ -22,9 +22,9 @@ def load_config(stackfile, stagename):
     config["stage"]=stagename
     return config
 
-def init_tests(config):
+def run_tests(config):
     def index_test(component, klassname="IndexTest"):    
-        modname="%s.test" % component["name"]
+        modname="%s.test" % component["name"].replace("-", "_")
         try:
             mod=__import__(modname, fromlist=[klassname])
         except ModuleNotFoundError:
@@ -34,13 +34,18 @@ def init_tests(config):
             raise RuntimeError("%s does not exist in %s" % (klassname,
                                                             modname))
         return klass
-    return [index_test(component)
-            for component in config["components"]
-            if component["type"]=="function"]
-
-def run_tests(config):
-    tests=init_tests(config)
-    print (tests)
+    klasses=[index_test(component)
+             for component in config["components"]
+             if component["type"]=="function"]
+    suite=unittest.TestSuite()
+    for klass in klasses:
+        suite.addTest(unittest.makeSuite(klass))
+    runner=unittest.TextTestRunner()
+    results=runner.run(suite)
+    nfailures, nerrors = len(results.failures), len(results.errors)
+    if (nfailures > 0 or nerrors > 0):
+        raise RuntimeError("Tests failed with %i failures / %i errors" % (nfailures, nerrors))        
+    return results
 
 def add_staging(config):
     def lambda_key(name, timestamp):
@@ -58,7 +63,7 @@ def add_staging(config):
         
 def push_lambdas(config):
     def validate_lambda(component):
-        if not os.path.exists("lambda/%s" % component["name"]):
+        if not os.path.exists("lambda/%s" % component["name"].replace("-", "_")):
             raise RuntimeError("%s lambda does not exist" % component["name"])
     def is_valid(filename, ignore=["test.py$",
                                    ".pyc$"]):
@@ -67,7 +72,7 @@ def push_lambdas(config):
                 return False
         return True
     def write_zipfile(component, zf):
-        path, count = "lambda/%s" % component["name"], 0
+        path, count = "lambda/%s" % component["name"].replace("-", "_"), 0
         for root, dirs, files in os.walk(path):
             for filename in files:
                 if is_valid(filename):

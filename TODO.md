@@ -1,33 +1,30 @@
 ### short [deploy-stack]
 
-- toggle google / run tests
-
+- toggle google before running tests
 - separate get, post lambdas
+- move scripts to pareto/scripts
+- limit calculations
 - capture waiter error
-
-- replace timestamp with git version
-  - deploy LATEST unless commit specified
 
 ### medium
 
+- preprocessor
+  - event bindings to be declared as function source
+  - add ddb, sqs permissions to func roles for event mapping
+- replace timestamp with git version
+  - deploy LATEST unless commit specified
+- common helpers
+  - filtering of functions from components
+  - replacement of "-" with "_" in function name
 - find all tests rather than just index.py
 - charts/functions/README
 - installation of pip library dependencies
 - python versions of scripts/*.sh using pandas
 - bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
-
 - delete_stack.py
   - empty buckets
   - detach IAM policies
   - capture waiter error
-
-### preprocessor/validation
-
-- convert func sources to event mapping declarations
-- add ddb, sqs permissions to func roles for event mapping
-- unique names
-- functions refs
-- regex permission format
 
 ### thoughts
 
@@ -44,12 +41,10 @@
   
 ### long
 
-- move scripts to pareto/scripts
 - skeleton generator [notes]
 - sns
 - dead letter queues
 - layers
-- limit calculations
 - dashboard section titles
 - queue, table charts
 - slack alerts
@@ -63,6 +58,7 @@
 
 ### done
 
+- run tests
 - sample test file
 - push_lambda to iterate over directory contents
 - replace s3 bucket/key parameters with hardcoded values
