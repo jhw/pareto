@@ -8,9 +8,8 @@ def synth_function(**kwargs):
                  runtime="python3.7",
                  timeout=30,
                  **kwargs):
-        code={"S3Bucket": ref("s3-staging-bucket"),
-              "S3Key": ref("s3-%s-key" % kwargs["name"])}
-        props={"Code": code,
+        props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
+                        "S3Key": kwargs["staging"]["key"]},
                "FunctionName": global_name(kwargs),
                "Handler": handler,
                "MemorySize": memory,
@@ -79,7 +78,6 @@ def synth_function(**kwargs):
         url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/%s" % (kwargs["region"], kwargs["stage"])
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         return fn_sub(url, {"rest_api": restapi})
-    parameters=[Parameter(name="s3-%s-key" % kwargs["name"])]
     resources=[Function(**kwargs),
                FunctionRole(**kwargs)]
     outputs=[]
@@ -90,8 +88,7 @@ def synth_function(**kwargs):
                     ApiGwMethod(**kwargs),
                     ApiGwPermission(**kwargs)]
         outputs.append(ApiGwUrl(**kwargs))
-    return {"parameters": parameters,
-            "resources": resources,
+    return {"resources": resources,
             "outputs": outputs}
 
 if __name__=="__main__":

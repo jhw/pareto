@@ -28,16 +28,6 @@ def global_name(kwargs):
     return "-".join([labelise(kwargs[attr])
                      for attr in ["app", "name", "stage"]])
 
-def parameter(suffix=None):
-    def decorator(fn):
-        def wrapped(*args, **kwargs):
-            name="%s-%s" % (kwargs["name"],
-                            suffix) if suffix else kwargs["name"]
-            return (hungarorise(name),
-                    fn(*args, **kwargs))
-        return wrapped
-    return decorator
-
 def resource(suffix=None):
     def decorator(fn):
         def wrapped(attrs=["Type", "Properties", "DependsOn"],
@@ -60,15 +50,6 @@ def output(suffix=None):
                     {"Value": fn(*args, **kwargs)})
         return wrapped
     return decorator
-
-@parameter()
-def Parameter(type="String",
-              value=None,
-              **kwargs):
-    param={"Type": type}
-    if value:
-        param["DefaultValue"]=value
-    return param
 
 @resource(suffix="role")
 def IamRole(**kwargs):

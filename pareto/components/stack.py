@@ -1,5 +1,3 @@
-from pareto.components import Parameter
-
 from pareto.components.bucket import synth_bucket
 from pareto.components.function import synth_function
 from pareto.components.table import synth_table
@@ -8,24 +6,13 @@ from pareto.components.timer import synth_timer
 from pareto.components.dashboard import synth_dashboard
 
 def synth_stack(config):
-    paramnames=[]
-    def has_functions(config):
-        for item in config["components"]:
-            if item["type"]=="function":
-                return True
-        return False
-    if has_functions(config):
-        paramnames+=["s3-staging-bucket"]
-    params=[Parameter(name=name)
-            for name in paramnames]
     def add_component(component, stack):
-        for attr in ["parameters",
-                     "resources",
+        for attr in ["resources",
                      "outputs"]:
             if attr in component:
                 stack.setdefault(attr, [])
                 stack[attr]+=component[attr]
-    stack={"parameters": params}    
+    stack={}    
     for item in config["components"]:
         item.update({k:config[k]
                      for k in config.keys()

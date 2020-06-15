@@ -68,24 +68,12 @@ def deploy_stack(config, stack, stagename):
         return "".join([tok.capitalize()
                         for tok in re.split("\\_|\\-", text)
                         if tok!=''])
-    def init_params(config):
-        params={"S3StagingBucket": Config["S3StagingBucket"]}
-        for component in config["components"]:
-            if not component["type"]=="function":
-                continue
-            key="S3%sKey" % hungarorise(component["name"])
-            params[key]=component["staging"]["key"]
-        return params        
     stackname="%s-%s" % (Config["AppName"],
                          stagename)
     action="update" if stack_exists(stackname) else "create"
     fn=getattr(CF, "%s_stack" % action)
-    params=init_params(config)
     fn(StackName=stackname,
        TemplateBody=json.dumps(stack),
-       Parameters=[{"ParameterKey": k,
-                    "ParameterValue": v}
-                   for k, v in params.items()],
        Capabilities=["CAPABILITY_IAM"])
     waiter=CF.get_waiter("stack_%s_complete" % action)
     waiter.wait(StackName=stackname)

@@ -1,6 +1,5 @@
 ### short [deploy-stack]
 
-- replace s3 bucket/key parameters with hardcoded values
 - push_lambda to iterate over directory contents
 - separate get, post lambdas
 
@@ -63,6 +62,7 @@
 
 ### done
 
+- replace s3 bucket/key parameters with hardcoded values
 - replace lambdakeys with config augmented by s3 bucket, key
 - dump stack
 - abstract timestamp
