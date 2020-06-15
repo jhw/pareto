@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import datetime, boto3, json, os, re, unittest, yaml, zipfile
+import datetime, boto3, json, logging, os, re, sys, unittest, yaml, zipfile
 
 from pareto.components.stack import synth_stack
 
@@ -14,6 +14,17 @@ Config=dict([tuple(row.split("="))
 
 CF, S3 = boto3.client("cloudformation"), boto3.client("s3")
 
+# https://stackoverflow.com/questions/14058453/making-python-loggers-output-all-messages-to-stdout-in-addition-to-log-file
+
+def init_stdout_logger(level):
+    root=logging.getLogger()
+    root.setLevel(level)
+    handler=logging.StreamHandler(sys.stdout)
+    handler.setLevel(level)
+    formatter=logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
+    
 """
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
 """
@@ -44,8 +55,10 @@ def toggle_aws_profile(fn):
         profile=os.environ["AWS_PROFILE"]
         if dummy not in Profiles:
             raise Runtime("`%s` profile not found" % dummy)
+        logging.info("blanking AWS profile")
         os.environ["AWS_PROFILE"]=dummy
         resp=fn(config)
+        logging.info("resetting AWS profile")
         os.environ["AWS_PROFILE"]=profile
         return resp
     return wrapped
@@ -72,6 +85,7 @@ def load_config(stackfile, stagename):
 
 @toggle_aws_profile
 def run_tests(config):
+    logging.info("running tests")
     def index_test(component, klassname="IndexTest"):    
         modname="%s.test" % underscore(component["name"])
         try:
@@ -139,6 +153,7 @@ def push_lambdas(config):
                        component["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
     for component in filter_functions(config["components"]):
+        logging.info("pushing %s lambda" % component["name"])
         validate_lambda(component)
         zfname=init_zipfile(component)
         push_lambda(component, zfname)
@@ -169,6 +184,7 @@ def dump_stack(stack):
     
         
 def deploy_stack(config, stack, stagename):
+    logging.info("deploying stack")
     def stack_exists(stackname):
         stacknames=[stack["StackName"]
                     for stack in CF.describe_stacks()["Stacks"]]
@@ -189,7 +205,7 @@ def deploy_stack(config, stack, stagename):
 
 if __name__=="__main__":
     try:
-        import sys
+        init_stdout_logger(logging.INFO)
         if len(sys.argv) < 3:
             raise RuntimeError("Please enter stack file, stage name")
         stackfile, stagename = sys.argv[1:3]
@@ -206,10 +222,10 @@ if __name__=="__main__":
         stack=synth_stack(config)
         metrics=stack_metrics(stack)
         validate_metrics(metrics)
-        print (pd.DataFrame(metrics))
+        logging.info((pd.DataFrame(metrics)))
         dump_stack(stack)
         deploy_stack(config, stack, stagename)
     except WaiterError as error:
-        print ("Error: %s" % str(error))        
+        logging.error(error)                      
     except RuntimeError as error:
-        print ("Error: %s" % str(error))
+        logging.error(error)                      

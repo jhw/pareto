@@ -1,7 +1,5 @@
 ### short
 
-- deployment logger
-
 - python versions of scripts/*.sh using pandas
 
 ### medium
@@ -55,6 +53,7 @@
 
 ### done
 
+- deployment logger
 - capture waiter error
 - limit calculations
 - separate get, post lambdas
