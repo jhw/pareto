@@ -1,10 +1,11 @@
 ### short [deploy-stack]
 
-- separate get, post lambdas
+- dynamically create testing suite
+- exit prior to launch if testing fails
 
+- separate get, post lambdas
 - capture waiter error
-- call unit tests prior to lambda deployment
-  - call global test.py if exists else local test.py
+
 - replace timestamp with git version
   - deploy LATEST unless commit specified
 
