@@ -22,5 +22,7 @@ if __name__=="__main__":
         for output in outputs:
             print ("%s\t\t%s" % (output["OutputKey"],
                                  output["OutputValue"]))
+    except ClientError as error:
+        print (error)
     except RuntimeError as error:
         print ("Error: %s" % (str(error)))

@@ -22,5 +22,7 @@ if __name__=="__main__":
                             for event in events])
         pd.set_option('display.max_rows', table.shape[0]+1)
         print (table)
+    except ClientError as error:
+        print (error)
     except RuntimeError as error:
         print ("Error: %s" % (str(error)))

@@ -1,6 +1,6 @@
 ### short
 
-- all scripts to capture client error
+- add logger to stack deletion
 
 - script to filter deployment errors
   - maybe test by removing role ddb/sqs permissions
@@ -53,6 +53,7 @@
 
 ### done
 
+- all scripts to capture client error
 - delete_stack.py
   - empty buckets
   - detach IAM policies

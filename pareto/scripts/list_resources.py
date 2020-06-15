@@ -21,5 +21,7 @@ if __name__=="__main__":
                           "status": resource["ResourceStatus"]}
                          for resource in resources])
         print (df)
+    except ClientError as error:
+        print (error)
     except RuntimeError as error:
         print ("Error: %s" % (str(error)))

@@ -7,25 +7,20 @@ S3=boto3.client("s3")
 IAM=boto3.client("iam")
 
 def empty_bucket(bucketname):
-    print ("bucket: %s" % bucketname)
     paginator=S3.get_paginator("list_objects_v2")
     pages=paginator.paginate(Bucket=bucketname)
     for struct in pages:
         if "Contents" in struct:
             for obj in struct["Contents"]:
-                print (obj["Key"])
                 S3.delete_object(Bucket=bucketname,
                                  Key=obj["Key"])
 
 def detach_policies(rolename):
-    print ("role: %s" % rolename)
     for policy in IAM.list_attached_role_policies(RoleName=rolename)["AttachedPolicies"]:
-        print (policy["PolicyArn"])
         IAM.detach_role_policy(RoleName=rolename,
                                PolicyArn=policy["PolicyArn"])
     
 def delete_stack(stackname):
-    print ("stack: %s" % stackname)
     resources=CF.describe_stack_resources(StackName=stackname)["StackResources"]
     for resource in resources:
         if resource["ResourceType"]=="AWS::S3::Bucket":
@@ -46,5 +41,9 @@ if __name__=="__main__":
         delete_stack(stackname)
         waiter=CF.get_waiter("stack_delete_complete")
         waiter.wait(StackName=stackname)
+    except ClientError as error:
+        print (error)
+    except WaiterError as error:
+        print (error)
     except RuntimeError as error:
         print ("Error: %s" % (str(error)))
