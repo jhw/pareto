@@ -3,24 +3,31 @@ components:
   type: bucket
   website: true
   functions:
-  - name: hello-function
+  - name: hello-get
     path: whatever
-- name: hello-function
+- name: hello-get
   type: function
   iam:
     permissions:
     - "logs:*"
-    - "dynamodb:*"
-    - "sqs:*"
+    - "dynamodb:*" # required for event mapping
+    - "sqs:*" # required for event mapping
   api:
-    method: GET    
+    method: GET
+- name: hello-post
+  type: function
+  iam:
+    permissions:
+    - "logs:*"
+  api:
+    method: POST
 - type: queue
   name: hello-queue
-  function: hello-function
+  function: hello-get
   batch: 1
 - name: hello-timer
   type: timer
-  function: hello-function
+  function: hello-get
   rate: "1 hour"
   payload: 
     hello: world
@@ -33,6 +40,6 @@ components:
   - name: my-string
     type: string
     index: true
-  function: hello-function
+  function: hello-get
 
 

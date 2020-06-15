@@ -1,19 +1,20 @@
 ### short [deploy-stack]
 
+- common helpers
+  - filtering of functions from components
+  - replacement of "-" with "_" in function name
 - separate get, post lambdas
 - limit calculations
 - capture waiter error
 
 ### medium
 
+- deployment logger
 - preprocessor
   - event bindings to be declared as function source
   - add ddb, sqs permissions to func roles for event mapping
 - replace timestamp with git version
   - deploy LATEST unless commit specified
-- common helpers
-  - filtering of functions from components
-  - replacement of "-" with "_" in function name
 - find all tests rather than just index.py
 - installation of pip library dependencies
 - python versions of scripts/*.sh using pandas
@@ -25,8 +26,6 @@
 
 ### thoughts
 
-- script logging ?
-  - overoptimised
 - check slow_russian version of deploy_stack.py
   - other stuff you could usefully pillage ?
 - remove managed policy support ?
