@@ -22,6 +22,26 @@ def load_config(stackfile, stagename):
     config["stage"]=stagename
     return config
 
+def init_tests(config):
+    def index_test(component, klassname="IndexTest"):    
+        modname="%s.test" % component["name"]
+        try:
+            mod=__import__(modname, fromlist=[klassname])
+        except ModuleNotFoundError:
+            raise RuntimeError("%s does not exist" % modname)
+        klass=getattr(mod, klassname)
+        if not klass:
+            raise RuntimeError("%s does not exist in %s" % (klassname,
+                                                            modname))
+        return klass
+    return [index_test(component)
+            for component in config["components"]
+            if component["type"]=="function"]
+
+def run_tests(config):
+    tests=init_tests(config)
+    print (tests)
+
 def add_staging(config):
     def lambda_key(name, timestamp):
         return "%s/%s-%s.zip" % (Config["AppName"],
@@ -112,6 +132,7 @@ if __name__=="__main__":
         if not os.path.exists(stackfile):
             raise RuntimeError("Stack file does not exist")
         config=load_config(stackfile, stagename)
+        run_tests(config)
         add_staging(config)
         push_lambdas(config)
         stack=synth_stack(config)

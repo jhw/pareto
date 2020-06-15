@@ -1,8 +1,6 @@
 ### short [deploy-stack]
 
-- script to gather tests
-- toggle google
-- run tests
+- toggle google / run tests
 
 - separate get, post lambdas
 - capture waiter error
@@ -12,6 +10,7 @@
 
 ### medium
 
+- find all tests rather than just index.py
 - charts/functions/README
 - installation of pip library dependencies
 - python versions of scripts/*.sh using pandas
