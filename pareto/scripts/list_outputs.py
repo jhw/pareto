@@ -1,10 +1,6 @@
 #!/usr/bin/env python
 
-import boto3, sys
-
-Config=dict([tuple(row.split("="))
-             for row in open("app.props").read().split("\n")
-             if "=" in row])
+from pareto.scripts import *
 
 if __name__=="__main__":
     try:
@@ -13,11 +9,10 @@ if __name__=="__main__":
         stagename=sys.argv[1]
         if stagename not in ["dev", "prod"]:
             raise RuntimeError("Stage name is invalid")
-        cf=boto3.client("cloudformation")
         stackname="%s-%s" % (Config["AppName"],
                              stagename)
         stacks={stack["StackName"]:stack
-                for stack in cf.describe_stacks()["Stacks"]}
+                for stack in CF.describe_stacks()["Stacks"]}
         if stackname not in stacks:
             raise RuntimeError("%s not found" % stackname)
         outputs=stacks[stackname]["Outputs"]        

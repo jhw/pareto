@@ -1,17 +1,10 @@
 #!/usr/bin/env python
 
-import boto3
-
-import pandas as pd
-
-Config=dict([tuple(row.split("="))
-             for row in open("app.props").read().split("\n")
-             if "=" in row])
+from pareto.scripts import *
 
 if __name__=="__main__":
     try:
-        cf=boto3.client("cloudformation")
-        stacks=cf.describe_stacks()["Stacks"]
+        stacks=CF.describe_stacks()["Stacks"]
         df=pd.DataFrame([{"name": stack["StackName"],
                           "status": stack["StackStatus"]}
                          for stack in stacks])

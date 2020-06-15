@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 
-import boto3, sys
-
-import pandas as pd
-
-Config=dict([tuple(row.split("="))
-             for row in open("app.props").read().split("\n")
-             if "=" in row])
+from pareto.scripts import *
 
 if __name__=="__main__":
     try:
@@ -15,10 +9,9 @@ if __name__=="__main__":
         stagename=sys.argv[1]
         if stagename not in ["dev", "prod"]:
             raise RuntimeError("Stage name is invalid")
-        cf=boto3.client("cloudformation")
         stackname="%s-%s" % (Config["AppName"],
                              stagename)
-        resp=cf.describe_stack_events(StackName=stackname)
+        resp=CF.describe_stack_events(StackName=stackname)
         events=sorted(resp["StackEvents"],
                       key=lambda x: x["Timestamp"])
         table=pd.DataFrame([{"timestamp": event["Timestamp"],

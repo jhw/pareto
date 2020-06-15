@@ -1,8 +1,5 @@
 ### short
 
-- describe_outputs.py
-- describe_stacks.py
-
 - delete_stack.py
   - empty buckets
   - detach IAM policies
@@ -59,6 +56,10 @@
 
 ### done
 
+- change all scripts to use __init__.py
+- move deploy code into scripts/__init__.py
+- describe_outputs.py
+- describe_stacks.py
 - describe_events.py
 - describe_resources.py
 - deployment logger
