@@ -1,5 +1,8 @@
 ### short [deploy-stack]
 
+- abstract timestamp
+- dump stack
+
 - replace lambdakeys with config augmented by s3 bucket, key
 
 - replace s3 bucket/key parameters with hardcoded values
