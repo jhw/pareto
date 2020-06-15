@@ -36,15 +36,51 @@ def add_staging(config):
         component["staging"]={"bucket": bucket,
                               "key": key}
 
+"""
+def zipit(lambdaname, zfname):
+    def is_valid(filename):
+        for extension in Ignore:
+            if filename.endswith(extension):
+                return False
+        return True
+    def write_zf(zf, lambdaname):
+        path, count = "lambda/%s" % lambdaname.replace("-", "_"), 0
+        for root, dirs, files in os.walk(path):
+            for filename in files:
+                if is_valid(filename):
+                    zf.write(os.path.join(root, filename), # NB path not included!
+                             arcname=filename)
+                    count+=1
+        if not count:
+            raise RuntimeError("no files found in %s" % path)
+    zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
+    write_zf(zf, lambdaname)
+"""
+        
 def push_lambdas(config):
     def validate_lambda(component):
         if not os.path.exists("lambda/%s" % component["name"]):
             raise RuntimeError("%s lambda does not exist" % component["name"])
+    def is_valid(filename, ignore=["test.py",
+                                   "*.pyc"]):
+        for pat in ignore:
+            if pat in filename:
+                return False
+        return True
+    def write_zipfile(component, zf):
+        path, count = "lambda/%s" % component["name"], 0
+        for root, dirs, files in os.walk(path):
+            for filename in files:
+                if is_valid(filename):
+                    zf.write(os.path.join(root, filename),
+                             arcname=filename)
+                    count+=1
+        if not count:
+            raise RuntimeError("no files found in %s" % path)
     def init_zipfile(component):
         zfname="tmp/%s" % component["staging"]["key"].split("/")[-1]
         zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-        zf.write("lambda/%s/index.py" % component["name"],
-                 arcname="index.py")
+        write_zipfile(component, zf)
         zf.close()
         return zfname
     def push_lambda(component, zfname):
