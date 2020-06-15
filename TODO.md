@@ -1,8 +1,8 @@
 ### short [deploy-stack]
 
-- toggle google before running tests
-- separate get, post lambdas
+- charts/functions/README
 - move scripts to pareto/scripts
+- separate get, post lambdas
 - limit calculations
 - capture waiter error
 
@@ -17,7 +17,6 @@
   - filtering of functions from components
   - replacement of "-" with "_" in function name
 - find all tests rather than just index.py
-- charts/functions/README
 - installation of pip library dependencies
 - python versions of scripts/*.sh using pandas
 - bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
@@ -58,6 +57,7 @@
 
 ### done
 
+- toggle google before running tests
 - run tests
 - sample test file
 - push_lambda to iterate over directory contents

@@ -10,6 +10,32 @@ Config=dict([tuple(row.split("="))
 
 CF, S3 = boto3.client("cloudformation"), boto3.client("s3")
 
+def list_profiles():
+    config=open("%s/.aws/config" % os.path.expanduser("~")).read()
+    return [re.sub("profile ", "", row[1:-1])
+            for row in config.split("\n")
+            if (len(row) > 2 and
+                row[0]=="[" and
+                row[-1]=="]")]
+
+Profiles=list_profiles()
+
+"""
+- temporarily disable AWS creds whilst running tests to avoid messing with production environment :-/
+- must have an AWS profile entitled `dummy` for this to work
+"""
+
+def toggle_aws_profile(fn):
+    def wrapped(config, dummy="dummy"):
+        profile=os.environ["AWS_PROFILE"]
+        if dummy not in Profiles:
+            raise Runtime("`%s` profile not found" % dummy)
+        os.environ["AWS_PROFILE"]=dummy
+        resp=fn(config)
+        os.environ["AWS_PROFILE"]=profile
+        return resp
+    return wrapped
+
 def timestamp():
     return datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
 
@@ -22,6 +48,7 @@ def load_config(stackfile, stagename):
     config["stage"]=stagename
     return config
 
+@toggle_aws_profile
 def run_tests(config):
     def index_test(component, klassname="IndexTest"):    
         modname="%s.test" % component["name"].replace("-", "_")
