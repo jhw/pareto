@@ -1,8 +1,5 @@
 ### short [deploy-stack]
 
-- abstract timestamp
-- dump stack
-
 - replace lambdakeys with config augmented by s3 bucket, key
 
 - replace s3 bucket/key parameters with hardcoded values
@@ -68,6 +65,8 @@
 
 ### done
 
+- dump stack
+- abstract timestamp
 - push_lambda to check directory exists
 - generate lambda keys by iterating over functions
 - synth stack internally

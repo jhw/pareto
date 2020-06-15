@@ -10,6 +10,9 @@ Config=dict([tuple(row.split("="))
 
 CF, S3 = boto3.client("cloudformation"), boto3.client("s3")
 
+def timestamp():
+    return datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+
 def load_config(stackfile, stagename):
     with open(stackfile, 'r') as f:
         config=yaml.load(f.read(),
@@ -24,9 +27,9 @@ def lambda_keys(config):
         return "%s/%s-%s.zip" % (Config["AppName"],
                                  name,
                                  timestamp)
-    timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+    ts=timestamp()
     return {component["name"]: lambda_key(component["name"],
-                                          timestamp)
+                                          ts)
             for component in config["components"]
             if component["type"]=="function"}
 
@@ -73,6 +76,12 @@ def deploy_stack(stack, lambdakeys, stagename):
        Capabilities=["CAPABILITY_IAM"])
     waiter=CF.get_waiter("stack_%s_complete" % action)
     waiter.wait(StackName=stackname)
+
+def dump_stack(stack):
+    filename="tmp/stack-%s.yaml" % timestamp()
+    with open(filename, 'w') as f:
+        f.write(yaml.safe_dump(stack,
+                               default_flow_style=False))
     
 if __name__=="__main__":
     try:
@@ -88,8 +97,7 @@ if __name__=="__main__":
             raise RuntimeError("Stack file does not exist")
         config=load_config(stackfile, stagename)
         lambdakeys, stack = lambda_keys(config), synth_stack(config)
-        print (stack)
-        print (lambdakeys)
+        dump_stack(stack)
         push_lambdas(lambdakeys)
         deploy_stack(stack, lambdakeys, stagename)
     except RuntimeError as error:
