@@ -1,6 +1,5 @@
 ### short [deploy-stack]
 
-- charts/functions/README
 - move scripts to pareto/scripts
 - separate get, post lambdas
 - limit calculations
@@ -57,6 +56,7 @@
 
 ### done
 
+- charts/functions/README
 - toggle google before running tests
 - run tests
 - sample test file
