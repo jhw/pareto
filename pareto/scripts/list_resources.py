@@ -18,14 +18,15 @@ if __name__=="__main__":
         cf=boto3.client("cloudformation")
         stackname="%s-%s" % (Config["AppName"],
                              stagename)        
-        resources=cf.describe_stack_resources(StackName=stackname)["StackResources"]
-        table=[{"timestamp": resource["Timestamp"],
-                "logical_id": resource["LogicalResourceId"],
-                # "physical_id": resource["PhysicalResourceId"],
-                "type": resource["ResourceType"],
-                "status": resource["ResourceStatus"]}
-               for resource in resources]
-        print (pd.DataFrame(sorted(table,
-                                   key=lambda x: x["timestamp"])))
+        resp=cf.describe_stack_resources(StackName=stackname)
+        resources=sorted(resp["StackResources"],
+                         key=lambda x: x["Timestamp"])        
+        df=pd.DataFrame([{"timestamp": resource["Timestamp"],
+                          "logical_id": resource["LogicalResourceId"],
+                          "physical_id": resource["PhysicalResourceId"],
+                          "type": resource["ResourceType"],
+                          "status": resource["ResourceStatus"]}
+                         for resource in resources])
+        print (df)
     except RuntimeError as error:
         print ("Error: %s" % (str(error)))

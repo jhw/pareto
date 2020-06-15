@@ -1,13 +1,15 @@
 ### short
 
-- describe_events.py
-- describe_stacks.py
 - describe_outputs.py
+- describe_stacks.py
 
 - delete_stack.py
   - empty buckets
   - detach IAM policies
   - capture waiter error
+
+- script to filter deployment errors
+  - maybe test by removing role ddb/sqs permissions
 
 ### medium
 
@@ -57,6 +59,7 @@
 
 ### done
 
+- describe_events.py
 - describe_resources.py
 - deployment logger
 - capture waiter error
