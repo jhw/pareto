@@ -1,19 +1,20 @@
 ### short
 
-- remove ddb/sqs permissions, redeploy
-- list_fixtures.py
-
 - preprocessor
   - ddb, sqs permissions for event mapping
   - event source
   - add ddb, sqs permissions to func roles for event mapping
 
+- missing field support for aws scripts
+- check all scripts work on malformed stacks
+  - delete_stack fails on missing S3 bucket
+  - delete_stack doesn't appear to log IAM role deletion
+
 - scaffold generator [notes]
-- slow russian structure
+- slow russian stack.yaml
 
 ### medium
 
-- check logging of iam roles by delete_stack.py
 - use logical/physical_id reference names  
 - replace timestamp with git version
   - deploy LATEST unless commit specified
@@ -56,6 +57,8 @@
 
 ### done
 
+- remove ddb/sqs permissions, redeploy
+- list_failures.py
 - add logger to stack deletion
 - all scripts to capture client error
 - delete_stack.py
