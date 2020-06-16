@@ -1,20 +1,23 @@
-### short
+### short [preprocessor]
 
-- preprocessor
-  - ddb, sqs permissions for event mapping
-  - event source
-  - add ddb, sqs permissions to func roles for event mapping
+- json schema
+- aggregate type/name keys
+- validate uniqueness
+- validate sources
+- allocate sources to components and render
+- ddb, sqs permissions
+
+- bucket website support
+- table schema support
+- queue batch support
+
+### medium
 
 - missing field support for aws scripts
 - check all scripts work on malformed stacks
   - delete_stack fails on missing S3 bucket
   - delete_stack doesn't appear to log IAM role deletion
-
 - scaffold generator [notes]
-- slow russian stack.yaml
-
-### medium
-
 - use logical/physical_id reference names  
 - replace timestamp with git version
   - deploy LATEST unless commit specified
@@ -57,6 +60,7 @@
 
 ### done
 
+- slow russian stack.yaml
 - remove ddb/sqs permissions, redeploy
 - list_failures.py
 - add logger to stack deletion

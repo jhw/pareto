@@ -1,0 +1,54 @@
+- type: function
+  name: page-scraper
+  api:
+    method: POST
+- type: function
+  name: index-fetcher  
+  api:
+    method: GET
+- type: function
+  name: vocab-translator
+  api:
+    method: POST
+- type: bucket
+  name: content
+- type: function
+  name: markdown-parser  
+  source:
+    type: bucket
+    name: content
+    path: markdown
+  dest:
+    type: bucket
+    name: content
+    path: posts
+- type: table
+  name: content
+- type: function
+  name: page-indexer
+  source:
+    type: bucket
+    name: content
+    path: posts
+  dest:
+    type: table
+    name: content
+- type: queue
+  name: audio
+- type: function
+  name: audio-batcher
+  source:
+    type: table
+    name: content
+  dest:
+    type: queue
+    name: audio
+- type: function
+  name: audio-generator
+  source:
+    type: queue
+    name: audio
+  dest:
+    type: bucket
+    name: content
+    path: audio
