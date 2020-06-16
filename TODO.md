@@ -1,18 +1,22 @@
 ### short
 
-- how come stack deletion didn't log deleting of IAM roles ?
+- remove ddb/sqs permissions, redeploy
+- list_fixtures.py
 
-- script to filter deployment errors
-  - maybe test by removing role ddb/sqs permissions
+- preprocessor
+  - ddb, sqs permissions for event mapping
+  - event source
+  - add ddb, sqs permissions to func roles for event mapping
+
+- scaffold generator [notes]
+- slow russian structure
 
 ### medium
 
+- check logging of iam roles by delete_stack.py
 - use logical/physical_id reference names  
 - replace timestamp with git version
   - deploy LATEST unless commit specified
-- preprocessor
-  - event bindings to be declared as function source
-  - add ddb, sqs permissions to func roles for event mapping
 - bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
 - installation of pip library dependencies
   
@@ -33,7 +37,6 @@
   
 ### long
 
-- skeleton generator [notes]
 - sns
 - dead letter queues
 - layers
