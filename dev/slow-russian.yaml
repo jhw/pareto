@@ -1,3 +1,4 @@
+components:
 - type: function
   name: page-scraper
   api:
@@ -12,9 +13,10 @@
     method: POST
 - type: bucket
   name: content
+  website: true
 - type: function
   name: markdown-parser  
-  source:
+  src:
     type: bucket
     name: content
     path: markdown
@@ -24,9 +26,13 @@
     path: posts
 - type: table
   name: content
+  fields:
+  - name: normalised_title
+    type: string
+    primary: true
 - type: function
   name: page-indexer
-  source:
+  src:
     type: bucket
     name: content
     path: posts
@@ -35,9 +41,10 @@
     name: content
 - type: queue
   name: audio
+  batch: 1
 - type: function
   name: audio-batcher
-  source:
+  src:
     type: table
     name: content
   dest:
@@ -45,7 +52,7 @@
     name: audio
 - type: function
   name: audio-generator
-  source:
+  src:
     type: queue
     name: audio
   dest:

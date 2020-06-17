@@ -1,19 +1,14 @@
 ### short [preprocessor]
 
-- json schema
-- aggregate type/name keys
-- validate uniqueness
-- validate sources
-- allocate sources to components and render
-- ddb, sqs permissions
-
-- bucket website support
-- table schema support
-- queue batch support
+- check existing permissions before adding
+- don't add blank permissions
+- initialise permissions
 
 ### medium
 
-- missing field support for aws scripts
+- rename event source `function[s]` fields as `target[s]`
+- preprocessor json schema
+- aws scripts to support missing fields
 - check all scripts work on malformed stacks
   - delete_stack fails on missing S3 bucket
   - delete_stack doesn't appear to log IAM role deletion
@@ -60,6 +55,15 @@
 
 ### done
 
+- table schema
+- queue batch
+- functions with name `audio`, `content` look incorrect
+- aggregate type/name keys
+- validate uniqueness
+- validate sources
+- allocate sources to components and render
+- ddb, sqs permissions
+- bucket website support
 - slow russian stack.yaml
 - remove ddb/sqs permissions, redeploy
 - list_failures.py
