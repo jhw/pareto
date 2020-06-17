@@ -9,6 +9,8 @@ components:
     method: GET
 - type: function
   name: vocab-translator
+  permissions:
+  - "translate:*"
   api:
     method: POST
 - type: bucket
@@ -52,6 +54,8 @@ components:
     name: audio
 - type: function
   name: audio-generator
+  permissions:
+  - "polly:*"
   src:
     type: queue
     name: audio

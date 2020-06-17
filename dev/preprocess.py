@@ -4,13 +4,22 @@ def preprocess(config):
     def keyfn(component):
         return "%s/%s" % (component["type"],
                           component["name"])
+    def is_function(component):
+        return component["type"]=="function"
     def is_handler(component):
-        return (component["type"]=="function" and
+        return (is_function(component) and
                 "api" not in component)
     def is_source(component):
         return component["type"] in ["bucket",
                                      "table",
                                      "queue"]
+    def init_permissions(handler, required=["logs:*"]):
+        permissions=handler.pop("permissions") if "permissions" in handler else []
+        for permission in required:
+            if permission not in permissions:
+                permissions.append(permission)
+        handler.setdefault("iam", {})
+        handler["iam"].setdefault("permissions", permissions)
     def validate_handler(component, handlerkeys):
         for attr in ["src", "dest"]:
             handlerkey=keyfn(component[attr])
@@ -29,16 +38,19 @@ def preprocess(config):
             raise RuntimeError("%s already mapped" % keyfn(queue))
         queue["function"]=handler["name"]
     def add_map_permissions(handler, src,
-                        permissions={"bucket": [],
-                                     "table": ["ddb:*"],
-                                     "queue": ["sqs:*"]}):
-        handler.setdefault("iam", {})
-        handler["iam"].setdefault("permissions", [])
-        handler["iam"]["permissions"]+=permissions[src["type"]]
+                            permissions={"bucket": [],
+                                         "table": ["ddb:*"],
+                                         "queue": ["sqs:*"]}):
+        for permission in permissions[src["type"]]:
+            if permission not in handler["iam"]["permissions"]:
+                handler["iam"]["permissions"].append(permission)
     srcmap={keyfn(component):component
             for component in config["components"]
             if is_source(component)}
     for component in config["components"]:
+        if not is_function(component):
+            continue
+        init_permissions(component)
         if not is_handler(component):
             continue
         validate_handler(component, srcmap.keys())
@@ -62,6 +74,7 @@ if __name__=="__main__":
             config=yaml.load(f.read(),
                              Loader=yaml.FullLoader)
         preprocess(config)
+        yaml.SafeDumper.ignore_aliases=lambda *args: True
         print (yaml.safe_dump(config,
                               default_flow_style=False))
     except RuntimeError as error:

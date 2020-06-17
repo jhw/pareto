@@ -1,22 +1,23 @@
 ### short [preprocessor]
 
-- check existing permissions before adding
-- don't add blank permissions
-- initialise permissions
+- rename src/dest as source/target
+- add function permissions based on target (s3, ddb, queue)
+- replace event source `function` with `target`
+- nest `target` with `name`, `batch`
+- bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
+- use logical/physical_id reference names
+- investigate locking down event sources, permissions to specific functions
 
 ### medium
 
-- rename event source `function[s]` fields as `target[s]`
 - preprocessor json schema
 - aws scripts to support missing fields
 - check all scripts work on malformed stacks
   - delete_stack fails on missing S3 bucket
   - delete_stack doesn't appear to log IAM role deletion
 - scaffold generator [notes]
-- use logical/physical_id reference names  
 - replace timestamp with git version
   - deploy LATEST unless commit specified
-- bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
 - installation of pip library dependencies
   
 ### thoughts
@@ -55,6 +56,9 @@
 
 ### done
 
+- pass thru custom permissions
+- check existing permissions before adding
+- initialise permissions
 - table schema
 - queue batch
 - functions with name `audio`, `content` look incorrect
