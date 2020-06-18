@@ -8,16 +8,16 @@ def synth_timer(**kwargs):
         """
         target={"Id": global_name(kwargs),
                 "Input": json.dumps(kwargs["payload"]),
-                "Arn": fn_getatt(kwargs["function"], "Arn")}
+                "Arn": fn_getatt(kwargs["target"], "Arn")}
         expr="rate(%s)" % kwargs["rate"]
         props={"ScheduleExpression": expr,
                "Targets": [target]}
         return "AWS::Events::Rule", props
     def LambdaPermission(**kwargs):
-        suffix="%s-permission" % kwargs["function"]
+        suffix="%s-permission" % kwargs["target"]
         @resource(suffix=suffix)
         def LambdaPermission(**kwargs):
-            arn=fn_getatt(kwargs["function"], "Arn")
+            arn=fn_getatt(kwargs["target"], "Arn")
             props={"Action": "lambda:InvokeFunction",
                    "FunctionName": arn,
                    "Principal": "events.amazonaws.com"}

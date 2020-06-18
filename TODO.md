@@ -1,6 +1,5 @@
 ### short [preprocessor]
 
-- replace event source `function` with `target`
 - nest `target` with `name`, `batch`
 
 - bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
@@ -55,6 +54,7 @@
 
 ### done
 
+- replace event source `function` with `target`
 - add function permissions based on target (s3, ddb, queue)
 - pass thru custom permissions
 - check existing permissions before adding

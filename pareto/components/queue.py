@@ -10,10 +10,10 @@ def synth_queue(**kwargs):
     - (think LambdaPermission is only for primitives without EventSourceMapping, ie S3, SNS)
     """
     def LambdaMapping(**kwargs):
-        suffix="%s-mapping" % kwargs["function"]
+        suffix="%s-mapping" % kwargs["target"]
         @resource(suffix)
         def LambdaMapping(**kwargs):
-            funcname=fn_getatt(kwargs["function"], "Arn")
+            funcname=fn_getatt(kwargs["target"], "Arn")
             eventsource=fn_getatt(kwargs["name"], "Arn")
             props={"FunctionName": funcname,
                    "EventSourceArn": eventsource}
@@ -22,7 +22,7 @@ def synth_queue(**kwargs):
             return "AWS::Lambda::EventSourceMapping", props
         return LambdaMapping(**kwargs)
     resources=[Queue(**kwargs)]
-    if "function" in kwargs:
+    if "target" in kwargs:
         resources.append(LambdaMapping(**kwargs))
     return {"resources": resources}
 

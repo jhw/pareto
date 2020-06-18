@@ -2,7 +2,7 @@ components:
 - name: hello-bucket
   type: bucket
   website: true
-  functions:
+  targets:
   - name: hello-get
     path: whatever
 - name: hello-get
@@ -23,11 +23,11 @@ components:
     method: POST
 - type: queue
   name: hello-queue
-  function: hello-get
+  target: hello-get
   batch: 1
 - name: hello-timer
   type: timer
-  function: hello-get
+  target: hello-get
   rate: "1 hour"
   payload: 
     hello: world
@@ -40,6 +40,6 @@ components:
   - name: my-string
     type: string
     index: true
-  function: hello-get
+  target: hello-get
 
 

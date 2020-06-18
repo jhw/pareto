@@ -27,7 +27,7 @@ def synth_bucket(**kwargs):
                 "Filter": {"S3Key": {"Rules": rules}}}
     def notifications_configs(kwargs):
         lambdaconfigs=[lambda_notification_config(function)
-                      for function in kwargs["functions"]]
+                      for function in kwargs["targets"]]
         notifications={"LambdaConfigurations": lambdaconfigs}
         return {"NotificationConfiguration": notifications}
     @resource()
@@ -35,7 +35,7 @@ def synth_bucket(**kwargs):
         props={"BucketName": global_name(kwargs)}
         if is_website(kwargs):
             props.update(website_config())
-        if "functions" in kwargs:
+        if "targets" in kwargs:
             props.update(notifications_configs(kwargs))
         return "AWS::S3::Bucket", props
     def LambdaPermission(kwargs, function):
@@ -68,9 +68,9 @@ def synth_bucket(**kwargs):
     def BucketUrl(**kwargs):
         return fn_getatt(kwargs["name"], "WebsiteURL")
     resources, outputs = [Bucket(**kwargs)], []
-    if "functions" in kwargs:
+    if "targets" in kwargs:
         resources+=[LambdaPermission(kwargs, function)
-                    for function in kwargs["functions"]]
+                    for function in kwargs["targets"]]
     if is_website(kwargs):
         resources.append(BucketPolicy(**kwargs))        
         outputs.append(BucketUrl(**kwargs))

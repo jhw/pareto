@@ -26,17 +26,17 @@ def preprocess(config):
             if handlerkey not in handlerkeys:
                 raise RuntimeError("%s not found" % handlerkey)
     def map_bucket(handler, bucket, target):
-        bucket.setdefault("functions", [])
-        bucket["functions"].append({"name": handler["name"],
+        bucket.setdefault("targets", [])
+        bucket["targets"].append({"name": handler["name"],
                                     "path": target["path"]})
     def map_table(handler, table, target):
-        if "function" in table:
+        if "target" in table:
             raise RuntimeError("%s already mapped" % keyfn(table))
-        table["function"]=handler["name"]
+        table["target"]=handler["name"]
     def map_queue(handler, queue, target):
-        if "function" in queue:
+        if "target" in queue:
             raise RuntimeError("%s already mapped" % keyfn(queue))
-        queue["function"]=handler["name"]
+        queue["target"]=handler["name"]
     def add_permissions(handler, target,
                         permissions={"bucket": [],
                                      "table": ["ddb:*"],
