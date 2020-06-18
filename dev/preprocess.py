@@ -9,7 +9,7 @@ def preprocess(config):
     def is_handler(component):
         return (is_function(component) and
                 "api" not in component)
-    def is_source(component):
+    def is_target(component):
         return component["type"] in ["bucket",
                                      "table",
                                      "queue"]
@@ -25,41 +25,42 @@ def preprocess(config):
             handlerkey=keyfn(component[attr])
             if handlerkey not in handlerkeys:
                 raise RuntimeError("%s not found" % handlerkey)
-    def map_bucket(handler, bucket, src):
+    def map_bucket(handler, bucket, target):
         bucket.setdefault("functions", [])
         bucket["functions"].append({"name": handler["name"],
-                                    "path": src["path"]})
-    def map_table(handler, table, src):
+                                    "path": target["path"]})
+    def map_table(handler, table, target):
         if "function" in table:
             raise RuntimeError("%s already mapped" % keyfn(table))
         table["function"]=handler["name"]
-    def map_queue(handler, queue, src):
+    def map_queue(handler, queue, target):
         if "function" in queue:
             raise RuntimeError("%s already mapped" % keyfn(queue))
         queue["function"]=handler["name"]
-    def add_map_permissions(handler, src,
-                            permissions={"bucket": [],
-                                         "table": ["ddb:*"],
-                                         "queue": ["sqs:*"]}):
-        for permission in permissions[src["type"]]:
+    def add_permissions(handler, target,
+                        permissions={"bucket": [],
+                                     "table": ["ddb:*"],
+                                     "queue": ["sqs:*"]}):
+        for permission in permissions[target["type"]]:
             if permission not in handler["iam"]["permissions"]:
                 handler["iam"]["permissions"].append(permission)
-    srcmap={keyfn(component):component
-            for component in config["components"]
-            if is_source(component)}
+    targetmap={keyfn(component):component
+               for component in config["components"]
+               if is_target(component)}
     for component in config["components"]:
         if not is_function(component):
             continue
         init_permissions(component)
         if not is_handler(component):
             continue
-        validate_handler(component, srcmap.keys())
-        src=component.pop("src")
-        mapfn=eval("map_%s" % src["type"])
-        srckey=keyfn(src)
-        mapfn(component, srcmap[srckey], src)
-        add_map_permissions(component, src)
-        component.pop("dest")
+        validate_handler(component, targetmap.keys())
+        for attr in ["src", "dest"]:
+            target=component.pop(attr)
+            key=keyfn(target)
+            add_permissions(component, target)
+            if attr=="src":
+                mapfn=eval("map_%s" % target["type"])
+                mapfn(component, targetmap[key], target)
         
 if __name__=="__main__":
     try:
