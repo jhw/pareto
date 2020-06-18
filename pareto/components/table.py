@@ -53,10 +53,10 @@ def synth_table(**kwargs):
     - no BatchSize ?
     """
     def LambdaMapping(**kwargs):
-        suffix="%s-mapping" % kwargs["target"]
+        suffix="%s-mapping" % kwargs["target"]["name"]
         @resource(suffix)
         def LambdaMapping(**kwargs):
-            funcname=fn_getatt(kwargs["target"], "Arn")
+            funcname=fn_getatt(kwargs["target"]["name"], "Arn")
             eventsource=fn_getatt(kwargs["name"], "StreamArn")
             props={"FunctionName": funcname,
                    "EventSourceArn": eventsource,

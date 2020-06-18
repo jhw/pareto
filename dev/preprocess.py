@@ -32,11 +32,11 @@ def preprocess(config):
     def map_table(handler, table, target):
         if "target" in table:
             raise RuntimeError("%s already mapped" % keyfn(table))
-        table["target"]=handler["name"]
+        table["target"]={"name": handler["name"]}
     def map_queue(handler, queue, target):
         if "target" in queue:
             raise RuntimeError("%s already mapped" % keyfn(queue))
-        queue["target"]=handler["name"]
+        queue["target"]={"name": handler["name"]}
     def add_permissions(handler, target,
                         permissions={"bucket": [],
                                      "table": ["ddb:*"],

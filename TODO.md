@@ -1,13 +1,18 @@
-### short [preprocessor]
+### short
 
-- nest `target` with `name`, `batch`
+- preprocessor not nesting batch under target
+- preprocessor not supporting timers
+- preprocessor discrepancy in use of `target`
+  - internally is used to mean a non- function (bucket, table, queue)
+  - externally is used to mean a function
+  - is this consistent usage ?
+    - maybe, if it simply means "the next thing in the chain"    
+
+### medium
 
 - bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
 - use logical/physical_id reference names
 - investigate locking down event sources, permissions to specific functions
-
-### medium
-
 - preprocessor json schema
 - aws scripts to support missing fields
 - check all scripts work on malformed stacks
@@ -54,6 +59,7 @@
 
 ### done
 
+- nest `target` with `name`, `batch`
 - replace event source `function` with `target`
 - add function permissions based on target (s3, ddb, queue)
 - pass thru custom permissions

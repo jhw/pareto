@@ -23,11 +23,13 @@ components:
     method: POST
 - type: queue
   name: hello-queue
-  target: hello-get
-  batch: 1
+  target:
+    name: hello-get
+    batch: 1
 - name: hello-timer
   type: timer
-  target: hello-get
+  target:
+    name: hello-get
   rate: "1 hour"
   payload: 
     hello: world
@@ -40,6 +42,7 @@ components:
   - name: my-string
     type: string
     index: true
-  target: hello-get
+  target:
+    name: hello-get
 
 
