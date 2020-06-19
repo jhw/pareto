@@ -1,13 +1,9 @@
 ### short [preprocessor]
 
+- separate handlers for src/dest
 - refactor role iam
   - separate functions (or args) for src/dest targets
   - iam initialisation to be applied via decorator
-- refactor target references
-  - should be popped from nonfuncmap
-  - if necessary should be augmented by src/dest args [path]
-  - remove need to sent 3rd arg to `add_xxx_target`
-  - this is linked to the problem of queue batch not appearing at the right nesting level
 
 ### medium
 
@@ -60,6 +56,11 @@
 
 ### done
 
+- refactor target references
+  - should be popped from nonfuncmap
+  - if necessary should be augmented by src/dest args [path]
+  - remove need to sent 3rd arg to `add_xxx_target`
+  - this is linked to the problem of queue batch not appearing at the right nesting level
 - nest `target` with `name`, `batch`
 - replace event source `function` with `target`
 - add function permissions based on target (s3, ddb, queue)

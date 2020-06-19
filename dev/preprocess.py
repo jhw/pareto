@@ -41,6 +41,8 @@ def preprocess(config):
     def keyfn(component):
         return "%s/%s" % (component["type"],
                           component["name"])
+    def is_non_functional(component, types=NonFunctionalTypes):
+        return component["type"] in types
     def is_function(component):
         return component["type"]=="function"
     def is_api(component):
@@ -49,62 +51,54 @@ def preprocess(config):
     def is_event_handler(component):
         return (is_function(component) and
                 "api" not in component)
-    def validate_event_handler(component, nonfunckeys):
+    def filter_event_handlers(components):
+        return [component
+                for component in components
+                if is_event_handler(component)]
+    def validate_event_handler(func, nonfunckeys):
         for attr in ["src", "dest"]:
-            handlerkey=keyfn(component[attr])
+            handlerkey=keyfn(func[attr])
             if handlerkey not in nonfunckeys:
                 raise RuntimeError("%s not found" % handlerkey)
-    def is_non_functional(component, types=NonFunctionalTypes):
-        return component["type"] in types
-    def init_role_iam(component, required=DefaultRoleIAM):
-        permissions=component.pop("permissions") if "permissions" in component else []
-        for permission in required:
-            if permission not in permissions:
-                permissions.append(permission)
-        component.setdefault("iam", {})
-        component["iam"].setdefault("permissions", permissions)
-    def update_role_iam(component, target,
-                        permissions=EventPollingRoleIAM):
-        for permission in permissions[target["type"]]:
-            if permission not in component["iam"]["permissions"]:
-                component["iam"]["permissions"].append(permission)
-    def set_target(self, component, target):    
-        if "target" in self:
-            raise RuntimeError("%s already mapped" % keyfn(self))
-        self["target"]={"name": component["name"]}
-    def add_target(self, component, target):
+    def add_bucket_target(self, func, binding):
         self.setdefault("targets", [])
         targetnames=[target["name"]
                      for target in self["targets"]]
-        if component["name"] in targetnames:
+        if func["name"] in targetnames:
             raise RuntimeError("%s already mapped" % keyfn(self))
-        self["targets"].append({"name": component["name"],
-                                "path": target["path"]})
-    def add_bucket_target(self, component, target):
-        add_target(self, component, target)
-    def add_table_target(self, component, target):
-        set_target(self, component, target)
-    def add_queue_target(self, component, target):
-        set_target(self, component, target)
-    def add_timer_target(self, component, target):
-        set_target(self, component, target)        
+        target={"name": func["name"],
+                "path": binding["path"]}
+        self["targets"].append(target)
+    def add_queue_target(self, func, binding):    
+        if "target" in self:
+            raise RuntimeError("%s already mapped" % keyfn(self))
+        target={"name": func["name"]}
+        if "batch" in binding:
+            target["batch"]=binding["batch"]
+        self["target"]=target
+    def add_table_target(self, func, binding):    
+        if "target" in self:
+            raise RuntimeError("%s already mapped" % keyfn(self))
+        target={"name": func["name"]}
+        self["target"]=target
+    def add_timer_target(self, func, binding):    
+        if "target" in self:
+            raise RuntimeError("%s already mapped" % keyfn(self))
+        target={"name": func["name"]}
+        self["target"]=target
     nonfuncmap={keyfn(component):component
-               for component in config["components"]
-               if is_non_functional(component)}
-    for component in config["components"]:
-        if not is_function(component):
-            continue
-        init_role_iam(component)
-        if not is_event_handler(component):
-            continue
-        validate_event_handler(component, nonfuncmap.keys())
+                for component in config["components"]
+                if is_non_functional(component)}
+    for func in filter_event_handlers(config["components"]):
+        validate_event_handler(func, nonfuncmap.keys())
         for attr in ["src", "dest"]:
-            target=component.pop(attr)
-            key=keyfn(target)
-            update_role_iam(component, target)
+            binding=func.pop(attr)
             if attr=="src":
-                targetfn=eval("add_%s_target" % target["type"])
-                targetfn(nonfuncmap[key], component, target)
+                nonfunc=nonfuncmap[keyfn(binding)]
+                addtargetfn=eval("add_%s_target" % nonfunc["type"])
+                addtargetfn(self=nonfunc,
+                            func=func,
+                            binding=binding)
         
 if __name__=="__main__":
     try:

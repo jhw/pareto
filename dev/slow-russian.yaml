@@ -43,7 +43,6 @@ components:
     name: content
 - type: queue
   name: audio
-  batch: 1
 - type: function
   name: audio-batcher
   src:
@@ -59,6 +58,7 @@ components:
   src:
     type: queue
     name: audio
+    batch: 1
   dest:
     type: bucket
     name: content
