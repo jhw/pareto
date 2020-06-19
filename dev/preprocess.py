@@ -45,6 +45,10 @@ def preprocess(config):
         return component["type"] in types
     def is_function(component):
         return component["type"]=="function"
+    def filter_functions(components):
+        return [component
+                for component in components
+                if is_function(component)]
     def is_api(component):
         return (is_function(component) and
                 "api" in component)
@@ -55,7 +59,8 @@ def preprocess(config):
         return [component
                 for component in components
                 if is_event_handler(component)]
-    def validate_event_handler(func, nonfunckeys):
+    def validate_event_handler(func, nonfuncmap):
+        nonfunckeys=nonfuncmap.keys()
         for attr in ["src", "dest"]:
             handlerkey=keyfn(func[attr])
             if handlerkey not in nonfunckeys:
@@ -88,17 +93,18 @@ def preprocess(config):
         self["target"]=target
     nonfuncmap={keyfn(component):component
                 for component in config["components"]
-                if is_non_functional(component)}
+                if is_non_functional(component)}    
     for func in filter_event_handlers(config["components"]):
-        validate_event_handler(func, nonfuncmap.keys())
-        for attr in ["src", "dest"]:
-            binding=func.pop(attr)
-            if attr=="src":
-                nonfunc=nonfuncmap[keyfn(binding)]
-                addtargetfn=eval("add_%s_target" % nonfunc["type"])
-                addtargetfn(self=nonfunc,
-                            func=func,
-                            binding=binding)
+        validate_event_handler(func, nonfuncmap)
+        binding=func.pop("src")
+        nonfunc=nonfuncmap[keyfn(binding)]
+        targetfn=eval("add_%s_target" % nonfunc["type"])
+        targetfn(self=nonfunc,
+                 func=func,
+                 binding=binding)
+        # START TEMP CODE
+        func.pop("dest")        
+        # END TEMP CODE
         
 if __name__=="__main__":
     try:

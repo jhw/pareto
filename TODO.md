@@ -1,17 +1,24 @@
 ### short [preprocessor]
 
-- separate handlers for src/dest
-- refactor role iam
-  - separate functions (or args) for src/dest targets
-  - iam initialisation to be applied via decorator
+- separate src/dest binding handlers
+  - eval() problem
+- nest src/dest attributes under `bindings`
+- src/dest iam roles
+  - dest is for all functions
+  - src is for event handlers only
+    - ddb, sqs lookback permissions
+  - use decorator to initialise iam
 
 ### medium
 
-- permissions and event source maps to be for specific functions only
+- is sqs batch size really listed in the right place ?
+- allow multiple event source mappings
+- normalise ddb field names
+- limit permissions and event source maps to specific functions only
 - bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
 - use logical/physical_id reference names
 - preprocessor json schema
-- aws scripts to support missing fields
+- aws scripts to support missing attributes
 - check all scripts work on malformed stacks
   - delete_stack fails on missing S3 bucket
   - delete_stack doesn't appear to log IAM role deletion
