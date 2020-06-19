@@ -1,18 +1,19 @@
-### short
+### short [preprocessor]
 
-- preprocessor not nesting batch under target
-- preprocessor not supporting timers
-- preprocessor discrepancy in use of `target`
-  - internally is used to mean a non- function (bucket, table, queue)
-  - externally is used to mean a function
-  - is this consistent usage ?
-    - maybe, if it simply means "the next thing in the chain"    
+- refactor role iam
+  - separate functions (or args) for src/dest targets
+  - iam initialisation to be applied via decorator
+- refactor target references
+  - should be popped from nonfuncmap
+  - if necessary should be augmented by src/dest args [path]
+  - remove need to sent 3rd arg to `add_xxx_target`
+  - this is linked to the problem of queue batch not appearing at the right nesting level
 
 ### medium
 
+- permissions and event source maps to be for specific functions only
 - bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
 - use logical/physical_id reference names
-- investigate locking down event sources, permissions to specific functions
 - preprocessor json schema
 - aws scripts to support missing fields
 - check all scripts work on malformed stacks
