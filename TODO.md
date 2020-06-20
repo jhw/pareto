@@ -1,6 +1,11 @@
 ### short [preprocessor]
 
-- consider renaming func as action
+- rename target as action in main pareto body
+- replace func type with separate api, action types
+  - nest/hide api method field
+
+- ** split core pareto lambda function into api and action types **
+
 - refactor preprocessor notes
 - add trigger permissions
 - add polling permissions
@@ -10,7 +15,6 @@
 
 ### medium
 
-- is sqs batch size really listed in the right place ?
 - allow multiple event source mappings
 - normalise ddb field names
 - limit permissions and event source maps to specific functions only

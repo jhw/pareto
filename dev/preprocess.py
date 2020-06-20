@@ -17,31 +17,18 @@ import os, sys, yaml
   - event source mapping actually involves polling, so if you are using ddb or sqs in an event source map then function also needs "lookback" permissions :-/
 """
 
-NonFunctionalTypes=yaml.load("""
+TriggerTypes=yaml.load("""
 - bucket
 - queue
 - table
 - timer
 """, Loader=yaml.FullLoader)
 
-DefaultRoleIAM=yaml.load("""
-- "logs:*"
-""", Loader=yaml.FullLoader)
-
-EventPollingRoleIAM=yaml.load("""
-bucket: []
-table:
-  - "ddb:*"
-queue:
-  - "sqs:*"
-timer: []
-""", Loader=yaml.FullLoader)
-
 def preprocess(config):
     def keyfn(component):
         return "%s/%s" % (component["type"],
                           component["name"])
-    def is_non_functional(component, types=NonFunctionalTypes):
+    def is_trigger(component, types=TriggerTypes):
         return component["type"] in types
     def is_function(component):
         return component["type"]=="function"
@@ -49,22 +36,19 @@ def preprocess(config):
         return [component
                 for component in components
                 if is_function(component)]
-    def is_api(component):
-        return (is_function(component) and
-                "api" in component)
-    def is_event_handler(component):
+    def is_action(component):
         return (is_function(component) and
                 "api" not in component)
-    def filter_event_handlers(components):
+    def filter_actions(components):
         return [component
                 for component in components
-                if is_event_handler(component)]
-    def validate_event_handler(func, triggermap):
+                if is_action(component)]
+    def validate_action(func, triggermap):
         triggerkeys=triggermap.keys()
         for attr in ["trigger"]:
-            handlerkey=keyfn(func[attr])
-            if handlerkey not in triggerkeys:
-                raise RuntimeError("%s not found" % handlerkey)
+            triggerkey=keyfn(func[attr])
+            if triggerkey not in triggerkeys:
+                raise RuntimeError("%s not found" % triggerkey)
     def add_bucket_target(self, func, binding):
         self.setdefault("targets", [])
         targetnames=[target["name"]
@@ -93,9 +77,9 @@ def preprocess(config):
         self["target"]=target
     triggermap={keyfn(component):component
                 for component in config["components"]
-                if is_non_functional(component)}    
-    for func in filter_event_handlers(config["components"]):
-        validate_event_handler(func, triggermap)
+                if is_trigger(component)}    
+    for func in filter_actions(config["components"]):
+        validate_action(func, triggermap)
         binding=func.pop("trigger")
         trigger=triggermap[keyfn(binding)]
         targetfn=eval("add_%s_target" % trigger["type"])
