@@ -1,6 +1,5 @@
 ### short [preprocessor]
 
-- don't pop binding so u don't have to pass it
 - refactor preprocessor notes
 
 - split core pareto function into api and action types
@@ -67,6 +66,7 @@
 
 ### done
 
+- don't pop binding so u don't have to pass it
 - rename self as trigger
 - rename func as action
 - rename target as action in main pareto body
