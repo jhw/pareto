@@ -4,20 +4,20 @@ def synth_timer(**kwargs):
     @resource()
     def EventRule(**kwargs):
         """
-        - single target for the minute but could be an array
+        - single action for the minute but could be an array
         """
-        target={"Id": global_name(kwargs),
+        action={"Id": global_name(kwargs),
                 "Input": json.dumps(kwargs["payload"]),
-                "Arn": fn_getatt(kwargs["target"]["name"], "Arn")}
+                "Arn": fn_getatt(kwargs["action"]["name"], "Arn")}
         expr="rate(%s)" % kwargs["rate"]
         props={"ScheduleExpression": expr,
-               "Targets": [target]}
+               "Targets": [action]}
         return "AWS::Events::Rule", props
     def LambdaPermission(**kwargs):
-        suffix="%s-permission" % kwargs["target"]["name"]
+        suffix="%s-permission" % kwargs["action"]["name"]
         @resource(suffix=suffix)
         def LambdaPermission(**kwargs):
-            arn=fn_getatt(kwargs["target"]["name"], "Arn")
+            arn=fn_getatt(kwargs["action"]["name"], "Arn")
             props={"Action": "lambda:InvokeFunction",
                    "FunctionName": arn,
                    "Principal": "events.amazonaws.com"}

@@ -166,7 +166,8 @@ if __name__=="__main__":
         validate_metrics(metrics)
         logging.info((pd.DataFrame(metrics)))
         dump_stack(stack)
-        deploy_stack(config, stack, stagename)
+        print (stack)
+        # deploy_stack(config, stack, stagename)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

@@ -14,10 +14,10 @@ def synth_bucket(**kwargs):
         return {"AccessControl": "PublicRead",
                 "CorsConfiguration": corsconfig,
                 "WebsiteConfiguration": websiteconfig}
-    def lambda_notification_config(target):
-        arn=fn_getatt(target["name"], "Arn")
+    def lambda_notification_config(action):
+        arn=fn_getatt(action["name"], "Arn")
         rules=[{"Name": "prefix",
-                "Value": target["path"]}]
+                "Value": action["path"]}]
         """
         - event hardcoded as `s3:ObjectCreated` for now
         - could become an option later
@@ -26,8 +26,8 @@ def synth_bucket(**kwargs):
                 "Function": arn,
                 "Filter": {"S3Key": {"Rules": rules}}}
     def notifications_configs(kwargs):
-        lambdaconfigs=[lambda_notification_config(target)
-                      for target in kwargs["targets"]]
+        lambdaconfigs=[lambda_notification_config(action)
+                      for action in kwargs["actions"]]
         notifications={"LambdaConfigurations": lambdaconfigs}
         return {"NotificationConfiguration": notifications}
     @resource()
@@ -35,14 +35,14 @@ def synth_bucket(**kwargs):
         props={"BucketName": global_name(kwargs)}
         if is_website(kwargs):
             props.update(website_config())
-        if "targets" in kwargs:
+        if "actions" in kwargs:
             props.update(notifications_configs(kwargs))
         return "AWS::S3::Bucket", props
-    def LambdaPermission(kwargs, target):
-        suffix="%s-permission" % target["name"]
+    def LambdaPermission(kwargs, action):
+        suffix="%s-permission" % action["name"]
         @resource(suffix=suffix)
         def LambdaPermission(**kwargs):
-            arn=fn_getatt(target["name"], "Arn")
+            arn=fn_getatt(action["name"], "Arn")
             props={"Action": "lambda:InvokeFunction",
                    "FunctionName": arn,
                    "Principal": "s3.amazonaws.com"}
@@ -68,9 +68,9 @@ def synth_bucket(**kwargs):
     def BucketUrl(**kwargs):
         return fn_getatt(kwargs["name"], "WebsiteURL")
     resources, outputs = [Bucket(**kwargs)], []
-    if "targets" in kwargs:
-        resources+=[LambdaPermission(kwargs, target)
-                    for target in kwargs["targets"]]
+    if "actions" in kwargs:
+        resources+=[LambdaPermission(kwargs, action)
+                    for action in kwargs["actions"]]
     if is_website(kwargs):
         resources.append(BucketPolicy(**kwargs))        
         outputs.append(BucketUrl(**kwargs))

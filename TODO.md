@@ -1,12 +1,18 @@
 ### short [preprocessor]
 
-- rename target as action in main pareto body
+- rename self as trigger
+- rename func as action
+
+- refactor preprocessor notes
+
+- split core pareto function into api and action types
+  - dash will also need to change
+
+- split core pareto bucket into bucket and website types
+
 - replace func type with separate api, action types
   - nest/hide api method field
 
-- ** split core pareto lambda function into api and action types **
-
-- refactor preprocessor notes
 - add trigger permissions
 - add polling permissions
 
@@ -65,6 +71,7 @@
 
 ### done
 
+- rename target as action in main pareto body
 - rename nonfunc as trigger
 - rename src ac trigger
 - refactor target references

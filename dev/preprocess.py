@@ -49,32 +49,32 @@ def preprocess(config):
             triggerkey=keyfn(func[attr])
             if triggerkey not in triggerkeys:
                 raise RuntimeError("%s not found" % triggerkey)
-    def add_bucket_target(self, func, binding):
-        self.setdefault("targets", [])
-        targetnames=[target["name"]
-                     for target in self["targets"]]
-        if func["name"] in targetnames:
+    def add_bucket_action(self, func, binding):
+        self.setdefault("actions", [])
+        actionnames=[action["name"]
+                     for action in self["actions"]]
+        if func["name"] in actionnames:
             raise RuntimeError("%s already mapped" % keyfn(self))
-        target={"name": func["name"],
+        action={"name": func["name"],
                 "path": binding["path"]}
-        self["targets"].append(target)
-    def add_queue_target(self, func, binding):    
-        if "target" in self:
+        self["actions"].append(action)
+    def add_queue_action(self, func, binding):    
+        if "action" in self:
             raise RuntimeError("%s already mapped" % keyfn(self))
-        target={"name": func["name"]}
+        action={"name": func["name"]}
         if "batch" in binding:
-            target["batch"]=binding["batch"]
-        self["target"]=target
-    def add_table_target(self, func, binding):    
-        if "target" in self:
+            action["batch"]=binding["batch"]
+        self["action"]=action
+    def add_table_action(self, func, binding):    
+        if "action" in self:
             raise RuntimeError("%s already mapped" % keyfn(self))
-        target={"name": func["name"]}
-        self["target"]=target
-    def add_timer_target(self, func, binding):    
-        if "target" in self:
+        action={"name": func["name"]}
+        self["action"]=action
+    def add_timer_action(self, func, binding):    
+        if "action" in self:
             raise RuntimeError("%s already mapped" % keyfn(self))
-        target={"name": func["name"]}
-        self["target"]=target
+        action={"name": func["name"]}
+        self["action"]=action
     triggermap={keyfn(component):component
                 for component in config["components"]
                 if is_trigger(component)}    
@@ -82,8 +82,8 @@ def preprocess(config):
         validate_action(func, triggermap)
         binding=func.pop("trigger")
         trigger=triggermap[keyfn(binding)]
-        targetfn=eval("add_%s_target" % trigger["type"])
-        targetfn(self=trigger,
+        actionfn=eval("add_%s_action" % trigger["type"])
+        actionfn(self=trigger,
                  func=func,
                  binding=binding)
         

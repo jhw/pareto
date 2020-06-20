@@ -43,7 +43,7 @@ def synth_table(**kwargs):
                "TableName": global_name(kwargs)}
         if indexes!=[]:
             props["GlobalSecondaryIndexes"]=indexes
-        if "target" in kwargs:
+        if "action" in kwargs:
             stream={"StreamViewType": "NEW_IMAGE"}
             props["StreamSpecification"]=stream
         return "AWS::DynamoDB::Table", props
@@ -53,10 +53,10 @@ def synth_table(**kwargs):
     - no BatchSize ?
     """
     def LambdaMapping(**kwargs):
-        suffix="%s-mapping" % kwargs["target"]["name"]
+        suffix="%s-mapping" % kwargs["action"]["name"]
         @resource(suffix)
         def LambdaMapping(**kwargs):
-            funcname=fn_getatt(kwargs["target"]["name"], "Arn")
+            funcname=fn_getatt(kwargs["action"]["name"], "Arn")
             eventsource=fn_getatt(kwargs["name"], "StreamArn")
             props={"FunctionName": funcname,
                    "EventSourceArn": eventsource,
@@ -64,7 +64,7 @@ def synth_table(**kwargs):
             return "AWS::Lambda::EventSourceMapping", props
         return LambdaMapping(**kwargs)
     resources=[Table(**kwargs)]
-    if "target" in kwargs:
+    if "action" in kwargs:
         resources.append(LambdaMapping(**kwargs))
     return {"resources": resources}
 
