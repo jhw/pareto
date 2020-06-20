@@ -30,14 +30,8 @@ def preprocess(config):
                           component["name"])
     def is_trigger(component, types=TriggerTypes):
         return component["type"] in types
-    def is_function(component):
-        return component["type"]=="function"
-    def filter_functions(components):
-        return [component
-                for component in components
-                if is_function(component)]
     def is_action(component):
-        return (is_function(component) and
+        return (component["type"]=="function" and
                 "api" not in component)
     def filter_actions(components):
         return [component
@@ -83,7 +77,7 @@ def preprocess(config):
         binding=func.pop("trigger")
         trigger=triggermap[keyfn(binding)]
         actionfn=eval("add_%s_action" % trigger["type"])
-        actionfn(self=trigger,
+        actionfn(self=trigger,                 
                  func=func,
                  binding=binding)
         
