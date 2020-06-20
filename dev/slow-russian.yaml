@@ -1,22 +1,18 @@
 components:
-- type: function
+- type: api
   name: page-scraper
-  api:
-    method: POST
-- type: function
+  method: POST
+- type: api
   name: index-fetcher  
-  api:
-    method: GET
-- type: function
+  method: GET
+- type: api
   name: vocab-translator
-  # permissions:
-  # - "translate:*"
-  api:
-    method: POST
+  permissions:
+  - "translate:*"
+  method: POST
 - type: bucket
   name: content
-  # website: true
-- type: function
+- type: action
   name: markdown-parser  
   trigger:
     type: bucket
@@ -24,11 +20,11 @@ components:
     path: markdown
 - type: table
   name: content
-  # fields:
-  # - name: normalised_title
-  #   type: string
-  #  primary: true
-- type: function
+  fields:
+  - name: normalised-title
+    type: string
+    primary: true
+- type: action
   name: page-indexer
   trigger:
     type: bucket
@@ -36,15 +32,15 @@ components:
     path: posts
 - type: queue
   name: audio
-- type: function
+- type: action
   name: audio-batcher
   trigger:
     type: table
     name: content
-- type: function
+- type: action
   name: audio-generator
-  # permissions:
-  # - "polly:*"
+  permissions:
+  - "polly:*"
   trigger:
     type: queue
     name: audio

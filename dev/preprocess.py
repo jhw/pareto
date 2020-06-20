@@ -1,38 +1,21 @@
 import os, sys, yaml
 
 """
-- components are either functional or non- functional
-- functional components are either event handler or api
-- different forms of event binding
-  - direct invocation plus invocation permission (s3/sns/cloudwatch event)
-  - event source mapping (sqs, ddb, kinesis)
-- lambda permissions and event source mapping are included as separate resources whenever you initialise a non- functional component using `pareto.components`
-- this leaves two role for the preprocessor
-  - adding function IAM roles
-  - defining non- functional targets
-    - because dsl uses multidirectional src/dest attributes, whilst underlying components use unidirectional target (dest) attributes
-- (a multidirectional dsl is useful for skeleton generator to define service stubs )
-- function IAM roles are also bi- directional
-  - function may need permission to invoke a target non- functional
-  - event source mapping actually involves polling, so if you are using ddb or sqs in an event source map then function also needs "lookback" permissions :-/
+- inspired by zapier twitter/lambda integration nomenclature
+- triggers, actions, apis
 """
-
-TriggerTypes=yaml.load("""
-- bucket
-- queue
-- table
-- timer
-""", Loader=yaml.FullLoader)
 
 def preprocess(config):
     def keyfn(component):
         return "%s/%s" % (component["type"],
                           component["name"])
-    def is_trigger(component, types=TriggerTypes):
-        return component["type"] in types
     def is_action(component):
-        return (component["type"]=="function" and
-                "api" not in component)
+        return component["type"]=="action"
+    def is_api(component):
+        return component["type"]=="api"
+    def is_trigger(component):
+        return not (is_action(component) or
+                    is_api(component))
     def filter_actions(components):
         return [component
                 for component in components
@@ -40,7 +23,7 @@ def preprocess(config):
     def validate_action(action, trigmap):
         trigkey=keyfn(action["trigger"])
         if trigkey not in trigmap.keys():
-            raise RuntimeError("%s not found" % trigkey)
+            raise RuntimeError("trigger %s not found" % trigkey)
     def add_bucket_action(trigger, action):
         trigger.setdefault("actions", [])
         actionnames=[action["name"]
@@ -50,19 +33,22 @@ def preprocess(config):
         trigaction={"name": action["name"],
                     "path": action["trigger"]["path"]}
         trigger["actions"].append(trigaction)
+    def trigger_unmapped(fn):
+        def wrapped(trigger, action):
+            if "action" in trigger:
+                raise RuntimeError("trigger %s already mapped" % keyfn(trigger))
+            return fn(trigger, action)
+        return wrapped
+    @trigger_unmapped
     def add_queue_action(trigger, action):    
-        if "action" in trigger:
-            raise RuntimeError("%s already mapped" % keyfn(trigger))
         trigaction={"name": action["name"]}
         trigger["action"]=trigaction
+    @trigger_unmapped
     def add_table_action(trigger, action):    
-        if "action" in trigger:
-            raise RuntimeError("%s already mapped" % keyfn(trigger))
         trigaction={"name": action["name"]}
         trigger["action"]=trigaction
+    @trigger_unmapped
     def add_timer_action(trigger, action):    
-        if "action" in trigger:
-            raise RuntimeError("%s already mapped" % keyfn(trigger))
         trigaction={"name": action["name"]}
         trigger["action"]=trigaction
     trigmap={keyfn(component):component
@@ -73,7 +59,8 @@ def preprocess(config):
         trigger=trigmap[keyfn(action["trigger"])]
         actionfn=eval("add_%s_action" % trigger["type"])
         actionfn(action=action,
-                 trigger=trigger)                                  
+                 trigger=trigger)
+        action.pop("trigger")
         
 if __name__=="__main__":
     try:

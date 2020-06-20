@@ -1,12 +1,8 @@
 ### short [preprocessor]
 
-- refactor preprocessor notes
-
 - split core pareto function into api and action types
   - dash will also need to change
 - split core pareto bucket into bucket and website types
-- replace func type with separate api, action types
-  - nest/hide api method field
 
 - add trigger permissions
 - add action permissions [polling]
@@ -53,6 +49,8 @@
 - dashboard section titles
 - queue, table charts
 
+- topology chart creation
+
 - CI pipeline (codepipeline, codebuild)
 
 - groups [notes]
@@ -66,6 +64,9 @@
 
 ### done
 
+- replace func type with separate api, action types
+  - nest/hide api method field
+- refactor preprocessor notes
 - don't pop binding so u don't have to pass it
 - rename self as trigger
 - rename func as action
