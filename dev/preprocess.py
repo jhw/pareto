@@ -1,65 +1,79 @@
 import os, sys, yaml
 
-"""
-- inspired by zapier twitter/lambda integration nomenclature
-- triggers, actions, apis
-"""
+def KeyFn(component):
+    return "%s/%s" % (component["type"],
+                      component["name"])
 
-def preprocess(config):
-    def keyfn(component):
-        return "%s/%s" % (component["type"],
-                          component["name"])
-    def is_action(component):
-        return component["type"]=="action"
-    def is_api(component):
-        return component["type"]=="api"
-    def is_trigger(component):
-        return not (is_action(component) or
-                    is_api(component))
-    def filter_actions(components):
-        return [component
-                for component in components
-                if is_action(component)]
+def is_api(component):
+    return component["type"]=="api"
+
+def is_action(component):
+    return component["type"]=="action"
+
+def is_trigger(component):
+    return not (is_api(component) or
+                is_action(component))
+
+def filter_actions(components):
+    return [component
+            for component in components
+            if is_action(component)]
+
+def remap_triggers(config):
     def validate_action(action, trigmap):
-        trigkey=keyfn(action["trigger"])
+        trigkey=KeyFn(action["trigger"])
         if trigkey not in trigmap.keys():
             raise RuntimeError("trigger %s not found" % trigkey)
-    def add_bucket_action(trigger, action):
+    def assert_unmapped(fn):
+        def wrapped(action, trigger):
+            if "action" in trigger:
+                raise RuntimeError("trigger %s already mapped" % KeyFn(trigger))
+            return fn(action, trigger)
+        return wrapped
+    @assert_unmapped
+    def remap_queue(action, trigger):    
+        trigaction={"name": action["name"]}
+        trigger["action"]=trigaction
+    @assert_unmapped
+    def remap_table(action, trigger):    
+        trigaction={"name": action["name"]}
+        trigger["action"]=trigaction
+    @assert_unmapped
+    def remap_timer(action, trigger):    
+        trigaction={"name": action["name"]}
+        trigger["action"]=trigaction
+    def remap_bucket(action, trigger):
         trigger.setdefault("actions", [])
         actionnames=[action["name"]
                      for action in trigger["actions"]]
         if action["name"] in actionnames:
-            raise RuntimeError("%s already mapped" % keyfn(trigger))
+            raise RuntimeError("%s already mapped" % KeyFn(trigger))
         trigaction={"name": action["name"],
                     "path": action["trigger"]["path"]}
         trigger["actions"].append(trigaction)
-    def trigger_unmapped(fn):
-        def wrapped(trigger, action):
-            if "action" in trigger:
-                raise RuntimeError("trigger %s already mapped" % keyfn(trigger))
-            return fn(trigger, action)
-        return wrapped
-    @trigger_unmapped
-    def add_queue_action(trigger, action):    
-        trigaction={"name": action["name"]}
-        trigger["action"]=trigaction
-    @trigger_unmapped
-    def add_table_action(trigger, action):    
-        trigaction={"name": action["name"]}
-        trigger["action"]=trigaction
-    @trigger_unmapped
-    def add_timer_action(trigger, action):    
-        trigaction={"name": action["name"]}
-        trigger["action"]=trigaction
-    trigmap={keyfn(component):component
+    trigmap={KeyFn(component):component
              for component in config["components"]
              if is_trigger(component)}
     for action in filter_actions(config["components"]):
         validate_action(action, trigmap)
-        trigger=trigmap[keyfn(action["trigger"])]
-        actionfn=eval("add_%s_action" % trigger["type"])
-        actionfn(action=action,
-                 trigger=trigger)
+        trigger=trigmap[KeyFn(action["trigger"])]
+        remapfn=eval("remap_%s" % trigger["type"])
+        remapfn(action=action,
+                trigger=trigger)
+
+def add_role_permissions(config):
+    """
+    - validate targets if they exist
+    - infer permissions from targets
+    - pass through custom permissions
+    - add "lookback" permissions from `trigger`
+    """
+    pass
+        
+def preprocess(config):
+    remap_triggers(config)
+    add_role_permissions(config)
+    for action in filter_actions(config["components"]):
         action.pop("trigger")
         
 if __name__=="__main__":

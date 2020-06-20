@@ -1,3 +1,22 @@
+### action targets 19/6/20
+
+- cf non- event sourced triggers (sns, s3, cloudwatch events) explictly nest actionreferences under trigger
+- but that's not how you design lambdas, which are action- centric but where you need info regarding the trigger (event)
+- so makes sense for dsl to nest triggers under actions
+- primary purpose of pre-processor is to remap actions nested triggers into triggers nested actions
+- secondary purpose is permissions layer
+- permissions layer is three- fold
+- firstly any non- event sourced trigger will need an explicit resource permission to invoke lambda
+- but this is handled under the hood by pareto components
+- secondly an action may need permissions call other services
+- these other services may be trigger related or not (polly, translate)
+- you could specify them all under permissions at the dsl level
+- but shouldn't the pre-processor be able to infer the trigger related permissions ?
+- feels like action should contain (optinal) target as well as trigger
+- target can be used to infer permissions action needs for other triggers
+- will also help to infer chain if you ever get round to charting (right now not possible without target)
+
+
 ### skeleton generator 14/6/20
 
 - feels like there is a room for a skeleton generator

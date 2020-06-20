@@ -1,19 +1,21 @@
 ### short [preprocessor]
 
-- split core pareto function into api and action types
-  - dash will also need to change
-- split core pareto bucket into bucket and website types
+- action target [notes]
 
-- add trigger permissions
-- add action permissions [polling]
+- permissions layer
+  - remember permissions need re- nesting under iam key
 
-- add back sqs batch parameter
-- bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
+- pareto component refactoring
+  - split bucket into bucket and website
+  - split function into api and action
+  - adjust dash to handle api and action
+
+- sqs batch
+- `s3:ObjectCreated:*`, `NEW_IMAGE`
 
 ### medium
 
 - allow multiple event source mappings
-- normalise ddb field names
 - limit permissions and event source maps to specific functions only
 - use logical/physical_id reference names
 - preprocessor json schema
@@ -30,12 +32,8 @@
 
 - find all tests rather than just index.py ?
   - conventions should be that all tests are in index.py
-- check slow_russian version of deploy_stack.py
-  - other stuff you could usefully pillage ?
 - remove managed policy support ?
   - no might be useful
-- queue batch size to be nested under function ?
-  - feels like over- optimisation
 - remove `-dashboard-` from dash name ?
   - too much hassle to allow dash to work without a name
 - scripts to ping lambda, check logs ?
@@ -43,23 +41,19 @@
   
 ### long
 
+- nested stacks for apis, triggers, actions
 - sns
 - dead letter queues
 - layers
 - dashboard section titles
 - queue, table charts
-
-- topology chart creation
-
+- topology chart generation
 - CI pipeline (codepipeline, codebuild)
-
-- groups [notes]
 - github actions for lambda push
 - slack alerts
 - cognito
 - route 53
 - cloudfront
-
 - ec2, codedeploy
 
 ### done
