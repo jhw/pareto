@@ -61,7 +61,7 @@ def preprocess(config):
                 if is_event_handler(component)]
     def validate_event_handler(func, nonfuncmap):
         nonfunckeys=nonfuncmap.keys()
-        for attr in ["src", "dest"]:
+        for attr in ["src"]:
             handlerkey=keyfn(func[attr])
             if handlerkey not in nonfunckeys:
                 raise RuntimeError("%s not found" % handlerkey)
@@ -102,9 +102,6 @@ def preprocess(config):
         targetfn(self=nonfunc,
                  func=func,
                  binding=binding)
-        # START TEMP CODE
-        func.pop("dest")        
-        # END TEMP CODE
         
 if __name__=="__main__":
     try:

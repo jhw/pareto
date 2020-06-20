@@ -22,10 +22,6 @@ components:
     type: bucket
     name: content
     path: markdown
-  dest:
-    type: bucket
-    name: content
-    path: posts
 - type: table
   name: content
   fields:
@@ -38,9 +34,6 @@ components:
     type: bucket
     name: content
     path: posts
-  dest:
-    type: table
-    name: content
 - type: queue
   name: audio
 - type: function
@@ -48,9 +41,6 @@ components:
   src:
     type: table
     name: content
-  dest:
-    type: queue
-    name: audio
 - type: function
   name: audio-generator
   permissions:
@@ -59,7 +49,4 @@ components:
     type: queue
     name: audio
     batch: 1
-  dest:
-    type: bucket
-    name: content
-    path: audio
+

@@ -1,11 +1,14 @@
 ### short [preprocessor]
 
-- remove dest
 - rename src ac action
 - rename nonfunc as trigger
 - consider renaming func/event handler
+- refactor preprocessor notes
 - add trigger permissions
 - add polling permissions
+
+- add back sqs batch parameter
+- bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
 
 ### medium
 
@@ -13,7 +16,6 @@
 - allow multiple event source mappings
 - normalise ddb field names
 - limit permissions and event source maps to specific functions only
-- bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
 - use logical/physical_id reference names
 - preprocessor json schema
 - aws scripts to support missing attributes
