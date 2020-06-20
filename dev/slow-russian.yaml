@@ -9,13 +9,13 @@ components:
     method: GET
 - type: function
   name: vocab-translator
-  permissions:
-  - "translate:*"
+  # permissions:
+  # - "translate:*"
   api:
     method: POST
 - type: bucket
   name: content
-  website: true
+  # website: true
 - type: function
   name: markdown-parser  
   trigger:
@@ -24,10 +24,10 @@ components:
     path: markdown
 - type: table
   name: content
-  fields:
-  - name: normalised_title
-    type: string
-    primary: true
+  # fields:
+  # - name: normalised_title
+  #   type: string
+  #  primary: true
 - type: function
   name: page-indexer
   trigger:
@@ -43,10 +43,10 @@ components:
     name: content
 - type: function
   name: audio-generator
-  permissions:
-  - "polly:*"
+  # permissions:
+  # - "polly:*"
   trigger:
     type: queue
     name: audio
-    batch: 1
+    # batch: 1
 

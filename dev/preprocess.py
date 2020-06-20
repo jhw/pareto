@@ -59,11 +59,11 @@ def preprocess(config):
         return [component
                 for component in components
                 if is_event_handler(component)]
-    def validate_event_handler(func, nonfuncmap):
-        nonfunckeys=nonfuncmap.keys()
+    def validate_event_handler(func, triggermap):
+        triggerkeys=triggermap.keys()
         for attr in ["trigger"]:
             handlerkey=keyfn(func[attr])
-            if handlerkey not in nonfunckeys:
+            if handlerkey not in triggerkeys:
                 raise RuntimeError("%s not found" % handlerkey)
     def add_bucket_target(self, func, binding):
         self.setdefault("targets", [])
@@ -91,15 +91,15 @@ def preprocess(config):
             raise RuntimeError("%s already mapped" % keyfn(self))
         target={"name": func["name"]}
         self["target"]=target
-    nonfuncmap={keyfn(component):component
+    triggermap={keyfn(component):component
                 for component in config["components"]
                 if is_non_functional(component)}    
     for func in filter_event_handlers(config["components"]):
-        validate_event_handler(func, nonfuncmap)
+        validate_event_handler(func, triggermap)
         binding=func.pop("trigger")
-        nonfunc=nonfuncmap[keyfn(binding)]
-        targetfn=eval("add_%s_target" % nonfunc["type"])
-        targetfn(self=nonfunc,
+        trigger=triggermap[keyfn(binding)]
+        targetfn=eval("add_%s_target" % trigger["type"])
+        targetfn(self=trigger,
                  func=func,
                  binding=binding)
         

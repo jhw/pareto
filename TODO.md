@@ -1,6 +1,5 @@
 ### short [preprocessor]
 
-- rename nonfunc as trigger
 - consider renaming func as action
 - refactor preprocessor notes
 - add trigger permissions
@@ -62,6 +61,7 @@
 
 ### done
 
+- rename nonfunc as trigger
 - rename src ac trigger
 - refactor target references
   - should be popped from nonfuncmap
