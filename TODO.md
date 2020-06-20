@@ -1,13 +1,11 @@
 ### short [preprocessor]
 
-- separate src/dest binding handlers
-  - eval() problem
-- nest src/dest attributes under `bindings`
-- src/dest iam roles
-  - dest is for all functions
-  - src is for event handlers only
-    - ddb, sqs lookback permissions
-  - use decorator to initialise iam
+- remove dest
+- rename src ac action
+- rename nonfunc as trigger
+- consider renaming func/event handler
+- add trigger permissions
+- add polling permissions
 
 ### medium
 
