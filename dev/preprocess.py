@@ -61,7 +61,7 @@ def preprocess(config):
                 if is_event_handler(component)]
     def validate_event_handler(func, nonfuncmap):
         nonfunckeys=nonfuncmap.keys()
-        for attr in ["src"]:
+        for attr in ["trigger"]:
             handlerkey=keyfn(func[attr])
             if handlerkey not in nonfunckeys:
                 raise RuntimeError("%s not found" % handlerkey)
@@ -96,7 +96,7 @@ def preprocess(config):
                 if is_non_functional(component)}    
     for func in filter_event_handlers(config["components"]):
         validate_event_handler(func, nonfuncmap)
-        binding=func.pop("src")
+        binding=func.pop("trigger")
         nonfunc=nonfuncmap[keyfn(binding)]
         targetfn=eval("add_%s_target" % nonfunc["type"])
         targetfn(self=nonfunc,

@@ -18,7 +18,7 @@ components:
   website: true
 - type: function
   name: markdown-parser  
-  src:
+  trigger:
     type: bucket
     name: content
     path: markdown
@@ -30,7 +30,7 @@ components:
     primary: true
 - type: function
   name: page-indexer
-  src:
+  trigger:
     type: bucket
     name: content
     path: posts
@@ -38,14 +38,14 @@ components:
   name: audio
 - type: function
   name: audio-batcher
-  src:
+  trigger:
     type: table
     name: content
 - type: function
   name: audio-generator
   permissions:
   - "polly:*"
-  src:
+  trigger:
     type: queue
     name: audio
     batch: 1

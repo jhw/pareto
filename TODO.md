@@ -1,8 +1,7 @@
 ### short [preprocessor]
 
-- rename src ac action
 - rename nonfunc as trigger
-- consider renaming func/event handler
+- consider renaming func as action
 - refactor preprocessor notes
 - add trigger permissions
 - add polling permissions
@@ -63,6 +62,7 @@
 
 ### done
 
+- rename src ac trigger
 - refactor target references
   - should be popped from nonfuncmap
   - if necessary should be augmented by src/dest args [path]
