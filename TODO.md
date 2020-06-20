@@ -1,20 +1,16 @@
 ### short [preprocessor]
 
-- rename self as trigger
-- rename func as action
-
+- don't pop binding so u don't have to pass it
 - refactor preprocessor notes
 
 - split core pareto function into api and action types
   - dash will also need to change
-
 - split core pareto bucket into bucket and website types
-
 - replace func type with separate api, action types
   - nest/hide api method field
 
 - add trigger permissions
-- add polling permissions
+- add action permissions [polling]
 
 - add back sqs batch parameter
 - bubble up `s3:ObjectCreated:*`, `NEW_IMAGE` etc to surface
@@ -71,6 +67,8 @@
 
 ### done
 
+- rename self as trigger
+- rename func as action
 - rename target as action in main pareto body
 - rename nonfunc as trigger
 - rename src ac trigger

@@ -43,32 +43,30 @@ def preprocess(config):
             triggerkey=keyfn(action[attr])
             if triggerkey not in triggerkeys:
                 raise RuntimeError("%s not found" % triggerkey)
-    def add_bucket_action(self, action, binding):
-        self.setdefault("actions", [])
+    def add_bucket_action(trigger, action, binding):
+        trigger.setdefault("actions", [])
         actionnames=[action["name"]
-                     for action in self["actions"]]
+                     for action in trigger["actions"]]
         if action["name"] in actionnames:
-            raise RuntimeError("%s already mapped" % keyfn(self))
-        action={"name": action["name"],
-                "path": binding["path"]}
-        self["actions"].append(action)
-    def add_queue_action(self, action, binding):    
-        if "action" in self:
-            raise RuntimeError("%s already mapped" % keyfn(self))
-        action={"name": action["name"]}
-        if "batch" in binding:
-            action["batch"]=binding["batch"]
-        self["action"]=action
-    def add_table_action(self, action, binding):    
-        if "action" in self:
-            raise RuntimeError("%s already mapped" % keyfn(self))
-        action={"name": action["name"]}
-        self["action"]=action
-    def add_timer_action(self, action, binding):    
-        if "action" in self:
-            raise RuntimeError("%s already mapped" % keyfn(self))
-        action={"name": action["name"]}
-        self["action"]=action
+            raise RuntimeError("%s already mapped" % keyfn(trigger))
+        trigaction={"name": action["name"],
+                   "path": binding["path"]}
+        trigger["actions"].append(trigaction)
+    def add_queue_action(trigger, action, binding):    
+        if "action" in trigger:
+            raise RuntimeError("%s already mapped" % keyfn(trigger))
+        trigaction={"name": action["name"]}
+        trigger["action"]=trigaction
+    def add_table_action(trigger, action, binding):    
+        if "action" in trigger:
+            raise RuntimeError("%s already mapped" % keyfn(trigger))
+        trigaction={"name": action["name"]}
+        trigger["action"]=trigaction
+    def add_timer_action(trigger, action, binding):    
+        if "action" in trigger:
+            raise RuntimeError("%s already mapped" % keyfn(trigger))
+        trigaction={"name": action["name"]}
+        trigger["action"]=trigaction
     triggermap={keyfn(component):component
                 for component in config["components"]
                 if is_trigger(component)}    
@@ -77,8 +75,8 @@ def preprocess(config):
         binding=action.pop("trigger")
         trigger=triggermap[keyfn(binding)]
         actionfn=eval("add_%s_action" % trigger["type"])
-        actionfn(self=trigger,                 
-                 action=action,
+        actionfn(action=action,
+                 trigger=trigger,                                  
                  binding=binding)
         
 if __name__=="__main__":
