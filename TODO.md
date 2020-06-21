@@ -1,8 +1,5 @@
 ### short [preprocessor]
 
-- add target info to slow russian
-- validate and clean up targets
-
 - validate name uniqueness
 - validate trigger!=target
 
@@ -59,6 +56,9 @@
 
 ### done
 
+- batch handling
+- add target info to slow russian
+- validate and clean up targets
 - bucket website
 - eval() test
 - replace func type with separate api, action types

@@ -10,16 +10,13 @@ TypeFilters={
     "trigger": lambda x: x["type"] not in ["action", "api"]
     }
 
-"""
-- need to validate name uniqueness
-- need to validate targets
-"""
-
 def cross_validate(actions, triggers, **kwargs):
     def validate_action(action, trigmap):
-        trigkey=KeyFn(action["trigger"])
-        if trigkey not in trigmap.keys():
-            raise RuntimeError("trigger %s not found" % trigkey)
+        for attr in ["trigger",
+                     "target"]:
+            trigkey=KeyFn(action[attr])
+            if trigkey not in trigmap.keys():
+                raise RuntimeError("%s %s not found" % (attr, trigkey))
     trigmap={KeyFn(trigger):trigger
              for trigger in triggers}
     for action in actions:
@@ -108,7 +105,9 @@ def remap_types(**kwargs):
 
 def cleanup(actions, **kwargs):
     for action in actions:
-        action.pop("trigger")
+        for attr in ["trigger",
+                     "target"]:
+            action.pop(attr)
         
 def preprocess(config, filters=TypeFilters):
     def apply_filter(components, filterfn):

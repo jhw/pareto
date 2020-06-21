@@ -19,6 +19,9 @@ components:
     type: bucket
     name: content
     path: markdown
+  target:
+    type: bucket
+    name: content
 - type: table
   name: content
   fields:
@@ -31,13 +34,20 @@ components:
     type: bucket
     name: content
     path: posts
+  target:
+    type: table
+    name: content
 - type: queue
   name: audio
+  batch: 1
 - type: action
   name: audio-batcher
   trigger:
     type: table
     name: content
+  target:
+    type: queue
+    name: audio
 - type: action
   name: audio-generator
   permissions:
@@ -45,4 +55,7 @@ components:
   trigger:
     type: queue
     name: audio
+  target:
+    type: bucket
+    name: content
 
