@@ -5,7 +5,6 @@
 
 - validate name uniqueness
 - validate trigger!=target
-- bucket website
 - sqs batch 
 
 - bubbling up of other event sourcing parameters
@@ -59,6 +58,7 @@
 
 ### done
 
+- bucket website
 - eval() test
 - replace func type with separate api, action types
   - nest/hide api method field

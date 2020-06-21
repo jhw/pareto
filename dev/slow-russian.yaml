@@ -12,6 +12,7 @@ components:
   method: POST
 - type: bucket
   name: content
+  website: true
 - type: action
   name: markdown-parser  
   trigger:

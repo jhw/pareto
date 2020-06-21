@@ -93,16 +93,18 @@ def add_permissions(actions, apis, **kwargs):
 - trigger types don't need remapping as they are already defined as underlying pareto component type
 """
 
-def remap_types(apis, actions, **kwargs):
+def remap_types(**kwargs):
     def remap_api(api):
         api["type"]="function"
         api["api"]={"method": api.pop("method")}
-    def remap_action(action):
+    def remap_action(action):        
         action["type"]="function"
-    for api in apis:
-        remap_api(api)        
-    for action in actions:
-        remap_action(action)
+    def remap_trigger(trigger):
+        pass
+    for attr in kwargs.keys():
+        for component in kwargs[attr]:
+            fn=eval("remap_%s" % (attr[:-1]))
+            fn(component)
 
 def cleanup(actions, **kwargs):
     for action in actions:
