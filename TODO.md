@@ -1,7 +1,15 @@
-### short [preprocessor]
+### short
 
-- validate name uniqueness
-- validate trigger!=target
+- default logs permission
+- function to add iam wildcard
+
+- expose lambda options to dsl
+  - audio generator will require concurrency
+
+- test adding add back ${AWS::Region} 
+
+- allow preprocessor target to be optional
+- preprocessor api target
 
 - expose event sourcing parameters to dsl
   - s3:ObjectCreated:*
@@ -9,9 +17,8 @@
 
 ### medium
 
-- expose lambda options to dsl
-  - audio generator will require concurrency
-- add back ${AWS::Region}
+- preprocessor to validate name uniqueness
+- preprocessor to validate trigger!=target
 - allow multiple event source mappings
 - limit permissions and event source maps to specific functions only
 - use logical/physical_id reference names
@@ -56,6 +63,7 @@
 
 ### done
 
+- trigger, target permissions
 - batch handling
 - add target info to slow russian
 - validate and clean up targets

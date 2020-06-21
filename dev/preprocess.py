@@ -1,14 +1,26 @@
 import os, sys, yaml
 
-def KeyFn(component):
-    return "%s/%s" % (component["type"],
-                      component["name"])
-
 TypeFilters={
     "api": lambda x: x["type"]=="api",
     "action": lambda x: x["type"]=="action",
     "trigger": lambda x: x["type"] not in ["action", "api"]
     }
+
+TriggerConfig=yaml.load("""
+bucket:
+  iam_name: s3
+  event_sourced: false
+table:
+  iam_name: ddb
+  event_sourced: true
+queue:
+  iam_name: sqs
+  event_sourced: true
+""", Loader=yaml.FullLoader)
+
+def KeyFn(component):
+    return "%s/%s" % (component["type"],
+                      component["name"])
 
 def cross_validate(actions, triggers, **kwargs):
     def validate_action(action, trigmap):
@@ -78,10 +90,34 @@ def remap_triggers(actions, triggers, **kwargs):
 - hence they need "lookback" permissions to do that
 """
         
-def add_permissions(actions, apis, **kwargs):
-    for fn in actions+apis:
-        if "permissions" in fn:
-            fn["permissions"]={"iam": fn["permissions"]}
+def add_permissions(**kwargs):
+    def init_iam(component):
+        return component.pop("permissions") if "permissions" in component else []
+    def api_permissions(api):
+        iam=init_iam(api)
+        if iam!=[]:
+            api["permissions"]={"iam": iam}
+    def action_permissions(action):
+        def trigger_permissions(iam, trigger):
+            trigconf=TriggerConfig[trigger["type"]]
+            if trigconf["event_sourced"]:
+                iam.append("%s:*" % trigconf["iam_name"])
+        def target_permissions(iam, target):
+            targconf=TriggerConfig[target["type"]]
+            iam.append("%s:*" % targconf["iam_name"])
+        iam=init_iam(action)
+        for attr in ["trigger",
+                     "target"]:
+            fn=eval("%s_permissions" % attr)
+            fn(iam, action[attr])
+        if iam!=[]:
+            action["permissions"]={"iam": iam}
+    def trigger_permissions(trigger):
+        pass
+    for attr in kwargs.keys():
+        for component in kwargs[attr]:
+            fn=eval("%s_permissions" % (attr[:-1]))
+            fn(component)
 
 """
 - DSL follows zapier model of actions and triggers, and adds apis
