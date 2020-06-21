@@ -1,19 +1,19 @@
 ### short [preprocessor]
 
-- sqs batch 
-
 - add target info to slow russian
 - validate and clean up targets
 
 - validate name uniqueness
 - validate trigger!=target
 
-- bubble up event sourcing parameters
+- expose event sourcing parameters to dsl
   - s3:ObjectCreated:*
   - NEW_IMAGE (ddb)
 
 ### medium
 
+- expose lambda options to dsl
+  - audio generator will require concurrency
 - add back ${AWS::Region}
 - allow multiple event source mappings
 - limit permissions and event source maps to specific functions only

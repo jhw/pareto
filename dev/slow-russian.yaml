@@ -45,5 +45,4 @@ components:
   trigger:
     type: queue
     name: audio
-    # batch: 1
 
