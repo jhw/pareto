@@ -1,16 +1,19 @@
 ### short [preprocessor]
 
-- validate
-- remap types
-- target validation
-- permissions
-- sqs batch
-- `s3:ObjectCreated:*`, `NEW_IMAGE`
-  - add explicit component options
+- add target info to slow russian
+- validate and clean up targets
+
+- validate name uniqueness
+- validate trigger!=target
+- bucket website
+- sqs batch 
+
+- bubbling up of other event sourcing parameters
+  - s3:ObjectCreated:*
+  - (ddb) NEW_IMAGE
 
 ### medium
 
-- validate not in infinite loop 
 - add back ${AWS::Region}
 - allow multiple event source mappings
 - limit permissions and event source maps to specific functions only
@@ -27,6 +30,7 @@
   
 ### thoughts
 
+- validate triggers and targets not in infinite loop  ?
 - find all tests rather than just index.py ?
   - conventions should be that all tests are in index.py
 - remove managed policy support ?
@@ -55,6 +59,7 @@
 
 ### done
 
+- eval() test
 - replace func type with separate api, action types
   - nest/hide api method field
 - refactor preprocessor notes
