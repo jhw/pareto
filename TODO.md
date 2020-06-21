@@ -1,20 +1,17 @@
 ### short [preprocessor]
 
-- action target [notes]
-
-- permissions layer
-  - remember permissions need re- nesting under iam key
-
-- pareto component refactoring
-  - split bucket into bucket and website
-  - split function into api and action
-  - adjust dash to handle api and action
-
+- validate
+- remap types
+- target validation
+- permissions
 - sqs batch
 - `s3:ObjectCreated:*`, `NEW_IMAGE`
+  - add explicit component options
 
 ### medium
 
+- validate not in infinite loop 
+- add back ${AWS::Region}
 - allow multiple event source mappings
 - limit permissions and event source maps to specific functions only
 - use logical/physical_id reference names
