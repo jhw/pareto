@@ -1,15 +1,16 @@
 ### short [preprocessor]
 
+- sqs batch 
+
 - add target info to slow russian
 - validate and clean up targets
 
 - validate name uniqueness
 - validate trigger!=target
-- sqs batch 
 
-- bubbling up of other event sourcing parameters
+- bubble up event sourcing parameters
   - s3:ObjectCreated:*
-  - (ddb) NEW_IMAGE
+  - NEW_IMAGE (ddb)
 
 ### medium
 
