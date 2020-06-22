@@ -101,6 +101,14 @@ def add_permissions(**kwargs):
             for permission in defaults:
                 iam.add(permission)
             return iam
+        @classmethod
+        def attach(self, fn):
+            def wrapped(component):
+                iam=fn(component)
+                if (iam and
+                    not iam.is_empty):
+                    component["permissions"]={"iam": list(iam)}
+            return wrapped
         def __init__(self, items):
             return list.__init__(self, items)
         def wildcard(fn):
@@ -114,17 +122,10 @@ def add_permissions(**kwargs):
         @property
         def is_empty(self):
             return len(self)==0
-    def attach_iam(fn):
-        def wrapped(component):
-            iam=fn(component)
-            if (iam and
-                not iam.is_empty):
-                component["permissions"]={"iam": list(iam)}
-        return wrapped
-    @attach_iam
+    @Iam.attach
     def api_permissions(api):
         return Iam.initialise(api)
-    @attach_iam
+    @Iam.attach
     def action_permissions(action):
         def trigger_permissions(iam, trigger):
             trigconf=TriggerConfig[trigger["type"]]
@@ -139,7 +140,7 @@ def add_permissions(**kwargs):
             fn=eval("%s_permissions" % attr)
             fn(iam, action[attr])
         return iam
-    @attach_iam
+    @Iam.attach
     def trigger_permissions(trigger):
         pass
     for attr in kwargs.keys():

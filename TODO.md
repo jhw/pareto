@@ -1,8 +1,7 @@
 ### short
 
-- move attach decorator
-
 - allow preprocessor target to be optional
+
 - preprocessor api target
 - preprocessor to validate name uniqueness
 - preprocessor to validate trigger!=target
@@ -57,6 +56,7 @@
 
 ### done
 
+- move attach decorator
 - move wildcard decorator
 - default logs permission
 - move wildcard function to iam class
