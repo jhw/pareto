@@ -97,9 +97,14 @@ def add_permissions(**kwargs):
         return wrapped
     class Iam(list):
         @classmethod
-        def initialise(self, component):
-            items=component.pop("permissions") if "permissions" in component else []
-            return Iam(items)
+        def initialise(self,
+                       component,
+                       defaults=["logs"]):
+            permissions=component.pop("permissions") if "permissions" in component else []
+            iam=Iam(permissions)
+            for permission in defaults:
+                iam.add(permission)
+            return iam
         def __init__(self, items):
             return list.__init__(self, items)
         @iam_wildcard

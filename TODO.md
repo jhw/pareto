@@ -1,20 +1,21 @@
 ### short
 
-- default logs permission
+- try moving decorators inside IAM class
 
-- expose lambda options to dsl
-  - audio generator will require concurrency
-- test adding add back ${AWS::Region} 
 - allow preprocessor target to be optional
 - preprocessor api target
 - preprocessor to validate name uniqueness
 - preprocessor to validate trigger!=target
 
+- expose lambda options to dsl
+  - audio generator will require concurrency
+- test adding add back ${AWS::Region} 
+
 ### medium
 
 - allow multiple event source mappings
 - limit permissions and event source maps to specific functions only
-- use logical/physical_id reference names
+- use logical/physical_id reference namesg 
 - preprocessor json schema
 - aws scripts to support missing attributes
 - check all scripts work on malformed stacks
@@ -56,6 +57,7 @@
 
 ### done
 
+- default logs permission
 - move wildcard function to iam class
 - avoid duplicating permissions
 - add iam wildcard
