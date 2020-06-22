@@ -1,8 +1,7 @@
 ### short
 
-- move wildcard function to iam class
-
 - default logs permission
+
 - expose lambda options to dsl
   - audio generator will require concurrency
 - test adding add back ${AWS::Region} 
@@ -57,6 +56,7 @@
 
 ### done
 
+- move wildcard function to iam class
 - avoid duplicating permissions
 - add iam wildcard
 - arg parameters

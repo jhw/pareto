@@ -91,6 +91,10 @@ def remap_triggers(actions, triggers, **kwargs):
 """
         
 def add_permissions(**kwargs):
+    def iam_wildcard(fn):
+        def wrapped(self, name):
+            return fn(self, "%s:*" % name)
+        return wrapped
     class Iam(list):
         @classmethod
         def initialise(self, component):
@@ -98,18 +102,20 @@ def add_permissions(**kwargs):
             return Iam(items)
         def __init__(self, items):
             return list.__init__(self, items)
+        @iam_wildcard
         def add(self, permission):
             if permission not in self:
                 self.append(permission)
+        @property
+        def is_empty(self):
+            return len(self)==0
     def attach_iam(fn):
         def wrapped(component):
             iam=fn(component)
             if (iam and
-                len(iam)!=0):
+                not iam.is_empty):
                 component["permissions"]={"iam": list(iam)}
         return wrapped
-    def iam_wildcard(name):
-        return "%s:*" % name
     @attach_iam
     def api_permissions(api):
         return Iam.initialise(api)
@@ -118,10 +124,10 @@ def add_permissions(**kwargs):
         def trigger_permissions(iam, trigger):
             trigconf=TriggerConfig[trigger["type"]]
             if trigconf["event_sourced"]:
-                iam.add(iam_wildcard(trigconf["iam_name"]))
+                iam.add(trigconf["iam_name"])
         def target_permissions(iam, target):
             targconf=TriggerConfig[target["type"]]
-            iam.add(iam_wildcard(targconf["iam_name"]))
+            iam.add(targconf["iam_name"])
         iam=Iam.initialise(action)
         for attr in ["trigger",
                      "target"]:
