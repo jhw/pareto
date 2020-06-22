@@ -3,26 +3,20 @@ from pareto.components import *
 def synth_bucket(**kwargs):
     def is_website(kwargs):
         return "website" in kwargs and kwargs["website"]
-    def website_config():
+    def website_config(index="index.json"):
         corsrules=[{"AllowedMethods": ["GET"],
                     "AllowedOrigins": ["*"]}]
         corsconfig={"CorsRules": corsrules}
-        """
-        - index doc required I believe, even if not specified
-        """
-        websiteconfig={"IndexDocument": "index.json"}
+        websiteconfig={"IndexDocument": index}
         return {"AccessControl": "PublicRead",
                 "CorsConfiguration": corsconfig,
                 "WebsiteConfiguration": websiteconfig}
-    def lambda_notification_config(action):
+    def lambda_notification_config(action,
+                                   event="s3:ObjectCreated:*"):
         arn=fn_getatt(action["name"], "Arn")
         rules=[{"Name": "prefix",
                 "Value": action["path"]}]
-        """
-        - event hardcoded as `s3:ObjectCreated` for now
-        - could become an option later
-        """
-        return {"Event": "s3:ObjectCreated:*",
+        return {"Event": event,
                 "Function": arn,
                 "Filter": {"S3Key": {"Rules": rules}}}
     def notifications_configs(kwargs):

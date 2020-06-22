@@ -5,7 +5,8 @@ def synth_table(**kwargs):
               "int": "N",
               "float": "N"}
     @resource()
-    def Table(**kwargs):        
+    def Table(streamview="NEW_IMAGE",
+              **kwargs):        
         """
         - primary key currently defined as single field hash
         - ie no range key currently
@@ -44,7 +45,7 @@ def synth_table(**kwargs):
         if indexes!=[]:
             props["GlobalSecondaryIndexes"]=indexes
         if "action" in kwargs:
-            stream={"StreamViewType": "NEW_IMAGE"}
+            stream={"StreamViewType": streamview}
             props["StreamSpecification"]=stream
         return "AWS::DynamoDB::Table", props
     """

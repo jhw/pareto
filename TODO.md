@@ -1,9 +1,5 @@
 ### short
 
-- arg parameters
-  - s3:ObjectCreated:*
-  - NEW_IMAGE (ddb)
-
 - default logs permission
 - function to add iam wildcard
 - avoid duplicating permissions
@@ -61,6 +57,9 @@
 
 ### done
 
+- arg parameters
+  - s3:ObjectCreated:*
+  - NEW_IMAGE (ddb)
 - test optional args
 - sqs batch size
 - trigger, target permissions
