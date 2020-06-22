@@ -91,27 +91,44 @@ def remap_triggers(actions, triggers, **kwargs):
 """
         
 def add_permissions(**kwargs):
-    def init_iam(component):
-        return component.pop("permissions") if "permissions" in component else []
+    class Iam(list):
+        @classmethod
+        def initialise(self, component):
+            items=component.pop("permissions") if "permissions" in component else []
+            return Iam(items)
+        def __init__(self, items):
+            return list.__init__(self, items)
+        def add(self, permission):
+            if permission not in self:
+                self.append(permission)
+    def attach_iam(fn):
+        def wrapped(component):
+            iam=fn(component)
+            if (iam and
+                len(iam)!=0):
+                component["permissions"]={"iam": list(iam)}
+        return wrapped
+    def iam_wildcard(name):
+        return "%s:*" % name
+    @attach_iam
     def api_permissions(api):
-        iam=init_iam(api)
-        if iam!=[]:
-            api["permissions"]={"iam": iam}
+        return Iam.initialise(api)
+    @attach_iam
     def action_permissions(action):
         def trigger_permissions(iam, trigger):
             trigconf=TriggerConfig[trigger["type"]]
             if trigconf["event_sourced"]:
-                iam.append("%s:*" % trigconf["iam_name"])
+                iam.add(iam_wildcard(trigconf["iam_name"]))
         def target_permissions(iam, target):
             targconf=TriggerConfig[target["type"]]
-            iam.append("%s:*" % targconf["iam_name"])
-        iam=init_iam(action)
+            iam.add(iam_wildcard(targconf["iam_name"]))
+        iam=Iam.initialise(action)
         for attr in ["trigger",
                      "target"]:
             fn=eval("%s_permissions" % attr)
             fn(iam, action[attr])
-        if iam!=[]:
-            action["permissions"]={"iam": iam}
+        return iam
+    @attach_iam
     def trigger_permissions(trigger):
         pass
     for attr in kwargs.keys():

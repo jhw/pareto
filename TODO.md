@@ -1,18 +1,18 @@
 ### short
 
+- move wildcard function to iam class
+
 - default logs permission
-- function to add iam wildcard
-- avoid duplicating permissions
 - expose lambda options to dsl
   - audio generator will require concurrency
 - test adding add back ${AWS::Region} 
 - allow preprocessor target to be optional
 - preprocessor api target
+- preprocessor to validate name uniqueness
+- preprocessor to validate trigger!=target
 
 ### medium
 
-- preprocessor to validate name uniqueness
-- preprocessor to validate trigger!=target
 - allow multiple event source mappings
 - limit permissions and event source maps to specific functions only
 - use logical/physical_id reference names
@@ -57,6 +57,8 @@
 
 ### done
 
+- avoid duplicating permissions
+- add iam wildcard
 - arg parameters
   - s3:ObjectCreated:*
   - NEW_IMAGE (ddb)
