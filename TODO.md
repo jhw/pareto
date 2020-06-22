@@ -2,6 +2,7 @@
 
 - default logs permission
 - function to add iam wildcard
+- avoid duplicating permissions
 
 - expose lambda options to dsl
   - audio generator will require concurrency
