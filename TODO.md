@@ -1,20 +1,19 @@
 ### short
 
+- test optional args
+- arg parameters
+  - sqs batch size
+  - s3:ObjectCreated:*
+  - NEW_IMAGE (ddb)
+
 - default logs permission
 - function to add iam wildcard
 - avoid duplicating permissions
-
 - expose lambda options to dsl
   - audio generator will require concurrency
-
 - test adding add back ${AWS::Region} 
-
 - allow preprocessor target to be optional
 - preprocessor api target
-
-- expose event sourcing parameters to dsl
-  - s3:ObjectCreated:*
-  - NEW_IMAGE (ddb)
 
 ### medium
 
