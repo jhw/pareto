@@ -91,10 +91,6 @@ def remap_triggers(actions, triggers, **kwargs):
 """
         
 def add_permissions(**kwargs):
-    def iam_wildcard(fn):
-        def wrapped(self, name):
-            return fn(self, "%s:*" % name)
-        return wrapped
     class Iam(list):
         @classmethod
         def initialise(self,
@@ -107,7 +103,11 @@ def add_permissions(**kwargs):
             return iam
         def __init__(self, items):
             return list.__init__(self, items)
-        @iam_wildcard
+        def wildcard(fn):
+            def wrapped(self, name):
+                return fn(self, "%s:*" % name)
+            return wrapped
+        @wildcard
         def add(self, permission):
             if permission not in self:
                 self.append(permission)

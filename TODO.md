@@ -1,6 +1,6 @@
 ### short
 
-- try moving decorators inside IAM class
+- move attach decorator
 
 - allow preprocessor target to be optional
 - preprocessor api target
@@ -57,6 +57,7 @@
 
 ### done
 
+- move wildcard decorator
 - default logs permission
 - move wildcard function to iam class
 - avoid duplicating permissions
