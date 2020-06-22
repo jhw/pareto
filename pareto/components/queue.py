@@ -12,13 +12,12 @@ def synth_queue(**kwargs):
     def LambdaMapping(**kwargs):
         suffix="%s-mapping" % kwargs["action"]["name"]
         @resource(suffix)
-        def LambdaMapping(**kwargs):
+        def LambdaMapping(batch=1, **kwargs):
             funcname=fn_getatt(kwargs["action"]["name"], "Arn")
             eventsource=fn_getatt(kwargs["name"], "Arn")
             props={"FunctionName": funcname,
-                   "EventSourceArn": eventsource}
-            if "batch" in kwargs["action"]:
-                props["BatchSize"]=kwargs["action"]["batch"]
+                   "EventSourceArn": eventsource,
+                   "BatchSize": batch}
             return "AWS::Lambda::EventSourceMapping", props
         return LambdaMapping(**kwargs)
     resources=[Queue(**kwargs)]

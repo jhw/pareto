@@ -1,8 +1,6 @@
 ### short
 
-- test optional args
 - arg parameters
-  - sqs batch size
   - s3:ObjectCreated:*
   - NEW_IMAGE (ddb)
 
@@ -63,6 +61,8 @@
 
 ### done
 
+- test optional args
+- sqs batch size
 - trigger, target permissions
 - batch handling
 - add target info to slow russian
