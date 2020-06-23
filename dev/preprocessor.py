@@ -23,6 +23,14 @@ def KeyFn(component):
                       component["name"])
 
 def validate(**kwargs):
+    def validate_uniqueness(**kwargs):
+        keys=[]
+        for attr in kwargs.keys():
+            keys+=[KeyFn(component)
+                   for component in kwargs[attr]]
+        ukeys=list(set(keys))
+        if len(keys)!=len(ukeys):
+            raise RuntimeError("keys are not unique")
     def validate_action(action, trigmap):
         for attr in ["trigger",
                      "target"]:
@@ -34,7 +42,9 @@ def validate(**kwargs):
                  for trigger in triggers}
         for action in actions:
             validate_action(action, trigmap)
-    cross_validate_refs(**kwargs)
+    for fn in [validate_uniqueness,
+               cross_validate_refs]:
+        fn(**kwargs)
             
 """
 - DSL is action- centric; triggers are nested under actions, and reflect event type information

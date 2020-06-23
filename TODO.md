@@ -1,6 +1,5 @@
 ### short
 
-- add unique name testing
 - preprocessor to validate trigger!=target
 
 - expose lambda options to dsl
@@ -55,6 +54,7 @@
 
 ### done
 
+- add unique name testing
 - embed validation in wrapper method
 - abstract iam class
 - abstract iam methods used by action
