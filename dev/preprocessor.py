@@ -22,18 +22,20 @@ def KeyFn(component):
     return "%s/%s" % (component["type"],
                       component["name"])
 
-def cross_validate(actions, triggers, **kwargs):
+def validate(**kwargs):
     def validate_action(action, trigmap):
         for attr in ["trigger",
                      "target"]:
             trigkey=KeyFn(action[attr])
             if trigkey not in trigmap.keys():
                 raise RuntimeError("%s %s not found" % (attr, trigkey))
-    trigmap={KeyFn(trigger):trigger
-             for trigger in triggers}
-    for action in actions:
-        validate_action(action, trigmap)
-    
+    def cross_validate_refs(actions, triggers, **kwargs):
+        trigmap={KeyFn(trigger):trigger
+                 for trigger in triggers}
+        for action in actions:
+            validate_action(action, trigmap)
+    cross_validate_refs(**kwargs)
+            
 """
 - DSL is action- centric; triggers are nested under actions, and reflect event type information
 - but CF is trigger- centric; for non- event sourced triggers (s3, sns, cloudwatch event), action is explicitly nested under trigger as function reference
@@ -217,7 +219,7 @@ def preprocess(config, filters=TypeFilters):
     kwargs={"%ss" % attr: apply_filter(config["components"],
                                        filters[attr])
             for attr in filters.keys()}
-    for fn in [cross_validate,
+    for fn in [validate,
                remap_triggers,
                add_permissions,
                remap_types,

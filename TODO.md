@@ -1,8 +1,5 @@
 ### short
 
-- abstract iam class
-- embed validation in wrapper method
-
 - add unique name testing
 - preprocessor to validate trigger!=target
 
@@ -58,6 +55,8 @@
 
 ### done
 
+- embed validation in wrapper method
+- abstract iam class
 - abstract iam methods used by action
 - allow api to add dest permissions
 - allow preprocessor target to be optional
