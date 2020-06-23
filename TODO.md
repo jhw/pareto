@@ -2,8 +2,8 @@
 
 - add unique name testing
   - root components only
-
 - preprocessor to validate trigger!=target
+
 - expose lambda options to dsl
   - audio generator will require concurrency
 - test adding add back ${AWS::Region} 
