@@ -104,7 +104,7 @@ def add_permissions(**kwargs):
         @classmethod
         def attach(self, fn):
             def wrapped(component, **kwargs):
-                iam=fn(component)
+                iam=fn(component, **kwargs)
                 if (iam and
                     not iam.is_empty):
                     component["permissions"]={"iam": iam.render()}
