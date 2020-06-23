@@ -10,6 +10,7 @@
 
 ### medium
 
+- specific ddb/sqs lookback errors
 - allow multiple event source mappings
 - limit permissions and event source maps to specific functions only
 - use logical/physical_id reference namesg 
@@ -37,6 +38,7 @@
   
 ### long
 
+- custom lambda authorisers
 - nested stacks for apis, triggers, actions
 - sns
 - dead letter queues
