@@ -23,7 +23,7 @@ def KeyFn(component):
                       component["name"])
 
 def validate(**kwargs):
-    def validate_uniqueness(**kwargs):
+    def assert_unique(**kwargs):
         keys=[]
         for attr in kwargs.keys():
             keys+=[KeyFn(component)
@@ -31,19 +31,19 @@ def validate(**kwargs):
         ukeys=list(set(keys))
         if len(keys)!=len(ukeys):
             raise RuntimeError("keys are not unique")
-    def validate_action(action, trigmap):
-        for attr in ["trigger",
-                     "target"]:
-            trigkey=KeyFn(action[attr])
-            if trigkey not in trigmap.keys():
-                raise RuntimeError("%s %s not found" % (attr, trigkey))
-    def cross_validate_refs(actions, triggers, **kwargs):
+    def assert_trigger_target_refs(actions, triggers, **kwargs):
+        def validate_action(action, trigmap):
+            for attr in ["trigger",
+                         "target"]:
+                trigkey=KeyFn(action[attr])
+                if trigkey not in trigmap.keys():
+                    raise RuntimeError("%s %s not found" % (attr, trigkey))        
         trigmap={KeyFn(trigger):trigger
                  for trigger in triggers}
         for action in actions:
             validate_action(action, trigmap)
-    for fn in [validate_uniqueness,
-               cross_validate_refs]:
+    for fn in [assert_unique,
+               assert_trigger_target_refs]:
         fn(**kwargs)
             
 """
