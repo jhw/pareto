@@ -1,11 +1,16 @@
 ### short
 
+- abstract iam methods used by action
+- allow api to add dest permissions
+- add unique name testing
+  - root components only
+- change wildcard name to expand
+- only add wildcard if no colon in name
+- add render method to iam to convert to list
+- add flatten method to iam which removes specifics if wildcard exists
+
 - allow preprocessor target to be optional
-
-- preprocessor api target
-- preprocessor to validate name uniqueness
 - preprocessor to validate trigger!=target
-
 - expose lambda options to dsl
   - audio generator will require concurrency
 - test adding add back ${AWS::Region} 
