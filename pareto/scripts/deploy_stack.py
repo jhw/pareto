@@ -165,6 +165,7 @@ if __name__=="__main__":
         print (yaml.safe_dump(stack,
                               default_flow_style=False))
         
+        dump_stack(stack)
         """
         metrics=stack_metrics(stack)
         validate_metrics(metrics)

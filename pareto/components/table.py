@@ -5,7 +5,7 @@ def synth_table(**kwargs):
               "int": "N",
               "float": "N"}
     @resource()
-    def Table(streamview="NEW_IMAGE",
+    def Table(stream={"type": "NEW_IMAGE"},
               **kwargs):        
         """
         - primary key currently defined as single field hash
@@ -45,8 +45,7 @@ def synth_table(**kwargs):
         if indexes!=[]:
             props["GlobalSecondaryIndexes"]=indexes
         if "action" in kwargs:
-            stream={"StreamViewType": streamview}
-            props["StreamSpecification"]=stream
+            props["StreamSpecification"]={"StreamViewType": stream["type"]}
         return "AWS::DynamoDB::Table", props
     """
     - don't *think* you need a LambdaPermission if you have a LambdaMapping

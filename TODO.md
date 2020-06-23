@@ -1,19 +1,19 @@
 ### short
 
-- expose lambda options to dsl
-  - audio generator will require concurrency
-
-- test adding add back ${AWS::Region}
+- comment out temp code in stack.yaml
+- re- test stack.yaml deployment
+- test hyphenated ddb attribute names
+- limit permissions to specific functions only
 - aws scripts to support missing attributes
+- test adding add back ${AWS::Region}
+- specific ddb/sqs lookback iam permissions
+- use logical/physical_id reference names
 
 ### medium
 
-- specific ddb/sqs lookback iam permissions
-- circularity detection
+- preprocessor circularity detection
   - trig!=target unless s3 bucket, in which case paths can't be the same
 - allow multiple event source mappings
-- limit permissions and event source maps to specific functions only
-- use logical/physical_id reference names
 - preprocessor json schema
 - check all scripts work on malformed stacks
   - delete_stack fails on missing S3 bucket
@@ -25,7 +25,6 @@
   
 ### thoughts
 
-- validate triggers and targets not in infinite loop  ?
 - find all tests rather than just index.py ?
   - conventions should be that all tests are in index.py
 - remove managed policy support ?
@@ -37,9 +36,7 @@
   
 ### long
 
-- custom lambda authorisers
 - nested stacks for apis, triggers, actions
-- sns
 - dead letter queues
 - layers
 - dashboard section titles
@@ -48,6 +45,7 @@
 - CI pipeline (codepipeline, codebuild)
 - github actions for lambda push
 - slack alerts
+- custom lambda authorisers
 - cognito
 - route 53
 - cloudfront
@@ -55,6 +53,8 @@
 
 ### done
 
+- expose lambda options to dsl
+  - audio generator will require concurrency
 - add unique name testing
 - embed validation in wrapper method
 - abstract iam class

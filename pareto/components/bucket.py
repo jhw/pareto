@@ -11,26 +11,26 @@ def synth_bucket(**kwargs):
         return {"AccessControl": "PublicRead",
                 "CorsConfiguration": corsconfig,
                 "WebsiteConfiguration": websiteconfig}
-    def lambda_notification_config(action,
-                                   event="s3:ObjectCreated:*"):
+    def lambda_notification_config(action, event):
         arn=fn_getatt(action["name"], "Arn")
         rules=[{"Name": "prefix",
                 "Value": action["path"]}]
-        return {"Event": event,
+        return {"Event": event["type"],
                 "Function": arn,
                 "Filter": {"S3Key": {"Rules": rules}}}
-    def notifications_configs(kwargs):
-        lambdaconfigs=[lambda_notification_config(action)
+    def notifications_configs(event, kwargs):
+        lambdaconfigs=[lambda_notification_config(action, event)
                       for action in kwargs["actions"]]
         notifications={"LambdaConfigurations": lambdaconfigs}
         return {"NotificationConfiguration": notifications}
     @resource()
-    def Bucket(**kwargs):
+    def Bucket(event={"type":  "s3:ObjectCreated:*"},
+               **kwargs):
         props={"BucketName": global_name(kwargs)}
         if is_website(kwargs):
             props.update(website_config())
         if "actions" in kwargs:
-            props.update(notifications_configs(kwargs))
+            props.update(notifications_configs(event, kwargs))
         return "AWS::S3::Bucket", props
     def LambdaPermission(kwargs, action):
         suffix="%s-permission" % action["name"]
