@@ -1,19 +1,20 @@
 ### short
 
-- preprocessor to validate trigger!=target
-
 - expose lambda options to dsl
   - audio generator will require concurrency
-- test adding add back ${AWS::Region} 
+
+- test adding add back ${AWS::Region}
+- aws scripts to support missing attributes
 
 ### medium
 
-- specific ddb/sqs lookback errors
+- specific ddb/sqs lookback iam permissions
+- circularity detection
+  - trig!=target unless s3 bucket, in which case paths can't be the same
 - allow multiple event source mappings
 - limit permissions and event source maps to specific functions only
-- use logical/physical_id reference namesg 
+- use logical/physical_id reference names
 - preprocessor json schema
-- aws scripts to support missing attributes
 - check all scripts work on malformed stacks
   - delete_stack fails on missing S3 bucket
   - delete_stack doesn't appear to log IAM role deletion

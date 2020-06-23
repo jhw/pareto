@@ -31,19 +31,21 @@ def validate(**kwargs):
         ukeys=list(set(keys))
         if len(keys)!=len(ukeys):
             raise RuntimeError("keys are not unique")
-    def assert_trigger_target_refs(actions, triggers, **kwargs):
-        def validate_action(action, trigmap):
+    def assert_triggers(actions, triggers, **kwargs):
+        def assert_refs(action, trigmap):
             for attr in ["trigger",
                          "target"]:
                 trigkey=KeyFn(action[attr])
                 if trigkey not in trigmap.keys():
-                    raise RuntimeError("%s %s not found" % (attr, trigkey))        
+                    raise RuntimeError("%s %s %s not found" % (KeyFn(action),
+                                                               attr,
+                                                               trigkey))
         trigmap={KeyFn(trigger):trigger
                  for trigger in triggers}
         for action in actions:
-            validate_action(action, trigmap)
+            assert_refs(action, trigmap)
     for fn in [assert_unique,
-               assert_trigger_target_refs]:
+               assert_triggers]:
         fn(**kwargs)
             
 """
