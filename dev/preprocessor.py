@@ -103,8 +103,8 @@ def add_permissions(**kwargs):
             return iam
         @classmethod
         def attach(self, fn):
-            def wrapped(component, **kwargs):
-                iam=fn(component, **kwargs)
+            def wrapped(component):
+                iam=fn(component)
                 if (iam and
                     not iam.is_empty):
                     component["permissions"]={"iam": iam.render()}
@@ -146,11 +146,7 @@ def add_permissions(**kwargs):
             return flatten(groups)
         def render(self):
             return list(self.compact())
-    @Iam.attach
-    def api_permissions(api):
-        return Iam.initialise(api)
-    @Iam.attach
-    def action_permissions(action):
+    def func_permissions(component, attrs):
         def trigger_permissions(iam, trigger):
             trigconf=TriggerConfig[trigger["type"]]
             if trigconf["event_sourced"]:
@@ -158,12 +154,18 @@ def add_permissions(**kwargs):
         def target_permissions(iam, target):
             targconf=TriggerConfig[target["type"]]
             iam.add(targconf["iam_name"])
-        iam=Iam.initialise(action)
-        for attr in ["trigger",
-                     "target"]:
-            fn=eval("%s_permissions" % attr)
-            fn(iam, action[attr])
-        return iam
+        iam=Iam.initialise(component)
+        for attr in attrs:
+            if attr in component:
+                fn=eval("%s_permissions" % attr)
+                fn(iam, component[attr])
+        return iam        
+    @Iam.attach
+    def api_permissions(api):
+        return func_permissions(component, ["target"])
+    @Iam.attach
+    def action_permissions(action):
+        return func_permissions(component, ["trigger", "target"])
     @Iam.attach
     def trigger_permissions(trigger):
         pass

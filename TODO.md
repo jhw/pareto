@@ -1,11 +1,8 @@
 ### short
 
-- abstract iam methods used by action
-- allow api to add dest permissions
 - add unique name testing
   - root components only
 
-- allow preprocessor target to be optional
 - preprocessor to validate trigger!=target
 - expose lambda options to dsl
   - audio generator will require concurrency
@@ -57,6 +54,9 @@
 
 ### done
 
+- abstract iam methods used by action
+- allow api to add dest permissions
+- allow preprocessor target to be optional
 - change wildcard name to expand
 - only add wildcard if no colon in name
 - add render method to iam to convert to list
