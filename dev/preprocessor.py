@@ -89,63 +89,72 @@ def remap_triggers(actions, triggers, **kwargs):
 - although these are billed as event sourced, reality is that they poll their triggers
 - hence they need "lookback" permissions to do that
 """
-        
+
+class Iam(list):
+
+    @classmethod
+    def initialise(self,
+                   component,
+                   defaults=["logs"]):
+        permissions=component.pop("permissions") if "permissions" in component else []
+        iam=Iam(permissions)
+        for permission in defaults:
+            iam.add(permission)
+        return iam
+
+    @classmethod
+    def attach(self, fn):
+        def wrapped(component):
+            iam=fn(component)
+            if (iam and
+                not iam.is_empty):
+                component["permissions"]={"iam": iam.render()}
+        return wrapped
+
+    def __init__(self, items):
+        return list.__init__(self, items)
+
+    def expand(fn):
+        def wrapped(self, name):
+            return fn(self, "%s:*" % name if ":" not in name else name)
+        return wrapped
+
+    @expand
+    def add(self, permission):
+        if permission not in self:
+            self.append(permission)
+
+    @property
+    def is_empty(self):
+        return len(self)==0
+
+    def compact(self):
+        def group(items):
+            groups={}
+            for k, v in items:
+                groups.setdefault(k, [])
+                groups[k].append(v)
+            return groups
+        def compact(groups):
+            for k in groups.keys():
+                if "*" in groups[k]:
+                    groups[k]=["*"]
+        def flatten(groups):
+            items=[]
+            for k in groups.keys():
+                for v in groups[k]:
+                    items.append("%s:%s" % (k, v))                
+            return items                
+        items=[item.split(":")
+               for item in self]
+        groups=group(items)
+        compact(groups)
+        return flatten(groups)
+
+    def render(self):
+        return list(self.compact())
+
 def add_permissions(**kwargs):
-    class Iam(list):
-        @classmethod
-        def initialise(self,
-                       component,
-                       defaults=["logs"]):
-            permissions=component.pop("permissions") if "permissions" in component else []
-            iam=Iam(permissions)
-            for permission in defaults:
-                iam.add(permission)
-            return iam
-        @classmethod
-        def attach(self, fn):
-            def wrapped(component):
-                iam=fn(component)
-                if (iam and
-                    not iam.is_empty):
-                    component["permissions"]={"iam": iam.render()}
-            return wrapped
-        def __init__(self, items):
-            return list.__init__(self, items)
-        def expand(fn):
-            def wrapped(self, name):
-                return fn(self, "%s:*" % name if ":" not in name else name)
-            return wrapped
-        @expand
-        def add(self, permission):
-            if permission not in self:
-                self.append(permission)
-        @property
-        def is_empty(self):
-            return len(self)==0
-        def compact(self):
-            def group(items):
-                groups={}
-                for k, v in items:
-                    groups.setdefault(k, [])
-                    groups[k].append(v)
-                return groups
-            def compact(groups):
-                for k in groups.keys():
-                    if "*" in groups[k]:
-                        groups[k]=["*"]
-            def flatten(groups):
-                items=[]
-                for k in groups.keys():
-                    for v in groups[k]:
-                        items.append("%s:%s" % (k, v))                
-                return items                
-            items=[item.split(":")
-                   for item in self]
-            groups=group(items)
-            compact(groups)
-            return flatten(groups)
-        def render(self):
-            return list(self.compact())
     def func_permissions(component, attrs):
         def trigger_permissions(iam, trigger):
             trigconf=TriggerConfig[trigger["type"]]

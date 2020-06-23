@@ -1,7 +1,9 @@
 ### short
 
+- abstract iam class
+- embed validation in wrapper method
+
 - add unique name testing
-  - root components only
 - preprocessor to validate trigger!=target
 
 - expose lambda options to dsl
