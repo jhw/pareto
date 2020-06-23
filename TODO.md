@@ -4,10 +4,6 @@
 - allow api to add dest permissions
 - add unique name testing
   - root components only
-- change wildcard name to expand
-- only add wildcard if no colon in name
-- add render method to iam to convert to list
-- add flatten method to iam which removes specifics if wildcard exists
 
 - allow preprocessor target to be optional
 - preprocessor to validate trigger!=target
@@ -61,6 +57,10 @@
 
 ### done
 
+- change wildcard name to expand
+- only add wildcard if no colon in name
+- add render method to iam to convert to list
+- add flatten method to iam which removes specifics if wildcard exists
 - move attach decorator
 - move wildcard decorator
 - default logs permission

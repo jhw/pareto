@@ -103,25 +103,49 @@ def add_permissions(**kwargs):
             return iam
         @classmethod
         def attach(self, fn):
-            def wrapped(component):
+            def wrapped(component, **kwargs):
                 iam=fn(component)
                 if (iam and
                     not iam.is_empty):
-                    component["permissions"]={"iam": list(iam)}
+                    component["permissions"]={"iam": iam.render()}
             return wrapped
         def __init__(self, items):
             return list.__init__(self, items)
-        def wildcard(fn):
+        def expand(fn):
             def wrapped(self, name):
-                return fn(self, "%s:*" % name)
+                return fn(self, "%s:*" % name if ":" not in name else name)
             return wrapped
-        @wildcard
+        @expand
         def add(self, permission):
             if permission not in self:
                 self.append(permission)
         @property
         def is_empty(self):
             return len(self)==0
+        def compact(self):
+            def group(items):
+                groups={}
+                for k, v in items:
+                    groups.setdefault(k, [])
+                    groups[k].append(v)
+                return groups
+            def compact(groups):
+                for k in groups.keys():
+                    if "*" in groups[k]:
+                        groups[k]=["*"]
+            def flatten(groups):
+                items=[]
+                for k in groups.keys():
+                    for v in groups[k]:
+                        items.append("%s:%s" % (k, v))                
+                return items                
+            items=[item.split(":")
+                   for item in self]
+            groups=group(items)
+            compact(groups)
+            return flatten(groups)
+        def render(self):
+            return list(self.compact())
     @Iam.attach
     def api_permissions(api):
         return Iam.initialise(api)
