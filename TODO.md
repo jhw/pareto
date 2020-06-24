@@ -2,8 +2,6 @@
 
 - api gateway permission source
 
-- test adding add back ${AWS::Region}
-
 ### medium
 
 - aws scripts to support missing attributes
@@ -23,6 +21,8 @@
   
 ### thoughts
 
+- use ${AWS::Region} ?
+  - no; dash will never support it as supposed to be multi- region
 - convert underscored table attribute names to hashes ?
   - no; you don't do this for any other names so why bother with table ?
 - find all tests rather than just index.py ?
