@@ -2,7 +2,6 @@
 
 - api gateway permission source
 
-- test dashboard yaml
 - test adding add back ${AWS::Region}
 
 ### medium
@@ -54,6 +53,8 @@
 
 ### done
 
+- test dashboard yaml
+  - doesn't work
 - s3, cloudwatch event permission source
 - comment out temp code in stack.yaml
 - re- test stack.yaml deployment
