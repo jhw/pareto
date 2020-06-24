@@ -3,14 +3,14 @@
 - comment out temp code in stack.yaml
 - re- test stack.yaml deployment
 - test hyphenated ddb attribute names
-- limit permissions to specific functions only
-- aws scripts to support missing attributes
+- permssion source
 - test adding add back ${AWS::Region}
-- specific ddb/sqs lookback iam permissions
-- use logical/physical_id reference names
 
 ### medium
 
+- aws scripts to support missing attributes
+- specific ddb/sqs lookback iam permissions
+- use logical/physical_id reference names
 - preprocessor circularity detection
   - trig!=target unless s3 bucket, in which case paths can't be the same
 - allow multiple event source mappings
