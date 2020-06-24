@@ -1,11 +1,19 @@
-### short
+### short [api gateway permission src]
 
-- api gateway permission source
+- https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html
+
+```
+$ aws lambda add-permission --function-name my-function \
+--statement-id apigateway-get --action lambda:InvokeFunction \
+--principal apigateway.amazonaws.com \
+--source-arn "arn:aws:execute-api:us-east-2:123456789012:mnh1xmpli7/default/GET/"
+```
 
 ### medium
 
 - aws scripts to support missing attributes
 - specific ddb/sqs lookback iam permissions
+  - test without specific permissions and see what u get
 - use logical/physical_id reference names
 - preprocessor circularity detection
   - trig!=target unless s3 bucket, in which case paths can't be the same
