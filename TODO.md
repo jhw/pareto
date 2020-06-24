@@ -2,6 +2,7 @@
 
 - api gateway permission source
 
+- test dashboard yaml
 - test adding add back ${AWS::Region}
 
 ### medium
