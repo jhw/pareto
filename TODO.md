@@ -1,7 +1,6 @@
 ### short
 
-- test hyphenated ddb attribute names
-- permssion source
+- permission source
 - test adding add back ${AWS::Region}
 
 ### medium
@@ -23,6 +22,8 @@
   
 ### thoughts
 
+- convert underscored table attribute names to hashes ?
+  - no; you don't do this for any other names so why bother with table ?
 - find all tests rather than just index.py ?
   - conventions should be that all tests are in index.py
 - remove managed policy support ?
