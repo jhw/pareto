@@ -1,6 +1,7 @@
 ### short
 
-- permission source
+- api gateway permission source
+
 - test adding add back ${AWS::Region}
 
 ### medium
@@ -52,6 +53,7 @@
 
 ### done
 
+- s3, cloudwatch event permission source
 - comment out temp code in stack.yaml
 - re- test stack.yaml deployment
 - expose lambda options to dsl

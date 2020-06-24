@@ -68,9 +68,9 @@ def synth_function(**kwargs):
         return "AWS::ApiGateway::Method", props
     @resource(suffix="api-gw-permission")
     def ApiGwPermission(**kwargs):
-        arn=fn_getatt(kwargs["name"], "Arn")
+        funcname=fn_getatt(kwargs["name"], "Arn")
         props={"Action": "lambda:InvokeFunction",
-               "FunctionName": arn,
+               "FunctionName": funcname,
                "Principal": "apigateway.amazonaws.com"}
         return "AWS::Lambda::Permission", props
     @output(suffix="url")

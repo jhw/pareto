@@ -164,8 +164,8 @@ if __name__=="__main__":
         stack=synth_stack(config)
         metrics=stack_metrics(stack)
         validate_metrics(metrics)
-        logging.info(("\n\n%s\n\n" % pd.DataFrame(metrics)))
-        dump_stack(stack)
+        print (pd.DataFrame(metrics))
+        dump_stack(stack)        
         deploy_stack(config, stack, stagename)
     except ClientError as error:
         logging.error(error)                      
