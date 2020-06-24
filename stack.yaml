@@ -1,15 +1,12 @@
 components:
 - name: hello-bucket
   type: bucket
-  event:
-    type: FOOBAR # TEMP
   website: true
   actions:
   - name: hello-get
     path: whatever
 - name: hello-get
   type: function
-  concurrency: 1000 # TEMP
   iam:
     permissions:
     - "logs:*"
@@ -38,8 +35,6 @@ components:
     hello: world
 - name: hello-table
   type: table
-  stream:
-    type: FOOBAR # TEMP
   fields:
   - name: my-hash
     type: string

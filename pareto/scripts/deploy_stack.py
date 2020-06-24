@@ -158,21 +158,15 @@ if __name__=="__main__":
         if not os.path.exists(stackfile):
             raise RuntimeError("Stack file does not exist")
         config=load_config(stackfile, stagename)
-        # run_tests(config)
+        run_tests(config)
         add_staging(config)
-        # push_lambdas(config)
+        push_lambdas(config)
         stack=synth_stack(config)
-        print (yaml.safe_dump(stack,
-                              default_flow_style=False))
-        
-        dump_stack(stack)
-        """
         metrics=stack_metrics(stack)
         validate_metrics(metrics)
-        logging.info((pd.DataFrame(metrics)))
+        logging.info(("\n\n%s\n\n" % pd.DataFrame(metrics)))
         dump_stack(stack)
         deploy_stack(config, stack, stagename)
-        """
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

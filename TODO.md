@@ -1,7 +1,5 @@
 ### short
 
-- comment out temp code in stack.yaml
-- re- test stack.yaml deployment
 - test hyphenated ddb attribute names
 - permssion source
 - test adding add back ${AWS::Region}
@@ -53,6 +51,8 @@
 
 ### done
 
+- comment out temp code in stack.yaml
+- re- test stack.yaml deployment
 - expose lambda options to dsl
   - audio generator will require concurrency
 - add unique name testing
