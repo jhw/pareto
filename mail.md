@@ -34,7 +34,7 @@ Resources:
             Ref: HelloGetApiGwRestApi
 ```
 
-What's the correct `SourceArn` format should be here to make this work ?
+What's the correct `SourceArn` format here to make this work ?
 
 ---
 

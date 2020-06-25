@@ -1,17 +1,9 @@
-### short [api gateway permission src]
+### short 
 
-- https://docs.aws.amazon.com/apigateway/latest/developerguide/arn-format-reference.html
-- https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html
-
-```
-$ aws lambda add-permission --function-name my-function \
---statement-id apigateway-get --action lambda:InvokeFunction \
---principal apigateway.amazonaws.com \
---source-arn "arn:aws:execute-api:us-east-2:123456789012:mnh1xmpli7/default/GET/"
-```
-
-- the number is the account number, so can maybe be ignored
-
+- replace :aws: with :${AWS::Partition}
+- remove `Sid`
+- harmonise `Allow` vs `allow`
+- eliminate `:::` in S3 bucket policy
 
 ### medium
 
@@ -65,6 +57,17 @@ $ aws lambda add-permission --function-name my-function \
 
 ### done
 
+- https://docs.aws.amazon.com/apigateway/latest/developerguide/arn-format-reference.html
+- https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html
+
+```
+$ aws lambda add-permission --function-name my-function \
+--statement-id apigateway-get --action lambda:InvokeFunction \
+--principal apigateway.amazonaws.com \
+--source-arn "arn:aws:execute-api:us-east-2:123456789012:mnh1xmpli7/default/GET/"
+```
+
+- the number is the account number, so can maybe be ignored
 - test dashboard yaml
   - doesn't work
 - s3, cloudwatch event permission source

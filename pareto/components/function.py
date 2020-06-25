@@ -68,7 +68,7 @@ def synth_function(**kwargs):
         return "AWS::ApiGateway::Method", props
     @resource(suffix="api-gw-permission")
     def ApiGwPermission(**kwargs):
-        sourcearn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/%s/" % (kwargs["region"], kwargs["stage"])
+        sourcearn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/%s/%s/" % (kwargs["region"], kwargs["stage"], kwargs["api"]["method"])
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         eventsource=fn_sub(sourcearn, {"rest_api": restapi})
         funcname=fn_getatt(kwargs["name"], "Arn")
