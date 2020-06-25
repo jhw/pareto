@@ -68,10 +68,14 @@ def synth_function(**kwargs):
         return "AWS::ApiGateway::Method", props
     @resource(suffix="api-gw-permission")
     def ApiGwPermission(**kwargs):
+        sourcearn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/%s/" % (kwargs["region"], kwargs["stage"])
+        restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
+        eventsource=fn_sub(sourcearn, {"rest_api": restapi})
         funcname=fn_getatt(kwargs["name"], "Arn")
         props={"Action": "lambda:InvokeFunction",
                "FunctionName": funcname,
-               "Principal": "apigateway.amazonaws.com"}
+               "Principal": "apigateway.amazonaws.com",
+               "SourceArn": eventsource}
         return "AWS::Lambda::Permission", props
     @output(suffix="url")
     def ApiGwUrl(**kwargs):
