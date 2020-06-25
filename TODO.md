@@ -1,10 +1,11 @@
 ### short 
 
-- use `fn::sub` in bucket policy creation
+- try using partition sub in policy
+
+- separate functions for arn creators if they can't work on a single line
 
 ### medium
 
-- remove use of ${AWS::Partition} if can't be used in bucket policy
 - aws scripts to support missing attributes
 - specific ddb/sqs lookback iam permissions
   - test without specific permissions and see what u get
@@ -60,6 +61,7 @@
 
 ### done
 
+- use `fn::sub` in bucket policy creation
 - replace :aws: with :${AWS::Partition}
 - harmonise `Allow` vs `allow`
 - remove `Sid`
