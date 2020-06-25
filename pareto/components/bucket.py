@@ -53,8 +53,7 @@ def synth_bucket(**kwargs):
             statement=[{"Action": "s3:GetObject",
                         "Effect": "allow",
                         "Principal": "*",
-                        "Resource": resource,
-                        "Sid": "PublicReadForGetBucketObjects"}]
+                        "Resource": resource}]
             return {"Statement": statement,
                     "Version": "2012-10-17"}
         props={"Bucket": ref(kwargs["name"]),
