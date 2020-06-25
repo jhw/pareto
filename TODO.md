@@ -1,7 +1,6 @@
 ### short 
 
 - replace :aws: with :${AWS::Partition}
-- harmonise `Allow` vs `allow`
 - eliminate `:::` in S3 bucket policy
 
 ### medium
@@ -56,6 +55,7 @@
 
 ### done
 
+- harmonise `Allow` vs `allow`
 - remove `Sid`
 - https://docs.aws.amazon.com/apigateway/latest/developerguide/arn-format-reference.html
 - https://docs.aws.amazon.com/lambda/latest/dg/services-apigateway.html

@@ -51,7 +51,7 @@ def synth_bucket(**kwargs):
                               ref(kwargs["name"]),
                               "/*"])
             statement=[{"Action": "s3:GetObject",
-                        "Effect": "allow",
+                        "Effect": "Allow",
                         "Principal": "*",
                         "Resource": resource}]
             return {"Statement": statement,

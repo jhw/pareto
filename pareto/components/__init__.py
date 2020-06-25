@@ -55,7 +55,7 @@ def output(suffix=None):
 def IamRole(**kwargs):
     def assume_role_policy_doc():
         statement=[{"Action": "sts:AssumeRole",
-                    "Effect": "allow",
+                    "Effect": "Allow",
                     "Principal": {"Service": kwargs["service"]}}]
         return {"Statement": statement,
                 "Version": "2012-10-17"}
