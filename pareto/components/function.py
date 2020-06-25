@@ -52,7 +52,7 @@ def synth_function(**kwargs):
         return "AWS::ApiGateway::Stage", props
     @resource(suffix="api-gw-method")
     def ApiGwMethod(**kwargs):
-        uri=fn_sub("arn:${AWS::Partition}:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations" % kwargs["region"],
+        uri=fn_sub("arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations" % kwargs["region"],
                    {"lambda_arn": fn_getatt(kwargs["name"], "Arn")})
         integration={"Uri": uri,
                      "IntegrationHttpMethod": "POST",
@@ -68,9 +68,8 @@ def synth_function(**kwargs):
         return "AWS::ApiGateway::Method", props
     @resource(suffix="api-gw-permission")
     def ApiGwPermission(**kwargs):
-        sourcearn="arn:${AWS::Partition}:execute-api:%s:${AWS::AccountId}:${rest_api}/%s/%s/" % (kwargs["region"], kwargs["stage"], kwargs["api"]["method"])
-        restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
-        eventsource=fn_sub(sourcearn, {"rest_api": restapi})
+        eventsource=fn_sub("arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/%s/%s/" % (kwargs["region"], kwargs["stage"], kwargs["api"]["method"]),
+                           {"rest_api": ref("%s-api-gw-rest-api" % kwargs["name"])})
         funcname=fn_getatt(kwargs["name"], "Arn")
         props={"Action": "lambda:InvokeFunction",
                "FunctionName": funcname,

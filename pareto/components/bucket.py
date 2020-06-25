@@ -47,11 +47,6 @@ def synth_bucket(**kwargs):
     @resource(suffix="policy")
     def BucketPolicy(**kwargs):
         def policy_document(kwargs):
-            """
-            resource=fn_join([
-                              ref(kwargs["name"]),
-                              "/*"])
-            """
             resource=fn_sub("arn:aws:s3:::${bucket_name}/*",
                             {"bucket_name": ref(kwargs["name"])})
             statement=[{"Action": "s3:GetObject",
