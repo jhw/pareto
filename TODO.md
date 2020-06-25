@@ -1,10 +1,10 @@
 ### short 
 
-- replace :aws: with :${AWS::Partition}
-- eliminate `:::` in S3 bucket policy
+- use `fn::sub` in bucket policy creation
 
 ### medium
 
+- remove use of ${AWS::Partition} if can't be used in bucket policy
 - aws scripts to support missing attributes
 - specific ddb/sqs lookback iam permissions
   - test without specific permissions and see what u get
@@ -16,6 +16,8 @@
 - check all scripts work on malformed stacks
   - delete_stack fails on missing S3 bucket
   - delete_stack doesn't appear to log IAM role deletion
+  
+- integrate preprocessor and generate slow russian stack
 - scaffold generator [notes]
 - replace timestamp with git version
   - deploy LATEST unless commit specified
@@ -23,6 +25,9 @@
   
 ### thoughts
 
+- eliminate `:::` in S3 bucket policy ?
+  - no, seems to be standard case
+  - https://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html
 - use ${AWS::Region} ?
   - no; dash will never support it as supposed to be multi- region
 - convert underscored table attribute names to hashes ?
@@ -55,6 +60,7 @@
 
 ### done
 
+- replace :aws: with :${AWS::Partition}
 - harmonise `Allow` vs `allow`
 - remove `Sid`
 - https://docs.aws.amazon.com/apigateway/latest/developerguide/arn-format-reference.html
