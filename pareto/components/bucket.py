@@ -40,8 +40,8 @@ def synth_bucket(**kwargs):
             funcname=fn_getatt(action["name"], "Arn")
             props={"Action": "lambda:InvokeFunction",
                    "FunctionName": funcname,
-                   "Principal": "s3.amazonaws.com",
-                   "SourceArn": eventsource}
+                   # "SourceArn": eventsource,
+                   "Principal": "s3.amazonaws.com"}
             return "AWS::Lambda::Permission", props
         return LambdaPermission(**kwargs)
     @resource(suffix="policy")
