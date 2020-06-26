@@ -5,21 +5,29 @@ from pareto.scripts import *
 IAM=boto3.client("iam")
 
 def empty_bucket(bucketname):
-    paginator=S3.get_paginator("list_objects_v2")
-    pages=paginator.paginate(Bucket=bucketname)
-    for struct in pages:
-        if "Contents" in struct:
-            for obj in struct["Contents"]:
-                logging.info("deleting object %s" % obj["Key"])
-                S3.delete_object(Bucket=bucketname,
-                                 Key=obj["Key"])
+    try:
+        paginator=S3.get_paginator("list_objects_v2")
+        pages=paginator.paginate(Bucket=bucketname)
+        for struct in pages:
+            if "Contents" in struct:
+                for obj in struct["Contents"]:
+                    logging.info("deleting object %s" % obj["Key"])
+                    S3.delete_object(Bucket=bucketname,
+                                     Key=obj["Key"])
+    except ClientError as error:
+        if error.response["Error"]["Code"] not in ["NoSuchBucket"]:
+            raise error
 
 def detach_policies(rolename):
-    for policy in IAM.list_attached_role_policies(RoleName=rolename)["AttachedPolicies"]:
-        logging.info("detaching policy %s" % policy["PolicyArn"])
-        IAM.detach_role_policy(RoleName=rolename,
-                               PolicyArn=policy["PolicyArn"])
-    
+    try:
+        for policy in IAM.list_attached_role_policies(RoleName=rolename)["AttachedPolicies"]:
+            logging.info("detaching policy %s" % policy["PolicyArn"])
+            IAM.detach_role_policy(RoleName=rolename,
+                                   PolicyArn=policy["PolicyArn"])
+    except ClientError as error:
+        if error.response["Error"]["Code"] not in ["NoSuchEntity"]:
+            raise error
+            
 def delete_stack(stackname):
     logging.info("deleting stack %s" % stackname)
     resources=CF.describe_stack_resources(StackName=stackname)["StackResources"]

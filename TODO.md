@@ -1,9 +1,6 @@
 ### short 
 
 - aws scripts to support missing attributes
-- check all scripts work on malformed stacks
-  - delete_stack fails on missing S3 bucket
-  - delete_stack doesn't appear to log IAM role deletion
 - specific ddb/sqs lookback iam permissions
   - test without specific permissions and see what u get
 - use logical/physical_id reference names
@@ -58,6 +55,9 @@
 
 ### done
 
+- check all scripts work on malformed stacks
+  - delete_stack fails on missing S3 bucket
+  - delete_stack doesn't appear to log IAM role deletion
 - eliminate ${AWS::Partition}
 - use `fn::sub` in bucket policy creation
 - replace :aws: with :${AWS::Partition}
