@@ -1,12 +1,11 @@
 ### short 
 
-- investigate s3/sns error
-- retry bucket permission depending on bucket
+- https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
 
 - deployment fails if no outputs (eg bucket (no website) and function)
 - refactor global_name as logical_id
+- should be able to call logical_id with kwargs["name"] rather than have to call hongarorise directly
 - depends should be automatically hungarorised by decorators
-- use logical id rather than direct calls to hungarorise
 
 ### blog
 
