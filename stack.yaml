@@ -10,7 +10,13 @@ components:
   iam:
     permissions:
     - "logs:*"
-    - "dynamodb:*" # required for event mapping
+    - "dynamodb:GetRecords"
+    - "dynamodb:GetShardIterator"
+    - "dynamodb:DescribeStream"
+    - "dynamodb:ListStreams"
+    - "sqs:ReceiveMessage"
+    - "sqs:DeleteMessage"
+    - "sqs:GetQueueAttributes"
   api:
     method: GET
 - name: hello-post
