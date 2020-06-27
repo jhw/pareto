@@ -39,9 +39,9 @@ def synth_function(**kwargs):
     @resource(suffix="api-gw-deployment")
     def ApiGwDeployment(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
-        method=logical_id("%s-api-gw-method" % kwargs["name"])
-        props, depends = {"RestApiId": restapi}, [method]
-        return "AWS::ApiGateway::Deployment", props,  depends
+        props={"RestApiId": restapi}
+        method="%s-api-gw-method" % kwargs["name"]
+        return "AWS::ApiGateway::Deployment", props, method
     @resource(suffix="api-gw-stage")
     def ApiGwStage(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])

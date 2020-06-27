@@ -26,6 +26,15 @@ def fn_sub(expr, kwargs={}):
     return {"Fn::Sub": [expr, kwargs]}
 
 def resource(suffix=None):
+    def format_value(k, v):
+        if k=="DependsOn":
+            if not isinstance(v, list):
+                v=[v]
+            v=[logical_id(name)
+               for name in v]
+            if len(v)==1:
+                v=v.pop()
+        return v                
     def decorator(fn):
         def wrapped(attrs=["Type", "Properties", "DependsOn"],
                     *args, **kwargs):
@@ -33,8 +42,9 @@ def resource(suffix=None):
                             suffix) if suffix else kwargs["name"]
             key=logical_id(name)
             values=fn(*args, **kwargs)
-            return (key, {k:v for k, v in zip(attrs[:len(values)],
-                                              values)})
+            return (key, {k:format_value(k, v)
+                          for k, v in zip(attrs[:len(values)],
+                                          values)})
         return wrapped
     return decorator
 

@@ -1,10 +1,8 @@
 ### short 
 
-- refactor global_name as resource_id
-- new logical_id wrapper for hungarorise
+- add S3 AccountId
 
-- depends should be automatically converted to logical id
-- add S3 AccountId 
+- better decorator handling in logical id formatting of depends
 
 ### blog
 
@@ -69,6 +67,9 @@
 
 ### done
 
+- depends should be automatically converted to logical id
+- refactor global_name as resource_id
+- new logical_id wrapper for hungarorise
 - https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
 - deployment fails if no outputs (eg bucket (no website) and function)
 - comment out bucket sourcearn
