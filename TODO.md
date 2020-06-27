@@ -1,8 +1,5 @@
 ### short 
 
-- https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
-
-- deployment fails if no outputs (eg bucket (no website) and function)
 - refactor global_name as logical_id
 - should be able to call logical_id with kwargs["name"] rather than have to call hongarorise directly
 - depends should be automatically hungarorised by decorators
@@ -69,6 +66,8 @@
 
 ### done
 
+- https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
+- deployment fails if no outputs (eg bucket (no website) and function)
 - comment out bucket sourcearn
 - check all scripts work on malformed stacks
   - delete_stack fails on missing S3 bucket

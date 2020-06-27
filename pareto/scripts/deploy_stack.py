@@ -11,8 +11,8 @@ from pareto.components.stack import synth_stack
 """
 
 Metrics={
-    "resources": (lambda x: len(x["Resources"]), 200),
-    "outputs": (lambda x: len(x["Outputs"]), 60),
+    "resources": (lambda x: len(x["Resources"]) if "Resources" in x else 0, 200),
+    "outputs": (lambda x: len(x["Outputs"]) if "Outputs" in x else 0, 60),
     "template_size": (lambda x: len(json.dumps(x)), 51200)
     }
 

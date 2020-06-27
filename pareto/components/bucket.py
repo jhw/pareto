@@ -36,11 +36,16 @@ def synth_bucket(**kwargs):
         suffix="%s-permission" % action["name"]
         @resource(suffix=suffix)
         def LambdaPermission(**kwargs):
-            eventsource=fn_getatt(kwargs["name"], "Arn")
+            """
+            - https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
+            - Fn::GetAtt Arn doesn't work for S3 lambda notifications :-(
+            """
+            # eventsource=fn_getatt(kwargs["name"], "Arn")
+            eventsource="arn:aws:s3:::%s" % global_name(kwargs)
             funcname=fn_getatt(action["name"], "Arn")
             props={"Action": "lambda:InvokeFunction",
                    "FunctionName": funcname,
-                   # "SourceArn": eventsource,
+                   "SourceArn": eventsource,
                    "Principal": "s3.amazonaws.com"}
             return "AWS::Lambda::Permission", props
         return LambdaPermission(**kwargs)
