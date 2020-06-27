@@ -1,6 +1,5 @@
 ### short 
 
-- aws scripts to support missing attributes
 - specific ddb/sqs lookback iam permissions
   - test without specific permissions and see what u get
 - allow multiple event source mappings
@@ -64,6 +63,7 @@
 
 ### done
 
+- aws scripts to support missing attributes
 - add S3 AccountId
 - better decorator handling in logical id formatting of depends
 - depends should be automatically converted to logical id

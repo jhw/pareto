@@ -19,11 +19,13 @@ if __name__=="__main__":
         """
         - because pandas truncates column width :-(
         """
+        def lookup(event, attr):
+            return event[attr] if attr in event else ""
         for event in events:
-            print ("%s\t\t%s\t\t%s\t\t%s" % (event["Timestamp"],
-                                             event["LogicalResourceId"],
-                                             event["ResourceType"],
-                                             event["ResourceStatusReason"]))
+            print ("%s\t\t%s\t\t%s\t\t%s" % (lookup(event, "Timestamp"),
+                                             lookup(event, "LogicalResourceId"),
+                                             lookup(event, "ResourceType"),
+                                             lookup(event, "ResourceStatusReason")))
     except ClientError as error:
         print (error)
     except RuntimeError as error:

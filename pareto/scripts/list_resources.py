@@ -13,12 +13,14 @@ if __name__=="__main__":
                              stagename)        
         resp=CF.describe_stack_resources(StackName=stackname)
         resources=sorted(resp["StackResources"],
-                         key=lambda x: x["Timestamp"])        
-        df=pd.DataFrame([{"timestamp": resource["Timestamp"],
-                          "logical_id": resource["LogicalResourceId"],
-                          "physical_id": resource["PhysicalResourceId"],
-                          "type": resource["ResourceType"],
-                          "status": resource["ResourceStatus"]}
+                         key=lambda x: x["Timestamp"])
+        def lookup(resource, attr):
+            return resource[attr] if attr in resource else ""
+        df=pd.DataFrame([{"timestamp": lookup(resource, "Timestamp"),
+                          "logical_id": lookup(resource, "LogicalResourceId"),
+                          "physical_id": lookup(resource, "PhysicalResourceId"),
+                          "type": lookup(resource, "ResourceType"),
+                          "status": lookup(resource, "ResourceStatus")}
                          for resource in resources])
         print (df)
     except ClientError as error:

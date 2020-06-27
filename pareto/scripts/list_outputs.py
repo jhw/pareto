@@ -19,9 +19,11 @@ if __name__=="__main__":
         """
         - because pandas truncates column width :-(
         """
+        def lookup(output, attr):
+            return output[attr] if attr in output else ""
         for output in outputs:
-            print ("%s\t\t%s" % (output["OutputKey"],
-                                 output["OutputValue"]))
+            print ("%s\t\t%s" % (lookup(output, "OutputKey"),
+                                 lookup(output, "OutputValue")))
     except ClientError as error:
         print (error)
     except RuntimeError as error:
