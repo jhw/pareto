@@ -1,3 +1,12 @@
+### sqs partitioning 27/6/20
+
+- think sqs partitioning will work fine
+- single queue
+- queue event mapping batch size set to 1
+- batch all items for a given league within a single record
+- don't set function concurrency
+- you should still get parallel execution
+
 ### action targets 19/6/20
 
 - cf non- event sourced triggers (sns, s3, cloudwatch events) explictly nest actionreferences under trigger

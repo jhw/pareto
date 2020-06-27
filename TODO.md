@@ -1,7 +1,9 @@
 ### short 
 
 - convert preprocessor to use lookback iam mappings
-- allow multiple event source mappings
+  - probably want to convert `event_sourced` field from boolean to list of iam permissions
+
+- multiple event source mappings for ddb, sqs
 - preprocessor json schema
 
 ### blog
@@ -21,6 +23,10 @@
   - deploy LATEST unless commit specified
 - scaffold generator [notes]
 - layers
+  - eg pareto-demo-lxml-numpy-yaml
+  - should really include versioning
+  - single package per layer ?
+    - would be consistent with import x, import y etc
 - dead letter queues
 - dashboard section titles
 - queue, table charts
