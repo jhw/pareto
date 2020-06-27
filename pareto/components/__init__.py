@@ -1,22 +1,23 @@
 import json, re, yaml
 
-def hungarorise(text):
-    return "".join([tok.capitalize()
-                    for tok in re.split("\\-|\\_", text)])
+def resource_id(kwargs):
+    def labelise(text):
+        return "-".join([tok.lower()
+                         for tok in re.split("\\s|\\_", text)])    
+    return "-".join([labelise(kwargs[attr])
+                     for attr in ["app", "name", "stage"]])
 
-def titleise(text):
-    return " ".join([tok.capitalize()
-                     for tok in re.split("\\-|\\_", text)])
-
-def labelise(text):
-    return "-".join([tok.lower()
-                    for tok in re.split("\\s|\\_", text)])
+def logical_id(name):
+    def hungarorise(text):
+        return "".join([tok.capitalize()
+                        for tok in re.split("\\-|\\_", text)])    
+    return hungarorise(name)
 
 def ref(name):
-    return {"Ref": hungarorise(name)}
+    return {"Ref": logical_id(name)}
 
 def fn_getatt(name, attr):
-    return {"Fn::GetAtt": [hungarorise(name), attr]}
+    return {"Fn::GetAtt": [logical_id(name), attr]}
 
 def fn_join(args, delimiter=""):    
     return {"Fn::Join": [delimiter, args]}
@@ -24,17 +25,13 @@ def fn_join(args, delimiter=""):
 def fn_sub(expr, kwargs={}):    
     return {"Fn::Sub": [expr, kwargs]}
 
-def global_name(kwargs):
-    return "-".join([labelise(kwargs[attr])
-                     for attr in ["app", "name", "stage"]])
-
 def resource(suffix=None):
     def decorator(fn):
         def wrapped(attrs=["Type", "Properties", "DependsOn"],
                     *args, **kwargs):
             name="%s-%s" % (kwargs["name"],
                             suffix) if suffix else kwargs["name"]
-            key=hungarorise(name)
+            key=logical_id(name)
             values=fn(*args, **kwargs)
             return (key, {k:v for k, v in zip(attrs[:len(values)],
                                               values)})
@@ -46,7 +43,7 @@ def output(suffix=None):
         def wrapped(*args, **kwargs):
             name="%s-%s" % (kwargs["name"],
                             suffix) if suffix else kwargs["name"]
-            return (hungarorise(name),
+            return (logical_id(name),
                     {"Value": fn(*args, **kwargs)})
         return wrapped
     return decorator

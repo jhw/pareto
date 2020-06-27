@@ -26,7 +26,7 @@ def synth_bucket(**kwargs):
     @resource()
     def Bucket(event={"type":  "s3:ObjectCreated:*"},
                **kwargs):
-        props={"BucketName": global_name(kwargs)}
+        props={"BucketName": resource_id(kwargs)}
         if is_website(kwargs):
             props.update(website_config())
         if "actions" in kwargs:
@@ -41,7 +41,7 @@ def synth_bucket(**kwargs):
             - Fn::GetAtt Arn doesn't work for S3 lambda notifications :-(
             """
             # eventsource=fn_getatt(kwargs["name"], "Arn")
-            eventsource="arn:aws:s3:::%s" % global_name(kwargs)
+            eventsource="arn:aws:s3:::%s" % resource_id(kwargs)
             funcname=fn_getatt(action["name"], "Arn")
             props={"Action": "lambda:InvokeFunction",
                    "FunctionName": funcname,

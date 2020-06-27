@@ -22,11 +22,15 @@ Root="pareto/charts"
 - Actions -> View/Edit Source
 """
 
+def titleise(text):
+    return " ".join([tok.capitalize()
+                     for tok in re.split("\\-|\\_", text)])
+
 def synth_dashboard(**kwargs):
     def init_chart(kwargs, src):
         def init_metrics(chart):
             metrics=chart["metrics"]
-            name=global_name(kwargs)
+            name=resource_id(kwargs)
             for key in ["FunctionName",
                         "Resource"]:
                 i=metrics[0].index(key)
@@ -72,7 +76,7 @@ def synth_dashboard(**kwargs):
                 for component in kwargs["components"]
                 if component["type"]=="function"]
         layout=grid_layout(charts)
-        props={"DashboardName": global_name(kwargs),
+        props={"DashboardName": resource_id(kwargs),
                "DashboardBody": json.dumps(layout)}
         return "AWS::CloudWatch::Dashboard", props
     resources=[Dashboard(**kwargs)]

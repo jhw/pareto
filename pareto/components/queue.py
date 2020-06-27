@@ -3,7 +3,7 @@ from pareto.components import *
 def synth_queue(**kwargs):
     @resource()
     def Queue(**kwargs):        
-        props={"QueueName": global_name(kwargs)}
+        props={"QueueName": resource_id(kwargs)}
         return "AWS::SQS::Queue", props
     """
     - don't *think* you need a LambdaPermission if you have a LambdaMapping

@@ -10,7 +10,7 @@ def synth_function(**kwargs):
                  **kwargs):
         props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
                         "S3Key": kwargs["staging"]["key"]},
-               "FunctionName": global_name(kwargs),
+               "FunctionName": resource_id(kwargs),
                "Handler": handler,
                "MemorySize": memory,
                "Role": fn_getatt("%s-role" % kwargs["name"], "Arn"),
@@ -39,7 +39,7 @@ def synth_function(**kwargs):
     @resource(suffix="api-gw-deployment")
     def ApiGwDeployment(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
-        method=hungarorise("%s-api-gw-method" % kwargs["name"])
+        method=logical_id("%s-api-gw-method" % kwargs["name"])
         props, depends = {"RestApiId": restapi}, [method]
         return "AWS::ApiGateway::Deployment", props,  depends
     @resource(suffix="api-gw-stage")

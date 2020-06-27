@@ -6,7 +6,7 @@ def synth_timer(**kwargs):
         """
         - single action for the minute but could be an array
         """
-        action={"Id": global_name(kwargs),
+        action={"Id": resource_id(kwargs),
                 "Input": json.dumps(kwargs["payload"]),
                 "Arn": fn_getatt(kwargs["action"]["name"], "Arn")}
         expr="rate(%s)" % kwargs["rate"]

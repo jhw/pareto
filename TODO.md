@@ -1,12 +1,16 @@
 ### short 
 
-- refactor global_name as logical_id
-- should be able to call logical_id with kwargs["name"] rather than have to call hongarorise directly
-- depends should be automatically hungarorised by decorators
+- refactor global_name as resource_id
+- new logical_id wrapper for hungarorise
+
+- depends should be automatically converted to logical id
+- add S3 AccountId 
 
 ### blog
 
 - depends
+- worst bug in the world
+  - s3 event source arn
 
 ### demo
 
@@ -18,7 +22,6 @@
 - aws scripts to support missing attributes
 - specific ddb/sqs lookback iam permissions
   - test without specific permissions and see what u get
-- use logical/physical_id reference names
 - allow multiple event source mappings
 - preprocessor json schema
 - scaffold generator [notes]
