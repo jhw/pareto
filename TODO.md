@@ -1,7 +1,14 @@
 ### short 
 
-- specific ddb/sqs lookback iam permissions
-  - test without specific permissions and see what u get
+```
+2020-06-27 13:32:16.383000+00:00		HelloTableHelloGetMapping		AWS::Lambda::EventSourceMapping		Cannot access stream arn:aws:dynamodb:eu-west-1:119552584133:table/pareto-demo-hello-table-dev/stream/2020-06-27T13:31:43.497. Please ensure the role can perform the GetRecords, GetShardIterator, DescribeStream, and ListStreams Actions on your stream in IAM. (Service: AWSLambda; Status Code: 400; Error Code: InvalidParameterValueException; Request ID: 08979523-6e69-425a-88bf-13772486119b)
+```
+
+```
+2020-06-27 13:35:48.379000+00:00		HelloQueueHelloGetMapping		AWS::Lambda::EventSourceMapping		The provided execution role does not have permissions to call ReceiveMessage on SQS (Service: AWSLambda; Status Code: 400; Error Code: InvalidParameterValueException; Request ID: 9e0c49ef-e60f-45de-a789-dc6ce39ff196)
+```
+
+- convert preprocessor to use lookback iam mappings
 - allow multiple event source mappings
 - preprocessor json schema
 
@@ -63,6 +70,7 @@
 
 ### done
 
+- capture precise ddb, sqs actions required for lookback
 - aws scripts to support missing attributes
 - add S3 AccountId
 - better decorator handling in logical id formatting of depends
