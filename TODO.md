@@ -1,8 +1,10 @@
 ### short 
 
-- add S3 AccountId
-
-- better decorator handling in logical id formatting of depends
+- aws scripts to support missing attributes
+- specific ddb/sqs lookback iam permissions
+  - test without specific permissions and see what u get
+- allow multiple event source mappings
+- preprocessor json schema
 
 ### blog
 
@@ -17,11 +19,6 @@
 
 ### medium
 
-- aws scripts to support missing attributes
-- specific ddb/sqs lookback iam permissions
-  - test without specific permissions and see what u get
-- allow multiple event source mappings
-- preprocessor json schema
 - scaffold generator [notes]
 - replace timestamp with git version
   - deploy LATEST unless commit specified
@@ -67,6 +64,8 @@
 
 ### done
 
+- add S3 AccountId
+- better decorator handling in logical id formatting of depends
 - depends should be automatically converted to logical id
 - refactor global_name as resource_id
 - new logical_id wrapper for hungarorise

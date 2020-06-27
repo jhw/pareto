@@ -39,12 +39,14 @@ def synth_bucket(**kwargs):
             """
             - https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
             - Fn::GetAtt Arn doesn't work for S3 lambda notifications :-(
+            - NB also recommends using SourceAccount as account not included in S3 arn format
             """
             # eventsource=fn_getatt(kwargs["name"], "Arn")
             eventsource="arn:aws:s3:::%s" % resource_id(kwargs)
             funcname=fn_getatt(action["name"], "Arn")
             props={"Action": "lambda:InvokeFunction",
                    "FunctionName": funcname,
+                   "SourceAccount": fn_sub("${AWS::AccountId}"),
                    "SourceArn": eventsource,
                    "Principal": "s3.amazonaws.com"}
             return "AWS::Lambda::Permission", props
