@@ -68,7 +68,10 @@ def synth_bucket(**kwargs):
     @output(suffix="url")
     def BucketUrl(**kwargs):
         return fn_getatt(kwargs["name"], "WebsiteURL")
-    resources, outputs = [Bucket(**kwargs)], []
+    @output(suffix="arn")
+    def BucketArn(**kwargs):
+        return fn_getatt(kwargs["name"], "Arn")
+    resources, outputs = [Bucket(**kwargs)], [BucketArn(**kwargs)]
     if "actions" in kwargs:
         resources+=[LambdaPermission(kwargs, action)
                     for action in kwargs["actions"]]
