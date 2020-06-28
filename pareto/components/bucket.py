@@ -32,6 +32,12 @@ def synth_bucket(**kwargs):
         if "actions" in kwargs:
             props.update(notifications_configs(event, kwargs))
         return "AWS::S3::Bucket", props
+    @output(suffix="url")
+    def BucketUrl(**kwargs):
+        return fn_getatt(kwargs["name"], "WebsiteURL")
+    @output(suffix="arn")
+    def BucketArn(**kwargs):
+        return fn_getatt(kwargs["name"], "Arn")
     def LambdaPermission(kwargs, action):
         suffix="%s-permission" % action["name"]
         @resource(suffix=suffix)
@@ -65,12 +71,6 @@ def synth_bucket(**kwargs):
         props={"Bucket": ref(kwargs["name"]),
                "PolicyDocument": policy_document(kwargs)}
         return "AWS::S3::BucketPolicy", props
-    @output(suffix="url")
-    def BucketUrl(**kwargs):
-        return fn_getatt(kwargs["name"], "WebsiteURL")
-    @output(suffix="arn")
-    def BucketArn(**kwargs):
-        return fn_getatt(kwargs["name"], "Arn")
     resources, outputs = [Bucket(**kwargs)], [BucketArn(**kwargs)]
     if "actions" in kwargs:
         resources+=[LambdaPermission(kwargs, action)

@@ -38,7 +38,10 @@ def synth_table(**kwargs):
                  if ("index" in field and
                      field["index"] and
                      field["type"]=="string")]
-        props={"BillingMode": "PAY_PER_REQUEST",
+        """
+        - `BillingMode=PAY_PER_REQUEST` is super- important new feature to avoid having to provision read/write throughput
+        """
+        props={"BillingMode": "PAY_PER_REQUEST", 
                "AttributeDefinitions": attributes,
                "KeySchema": keyschema,
                "TableName": resource_id(kwargs)}
@@ -47,11 +50,12 @@ def synth_table(**kwargs):
         if "action" in kwargs:
             props["StreamSpecification"]={"StreamViewType": stream["type"]}
         return "AWS::DynamoDB::Table", props
-    """
-    - don't *think* you need a LambdaPermission if you have a LambdaMapping
-    - (think LambdaPermission is only for primitives without EventSourceMapping, ie S3, SNS)
-    - no BatchSize ?
-    """
+    @output(suffix="arn")
+    def TableArn(**kwargs):
+        return fn_getatt(kwargs["name"], "Arn")
+    @output(suffix="stream-arn")
+    def TableStreamArn(**kwargs):
+        return fn_getatt(kwargs["name"], "StreamArn")
     def LambdaMapping(**kwargs):
         suffix="%s-mapping" % kwargs["action"]["name"]
         @resource(suffix)
@@ -63,10 +67,12 @@ def synth_table(**kwargs):
                    "StartingPosition": "LATEST"}
             return "AWS::Lambda::EventSourceMapping", props
         return LambdaMapping(**kwargs)
-    resources=[Table(**kwargs)]
+    resources, outputs = [Table(**kwargs)], [TableArn(**kwargs)]
     if "action" in kwargs:
         resources.append(LambdaMapping(**kwargs))
-    return {"resources": resources}
+        outputs.append(TableStreamArn(**kwargs))
+    return {"resources": resources,
+            "outputs": outputs}
 
 if __name__=="__main__":
     pass
