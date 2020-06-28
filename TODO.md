@@ -1,7 +1,6 @@
 ### short 
 
-- lambda retry behaviour
-  - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventinvokeconfig.html
+- emit resource type summary on deployment
 
 - multiple event source mappings for ddb, sqs
 
@@ -18,6 +17,9 @@
 
 ### medium
 
+- integrate preprocessor
+  - what yaml file generates current demo.yaml ?
+  - decorator
 - preprocessor json schema
 - replace timestamp with git version
 - scaffold generator [notes]
@@ -30,7 +32,6 @@
 - dashboard sections; queue, table charts
 - topology chart generation
 - nested api/action/trigger stacks
-- multiple api/action/trigger charts
 - custom lambda authorisers
 - cognito
 - route 53
@@ -63,6 +64,8 @@
   
 ### done
 
+- lambda retry behaviour
+  - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventinvokeconfig.html
 - export important ARNs/refs
 - preprocessor to include sqs by default for dlq
 - dead letter queues

@@ -25,16 +25,28 @@ def synth_function(**kwargs):
     @output(suffix="arn")
     def FunctionArn(**kwargs):
         return fn_getatt(kwargs["name"], "Arn")
-    @resource(suffix="dead-letter-queue")
-    def DeadLetterQueue(**kwargs):
-        name="%s-dead-letter-queue" % kwargs["name"]
-        props={"QueueName": name}
-        return "AWS::SQS::Queue", props
     def FunctionRole(**kwargs):
         rolekwargs=dict(kwargs["iam"])
         rolekwargs["name"]=kwargs["name"]
         rolekwargs["service"]="lambda.amazonaws.com"
         return IamRole(**rolekwargs)
+    @resource(suffix="dead-letter-queue")
+    def FunctionDeadLetterQueue(**kwargs):
+        name="%s-dead-letter-queue" % kwargs["name"]
+        props={"QueueName": name}
+        return "AWS::SQS::Queue", props
+    @resource(suffix="version")
+    def FunctionVersion(**kwargs):
+        props={"FunctionName": ref(kwargs["name"])}
+        return "AWS::Lambda::Version", props
+    @resource(suffix="event-config")
+    def FunctionEventConfig(retries=0,
+                            **kwargs):
+        qualifier=fn_getatt("%s-version" % kwargs["name"], "Version")
+        props={"FunctionName": resource_id(kwargs),
+               "Qualifier": qualifier,
+               "MaximumRetryAttempts": retries}
+        return "AWS::Lambda::EventInvokeConfig", props
     """
     - api-gw currently very bare bones and missing
       - resource
@@ -93,8 +105,10 @@ def synth_function(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         return fn_sub(url, {"rest_api": restapi})
     resources=[Function(**kwargs),
-               DeadLetterQueue(**kwargs),
-               FunctionRole(**kwargs)]
+               FunctionRole(**kwargs),
+               FunctionDeadLetterQueue(**kwargs),
+               FunctionVersion(**kwargs),
+               FunctionEventConfig(**kwargs)]
     outputs=[FunctionArn(**kwargs)]
     if "api" in kwargs:
         resources+=[ApiGwRestApi(**kwargs),
