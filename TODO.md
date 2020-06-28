@@ -1,10 +1,13 @@
 ### short 
 
-- note and remove specific iam support
-
-- dead letter queues
+- lambda retry behaviour
 - multiple event source mappings for ddb, sqs
 - export important ARNs/refs
+
+### demo
+
+- slow russian
+- pip dependency installation
 
 ### blog
 
@@ -12,28 +15,21 @@
 - worst bug in the world
   - s3 event source arn
 
-### demo
-
-- slow russian
-- pip dependency installation
-
 ### medium
 
 - preprocessor json schema
 - replace timestamp with git version
 - scaffold generator [notes]
-- nested api/action/trigger stacks
 - no duplication of iam roles
 - layers [notes]
 
 ### v1.1
 
-- CI pipeline
-  - git- based lambda deployment may need to change
+- CI pipeline [notes]
 - dashboard sections; queue, table charts
 - topology chart generation
+- nested api/action/trigger stacks
 - multiple api/action/trigger charts
-- github actions for lambda push
 - custom lambda authorisers
 - cognito
 - route 53
@@ -63,6 +59,11 @@
   - not really required as this is about deployment not runtime
   
 ### done
+
+- preprocessor to include sqs by default for dlq
+- dead letter queues
+- rename stack.yaml as demo.yaml
+- note and remove specific iam support
 
 ```
 2020-06-27 13:32:16.383000+00:00		HelloTableHelloGetMapping		AWS::Lambda::EventSourceMapping		Cannot access stream arn:aws:dynamodb:eu-west-1:119552584133:table/pareto-demo-hello-table-dev/stream/2020-06-27T13:31:43.497. Please ensure the role can perform the GetRecords, GetShardIterator, DescribeStream, and ListStreams Actions on your stream in IAM. (Service: AWSLambda; Status Code: 400; Error Code: InvalidParameterValueException; Request ID: 08979523-6e69-425a-88bf-13772486119b)

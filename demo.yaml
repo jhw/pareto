@@ -10,13 +10,8 @@ components:
   iam:
     permissions:
     - "logs:*"
-    - "dynamodb:GetRecords"
-    - "dynamodb:GetShardIterator"
-    - "dynamodb:DescribeStream"
-    - "dynamodb:ListStreams"
-    - "sqs:ReceiveMessage"
-    - "sqs:DeleteMessage"
-    - "sqs:GetQueueAttributes"
+    - "dynamodb:*"
+    - "sqs:*"
   api:
     method: GET
 - name: hello-post
@@ -24,6 +19,7 @@ components:
   iam:
     permissions:
     - "logs:*"
+    - "sqs:*"
   api:
     method: POST
 - type: queue

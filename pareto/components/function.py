@@ -8,17 +8,25 @@ def synth_function(**kwargs):
                  runtime="python3.7",
                  timeout=30,
                  **kwargs):
+        dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
+        rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
         props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
                         "S3Key": kwargs["staging"]["key"]},
                "FunctionName": resource_id(kwargs),
                "Handler": handler,
                "MemorySize": memory,
-               "Role": fn_getatt("%s-role" % kwargs["name"], "Arn"),
+               "DeadLetterConfig": {"TargetArn": dlqarn},                   
+               "Role": rolearn,
                "Runtime": runtime,
                "Timeout": timeout}
         if concurrency:
             props["ReservedConcurrentExecutions"]=concurrency
         return "AWS::Lambda::Function", props
+    @resource(suffix="dead-letter-queue")
+    def DeadLetterQueue(**kwargs):
+        name="%s-dead-letter-queue" % kwargs["name"]
+        props={"QueueName": name}
+        return "AWS::SQS::Queue", props
     def FunctionRole(**kwargs):
         rolekwargs=dict(kwargs["iam"])
         rolekwargs["name"]=kwargs["name"]
@@ -82,6 +90,7 @@ def synth_function(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         return fn_sub(url, {"rest_api": restapi})
     resources=[Function(**kwargs),
+               DeadLetterQueue(**kwargs),
                FunctionRole(**kwargs)]
     outputs=[]
     if "api" in kwargs:

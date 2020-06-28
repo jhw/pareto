@@ -1,3 +1,16 @@
+### lookback permissions 28/6/20
+
+- required for event sourcing which under the hood is really doing polling :-/
+- but then so does Kafka lol
+
+- "dynamodb:GetRecords"
+- "dynamodb:GetShardIterator"
+- "dynamodb:DescribeStream"
+- "dynamodb:ListStreams"
+- "sqs:ReceiveMessage"
+- "sqs:DeleteMessage"
+- "sqs:GetQueueAttributes"
+
 ### CI pipeline 28/6/20
 
 - start with basic codepipeline/codebuild routine

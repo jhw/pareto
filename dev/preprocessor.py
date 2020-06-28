@@ -109,7 +109,8 @@ class Iam(list):
     @classmethod
     def initialise(self,
                    component,
-                   defaults=["logs"]):
+                   defaults=["logs",
+                             "sqs"]): # for dead letter queues
         permissions=component.pop("permissions") if "permissions" in component else []
         iam=Iam(permissions)
         for permission in defaults:
@@ -142,6 +143,10 @@ class Iam(list):
     def is_empty(self):
         return len(self)==0
 
+    """
+    - compaction technically no longer required as not using specific IAM roles within pareto components
+    """
+    
     def compact(self):
         def group(items):
             groups={}
