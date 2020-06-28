@@ -1,3 +1,19 @@
+### CI pipeline 28/6/20
+
+- start with basic codepipeline/codebuild routine
+- problem will be lambda deployment
+- certainly if it's git based it won't work as the codebuild env isn't git based
+- feels like you may need a script to assemble a yaml file saying which lambdas you want deployed, which could then be manually adjustable
+- also you're not going to be able to deploy lambdas from this script as again you don't have git commit versions
+- so really need github actions to be pushing lambdas on commit
+- then codebuild script could probably iterate across all deployments and find latest, unless there is some file saying which manual ones to use
+
+### layers 28/6/20
+
+- maybe each layer should contain a single package with a single version
+- since you can have multiple layers for each function
+- would be consistent with python's "import x, import y" philosphy
+
 ### sqs partitioning 27/6/20
 
 - think sqs partitioning will work fine

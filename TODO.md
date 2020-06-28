@@ -1,10 +1,10 @@
 ### short 
 
-- convert preprocessor to use lookback iam mappings
-  - probably want to convert `event_sourced` field from boolean to list of iam permissions
+- note and remove specific iam support
 
+- dead letter queues
 - multiple event source mappings for ddb, sqs
-- preprocessor json schema
+- export important ARNs/refs
 
 ### blog
 
@@ -19,20 +19,27 @@
 
 ### medium
 
+- preprocessor json schema
 - replace timestamp with git version
-  - deploy LATEST unless commit specified
 - scaffold generator [notes]
-- layers
-  - eg pareto-demo-lxml-numpy-yaml
-  - should really include versioning
-  - single package per layer ?
-    - would be consistent with import x, import y etc
-- dead letter queues
-- dashboard section titles
-- queue, table charts
+- nested api/action/trigger stacks
+- no duplication of iam roles
+- layers [notes]
+
+### v1.1
+
+- CI pipeline
+  - git- based lambda deployment may need to change
+- dashboard sections; queue, table charts
 - topology chart generation
-- CI pipeline (codepipeline, codebuild)
-  
+- multiple api/action/trigger charts
+- github actions for lambda push
+- custom lambda authorisers
+- cognito
+- route 53
+- cloudfront
+- ec2 ingestor
+
 ### thoughts
 
 - preprocessor circularity detection ?
@@ -55,17 +62,6 @@
 - scripts to ping lambda, check logs ?
   - not really required as this is about deployment not runtime
   
-### long
-
-- nested stacks for apis, triggers, actions
-- github actions for lambda push
-- slack alerts
-- custom lambda authorisers
-- cognito
-- route 53
-- cloudfront
-- ec2, codedeploy
-
 ### done
 
 ```
