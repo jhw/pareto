@@ -1,8 +1,8 @@
 ### short 
 
+- export important ARNs/refs
 - lambda retry behaviour
 - multiple event source mappings for ddb, sqs
-- export important ARNs/refs
 
 ### demo
 
