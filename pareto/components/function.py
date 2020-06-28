@@ -22,6 +22,9 @@ def synth_function(**kwargs):
         if concurrency:
             props["ReservedConcurrentExecutions"]=concurrency
         return "AWS::Lambda::Function", props
+    @output(suffix="arn")
+    def FunctionArn(**kwargs):
+        return fn_getatt(kwargs["name"], "Arn")
     @resource(suffix="dead-letter-queue")
     def DeadLetterQueue(**kwargs):
         name="%s-dead-letter-queue" % kwargs["name"]
@@ -92,7 +95,7 @@ def synth_function(**kwargs):
     resources=[Function(**kwargs),
                DeadLetterQueue(**kwargs),
                FunctionRole(**kwargs)]
-    outputs=[]
+    outputs=[FunctionArn(**kwargs)]
     if "api" in kwargs:
         resources+=[ApiGwRestApi(**kwargs),
                     ApiGwDeployment(**kwargs),
