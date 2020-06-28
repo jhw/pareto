@@ -38,9 +38,6 @@ def synth_table(**kwargs):
                  if ("index" in field and
                      field["index"] and
                      field["type"]=="string")]
-        """
-        - `BillingMode=PAY_PER_REQUEST` is super- important new feature to avoid having to provision read/write throughput
-        """
         props={"BillingMode": "PAY_PER_REQUEST", 
                "AttributeDefinitions": attributes,
                "KeySchema": keyschema,

@@ -3,9 +3,6 @@ from pareto.components import *
 def synth_timer(**kwargs):
     @resource()
     def EventRule(**kwargs):
-        """
-        - single action for the minute but could be an array
-        """
         action={"Id": resource_id(kwargs),
                 "Input": json.dumps(kwargs["payload"]),
                 "Arn": fn_getatt(kwargs["action"]["name"], "Arn")}
@@ -13,6 +10,9 @@ def synth_timer(**kwargs):
         props={"ScheduleExpression": expr,
                "Targets": [action]}
         return "AWS::Events::Rule", props
+    @output(suffix="arn")
+    def EventRuleArn(**kwargs):
+        return fn_getatt(kwargs["name"], "Arn")
     def LambdaPermission(**kwargs):
         suffix="%s-permission" % kwargs["action"]["name"]
         @resource(suffix=suffix)
@@ -27,7 +27,9 @@ def synth_timer(**kwargs):
         return LambdaPermission(**kwargs)
     resources=[EventRule(**kwargs),
                LambdaPermission(**kwargs)]
-    return {"resources": resources}
+    outputs=[EventRuleArn(**kwargs)]
+    return {"resources": resources,
+            "outputs": outputs}
 
 if __name__=="__main__":
     pass

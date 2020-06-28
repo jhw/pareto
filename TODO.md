@@ -1,7 +1,6 @@
 ### short 
 
-- export important ARNs/refs
-
+- don't put blank subs {}
 - lambda retry behaviour
 - multiple event source mappings for ddb, sqs
 
@@ -61,6 +60,7 @@
   
 ### done
 
+- export important ARNs/refs
 - preprocessor to include sqs by default for dlq
 - dead letter queues
 - rename stack.yaml as demo.yaml
