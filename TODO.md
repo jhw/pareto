@@ -1,13 +1,12 @@
 ### short 
 
+- remove iam compaction
+  - check iam uses set
+- force depends to be a list
+- preprocessor demo.yaml sample
+- integrate preprocessor via decorator
+- sns topic support
 - emit resource type summary on deployment
-
-- multiple event source mappings for ddb, sqs
-
-### demo
-
-- slow russian
-- pip dependency installation
 
 ### blog
 
@@ -17,24 +16,32 @@
 
 ### medium
 
-- integrate preprocessor
-  - what yaml file generates current demo.yaml ?
-  - decorator
+- allow multiple ddb, sqs event source mappings 
+- cloudwatch alerts slack push demo 
+- secrets manager 
+- multiple event source mappings for ddb, sqs
 - preprocessor json schema
 - replace timestamp with git version
 - scaffold generator [notes]
 - aggregate IAM roles
 - layers [notes]
 
+### demo
+
+- slow russian
+- pip dependency installation
+
 ### v1.1
 
 - CI pipeline [notes]
 - dashboard sections; queue, table charts
+- pool of iam roles ?
 - topology chart generation
-- nested api/action/trigger stacks
+- nested api/action/trigger stacks ?
 - custom lambda authorisers
 - cognito
 - route 53
+- appsync
 - cloudfront
 - ec2 ingestor
 
