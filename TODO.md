@@ -1,6 +1,7 @@
 ### short 
 
 - lambda retry behaviour
+  - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventinvokeconfig.html
 
 - multiple event source mappings for ddb, sqs
 
