@@ -1,7 +1,7 @@
 ### short 
 
-- don't put blank subs {}
 - lambda retry behaviour
+
 - multiple event source mappings for ddb, sqs
 
 ### demo
@@ -20,7 +20,7 @@
 - preprocessor json schema
 - replace timestamp with git version
 - scaffold generator [notes]
-- no duplication of iam roles
+- aggregate IAM roles
 - layers [notes]
 
 ### v1.1
@@ -38,6 +38,8 @@
 
 ### thoughts
 
+- don't put blank subs {} ?
+  - doesn't work - needs blank
 - preprocessor circularity detection ?
   - trig!=target unless s3 bucket, in which case paths can't be the same
   - just too meta for now
