@@ -1,6 +1,8 @@
 ### short [preprocessor]
 
-- missing iam
+- dump raw, cooked templates
+
+- investigate missing ddb lookback permissions
 
 ### blog
 
@@ -10,6 +12,7 @@
 
 ### medium
 
+- iam role pool to reduce template size
 - emit resource type summary on deployment
 - sns topic support
 - allow multiple ddb, sqs event source mappings 
@@ -67,6 +70,7 @@
   
 ### done
 
+- iam/permissions is nested incorrectly
 - preprocessor demo.yaml sample
 - integrate preprocessor via decorator
 - force depends to be a list

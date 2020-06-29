@@ -123,7 +123,7 @@ class Iam(list):
             iam=fn(component)
             if (iam and
                 not iam.is_empty):
-                component["permissions"]={"iam": iam.render()}
+                component["iam"]={"permissions": iam.render()}
         return wrapped
 
     def __init__(self, items):
