@@ -1,7 +1,5 @@
 ### short 
 
-- remove iam compaction
-  - check iam uses set
 - force depends to be a list
 - preprocessor demo.yaml sample
 - integrate preprocessor via decorator
@@ -71,6 +69,8 @@
   
 ### done
 
+- remove iam compaction
+  - check iam uses set
 - lambda retry behaviour
   - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventinvokeconfig.html
 - export important ARNs/refs

@@ -143,35 +143,8 @@ class Iam(list):
     def is_empty(self):
         return len(self)==0
 
-    """
-    - compaction technically no longer required as not using specific IAM roles within pareto components
-    """
-    
-    def compact(self):
-        def group(items):
-            groups={}
-            for k, v in items:
-                groups.setdefault(k, [])
-                groups[k].append(v)
-            return groups
-        def compact(groups):
-            for k in groups.keys():
-                if "*" in groups[k]:
-                    groups[k]=["*"]
-        def flatten(groups):
-            items=[]
-            for k in groups.keys():
-                for v in groups[k]:
-                    items.append("%s:%s" % (k, v))                
-            return items                
-        items=[item.split(":")
-               for item in self]
-        groups=group(items)
-        compact(groups)
-        return flatten(groups)
-
     def render(self):
-        return list(self.compact())
+        return list(self)
 
 def add_permissions(**kwargs):
     def func_permissions(component, attrs):
