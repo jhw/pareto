@@ -1,7 +1,7 @@
 ### short [preprocessor]
 
+- ensure all yaml dumping done without refs
 - sns topic support
-
 - allow multiple ddb, sqs event source mappings 
 
 ### blog
@@ -13,7 +13,7 @@
 ### medium
 
 - nested api/action/trigger stacks
-- sepaarte api/action/trigger dashboards
+- separate api/action/trigger dashboards
 - cloudwatch alerts slack push demo 
 - secrets manager 
 - preprocessor json schema
