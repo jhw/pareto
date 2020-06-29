@@ -2,8 +2,10 @@
 
 - preprocessor demo.yaml sample
 - integrate preprocessor via decorator
-- sns topic support
+
+- fails if appropriate lambdas aren't present
 - emit resource type summary on deployment
+- sns topic support
 
 ### blog
 

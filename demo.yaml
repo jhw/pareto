@@ -1,49 +1,56 @@
 components:
-- name: hello-bucket
-  type: bucket
+- type: api
+  name: hello-get-api
+  method: GET
+- type: api
+  name: hello-post-api
+  method: POST
+- type: bucket
+  name: hello-bucket
   website: true
-  actions:
-  - name: hello-get
-    path: whatever
-- name: hello-get
-  type: function
-  iam:
-    permissions:
-    - "logs:*"
-    - "dynamodb:*"
-    - "sqs:*"
-  api:
-    method: GET
-- name: hello-post
-  type: function
-  iam:
-    permissions:
-    - "logs:*"
-    - "sqs:*"
-  api:
-    method: POST
-- type: queue
-  name: hello-queue
-  action:
-    name: hello-get
-    batch: 1
-- name: hello-timer
-  type: timer
-  action:
-    name: hello-get
-  rate: "1 hour"
-  payload: 
-    hello: world
-- name: hello-table
-  type: table
+- type: action
+  name: hello-action-1  
+  trigger:
+    type: bucket
+    name: hello-bucket
+    path: foo
+  target:
+    type: bucket
+    name: hello-bucket
+- type: table
+  name: hello-table
   fields:
   - name: my-hash
     type: string
     primary: true
-  - name: my-string
-    type: string
-    index: true
-  action:
-    name: hello-get
-
+- type: action
+  name: hello-action-2
+  trigger:
+    type: bucket
+    name: hello-bucket
+    path: bar
+  target:
+    type: table
+    name: hello-table
+- type: queue
+  name: hello-queue
+  batch: 1
+- type: action
+  name: hello-action-3
+  trigger:
+    type: table
+    name: hello-table
+  target:
+    type: queue
+    name: hello-queue
+- type: action
+  name: hello-action-4
+  permissions:
+  - "translate:*"
+  trigger:
+    type: queue
+    name: hello-queue
+  target:
+    type: bucket
+    name: hello-bucket
 
