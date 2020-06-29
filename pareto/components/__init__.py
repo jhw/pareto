@@ -26,17 +26,6 @@ def fn_sub(expr, kwargs={}):
     return {"Fn::Sub": [expr, kwargs]}
 
 def resource(suffix=None):
-    def listify(fn):
-        def wrapped(v):
-            return fn([v]) if not isinstance(v, list) else fn(v)
-        return wrapped
-    def pop(fn):
-        def wrapped(v):
-            resp=fn(v)
-            return resp.pop() if len(resp)==1 else resp
-        return wrapped
-    @listify
-    @pop
     def format_depends(v):
         return [logical_id(name)
                 for name in v]

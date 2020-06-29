@@ -1,6 +1,5 @@
 ### short 
 
-- force depends to be a list
 - preprocessor demo.yaml sample
 - integrate preprocessor via decorator
 - sns topic support
@@ -69,6 +68,7 @@
   
 ### done
 
+- force depends to be a list
 - remove iam compaction
   - check iam uses set
 - lambda retry behaviour
