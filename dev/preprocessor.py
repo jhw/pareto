@@ -1,4 +1,4 @@
-import os, sys, yaml
+import yaml
 
 TypeFilters={
     "api": lambda x: x["type"]=="api",
@@ -218,6 +218,7 @@ def preprocess(config, filters=TypeFilters):
         
 if __name__=="__main__":
     try:
+        import os, sys
         if len(sys.argv) < 2:
             raise RuntimeError("Please enter filename")
         filename=sys.argv[1]
