@@ -1,8 +1,8 @@
 ### short [preprocessor]
 
-- dump raw, cooked templates
+- sns topic support
 
-- investigate missing ddb lookback permissions
+- allow multiple ddb, sqs event source mappings 
 
 ### blog
 
@@ -12,13 +12,10 @@
 
 ### medium
 
-- iam role pool to reduce template size
-- emit resource type summary on deployment
-- sns topic support
-- allow multiple ddb, sqs event source mappings 
+- nested api/action/trigger stacks
+- sepaarte api/action/trigger dashboards
 - cloudwatch alerts slack push demo 
 - secrets manager 
-- multiple event source mappings for ddb, sqs
 - preprocessor json schema
 - replace timestamp with git version
 - scaffold generator [notes]
@@ -34,9 +31,7 @@
 
 - CI pipeline [notes]
 - dashboard sections; queue, table charts
-- pool of iam roles ?
 - topology chart generation
-- nested api/action/trigger stacks ?
 - custom lambda authorisers
 - cognito
 - route 53
@@ -46,6 +41,13 @@
 
 ### thoughts
 
+- preprocessor unit tests ?
+  - probably not worth it at this stage, assuming it all compiles
+- emit resource type summary on deployment ?
+  - largely worthless
+- iam role pool to reduce template size ?
+  - not going to reduce template size meaningfully
+  - also feels like an over- optimisation
 - don't put blank subs {} ?
   - doesn't work - needs blank
 - preprocessor circularity detection ?
@@ -70,6 +72,9 @@
   
 ### done
 
+- raw stack is missing iam permissions
+  - but works when u run preprocessor from the command line
+- dump raw, cooked templates
 - iam/permissions is nested incorrectly
 - preprocessor demo.yaml sample
 - integrate preprocessor via decorator
