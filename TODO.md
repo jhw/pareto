@@ -1,11 +1,6 @@
-### short 
+### short [preprocessor]
 
-- preprocessor demo.yaml sample
-- integrate preprocessor via decorator
-
-- fails if appropriate lambdas aren't present
-- emit resource type summary on deployment
-- sns topic support
+- missing iam
 
 ### blog
 
@@ -15,6 +10,8 @@
 
 ### medium
 
+- emit resource type summary on deployment
+- sns topic support
 - allow multiple ddb, sqs event source mappings 
 - cloudwatch alerts slack push demo 
 - secrets manager 
@@ -70,6 +67,8 @@
   
 ### done
 
+- preprocessor demo.yaml sample
+- integrate preprocessor via decorator
 - force depends to be a list
 - remove iam compaction
   - check iam uses set

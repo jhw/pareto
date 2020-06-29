@@ -4,6 +4,8 @@ from pareto.scripts import *
 
 import unittest, zipfile
 
+from pareto.components.preprocessor import preprocess
+
 from pareto.components.stack import synth_stack
 
 """
@@ -158,6 +160,7 @@ if __name__=="__main__":
         if not os.path.exists(stackfile):
             raise RuntimeError("Stack file does not exist")
         config=load_config(stackfile, stagename)
+        preprocess(config)
         run_tests(config)
         add_staging(config)
         push_lambdas(config)

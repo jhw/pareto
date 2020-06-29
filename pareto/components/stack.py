@@ -5,14 +5,6 @@ from pareto.components.queue import synth_queue
 from pareto.components.timer import synth_timer
 from pareto.components.dashboard import synth_dashboard
 
-def preprocess(fn):
-    from pareto.components.preprocessor import preprocess
-    def wrapped(config):
-        preprocess(config)
-        return fn(config)
-    return wrapped
-
-@preprocess
 def synth_stack(config):
     def add_component(component, stack):
         for attr in ["resources",
