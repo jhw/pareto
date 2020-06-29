@@ -1,61 +1,56 @@
 components:
 - type: api
-  name: page-scraper
+  name: hello-get-api
   method: POST
 - type: api
-  name: index-fetcher  
+  name: hello-post-api
   method: GET
-- type: api
-  name: vocab-translator
-  permissions:
-  - "translate:*"
-  method: POST
 - type: bucket
-  name: content
+  name: hello-bucket
   website: true
 - type: action
-  name: markdown-parser  
+  name: hello-action-1  
   trigger:
     type: bucket
-    name: content
-    path: markdown
+    name: hello-bucket
+    path: foo
   target:
     type: bucket
-    name: content
+    name: hello-bucket
 - type: table
-  name: content
+  name: hello-table
   fields:
-  - name: normalised-title
+  - name: my-hash
     type: string
     primary: true
 - type: action
-  name: page-indexer
+  name: hello-action-2
   trigger:
     type: bucket
-    name: content
-    path: posts
+    name: hello-bucket
+    path: bar
   target:
     type: table
-    name: content
+    name: hello-table
 - type: queue
-  name: audio
+  name: hello-queue
   batch: 1
 - type: action
-  name: audio-batcher
+  name: hello-action-3
   trigger:
     type: table
-    name: content
+    name: hello-table
   target:
     type: queue
-    name: audio
+    name: hello-queue
 - type: action
-  name: audio-generator
+  name: hello-action-4
   permissions:
-  - "polly:*"
+  - "translate:*"
   trigger:
     type: queue
-    name: audio
+    name: hello-queue
   target:
     type: bucket
-    name: content
+    name: hello-bucket
 
