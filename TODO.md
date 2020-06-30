@@ -1,35 +1,21 @@
-### short [preprocessor]
+### short
 
-- allow multiple ddb, sqs event source mappings 
-
-### blog
-
-- depends
-- worst bug in the world
-  - s3 event source arn
+- nested templates
 
 ### medium
 
-- cloudwatch alers [+ sns topics]
-- nested api/action/trigger stacks
-- separate api/action/trigger dashboards
-- cloudwatch alerts slack push demo 
+- cloudwatch alerts
 - secrets manager 
 - preprocessor json schema
 - replace timestamp with git version
 - scaffold generator [notes]
-- aggregate IAM roles
 - layers [notes]
-
-### demo
-
-- slow russian
 - pip dependency installation
 
 ### v1.1
 
+- aggregate IAM roles
 - CI pipeline [notes]
-- dashboard sections; queue, table charts
 - topology chart generation
 - custom lambda authorisers
 - cognito
@@ -40,6 +26,13 @@
 
 ### thoughts
 
+- multiple ddb/sqs event source mappings ?
+  - doesn't really seem to work
+  - ddb can only have a single event stream
+  - timer only naturally binds to a single event only
+  - could do it for sqs
+  - https://stackoverflow.com/questions/44289776/how-to-have-more-than-two-dynamodb-streams-that-trigger-lambdas
+  - feels like it's something for sns  
 - preprocessor unit tests ?
   - probably not worth it at this stage, assuming it all compiles
 - emit resource type summary on deployment ?

@@ -1,3 +1,18 @@
+### nested templates 29/6/20
+
+- what would you need to do to get Pareto templates working ?
+- Five templates - actions, apis, triggers, dashboards, master 
+- Each will need Params section although maybe not master 
+- Stack building process will need to build a series of different stacks 
+- Dashboard needs separate api, actions and triggers dashes, all within dash template
+- Each template will need to export arms and other stuff
+- But actions will need to import trigger arns and vice versa 
+- Any template which references an arn that is now part of another template will have to now use a parameter
+- Deploy script will need to push stacks to s3
+- Need new tested template component
+- Then master template glues it all together 
+- at heart this is a massive expansion of synth_stack
+
 ### lookback permissions 28/6/20
 
 - required for event sourcing which under the hood is really doing polling :-/
