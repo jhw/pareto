@@ -1,7 +1,5 @@
 ### short [preprocessor]
 
-- ensure all yaml dumping done without refs
-- sns topic support
 - allow multiple ddb, sqs event source mappings 
 
 ### blog
@@ -12,6 +10,7 @@
 
 ### medium
 
+- cloudwatch alers [+ sns topics]
 - nested api/action/trigger stacks
 - separate api/action/trigger dashboards
 - cloudwatch alerts slack push demo 
@@ -72,6 +71,7 @@
   
 ### done
 
+- ensure all yaml dumping done without refs
 - raw stack is missing iam permissions
   - but works when u run preprocessor from the command line
 - dump raw, cooked templates

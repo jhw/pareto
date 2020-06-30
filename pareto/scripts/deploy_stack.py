@@ -122,6 +122,7 @@ def validate_metrics(metrics):
 
 def dump_stack(stack):
     filename="tmp/stack-%s.yaml" % timestamp()
+    yaml.SafeDumper.ignore_aliases=lambda *args: True
     with open(filename, 'w') as f:
         f.write(yaml.safe_dump(stack,
                                default_flow_style=False))
