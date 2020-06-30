@@ -1,28 +1,23 @@
 ### short [nested-templates]
 
-- dashboard stack
-  - don't forget suffix
-- nested template component type
-- master stack
-
-- parameters
-  - actions require triggers and triggers require actions
-  - outputs need converting to parameters
-  - OTOH any arn ref could be added as a parameter at the component level
-  - a getatt is replaced by a ref to a parameter
-  - unless you're an api
-  - so need some kind of flag to tell u whether arns are in different template or not
-  - any trigger with need to use external function arns
-  - exception is api gateway function reference
-  - i guess it's on a case by case basis
-
-- replace trigger/arn references with template output references
- 
-- deployment to push templates to s3
-- modify scripts to handle nested templates
-
+- parameter support
+- hello world parameter
+- replace arn references with parameters plus refs
+  - only where arn comes from a different template
+  - ie exclude API gateway ref to function
+- stack function to aggregate params, outputs
+  
 ### medium
 
+- nested stack component
+- master stack
+  - expose unused outputs
+- dashboard stack
+  - one dash each for actions, apis
+- deployment to push non- master templates to s3
+- scripts to be able to inspect nested templates
+
+- sns topics
 - cloudwatch alerts
 - secrets manager 
 - preprocessor json schema
