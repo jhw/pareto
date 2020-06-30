@@ -1,13 +1,23 @@
 ### short [nested-templates]
 
-- pass components to template
-- generate and save mutiple stacks
-- add dashboard stack
-- add master stack
-
+- dashboard stack
+  - don't forget suffix
 - nested template component type
-- convert arns to reference parameters
-- parameter declarations
+- master stack
+
+- parameters
+  - actions require triggers and triggers require actions
+  - outputs need converting to parameters
+  - OTOH any arn ref could be added as a parameter at the component level
+  - a getatt is replaced by a ref to a parameter
+  - unless you're an api
+  - so need some kind of flag to tell u whether arns are in different template or not
+  - any trigger with need to use external function arns
+  - exception is api gateway function reference
+  - i guess it's on a case by case basis
+
+- replace trigger/arn references with template output references
+ 
 - deployment to push templates to s3
 - modify scripts to handle nested templates
 
@@ -73,6 +83,10 @@
   
 ### done
 
+- pass components to template
+- generate and save mutiple stacks
+- add dashboard stack
+- add master stack
 - stack type filters
 - rename stack as template
 - new stack file which creates multiple templates
