@@ -1,8 +1,11 @@
 ### short [nested-templates]
 
-- create actions/apis/triggers templates
-- dashboards template (actions, apis)
-- master template
+- pass components to template
+- generate and save mutiple stacks
+- add dashboard stack
+- add master stack
+
+- nested template component type
 - convert arns to reference parameters
 - parameter declarations
 - deployment to push templates to s3
@@ -70,6 +73,7 @@
   
 ### done
 
+- stack type filters
 - rename stack as template
 - new stack file which creates multiple templates
 - comment out deployment
