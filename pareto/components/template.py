@@ -1,11 +1,14 @@
+from pareto.components import *
+
 from pareto.components.bucket import synth_bucket
 from pareto.components.function import synth_function
-from pareto.components.table import synth_table
 from pareto.components.queue import synth_queue
+from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
+
 from pareto.components.dashboard import synth_dashboard
 
-def synth_stack(config):
+def synth_template(config):
     def add_component(component, stack):
         for attr in ["resources",
                      "outputs"]:
@@ -19,19 +22,6 @@ def synth_stack(config):
                      if k!="components"})
         fn=eval("synth_%s" % item["type"])                
         component=fn(**item)
-        add_component(component, stack)
-    def has_dashboard(config):
-        functions=[component
-                   for component in config["components"]
-                   if component["type"]=="function"]
-        return len(functions) > 0
-    for attr in ["dashboard"]:
-        fn=eval("has_%s" % attr)
-        if not fn(config):
-            continue
-        fn=eval("synth_%s" % attr)
-        config["name"]=attr
-        component=fn(**config)
         add_component(component, stack)
     return {k.capitalize():dict(v)
             for k, v in stack.items()

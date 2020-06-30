@@ -1,6 +1,12 @@
-### short
+### short [nested-templates]
 
-- nested templates
+- create actions/apis/triggers templates
+- dashboards template (actions, apis)
+- master template
+- convert arns to reference parameters
+- parameter declarations
+- deployment to push templates to s3
+- modify scripts to handle nested templates
 
 ### medium
 
@@ -64,6 +70,11 @@
   
 ### done
 
+- rename stack as template
+- new stack file which creates multiple templates
+- comment out deployment
+- remove metrics
+- remove dashboard
 - ensure all yaml dumping done without refs
 - raw stack is missing iam permissions
   - but works when u run preprocessor from the command line

@@ -8,16 +8,6 @@ from pareto.components.preprocessor import preprocess
 
 from pareto.components.stack import synth_stack
 
-"""
-- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
-"""
-
-Metrics={
-    "resources": (lambda x: len(x["Resources"]) if "Resources" in x else 0, 200),
-    "outputs": (lambda x: len(x["Outputs"]) if "Outputs" in x else 0, 60),
-    "template_size": (lambda x: len(json.dumps(x)), 51200)
-    }
-
 def load_config(stackfile, stagename):
     with open(stackfile, 'r') as f:
         config=yaml.load(f.read(),
@@ -102,24 +92,6 @@ def push_lambdas(config):
         zfname=init_zipfile(component)
         push_lambda(component, zfname)
 
-def stack_metrics(stack, metrics=Metrics):
-    items=[]
-    for key in metrics:
-        fn, limit = metrics[key]
-        value=fn(stack)
-        pctvalue=value/limit
-        item={"name": key,
-              "value": value,
-              "limit": limit,
-              "pct": pctvalue}
-        items.append(item)
-    return items
-
-def validate_metrics(metrics):
-    for metric in metrics:
-        if metric["pct"] > 1:
-            raise RuntimeError("%s limit exceeded" % metric["name"])
-
 def dump_stack(stack):
     filename="tmp/stack-%s.yaml" % timestamp()
     yaml.SafeDumper.ignore_aliases=lambda *args: True
@@ -162,15 +134,15 @@ if __name__=="__main__":
             raise RuntimeError("Stack file does not exist")
         config=load_config(stackfile, stagename)
         preprocess(config)
-        run_tests(config)
+        # run_tests(config)
         add_staging(config)
-        push_lambdas(config)
+        # push_lambdas(config)
         stack=synth_stack(config)
-        metrics=stack_metrics(stack)
-        validate_metrics(metrics)
-        print (pd.DataFrame(metrics))
-        dump_stack(stack)        
-        deploy_stack(config, stack, stagename)
+        yaml.SafeDumper.ignore_aliases=lambda *args: True
+        print (yaml.safe_dump(stack,
+                              default_flow_style=False))
+        # dump_stack(stack)        
+        # deploy_stack(config, stack, stagename)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
