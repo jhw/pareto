@@ -1,7 +1,7 @@
 ### short 
 
-- convert remaining trigger arns to parameters and refs
-- convert
+- replace function component direct arns with imported ref
+  - allow api gateway
 
 - master stack function
 - aggregate parameters and outputs
@@ -78,6 +78,7 @@
   
 ### done
 
+- convert remaining trigger arns to parameters and refs
 - convert local ARN lookups to parameter refs
 - sample parameter
 - pass components to template

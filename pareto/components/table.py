@@ -57,9 +57,9 @@ def synth_table(**kwargs):
         suffix="%s-mapping" % kwargs["action"]["name"]
         @resource(suffix)
         def LambdaMapping(**kwargs):
-            funcname=fn_getatt(kwargs["action"]["name"], "Arn")
+            funcarn=ref("%s-arn" % kwargs["action"]["name"])
             eventsource=fn_getatt(kwargs["name"], "StreamArn")
-            props={"FunctionName": funcname,
+            props={"FunctionName": funcarn,
                    "EventSourceArn": eventsource,
                    "StartingPosition": "LATEST"}
             return "AWS::Lambda::EventSourceMapping", props
@@ -68,6 +68,8 @@ def synth_table(**kwargs):
             "resources": [Table(**kwargs)],
             "outputs": [TableArn(**kwargs)]}
     if "action" in kwargs:
+        actionarn=parameter("%s-arn" % kwargs["action"]["name"])
+        struct["parameters"].append(actionarn)
         struct["resources"].append(LambdaMapping(**kwargs))
         struct["outputs"].append(TableStreamArn(**kwargs))
     return {k:v for k, v in struct.items()
