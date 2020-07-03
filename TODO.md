@@ -1,19 +1,17 @@
-### short 
+### short
 
-- replace function component direct arns with imported ref
-  - allow api gateway
+- master stack
+  - resource stacks for each component group (template keys)
+  - lookup params required for each stack
+  - aggregated outputs from each component group
 
-- master stack function
-- aggregate parameters and outputs
-
-### medium
-
-- expose unconsumed outputs
 - dashboard stack
   - one dash each for actions, apis
 - deployment to push non- master templates to s3
 - scripts to be able to inspect nested templates
   - iterate across all nested stacks and interleave results
+
+### medium
 
 - sqs fifo
 - multiple sqs actions

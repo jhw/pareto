@@ -9,16 +9,25 @@ TypeFilters={
     }
 
 def synth_stack(config):
-    components=config.pop("components")
-    stack={}
-    for key in TypeFilters.keys():
-        config["components"]=[component
-                              for component in components
-                              if TypeFilters[key](component)]
-        stack["%ss" % key]=synth_template(config)
-    stack["dashboards"]={}
-    stack["master"]={}
-    return stack
+    @resource()
+    def Stack(**kwargs):
+        params, url = {}, None
+        props={"Parameters": params,
+               "TemplateURL": url}
+        return "AWS::Cloudformation::Stack", props    
+    def add_component_groups(templates, components):
+        for key in TypeFilters.keys():
+            config["components"]=[component
+                                  for component in components
+                                  if TypeFilters[key](component)]
+            templates["%ss" % key]=synth_template(config)
+    def add_master(templates):
+        templates["master"]={}
+    def add_dashboard(templates):
+        templates["dashboards"]={}
+    templates={}
+    add_component_groups(templates, config.pop("components"))
+    return templates
 
 if __name__=="__main__":
     pass
