@@ -41,12 +41,15 @@ if __name__=="__main__":
             raise RuntimeError("Config file does not exist")
         if stagename not in ["dev", "prod"]:
             raise RuntimeError("Stage name is invalid")
-
         config=load_config(configfile, stagename)
         preprocess(config)
         add_staging(config)
         env=synth_env(config)
         yaml.SafeDumper.ignore_aliases=lambda *args: True
+        """
+        print (yaml.safe_dump(env,
+                              default_flow_style=False))
+        """
         print (yaml.safe_dump(env["master"],
                               default_flow_style=False))
     except ClientError as error:

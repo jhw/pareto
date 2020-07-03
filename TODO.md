@@ -1,20 +1,21 @@
-### short
+### short [nested stacks]
 
-- stack needs its own component
-- when creating environment need to use synth_template(config) etc
-
-- master stack
-  - resource stacks for each component group (template keys)
-  - lookup params required for each stack
-  - aggregated outputs from each component group
-
-- dashboard stack
-  - one dash each for actions, apis
-- deployment to push non- master templates to s3
-- scripts to be able to inspect nested templates
-  - iterate across all nested stacks and interleave results
+- stack url
+- stack for each component group
+- filter outputs from each component group
+- pass params to stacks from component group outputs
+- pass thru all stack outputs as env outputs
 
 ### medium
+
+- trim() decorator to remove empty params/resources/outputs
+- avoid popping components from config
+
+- dashboard stack
+- deployment to push non- master templates to s3
+- add back testing, lambda deployment functionality to deploy_stack.py
+- scripts to be able to inspect nested templates
+  - iterate across all nested stacks and interleave results
 
 - sqs fifo
 - multiple sqs actions
@@ -79,6 +80,9 @@
   
 ### done
 
+- pass parameters to stack
+- stack needs its own component
+- when creating environment need to use synth_template(config) etc
 - stack needs to become environment
 - convert remaining trigger arns to parameters and refs
 - convert local ARN lookups to parameter refs
