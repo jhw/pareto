@@ -1,4 +1,4 @@
-### short [nested-templates]
+### short 
 
 - sample parameter
 - convert local ARN lookups to parameter refs
