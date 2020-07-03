@@ -78,7 +78,8 @@ def synth_bucket(**kwargs):
     if is_website(kwargs):
         resources.append(BucketPolicy(**kwargs))        
         outputs.append(BucketUrl(**kwargs))
-    return {"resources": resources,
+    return {"parameters": [parameter("hello-world")],
+            "resources": resources,
             "outputs": outputs}
 
 if __name__=="__main__":

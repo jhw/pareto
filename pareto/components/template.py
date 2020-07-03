@@ -10,7 +10,8 @@ from pareto.components.dashboard import synth_dashboard
 
 def synth_template(config):
     def add_component(component, stack):
-        for attr in ["resources",
+        for attr in ["parameters",
+                     "resources",
                      "outputs"]:
             if attr in component:
                 stack.setdefault(attr, [])

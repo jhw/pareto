@@ -1,6 +1,5 @@
 ### short 
 
-- sample parameter
 - convert local ARN lookups to parameter refs
 - master stack function
 - aggregate parameters and outputs
@@ -77,6 +76,7 @@
   
 ### done
 
+- sample parameter
 - pass components to template
 - generate and save mutiple stacks
 - add dashboard stack

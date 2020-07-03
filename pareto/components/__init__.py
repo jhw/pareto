@@ -25,6 +25,9 @@ def fn_join(args, delimiter=""):
 def fn_sub(expr, kwargs={}):    
     return {"Fn::Sub": [expr, kwargs]}
 
+def parameter(name, type_="String"):
+    return (logical_id(name), {"Type": type_})
+
 def resource(suffix=None):
     def format_depends(v):
         return [logical_id(name)
