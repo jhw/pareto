@@ -12,9 +12,9 @@ def synth_queue(**kwargs):
         suffix="%s-mapping" % kwargs["action"]["name"]
         @resource(suffix)
         def LambdaMapping(batch=1, **kwargs):
-            funcname=fn_getatt(kwargs["action"]["name"], "Arn")
+            funcarn=ref("%s-arn" % kwargs["action"]["name"])
             eventsource=fn_getatt(kwargs["name"], "Arn")
-            props={"FunctionName": funcname,
+            props={"FunctionName": funcarn,
                    "EventSourceArn": eventsource,
                    "BatchSize": batch}
             return "AWS::Lambda::EventSourceMapping", props
@@ -23,6 +23,8 @@ def synth_queue(**kwargs):
             "resources": [Queue(**kwargs)],
             "outputs": [QueueArn(**kwargs)]}
     if "action" in kwargs:
+        actionarn=parameter("%s-arn" % kwargs["action"]["name"])
+        struct["parameters"].append(actionarn)
         struct["resources"].append(LambdaMapping(**kwargs))
     return {k:v for k, v in struct.items()
             if k!=[]}
