@@ -9,7 +9,7 @@ TypeFilters={
     }
 
 def synth_env(config):
-    def add_component_groups(config, templates):
+    def add_components(config, templates):
         components=config.pop("components")
         for key in TypeFilters.keys():
             config["components"]=[component
@@ -18,11 +18,12 @@ def synth_env(config):
             templates["%ss" % key]=synth_template(config)
     def add_master(config, templates):
         config["components"]=[{"type": "stack",
-                               "name": "hello",
-                               "params": {"foo": "bar"}}]
+                               "name": key,
+                               "params": {"foo": "bar"}}
+                              for key in templates.keys()]
         templates["master"]=synth_template(config)
     templates={}
-    add_component_groups(config, templates)
+    add_components(config, templates)
     add_master(config, templates)
     return templates
 

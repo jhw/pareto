@@ -1,8 +1,8 @@
 ### short [nested stacks]
 
-- stack for each component group
+- per- stack parameters
 - filter outputs from each component group
-- pass params to stacks from component group outputs
+- complete stack parameters
 - pass thru all stack outputs as env outputs
 
 ### medium
@@ -79,6 +79,7 @@
   
 ### done
 
+- stack for each component group
 - stack url
 - pass parameters to stack
 - stack needs its own component
