@@ -18,14 +18,14 @@ def synth_timer(**kwargs):
         @resource(suffix=suffix)
         def LambdaPermission(**kwargs):
             eventsource=fn_getatt(kwargs["name"], "Arn")
-            funcname=fn_getatt(kwargs["action"]["name"], "Arn")
+            funcarn=ref("%s-arn" % kwargs["action"]["name"])
             props={"Action": "lambda:InvokeFunction",
-                   "FunctionName": funcname,
+                   "FunctionName": funcarn,
                    "Principal": "events.amazonaws.com",
                    "SourceArn": eventsource}
             return "AWS::Lambda::Permission", props
         return LambdaPermission(**kwargs)
-    struct={"parameters": [],
+    struct={"parameters": [parameter("%s-arn" % kwargs["action"]["name"])],
             "resources": [EventRule(**kwargs),
                           LambdaPermission(**kwargs)],            
             "outputs": [EventRuleArn(**kwargs)]}
