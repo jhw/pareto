@@ -1,5 +1,9 @@
 ### short
 
+- stack needs to become environment
+- stack needs its own component
+- when creating environment need to use synth_template(config) etc
+
 - master stack
   - resource stacks for each component group (template keys)
   - lookup params required for each stack

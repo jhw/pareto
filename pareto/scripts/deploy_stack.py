@@ -139,7 +139,7 @@ if __name__=="__main__":
         # push_lambdas(config)
         stack=synth_stack(config)
         yaml.SafeDumper.ignore_aliases=lambda *args: True
-        print (yaml.safe_dump(stack,
+        print (yaml.safe_dump(stack["master"],
                               default_flow_style=False))
         # dump_stack(stack)        
         # deploy_stack(config, stack, stagename)

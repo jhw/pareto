@@ -9,8 +9,8 @@ TypeFilters={
     }
 
 def synth_stack(config):
-    @resource()
-    def Stack(**kwargs):
+    @resource(suffix="stack")
+    def NestedStack(**kwargs):
         params, url = {}, None
         props={"Parameters": params,
                "TemplateURL": url}
@@ -21,12 +21,26 @@ def synth_stack(config):
                                   for component in components
                                   if TypeFilters[key](component)]
             templates["%ss" % key]=synth_template(config)
+    def init_dashboards(templates):
+        struct={"parameters": [],
+                "resources": [],
+                "outputs": []}
+        return {k:v for k, v in struct.items()
+                if v!=[]}
+    def add_dashboards(templates):
+        templates["dashboards"]=init_dashboards(templates)
+    def init_master(templates):
+        struct={"parameters": [],
+                "resources": [NestedStack(name="hello-world")],
+                "outputs": []}
+        return {k:v for k, v in struct.items()
+                if v!=[]}
     def add_master(templates):
-        templates["master"]={}
-    def add_dashboard(templates):
-        templates["dashboards"]={}
+        templates["master"]=init_master(templates)
     templates={}
     add_component_groups(templates, config.pop("components"))
+    add_dashboards(templates)
+    add_master(templates)
     return templates
 
 if __name__=="__main__":
