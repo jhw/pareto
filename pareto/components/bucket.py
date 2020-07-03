@@ -12,7 +12,7 @@ def synth_bucket(**kwargs):
                 "CorsConfiguration": corsconfig,
                 "WebsiteConfiguration": websiteconfig}
     def lambda_notification_config(action, event):
-        arn=fn_getatt(action["name"], "Arn")
+        arn=ref("%s-arn" % action["name"])
         rules=[{"Name": "prefix",
                 "Value": action["path"]}]
         return {"Event": event["type"],
@@ -47,7 +47,6 @@ def synth_bucket(**kwargs):
             - Fn::GetAtt Arn doesn't work for S3 lambda notifications :-(
             - NB also recommends using SourceAccount as account not included in S3 arn format
             """
-            # eventsource=fn_getatt(kwargs["name"], "Arn")
             eventsource="arn:aws:s3:::%s" % resource_id(kwargs)
             funcname=fn_getatt(action["name"], "Arn")
             props={"Action": "lambda:InvokeFunction",
@@ -71,16 +70,18 @@ def synth_bucket(**kwargs):
         props={"Bucket": ref(kwargs["name"]),
                "PolicyDocument": policy_document(kwargs)}
         return "AWS::S3::BucketPolicy", props
-    resources, outputs = [Bucket(**kwargs)], [BucketArn(**kwargs)]
+    struct={"parameters": [],
+            "resources": [Bucket(**kwargs)],
+            "outputs": [BucketArn(**kwargs)]}
     if "actions" in kwargs:
-        resources+=[LambdaPermission(kwargs, action)
-                    for action in kwargs["actions"]]
+        for action in kwargs["actions"]:
+            struct["parameters"].append(parameter("%s-arn" % action["name"]))
+            struct["resources"].append(LambdaPermission(kwargs, action))
     if is_website(kwargs):
-        resources.append(BucketPolicy(**kwargs))        
-        outputs.append(BucketUrl(**kwargs))
-    return {"parameters": [parameter("hello-world")],
-            "resources": resources,
-            "outputs": outputs}
+        struct["resources"].append(BucketPolicy(**kwargs))        
+        struct["outputs"].append(BucketUrl(**kwargs))
+    return {k:v for k, v in struct.items()
+            if v!=[]}
 
 if __name__=="__main__":
     pass

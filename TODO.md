@@ -1,6 +1,8 @@
 ### short 
 
-- convert local ARN lookups to parameter refs
+- convert remaining trigger arns to parameters and refs
+- convert
+
 - master stack function
 - aggregate parameters and outputs
 
@@ -76,6 +78,7 @@
   
 ### done
 
+- convert local ARN lookups to parameter refs
 - sample parameter
 - pass components to template
 - generate and save mutiple stacks
