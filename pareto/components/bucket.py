@@ -73,10 +73,12 @@ def synth_bucket(**kwargs):
     struct={"parameters": [],
             "resources": [Bucket(**kwargs)],
             "outputs": [BucketArn(**kwargs)]}
+    def add_action(kwargs, action, struct):
+        struct["parameters"].append(parameter("%s-arn" % action["name"]))
+        struct["resources"].append(LambdaPermission(kwargs, action))
     if "actions" in kwargs:
         for action in kwargs["actions"]:
-            struct["parameters"].append(parameter("%s-arn" % action["name"]))
-            struct["resources"].append(LambdaPermission(kwargs, action))
+            add_action(kwargs, action, struct)
     if is_website(kwargs):
         struct["resources"].append(BucketPolicy(**kwargs))        
         struct["outputs"].append(BucketUrl(**kwargs))
