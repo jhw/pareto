@@ -1,6 +1,5 @@
 ### short [nested stacks]
 
-- stack url
 - stack for each component group
 - filter outputs from each component group
 - pass params to stacks from component group outputs
@@ -13,7 +12,7 @@
 
 - dashboard stack
 - deployment to push non- master templates to s3
-- add back testing, lambda deployment functionality to deploy_stack.py
+- add back testing, lambda push to deployment
 - scripts to be able to inspect nested templates
   - iterate across all nested stacks and interleave results
 
@@ -80,6 +79,7 @@
   
 ### done
 
+- stack url
 - pass parameters to stack
 - stack needs its own component
 - when creating environment need to use synth_template(config) etc

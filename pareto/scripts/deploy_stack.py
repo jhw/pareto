@@ -14,6 +14,7 @@ def load_config(configfile, stagename):
                          Loader=yaml.FullLoader)
     config["app"]=Config["AppName"]
     config["region"]=Config["AWSRegion"]
+    config["bucket"]=Config["S3StagingBucket"]
     config["stage"]=stagename
     return config
 
