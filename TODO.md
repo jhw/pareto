@@ -1,6 +1,5 @@
 ### short
 
-- stack needs to become environment
 - stack needs its own component
 - when creating environment need to use synth_template(config) etc
 
@@ -80,6 +79,7 @@
   
 ### done
 
+- stack needs to become environment
 - convert remaining trigger arns to parameters and refs
 - convert local ARN lookups to parameter refs
 - sample parameter

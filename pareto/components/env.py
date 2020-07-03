@@ -8,7 +8,7 @@ TypeFilters={
     "trigger": lambda x: x["type"]!="function"
     }
 
-def synth_stack(config):
+def synth_env(config):
     @resource(suffix="stack")
     def NestedStack(**kwargs):
         params, url = {}, None
