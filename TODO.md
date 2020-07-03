@@ -1,22 +1,21 @@
 ### short [nested-templates]
 
-- parameter support
-- hello world parameter
-- replace arn references with parameters plus refs
-  - only where arn comes from a different template
-  - ie exclude API gateway ref to function
-- stack function to aggregate params, outputs
-  
+- sample parameter
+- convert local ARN lookups to parameter refs
+- master stack function
+- aggregate parameters and outputs
+
 ### medium
 
-- nested stack component
-- master stack
-  - expose unused outputs
+- expose unconsumed outputs
 - dashboard stack
   - one dash each for actions, apis
 - deployment to push non- master templates to s3
 - scripts to be able to inspect nested templates
+  - iterate across all nested stacks and interleave results
 
+- sqs fifo
+- multiple sqs actions
 - sns topics
 - cloudwatch alerts
 - secrets manager 
