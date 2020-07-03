@@ -64,12 +64,14 @@ def synth_table(**kwargs):
                    "StartingPosition": "LATEST"}
             return "AWS::Lambda::EventSourceMapping", props
         return LambdaMapping(**kwargs)
-    resources, outputs = [Table(**kwargs)], [TableArn(**kwargs)]
+    struct={"parameters": [],
+            "resources": [Table(**kwargs)],
+            "outputs": [TableArn(**kwargs)]}
     if "action" in kwargs:
-        resources.append(LambdaMapping(**kwargs))
-        outputs.append(TableStreamArn(**kwargs))
-    return {"resources": resources,
-            "outputs": outputs}
+        struct["resources"].append(LambdaMapping(**kwargs))
+        struct["outputs"].append(TableStreamArn(**kwargs))
+    return {k:v for k, v in struct.items()
+            if v!=[]}
 
 if __name__=="__main__":
     pass

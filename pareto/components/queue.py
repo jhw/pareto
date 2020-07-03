@@ -19,12 +19,13 @@ def synth_queue(**kwargs):
                    "BatchSize": batch}
             return "AWS::Lambda::EventSourceMapping", props
         return LambdaMapping(**kwargs)
-    resources=[Queue(**kwargs)]
-    outputs=[QueueArn(**kwargs)]
+    struct={"parameters": [],
+            "resources": [Queue(**kwargs)],
+            "outputs": [QueueArn(**kwargs)]}
     if "action" in kwargs:
-        resources.append(LambdaMapping(**kwargs))
-    return {"resources": resources,
-            "outputs": outputs}
+        struct["resources"].append(LambdaMapping(**kwargs))
+    return {k:v for k, v in struct.items()
+            if k!=[]}
 
 if __name__=="__main__":
     pass

@@ -25,11 +25,12 @@ def synth_timer(**kwargs):
                    "SourceArn": eventsource}
             return "AWS::Lambda::Permission", props
         return LambdaPermission(**kwargs)
-    resources=[EventRule(**kwargs),
-               LambdaPermission(**kwargs)]
-    outputs=[EventRuleArn(**kwargs)]
-    return {"resources": resources,
-            "outputs": outputs}
+    struct={"parameters": [],
+            "resources": [EventRule(**kwargs),
+                          LambdaPermission(**kwargs)],            
+            "outputs": [EventRuleArn(**kwargs)]}
+    return {k:v for k, v in struct.items()
+            if v!=[]}
 
 if __name__=="__main__":
     pass
