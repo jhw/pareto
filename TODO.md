@@ -1,11 +1,10 @@
 ### short [nested stacks]
 
-- add per- stack parameters
-
-- output all outputs as part of master stack
+- include aggregated outputs in master stack
 - dashboard stack
+
 - deployment to push non- master templates to s3
-- add back testing, lambda push to deployment
+- add back testing, lambda push, metrics testing to deployment
 - scripts to be able to inspect nested templates
   - iterate across all nested stacks and interleave results
 
@@ -76,6 +75,7 @@
   
 ### done
 
+- add per- stack parameters
 - filter outputs from each component group {name: stack}
 - trim() decorator to remove empty params/resources/outputs
 - stack for each component group
