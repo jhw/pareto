@@ -17,10 +17,29 @@ def synth_env(config):
                                   if TypeFilters[key](component)]
             templates["%ss" % key]=synth_template(config)
     def add_master(config, templates):
+        def filter_outputs(templates):
+            outputs={}
+            for tempname, template in templates.items():
+                outputs.update({key: tempname
+                                for key in template["Outputs"].keys()
+                                if "Outputs" in template})
+            return outputs
+        def assert_params(fn):
+            def wrapped(tempname, template, outputs):
+                return {} if "Parameters" not in template else fn(tempname,
+                                                                  template,
+                                                                  outputs)
+            return wrapped
+        @assert_params
+        def params_for_template(tempname, template, outputs):
+            return {"foo": "bar"}
+        outputs=filter_outputs(templates)
         config["components"]=[{"type": "stack",
-                               "name": key,
-                               "params": {"foo": "bar"}}
-                              for key in templates.keys()]
+                               "name": tempname,
+                               "params": params_for_template(tempname,
+                                                             template,
+                                                             outputs)}
+                              for tempname, template in templates.items()]
         templates["master"]=synth_template(config)
     templates={}
     add_components(config, templates)

@@ -1,16 +1,15 @@
 ### short [nested stacks]
 
-- filter outputs from each component group {name: stack}
 - add per- stack parameters
+
 - output all outputs as part of master stack
-
-### medium
-
 - dashboard stack
 - deployment to push non- master templates to s3
 - add back testing, lambda push to deployment
 - scripts to be able to inspect nested templates
   - iterate across all nested stacks and interleave results
+
+### medium
 
 - avoid popping components from config
 
@@ -77,6 +76,7 @@
   
 ### done
 
+- filter outputs from each component group {name: stack}
 - trim() decorator to remove empty params/resources/outputs
 - stack for each component group
 - stack url
