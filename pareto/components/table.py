@@ -1,5 +1,6 @@
 from pareto.components import *
 
+@trim_template
 def synth_table(**kwargs):
     DDBTypes={"string": "S",
               "int": "N",
@@ -72,8 +73,7 @@ def synth_table(**kwargs):
         struct["parameters"].append(actionarn)
         struct["resources"].append(LambdaMapping(**kwargs))
         struct["outputs"].append(TableStreamArn(**kwargs))
-    return {k:v for k, v in struct.items()
-            if v!=[]}
+    return struct
 
 if __name__=="__main__":
     pass

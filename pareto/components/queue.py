@@ -1,5 +1,6 @@
 from pareto.components import *
 
+@trim_template
 def synth_queue(**kwargs):
     @resource()
     def Queue(**kwargs):        
@@ -26,8 +27,7 @@ def synth_queue(**kwargs):
         actionarn=parameter("%s-arn" % kwargs["action"]["name"])
         struct["parameters"].append(actionarn)
         struct["resources"].append(LambdaMapping(**kwargs))
-    return {k:v for k, v in struct.items()
-            if k!=[]}
+    return struct
 
 if __name__=="__main__":
     pass

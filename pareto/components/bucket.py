@@ -1,5 +1,6 @@
 from pareto.components import *
 
+@trim_template
 def synth_bucket(**kwargs):
     def is_website(kwargs):
         return "website" in kwargs and kwargs["website"]
@@ -82,8 +83,7 @@ def synth_bucket(**kwargs):
     if is_website(kwargs):
         struct["resources"].append(BucketPolicy(**kwargs))        
         struct["outputs"].append(BucketUrl(**kwargs))
-    return {k:v for k, v in struct.items()
-            if v!=[]}
+    return struct
 
 if __name__=="__main__":
     pass

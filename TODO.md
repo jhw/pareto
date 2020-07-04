@@ -1,20 +1,18 @@
 ### short [nested stacks]
 
-- per- stack parameters
-- filter outputs from each component group
-- complete stack parameters
-- pass thru all stack outputs as env outputs
+- filter outputs from each component group {name: stack}
+- add per- stack parameters
+- output all outputs as part of master stack
 
 ### medium
-
-- trim() decorator to remove empty params/resources/outputs
-- avoid popping components from config
 
 - dashboard stack
 - deployment to push non- master templates to s3
 - add back testing, lambda push to deployment
 - scripts to be able to inspect nested templates
   - iterate across all nested stacks and interleave results
+
+- avoid popping components from config
 
 - sqs fifo
 - multiple sqs actions
@@ -79,6 +77,7 @@
   
 ### done
 
+- trim() decorator to remove empty params/resources/outputs
 - stack for each component group
 - stack url
 - pass parameters to stack

@@ -1,12 +1,12 @@
 from pareto.components import *
 
 from pareto.components.bucket import synth_bucket
+from pareto.components.dashboard import synth_dashboard
 from pareto.components.function import synth_function
 from pareto.components.queue import synth_queue
+from pareto.components.stack import synth_stack
 from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
-from pareto.components.stack import synth_stack
-from pareto.components.dashboard import synth_dashboard
 
 def synth_template(config):
     def add_component(component, stack):

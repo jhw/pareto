@@ -1,5 +1,6 @@
 from pareto.components import *
 
+@trim_template
 def synth_timer(**kwargs):
     @resource()
     def EventRule(**kwargs):
@@ -25,12 +26,10 @@ def synth_timer(**kwargs):
                    "SourceArn": eventsource}
             return "AWS::Lambda::Permission", props
         return LambdaPermission(**kwargs)
-    struct={"parameters": [parameter("%s-arn" % kwargs["action"]["name"])],
+    return {"parameters": [parameter("%s-arn" % kwargs["action"]["name"])],
             "resources": [EventRule(**kwargs),
                           LambdaPermission(**kwargs)],            
             "outputs": [EventRuleArn(**kwargs)]}
-    return {k:v for k, v in struct.items()
-            if v!=[]}
 
 if __name__=="__main__":
     pass

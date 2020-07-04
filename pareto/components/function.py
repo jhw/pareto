@@ -1,5 +1,6 @@
 from pareto.components import *
 
+@trim_template
 def synth_function(**kwargs):
     @resource()
     def Function(concurrency=None,
@@ -118,8 +119,7 @@ def synth_function(**kwargs):
                               ApiGwMethod(**kwargs),
                               ApiGwPermission(**kwargs)]
         struct["outputs"].append(ApiGwUrl(**kwargs))
-    return {k:v for k, v in struct.items()
-            if v!=[]}
+    return struct
 
 if __name__=="__main__":
     pass

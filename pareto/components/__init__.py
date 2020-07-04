@@ -57,6 +57,12 @@ def output(suffix=None):
         return wrapped
     return decorator
 
+def trim_template(fn):
+    def wrapped(*args, **kwargs):
+        return {k:v for k, v in fn(*args, **kwargs).items()
+                if v!=[]}
+    return wrapped
+
 @resource(suffix="role")
 def IamRole(**kwargs):
     def assume_role_policy_doc():
