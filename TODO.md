@@ -1,18 +1,19 @@
-### short [nested stacks]
+### short [deployment]
 
-- include aggregated outputs in master stack
-- dashboard stack
+- lambda testing
+- lambda push
+- template push
+- metrics
 
-- deployment to push non- master templates to s3
-- add back testing, lambda push, metrics testing to deployment
-- scripts to be able to inspect nested templates
-  - iterate across all nested stacks and interleave results
+- list_events/resources/failures.py
+  - iterate nested stacks and interleave results
 
 ### medium
 
+- dashboard stack
+
 - avoid popping components from config
 
-- sqs fifo
 - multiple sqs actions
 - sns topics
 - cloudwatch alerts
@@ -25,6 +26,7 @@
 
 ### v1.1
 
+- sqs fifo
 - aggregate IAM roles
 - CI pipeline [notes]
 - topology chart generation
@@ -75,6 +77,7 @@
   
 ### done
 
+- include aggregated outputs in master stack
 - add per- stack parameters
 - filter outputs from each component group {name: stack}
 - trim() decorator to remove empty params/resources/outputs
