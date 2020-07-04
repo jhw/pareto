@@ -11,17 +11,17 @@ TypeFilters={
 def synth_env(config):
     def add_components(config, templates):
         components=config.pop("components")
-        for key in TypeFilters.keys():
+        for typekey in TypeFilters:
             config["components"]=[component
                                   for component in components
-                                  if TypeFilters[key](component)]
-            templates["%ss" % key]=synth_template(config)
+                                  if TypeFilters[typekey](component)]
+            templates["%ss" % typekey]=synth_template(config)
     def add_master(config, templates):
         def filter_outputs(templates):
             outputs={}
             for tempname, template in templates.items():
-                outputs.update({key: tempname
-                                for key in template["Outputs"].keys()
+                outputs.update({paramname: tempname
+                                for paramname in template["Outputs"]
                                 if "Outputs" in template})
             return outputs
         def assert_params(fn):

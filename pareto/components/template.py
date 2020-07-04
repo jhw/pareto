@@ -19,7 +19,7 @@ def synth_template(config):
     stack={}    
     for item in config["components"]:
         item.update({k:config[k]
-                     for k in config.keys()
+                     for k in config
                      if k!="components"})
         fn=eval("synth_%s" % item["type"])                
         component=fn(**item)

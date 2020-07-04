@@ -25,7 +25,7 @@ def KeyFn(component):
 def validate(**kwargs):
     def assert_unique(**kwargs):
         keys=[]
-        for attr in kwargs.keys():
+        for attr in kwargs:
             keys+=[KeyFn(component)
                    for component in kwargs[attr]]
         ukeys=list(set(keys))
@@ -36,7 +36,7 @@ def validate(**kwargs):
             for attr in ["trigger",
                          "target"]:
                 trigkey=KeyFn(action[attr])
-                if trigkey not in trigmap.keys():
+                if trigkey not in trigmap:
                     raise RuntimeError("%s %s %s not found" % (KeyFn(action),
                                                                attr,
                                                                trigkey))
@@ -170,7 +170,7 @@ def add_permissions(**kwargs):
     @Iam.attach
     def trigger_permissions(trigger):
         pass
-    for attr in kwargs.keys():
+    for attr in kwargs:
         for component in kwargs[attr]:
             fn=eval("%s_permissions" % (attr[:-1]))
             fn(component)
@@ -190,7 +190,7 @@ def remap_types(**kwargs):
         action["type"]="function"
     def remap_trigger(trigger):
         pass
-    for attr in kwargs.keys():
+    for attr in kwargs:
         for component in kwargs[attr]:
             fn=eval("remap_%s" % (attr[:-1]))
             fn(component)
@@ -208,7 +208,7 @@ def preprocess(config, filters=TypeFilters):
                 if filterfn(component)]
     kwargs={"%ss" % attr: apply_filter(config["components"],
                                        filters[attr])
-            for attr in filters.keys()}
+            for attr in filters}
     for fn in [validate,
                remap_triggers,
                add_permissions,
