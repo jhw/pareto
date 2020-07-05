@@ -1,10 +1,12 @@
 ### short
 
-- simplify env.py creation
-  - avoid popping components from config
+- pass config, templates to init_template
+
+- simplify creation of non- master stacks
+  - avoid popping components
+- convert Template to extend object not dict
 
 - investigate template using lists of tuples (not dicts ?)
-- convert Template to extend object not dict
 
 - dashboard stack
 
@@ -75,6 +77,8 @@
   
 ### done
 
+- simplify env.py creation
+  - avoid popping components from config
 - add local copies of synth_template and rename as init_template
 - see if you can remove dict from render method
 - add render method to template
