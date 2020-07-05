@@ -1,6 +1,7 @@
 ### short
 
 - simplify dashboard marshalling
+- dashboard to filter for the existence of functions
 
 - add back lambda testing
 - add back lambda push
