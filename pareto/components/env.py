@@ -23,9 +23,7 @@ def synth_template(config):
         fn=eval("synth_%s" % item["type"])                
         component=fn(**item)
         template.update(component)
-    return {k.capitalize():dict(v)
-            for k, v in template.items()
-            if len(v) > 0}
+    return template.render()
 
 def add_components(config, templates):
     components=config.pop("components")

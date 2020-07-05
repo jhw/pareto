@@ -1,9 +1,8 @@
 ### short
 
-- add render method to template
-
-- construction of master template to bypass synth_template
-  - use own local versions ?
+- see if you can remove dict from render method
+- add local copies of synth_template and rename as init_template
+- distill version of init_template used in master construction
 - avoid popping components from config ?
 - convert Template to extend object not dict
 
@@ -76,6 +75,7 @@
   
 ### done
 
+- add render method to template
 - stack to return template
 - remove trim method from template
 - synth_template should use Template class
