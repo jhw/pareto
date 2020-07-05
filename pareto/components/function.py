@@ -104,23 +104,21 @@ def synth_function(**kwargs):
         url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/%s" % (kwargs["region"], kwargs["stage"])
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         return fn_sub(url, {"rest_api": restapi})
-    struct={"resources": [Function(**kwargs),
-                          FunctionRole(**kwargs),
-                          FunctionDeadLetterQueue(**kwargs),
-                          FunctionVersion(**kwargs),
-                          FunctionEventConfig(**kwargs)]}
+    template=Template(resources=[Function(**kwargs),
+                                 FunctionRole(**kwargs),
+                                 FunctionDeadLetterQueue(**kwargs),
+                                 FunctionVersion(**kwargs),
+                                 FunctionEventConfig(**kwargs)])
     if "api" in kwargs:
-        struct["resources"]+=[ApiGwRestApi(**kwargs),
-                              ApiGwDeployment(**kwargs),
-                              ApiGwStage(**kwargs),
-                              ApiGwMethod(**kwargs),
-                              ApiGwPermission(**kwargs)]
-        struct.setdefault("outputs", [])
-        struct["outputs"].append(ApiGwUrl(**kwargs))
+        template["resources"]+=[ApiGwRestApi(**kwargs),
+                                ApiGwDeployment(**kwargs),
+                                ApiGwStage(**kwargs),
+                                ApiGwMethod(**kwargs),
+                                ApiGwPermission(**kwargs)]
+        template["outputs"].append(ApiGwUrl(**kwargs))
     else:
-        struct.setdefault("outputs", [])
-        struct["outputs"].append(FunctionArn(**kwargs))
-    return struct
+        template["outputs"].append(FunctionArn(**kwargs))
+    return template.trim()
 
 if __name__=="__main__":
     pass

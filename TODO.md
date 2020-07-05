@@ -1,7 +1,9 @@
 ### short
 
-- add Template class
-- add outputs support to fn::getatt
+- move synth_template into env
+- convert Template to use get/setattr
+- remove use of synth_template in creation of master stack ?
+- avoid popping components from config ?
 - dashboard stack
 
 ### medium
@@ -13,8 +15,6 @@
 
 - list_events/resources/failures.py
   - iterate nested stacks and interleave results
-
-- avoid popping components from config
 
 - multiple sqs actions
 - sns topics
@@ -40,18 +40,11 @@
 
 ### thoughts
 
+- add outputs support to fn::getatt ? option to bypass logical_id ?
+  - think it's simpler just to have special function in master template
 - refactor env to use Master function and don't have it attach directly ?
-- multiple ddb/sqs event source mappings ?
-  - doesn't really seem to work
-  - ddb can only have a single event stream
-  - timer only naturally binds to a single event only
-  - could do it for sqs
-  - https://stackoverflow.com/questions/44289776/how-to-have-more-than-two-dynamodb-streams-that-trigger-lambdas
-  - feels like it's something for sns  
 - preprocessor unit tests ?
   - probably not worth it at this stage, assuming it all compiles
-- emit resource type summary on deployment ?
-  - largely worthless
 - iam role pool to reduce template size ?
   - not going to reduce template size meaningfully
   - also feels like an over- optimisation
@@ -79,6 +72,7 @@
   
 ### done
 
+- add Template class
 - remove trim_template
 - pop outputs so internal ones are not exposed publically
 - include aggregated outputs in master stack

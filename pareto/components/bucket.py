@@ -67,19 +67,17 @@ def synth_bucket(**kwargs):
         props={"Bucket": ref(kwargs["name"]),
                "PolicyDocument": policy_document(kwargs)}
         return "AWS::S3::BucketPolicy", props
-    struct={"resources": [Bucket(**kwargs)]}
-    def add_action(kwargs, action, struct):
-        struct.setdefault("parameters", [])
-        struct["parameters"].append(parameter("%s-arn" % action["name"]))
-        struct["resources"].append(LambdaPermission(kwargs, action))
+    template=Template(resources=[Bucket(**kwargs)])
+    def add_action(kwargs, action, template):
+        template["parameters"].append(parameter("%s-arn" % action["name"]))
+        template["resources"].append(LambdaPermission(kwargs, action))
     if "actions" in kwargs:
         for action in kwargs["actions"]:
-            add_action(kwargs, action, struct)
+            add_action(kwargs, action, template)
     if is_website(kwargs):
-        struct["resources"].append(BucketPolicy(**kwargs))
-        struct.setdefault("outputs", [])
-        struct["outputs"].append(BucketUrl(**kwargs))
-    return struct
+        template["resources"].append(BucketPolicy(**kwargs))
+        template["outputs"].append(BucketUrl(**kwargs))
+    return template.trim()
 
 if __name__=="__main__":
     pass

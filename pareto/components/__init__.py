@@ -57,6 +57,19 @@ def output(suffix=None):
         return wrapped
     return decorator
 
+class Template(dict):
+
+    def __init__(self, **kwargs):
+        dict.__init__(self, kwargs)
+        for attr in ["parameters",
+                     "resources",
+                     "outputs"]:
+            self.setdefault(attr, [])
+
+    def trim(self):
+        return {k:v for k, v in self.items()
+                if v!=[]}
+
 @resource(suffix="role")
 def IamRole(**kwargs):
     def assume_role_policy_doc():
