@@ -1,8 +1,10 @@
 ### short
 
-- synth_template should use Template class
+- remove trim method from template
+- add render method to template
 
-- master template construction shouldn't need to use synth_template
+- construction of master template to bypass synth_template
+  - use own local versions ?
 - avoid popping components from config ?
 - convert Template to extend object not dict
 
@@ -75,6 +77,7 @@
   
 ### done
 
+- synth_template should use Template class
 - move synth_template into env
 - add Template class
 - remove trim_template

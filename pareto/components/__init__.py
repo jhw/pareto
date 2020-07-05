@@ -65,6 +65,11 @@ class Template(dict):
                      "resources",
                      "outputs"]:
             self.setdefault(attr, [])
+
+    def update(self, template):
+        for attr in self.keys():
+            if attr in template:
+                self[attr]+=template[attr]
             
     def trim(self):
         return {k:v for k, v in self.items()

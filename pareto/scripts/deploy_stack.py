@@ -47,12 +47,12 @@ if __name__=="__main__":
         add_staging(config)
         env=synth_env(config)
         yaml.SafeDumper.ignore_aliases=lambda *args: True
-        """
+        master=env.pop("master")
         print (yaml.safe_dump(env,
                               default_flow_style=False))
-        """
-        print (yaml.safe_dump(env["master"],
+        print (yaml.safe_dump(master,
                               default_flow_style=False))
+
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

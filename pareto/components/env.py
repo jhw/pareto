@@ -15,23 +15,16 @@ TypeFilters={
     }
 
 def synth_template(config):
-    def add_component(component, stack):
-        for attr in ["parameters",
-                     "resources",
-                     "outputs"]:
-            if attr in component:
-                stack.setdefault(attr, [])
-                stack[attr]+=component[attr]
-    stack={}    
+    template=Template()
     for item in config["components"]:
         item.update({k:config[k]
                      for k in config
                      if k!="components"})
         fn=eval("synth_%s" % item["type"])                
         component=fn(**item)
-        add_component(component, stack)
+        template.update(component)
     return {k.capitalize():dict(v)
-            for k, v in stack.items()
+            for k, v in template.items()
             if len(v) > 0}
 
 def add_components(config, templates):
