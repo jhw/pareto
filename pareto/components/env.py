@@ -14,26 +14,35 @@ TypeFilters={
     "trigger": lambda x: x["type"]!="function"
     }
 
-def synth_template(config):
-    template=Template()
-    for item in config["components"]:
-        item.update({k:config[k]
-                     for k in config
-                     if k!="components"})
-        fn=eval("synth_%s" % item["type"])                
-        component=fn(**item)
-        template.update(component)
-    return template.render()
-
 def add_components(config, templates):
+    def init_template(config):
+        template=Template()
+        for item in config["components"]:
+            item.update({k:config[k]
+                         for k in config
+                         if k!="components"})
+            fn=eval("synth_%s" % item["type"])                
+            component=fn(**item)
+            template.update(component)
+        return template.render()
     components=config.pop("components")
     for typekey in TypeFilters:
         config["components"]=[component
                               for component in components
                               if TypeFilters[typekey](component)]
-        templates["%ss" % typekey]=synth_template(config)
+        templates["%ss" % typekey]=init_template(config)
 
 def add_master(config, templates):
+    def init_template(config):
+        template=Template()
+        for item in config["components"]:
+            item.update({k:config[k]
+                         for k in config
+                         if k!="components"})
+            fn=eval("synth_%s" % item["type"])                
+            component=fn(**item)
+            template.update(component)
+        return template.render()
     def nested_outputs(templates):        
         outputs={}
         for tempname, template in templates.items():
@@ -67,7 +76,7 @@ def add_master(config, templates):
                            "params": nested_params(template,
                                                    outputs)}
                           for tempname, template in templates.items()]
-    template=synth_template(config)
+    template=init_template(config)
     template["Outputs"]=init_params(outputs.keys(),
                                     outputs)
     templates["master"]=template
