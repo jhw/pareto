@@ -1,4 +1,11 @@
-### short [deployment]
+### short
+
+- convert master to template function
+- add outputs support to fn::getatt
+- pop outputs so internal ones are not exposed publically
+- dashboard stack
+
+### medium
 
 - lambda testing
 - lambda push
@@ -7,10 +14,6 @@
 
 - list_events/resources/failures.py
   - iterate nested stacks and interleave results
-
-### medium
-
-- dashboard stack
 
 - avoid popping components from config
 
@@ -33,9 +36,8 @@
 - custom lambda authorisers
 - cognito
 - route 53
-- appsync
+- appsync/graphql
 - cloudfront
-- ec2 ingestor
 
 ### thoughts
 
