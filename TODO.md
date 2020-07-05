@@ -1,14 +1,19 @@
 ### short
 
-- dashboard stack
+- simplify dashboard marshalling
 
-- lambda testing
-- lambda push
+- add back lambda testing
+- add back lambda push
 - template push
-- metrics
 
-- list_events/resources/failures.py
-  - iterate nested stacks and interleave results
+- add back metrics
+  - table for all stacks
+
+- test nested stacks
+
+- refactor events/resources/failures scripts
+  - iterate across all stacks
+  - dump interleaved results
 
 ### medium
 
@@ -75,6 +80,7 @@
   
 ### done
 
+- dashboard stack
 - refactor creation of api/action/trigger stacks as per master
   - avoid popping components
 - pass config, templates to init_template

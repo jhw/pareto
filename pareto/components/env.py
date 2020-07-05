@@ -14,18 +14,17 @@ TypeFilters={
     "trigger": lambda x: x["type"]!="function"
     }
 
-def group_components(config, filters):
+def add_component_groups(config, templates, filters=TypeFilters):
     def init_component(config, component):
         component.update({k:config[k]
                           for k in config
                           if k!="components"})
         return component
-    return {key: [init_component(config, component)
-                  for component in config["components"]
-                  if filters[key](component)]
-            for key in filters}
-
-def add_component_groups(config, templates, filters=TypeFilters):
+    def group_components(config, filters):
+        return {key: [init_component(config, component)
+                      for component in config["components"]
+                      if filters[key](component)]
+                for key in filters}
     def init_template(components):
         template=Template()
         for kwargs in components:
@@ -38,14 +37,23 @@ def add_component_groups(config, templates, filters=TypeFilters):
         templates[key]=init_template(group)
 
 def add_dashboards(config, templates, filters=TypeFilters):
-    template=Template()
+    def init_component(config, component):
+        component.update({k:config[k]
+                          for k in config
+                          if k!="components"})
+        return component
+    def group_components(config, filters):
+        return {key: init_component(config,
+                                    {"components": [component
+                                                    for component in config["components"]
+                                                    if filters[key](component)]})
+                for key in filters}
     groups=group_components(config, filters)
-    for key, group in groups.items():
-        if key=="trigger":
-            continue
-        """
-        create a dashboard from the group
-        """
+    template=Template()    
+    for key, kwargs in groups.items():
+        kwargs["name"]="%s-dashboard" % key
+        dashboard=synth_dashboard(**kwargs)
+        template.update(dashboard)
     templates["dashboard"]=template.render()
         
 def add_master(config, templates, filters=TypeFilters):

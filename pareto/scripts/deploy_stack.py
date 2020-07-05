@@ -47,10 +47,8 @@ if __name__=="__main__":
         add_staging(config)
         env=synth_env(config)
         yaml.SafeDumper.ignore_aliases=lambda *args: True
-        master, dashboard = env.pop("master"), env.pop("dashboard")
+        dashboard=env.pop("dashboard")
         print (yaml.safe_dump(env,
-                              default_flow_style=False))
-        print (yaml.safe_dump(master,
                               default_flow_style=False))
         print (yaml.safe_dump(dashboard,
                               default_flow_style=False))
