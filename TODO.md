@@ -1,12 +1,6 @@
 ### short
 
-- refactor env.py so each function returns a template/templates
-- consider converting Template to extend object not dict
-- investigate template usage of lists of tuples (dicts ?)
-
 - dashboard stack
-
-### medium
 
 - lambda testing
 - lambda push
@@ -15,6 +9,8 @@
 
 - list_events/resources/failures.py
   - iterate nested stacks and interleave results
+
+### medium
 
 - sns topics
 - cloudwatch alerts
@@ -39,6 +35,12 @@
 
 ### thoughts
 
+- consider converting Template to extend object not dict ?
+  - no point
+- investigate template usage of lists of tuples (dicts ?)
+  - no is fine
+- refactor env.py so each function returns a template/templates ?
+  - no is fine
 - multiple sqs actions ?
   - i think leave it as single action for time being for simplicity
 - add outputs support to fn::getatt ? option to bypass logical_id ?

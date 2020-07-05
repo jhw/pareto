@@ -14,7 +14,12 @@ TypeFilters={
     "trigger": lambda x: x["type"]!="function"
     }
 
-def add_components(config, templates):
+def add_component_groups(config, templates):
+    def group_components(config, filters=TypeFilters):
+        return {key: [init_component(config, component)
+                      for component in config["components"]
+                      if filters[key](component)]
+                for key in filters}
     def init_template(components):
         template=Template()
         for kwargs in components:
@@ -27,11 +32,9 @@ def add_components(config, templates):
                           for k in config
                           if k!="components"})
         return component
-    for typekey in TypeFilters:
-        components=[init_component(config, component)
-                    for component in config["components"]
-                    if TypeFilters[typekey](component)]
-        templates["%ss" % typekey]=init_template(components)
+    groups=group_components(config)
+    for key, group in groups.items():
+        templates["%ss" % key]=init_template(group)
 
 def add_master(config, templates):
     def filter_outputs(templates):        
@@ -86,7 +89,7 @@ def add_master(config, templates):
         
 def synth_env(config):
     templates={}
-    for attr in ["components",
+    for attr in ["component_groups",
                  "master"]:
         fn=eval("add_%s" % attr)
         fn(config, templates)
