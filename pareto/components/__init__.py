@@ -65,7 +65,7 @@ class Template(dict):
                      "resources",
                      "outputs"]:
             self.setdefault(attr, [])
-
+            
     def trim(self):
         return {k:v for k, v in self.items()
                 if v!=[]}
