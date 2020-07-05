@@ -23,7 +23,7 @@ def synth_timer(**kwargs):
             return "AWS::Lambda::Permission", props
         return LambdaPermission(**kwargs)
     return Template(resources=[EventRule(**kwargs),
-                               LambdaPermission(**kwargs)]).trim()
+                               LambdaPermission(**kwargs)])
 
 if __name__=="__main__":
     pass

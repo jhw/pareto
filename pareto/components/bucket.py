@@ -77,7 +77,7 @@ def synth_bucket(**kwargs):
     if is_website(kwargs):
         template["resources"].append(BucketPolicy(**kwargs))
         template["outputs"].append(BucketUrl(**kwargs))
-    return template.trim()
+    return template
 
 if __name__=="__main__":
     pass

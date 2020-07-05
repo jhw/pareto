@@ -22,7 +22,7 @@ def synth_queue(**kwargs):
         template.setdefault("parameters", [])
         template["parameters"].append(actionarn)
         template["resources"].append(LambdaMapping(**kwargs))
-    return template.trim()
+    return template
 
 if __name__=="__main__":
     pass

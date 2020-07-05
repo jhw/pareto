@@ -1,6 +1,6 @@
 ### short
 
-- remove trim method from template
+- stack to return template
 - add render method to template
 
 - construction of master template to bypass synth_template
@@ -77,6 +77,7 @@
   
 ### done
 
+- remove trim method from template
 - synth_template should use Template class
 - move synth_template into env
 - add Template class

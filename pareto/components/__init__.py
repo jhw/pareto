@@ -71,10 +71,6 @@ class Template(dict):
             if attr in template:
                 self[attr]+=template[attr]
             
-    def trim(self):
-        return {k:v for k, v in self.items()
-                if v!=[]}
-
 @resource(suffix="role")
 def IamRole(**kwargs):
     def assume_role_policy_doc():

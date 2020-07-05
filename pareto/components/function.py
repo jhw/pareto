@@ -118,7 +118,7 @@ def synth_function(**kwargs):
         template["outputs"].append(ApiGwUrl(**kwargs))
     else:
         template["outputs"].append(FunctionArn(**kwargs))
-    return template.trim()
+    return template
 
 if __name__=="__main__":
     pass
