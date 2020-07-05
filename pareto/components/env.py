@@ -15,22 +15,23 @@ TypeFilters={
     }
 
 def add_components(config, templates):
-    def init_template(config):
+    def init_template(components):
         template=Template()
-        for item in config["components"]:
-            item.update({k:config[k]
-                         for k in config
-                         if k!="components"})
-            fn=eval("synth_%s" % item["type"])                
-            component=fn(**item)
+        for kwargs in components:
+            fn=eval("synth_%s" % kwargs["type"])                
+            component=fn(**kwargs)
             template.update(component)
         return template.render()
-    components=config.pop("components")
+    def init_component(config, component):
+        component.update({k:config[k]
+                          for k in config
+                          if k!="components"})
+        return component
     for typekey in TypeFilters:
-        config["components"]=[component
-                              for component in components
-                              if TypeFilters[typekey](component)]
-        templates["%ss" % typekey]=init_template(config)
+        components=[init_component(config, component)
+                    for component in config["components"]
+                    if TypeFilters[typekey](component)]
+        templates["%ss" % typekey]=init_template(components)
 
 def add_master(config, templates):
     def filter_outputs(templates):        
@@ -75,19 +76,20 @@ def add_master(config, templates):
         components=[init_stack(config, tempname, template, outputs)
                     for tempname, template in templates.items()]
         template=Template()
-        for component in components:
-            stack=synth_stack(**component)
+        for kwargs in components:
+            stack=synth_stack(**kwargs)
             template.update(stack)
         template["outputs"]=format_params(outputs.keys(),
                                           outputs)
         return template.render()
-    template=init_template(config, templates)
-    templates["master"]=template
+    templates["master"]=init_template(config, templates)
         
 def synth_env(config):
     templates={}
-    add_components(config, templates)
-    add_master(config, templates)
+    for attr in ["components",
+                 "master"]:
+        fn=eval("add_%s" % attr)
+        fn(config, templates)
     return templates
 
 if __name__=="__main__":

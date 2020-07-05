@@ -1,9 +1,6 @@
 ### short
 
-- refactor creation of api/action/trigger stacks as per master
-  - avoid popping components
 - refactor env.py so each function returns a template/templates
-
 - consider converting Template to extend object not dict
 - investigate template usage of lists of tuples (dicts ?)
 
@@ -76,6 +73,8 @@
   
 ### done
 
+- refactor creation of api/action/trigger stacks as per master
+  - avoid popping components
 - pass config, templates to init_template
 - simplify env.py creation
   - avoid popping components from config
