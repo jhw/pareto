@@ -1,12 +1,11 @@
 ### short
 
-- pass config, templates to init_template
-
-- simplify creation of non- master stacks
+- refactor creation of api/action/trigger stacks as per master
   - avoid popping components
-- convert Template to extend object not dict
+- refactor env.py so each function returns a template/templates
 
-- investigate template using lists of tuples (not dicts ?)
+- consider converting Template to extend object not dict
+- investigate template usage of lists of tuples (dicts ?)
 
 - dashboard stack
 
@@ -77,6 +76,7 @@
   
 ### done
 
+- pass config, templates to init_template
 - simplify env.py creation
   - avoid popping components from config
 - add local copies of synth_template and rename as init_template

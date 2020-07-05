@@ -33,14 +33,14 @@ def add_components(config, templates):
         templates["%ss" % typekey]=init_template(config)
 
 def add_master(config, templates):
-    def nested_outputs(templates):        
+    def filter_outputs(templates):        
         outputs={}
         for tempname, template in templates.items():
             outputs.update({paramname: tempname
                             for paramname in template["Outputs"]
                             if "Outputs" in template})
         return outputs
-    def init_params(paramnames, outputs):
+    def format_params(paramnames, outputs):
         """
         - global fn_getatt doesn't support 
           - pre- hungarorised names
@@ -57,31 +57,31 @@ def add_master(config, templates):
         return {paramname: fn_getatt(stack_id(outputs.pop(paramname)),
                                      paramname)
                 for paramname in list(paramnames)}
-    def nested_params(template, outputs):
-        return init_params(template["Parameters"].keys(),
-                           outputs) if "Parameters" in template else {}
+    def init_params(template, outputs):
+        return format_params(template["Parameters"].keys(),
+                             outputs) if "Parameters" in template else {}
     def init_stack(config, tempname, template, outputs):
         stack={}
         stack.update({k:config[k]
                       for k in config
                       if k!="components"})
-        params=nested_params(template,
-                             outputs)
+        params=init_params(template,
+                           outputs)
         stack.update({"name": tempname,
                       "params": params})
         return stack
-    def init_template(components):
+    def init_template(config, templates):
+        outputs=filter_outputs(templates)
+        components=[init_stack(config, tempname, template, outputs)
+                    for tempname, template in templates.items()]
         template=Template()
         for component in components:
             stack=synth_stack(**component)
             template.update(stack)
+        template["outputs"]=format_params(outputs.keys(),
+                                          outputs)
         return template.render()
-    outputs=nested_outputs(templates)
-    components=[init_stack(config, tempname, template, outputs)
-                for tempname, template in templates.items()]
-    template=init_template(components)
-    template["Outputs"]=init_params(outputs.keys(),
-                                    outputs)
+    template=init_template(config, templates)
     templates["master"]=template
         
 def synth_env(config):
