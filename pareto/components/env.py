@@ -14,8 +14,8 @@ TypeFilters={
     "trigger": lambda x: x["type"]!="function"
     }
 
-def add_component_groups(config, templates):
-    def group_components(config, filters=TypeFilters):
+def add_component_groups(config, templates, filters=TypeFilters):
+    def group_components(config, filters):
         return {key: [init_component(config, component)
                       for component in config["components"]
                       if filters[key](component)]
@@ -32,17 +32,22 @@ def add_component_groups(config, templates):
                           for k in config
                           if k!="components"})
         return component
-    groups=group_components(config)
+    groups=group_components(config, filters)
     for key, group in groups.items():
-        templates["%ss" % key]=init_template(group)
+        templates[key]=init_template(group)
 
-def add_master(config, templates):
-    def filter_outputs(templates):        
+def add_dashboards(config, templates, filters=TypeFilters):
+    template=Template()
+    templates["dashboard"]=template.render()
+        
+def add_master(config, templates, filters=TypeFilters):
+    def filter_outputs(templates, filters):        
         outputs={}
         for tempname, template in templates.items():
-            outputs.update({paramname: tempname
-                            for paramname in template["Outputs"]
-                            if "Outputs" in template})
+            if tempname in filters:
+                outputs.update({paramname: tempname
+                                for paramname in template["Outputs"]
+                                if "Outputs" in template})
         return outputs
     def format_params(paramnames, outputs):
         """
@@ -74,8 +79,8 @@ def add_master(config, templates):
         stack.update({"name": tempname,
                       "params": params})
         return stack
-    def init_template(config, templates):
-        outputs=filter_outputs(templates)
+    def init_template(config, templates, filters):
+        outputs=filter_outputs(templates, filters)
         components=[init_stack(config, tempname, template, outputs)
                     for tempname, template in templates.items()]
         template=Template()
@@ -85,11 +90,12 @@ def add_master(config, templates):
         template["outputs"]=format_params(outputs.keys(),
                                           outputs)
         return template.render()
-    templates["master"]=init_template(config, templates)
+    templates["master"]=init_template(config, templates, filters)
         
 def synth_env(config):
     templates={}
     for attr in ["component_groups",
+                 "dashboards",
                  "master"]:
         fn=eval("add_%s" % attr)
         fn(config, templates)
