@@ -34,7 +34,11 @@ def add_master(config, templates):
             return {"Fn::GetAtt": [name, attr]}
         def stack_id(stackname):
             return "%s.Outputs" % logical_id("%s-stack" % stackname)
-        return {paramname: fn_getatt(stack_id(outputs[paramname]),
+        """
+        - NB pops internal outputs so they are not exported
+        - will fail if two triggers want to bind to the same action
+        """
+        return {paramname: fn_getatt(stack_id(outputs.pop(paramname)),
                                      paramname)
                 for paramname in list(paramnames)}
     def nested_params(template, outputs):

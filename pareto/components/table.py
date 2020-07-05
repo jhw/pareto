@@ -48,12 +48,6 @@ def synth_table(**kwargs):
         if "action" in kwargs:
             props["StreamSpecification"]={"StreamViewType": stream["type"]}
         return "AWS::DynamoDB::Table", props
-    @output(suffix="arn")
-    def TableArn(**kwargs):
-        return fn_getatt(kwargs["name"], "Arn")
-    @output(suffix="stream-arn")
-    def TableStreamArn(**kwargs):
-        return fn_getatt(kwargs["name"], "StreamArn")
     def LambdaMapping(**kwargs):
         suffix="%s-mapping" % kwargs["action"]["name"]
         @resource(suffix)
@@ -65,14 +59,12 @@ def synth_table(**kwargs):
                    "StartingPosition": "LATEST"}
             return "AWS::Lambda::EventSourceMapping", props
         return LambdaMapping(**kwargs)
-    struct={"parameters": [],
-            "resources": [Table(**kwargs)],
-            "outputs": [TableArn(**kwargs)]}
+    struct={"resources": [Table(**kwargs)]}
     if "action" in kwargs:
         actionarn=parameter("%s-arn" % kwargs["action"]["name"])
+        struct.setdefault("parameters", [])
         struct["parameters"].append(actionarn)
         struct["resources"].append(LambdaMapping(**kwargs))
-        struct["outputs"].append(TableStreamArn(**kwargs))
     return struct
 
 if __name__=="__main__":

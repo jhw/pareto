@@ -1,3 +1,12 @@
+### master stack 5/7/20
+
+- can you build master stack in the same way you do components, specifically using synth_template ?
+- how does synth_template work ?
+- you pass it a config of components, it iterates through them and generates each
+- each component returns params, resources, outputs
+- synth_template then aggregates these into a single template
+- so this is very useful for building the underlying apis/actions/triggers template
+
 ### nested templates 29/6/20
 
 - what would you need to do to get Pareto templates working ?

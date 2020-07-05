@@ -1,8 +1,9 @@
 ### short
 
-- convert master to template function
+- remove trim_template
+- add Template class
+
 - add outputs support to fn::getatt
-- pop outputs so internal ones are not exposed publically
 - dashboard stack
 
 ### medium
@@ -41,6 +42,7 @@
 
 ### thoughts
 
+- refactor env to use Master function and don't have it attach directly ?
 - multiple ddb/sqs event source mappings ?
   - doesn't really seem to work
   - ddb can only have a single event stream
@@ -79,6 +81,7 @@
   
 ### done
 
+- pop outputs so internal ones are not exposed publically
 - include aggregated outputs in master stack
 - add per- stack parameters
 - filter outputs from each component group {name: stack}

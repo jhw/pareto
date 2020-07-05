@@ -105,20 +105,22 @@ def synth_function(**kwargs):
         url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/%s" % (kwargs["region"], kwargs["stage"])
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         return fn_sub(url, {"rest_api": restapi})
-    struct={"parameters": [],
-            "resources": [Function(**kwargs),
+    struct={"resources": [Function(**kwargs),
                           FunctionRole(**kwargs),
                           FunctionDeadLetterQueue(**kwargs),
                           FunctionVersion(**kwargs),
-                          FunctionEventConfig(**kwargs)],            
-            "outputs": [FunctionArn(**kwargs)]}
+                          FunctionEventConfig(**kwargs)]}
     if "api" in kwargs:
         struct["resources"]+=[ApiGwRestApi(**kwargs),
                               ApiGwDeployment(**kwargs),
                               ApiGwStage(**kwargs),
                               ApiGwMethod(**kwargs),
                               ApiGwPermission(**kwargs)]
+        struct.setdefault("outputs", [])
         struct["outputs"].append(ApiGwUrl(**kwargs))
+    else:
+        struct.setdefault("outputs", [])
+        struct["outputs"].append(FunctionArn(**kwargs))
     return struct
 
 if __name__=="__main__":

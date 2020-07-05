@@ -6,9 +6,6 @@ def synth_queue(**kwargs):
     def Queue(**kwargs):        
         props={"QueueName": resource_id(kwargs)}
         return "AWS::SQS::Queue", props
-    @output(suffix="arn")
-    def QueueArn(**kwargs):
-        return fn_getatt(kwargs["name"], "Arn")
     def LambdaMapping(**kwargs):
         suffix="%s-mapping" % kwargs["action"]["name"]
         @resource(suffix)
@@ -20,11 +17,10 @@ def synth_queue(**kwargs):
                    "BatchSize": batch}
             return "AWS::Lambda::EventSourceMapping", props
         return LambdaMapping(**kwargs)
-    struct={"parameters": [],
-            "resources": [Queue(**kwargs)],
-            "outputs": [QueueArn(**kwargs)]}
+    struct={"resources": [Queue(**kwargs)]}
     if "action" in kwargs:
         actionarn=parameter("%s-arn" % kwargs["action"]["name"])
+        struct.setdefault("parameters", [])
         struct["parameters"].append(actionarn)
         struct["resources"].append(LambdaMapping(**kwargs))
     return struct

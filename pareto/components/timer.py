@@ -11,9 +11,6 @@ def synth_timer(**kwargs):
         props={"ScheduleExpression": expr,
                "Targets": [action]}
         return "AWS::Events::Rule", props
-    @output(suffix="arn")
-    def EventRuleArn(**kwargs):
-        return fn_getatt(kwargs["name"], "Arn")
     def LambdaPermission(**kwargs):
         suffix="%s-permission" % kwargs["action"]["name"]
         @resource(suffix=suffix)
@@ -28,8 +25,7 @@ def synth_timer(**kwargs):
         return LambdaPermission(**kwargs)
     return {"parameters": [parameter("%s-arn" % kwargs["action"]["name"])],
             "resources": [EventRule(**kwargs),
-                          LambdaPermission(**kwargs)],            
-            "outputs": [EventRuleArn(**kwargs)]}
+                          LambdaPermission(**kwargs)]}            
 
 if __name__=="__main__":
     pass

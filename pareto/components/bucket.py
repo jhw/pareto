@@ -36,9 +36,6 @@ def synth_bucket(**kwargs):
     @output(suffix="url")
     def BucketUrl(**kwargs):
         return fn_getatt(kwargs["name"], "WebsiteURL")
-    @output(suffix="arn")
-    def BucketArn(**kwargs):
-        return fn_getatt(kwargs["name"], "Arn")
     def LambdaPermission(kwargs, action):
         suffix="%s-permission" % action["name"]
         @resource(suffix=suffix)
@@ -71,17 +68,17 @@ def synth_bucket(**kwargs):
         props={"Bucket": ref(kwargs["name"]),
                "PolicyDocument": policy_document(kwargs)}
         return "AWS::S3::BucketPolicy", props
-    struct={"parameters": [],
-            "resources": [Bucket(**kwargs)],
-            "outputs": [BucketArn(**kwargs)]}
+    struct={"resources": [Bucket(**kwargs)]}
     def add_action(kwargs, action, struct):
+        struct.setdefault("parameters", [])
         struct["parameters"].append(parameter("%s-arn" % action["name"]))
         struct["resources"].append(LambdaPermission(kwargs, action))
     if "actions" in kwargs:
         for action in kwargs["actions"]:
             add_action(kwargs, action, struct)
     if is_website(kwargs):
-        struct["resources"].append(BucketPolicy(**kwargs))        
+        struct["resources"].append(BucketPolicy(**kwargs))
+        struct.setdefault("outputs", [])
         struct["outputs"].append(BucketUrl(**kwargs))
     return struct
 
