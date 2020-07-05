@@ -72,10 +72,12 @@ class Template(dict):
                 self[attr]+=template[attr]
 
     def render(self):
+        """
+        - dict() required because values are lists of tuples
+        """
         return {k.capitalize():dict(v)
                 for k, v in self.items()
                 if len(v) > 0}
-
                 
 @resource(suffix="role")
 def IamRole(**kwargs):

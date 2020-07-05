@@ -1,8 +1,8 @@
 ### short
 
-- see if you can remove dict from render method
 - add local copies of synth_template and rename as init_template
 - distill version of init_template used in master construction
+- investigate template using lists of tuples (not dicts ?)
 - avoid popping components from config ?
 - convert Template to extend object not dict
 
@@ -75,6 +75,7 @@
   
 ### done
 
+- see if you can remove dict from render method
 - add render method to template
 - stack to return template
 - remove trim method from template
