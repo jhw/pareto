@@ -39,9 +39,8 @@ def add_master(config, templates):
             item.update({k:config[k]
                          for k in config
                          if k!="components"})
-            fn=eval("synth_%s" % item["type"])                
-            component=fn(**item)
-            template.update(component)
+            stack=synth_stack(**item)
+            template.update(stack)
         return template.render()
     def nested_outputs(templates):        
         outputs={}
@@ -71,8 +70,7 @@ def add_master(config, templates):
         return init_params(template["Parameters"].keys(),
                            outputs) if "Parameters" in template else {}
     outputs=nested_outputs(templates)
-    config["components"]=[{"type": "stack",
-                           "name": tempname,
+    config["components"]=[{"name": tempname,
                            "params": nested_params(template,
                                                    outputs)}
                           for tempname, template in templates.items()]

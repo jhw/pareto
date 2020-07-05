@@ -1,8 +1,9 @@
 ### short
 
-- distill version of init_template used in master construction
+- simplify env.py creation
+  - avoid popping components from config
+
 - investigate template using lists of tuples (not dicts ?)
-- avoid popping components from config ?
 - convert Template to extend object not dict
 
 - dashboard stack
