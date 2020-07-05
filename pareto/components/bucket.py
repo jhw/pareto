@@ -1,6 +1,5 @@
 from pareto.components import *
 
-@trim_template
 def synth_bucket(**kwargs):
     def is_website(kwargs):
         return "website" in kwargs and kwargs["website"]

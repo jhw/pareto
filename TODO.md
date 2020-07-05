@@ -1,8 +1,6 @@
 ### short
 
-- remove trim_template
 - add Template class
-
 - add outputs support to fn::getatt
 - dashboard stack
 
@@ -81,6 +79,7 @@
   
 ### done
 
+- remove trim_template
 - pop outputs so internal ones are not exposed publically
 - include aggregated outputs in master stack
 - add per- stack parameters

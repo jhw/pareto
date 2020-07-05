@@ -1,6 +1,5 @@
 from pareto.components import *
 
-@trim_template
 def synth_function(**kwargs):
     @resource()
     def Function(concurrency=None,

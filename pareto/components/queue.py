@@ -1,6 +1,5 @@
 from pareto.components import *
 
-@trim_template
 def synth_queue(**kwargs):
     @resource()
     def Queue(**kwargs):        
