@@ -33,15 +33,6 @@ def add_components(config, templates):
         templates["%ss" % typekey]=init_template(config)
 
 def add_master(config, templates):
-    def init_template(config):
-        template=Template()
-        for item in config["components"]:
-            item.update({k:config[k]
-                         for k in config
-                         if k!="components"})
-            stack=synth_stack(**item)
-            template.update(stack)
-        return template.render()
     def nested_outputs(templates):        
         outputs={}
         for tempname, template in templates.items():
@@ -69,12 +60,26 @@ def add_master(config, templates):
     def nested_params(template, outputs):
         return init_params(template["Parameters"].keys(),
                            outputs) if "Parameters" in template else {}
+    def init_stack(config, tempname, template, outputs):
+        stack={}
+        stack.update({k:config[k]
+                      for k in config
+                      if k!="components"})
+        params=nested_params(template,
+                             outputs)
+        stack.update({"name": tempname,
+                      "params": params})
+        return stack
+    def init_template(components):
+        template=Template()
+        for component in components:
+            stack=synth_stack(**component)
+            template.update(stack)
+        return template.render()
     outputs=nested_outputs(templates)
-    config["components"]=[{"name": tempname,
-                           "params": nested_params(template,
-                                                   outputs)}
-                          for tempname, template in templates.items()]
-    template=init_template(config)
+    components=[init_stack(config, tempname, template, outputs)
+                for tempname, template in templates.items()]
+    template=init_template(components)
     template["Outputs"]=init_params(outputs.keys(),
                                     outputs)
     templates["master"]=template
