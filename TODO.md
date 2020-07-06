@@ -1,6 +1,5 @@
 ### short
 
-- simplify master stack params, output creation
 - avoid filtering for functions at env/dashboard level ?
 - harmonise s3 lambda, template paths
   - remember lambda path should not include stage name
@@ -74,6 +73,8 @@
   - not really required as this is about deployment not runtime
   
 ### done
+
+- simplify master stack params, output creation
 
 ```
 Template error: instance of Fn::GetAtt references undefined resource HelloAction2

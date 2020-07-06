@@ -104,14 +104,24 @@ def push_lambdas(config):
         validate_lambda(component)
         zfname=init_zipfile(component)
         push_lambda(component, zfname)
-
-def dump_env(env):
-    filename="tmp/env-%s.yaml" % timestamp()
-    yaml.SafeDumper.ignore_aliases=lambda *args: True
-    with open(filename, 'w') as f:
-        f.write(yaml.safe_dump(env,
-                               default_flow_style=False))
             
+def push_templates(config, templates):
+    logging.info("pushing templates")
+    def push_template(config, tempname, template):
+        key="%s-%s/templates/%s.json" % (config["app"],
+                                         config["stage"],
+                                         tempname)
+        logging.info("pushing %s" % key)
+        body=json.dumps(template).encode("utf-8")
+        S3.put_object(Bucket=config["bucket"],
+                      Key=key,
+                      Body=body,
+                      ContentType='application/json')
+    for tempname, template in templates.items():
+        if tempname=="master":
+            continue
+        push_template(config, tempname, template)
+
 def calc_metrics(templates, metrics=Metrics):
     logging.info("calculating template metrics")
     def calc_metrics(tempname, template, metrics):
@@ -131,23 +141,13 @@ def calc_metrics(templates, metrics=Metrics):
              for tempname, template in templates.items()]
     print ("\n%s\n" % pd.DataFrame(metrics))
 
-def push_templates(config, templates):
-    logging.info("pushing templates")
-    def push_template(config, tempname, template):
-        key="%s-%s/templates/%s.json" % (config["app"],
-                                         config["stage"],
-                                         tempname)
-        logging.info("pushing %s" % key)
-        body=json.dumps(template).encode("utf-8")
-        S3.put_object(Bucket=config["bucket"],
-                      Key=key,
-                      Body=body,
-                      ContentType='application/json')
-    for tempname, template in templates.items():
-        if tempname=="master":
-            continue
-        push_template(config, tempname, template)
-
+def dump_env(env):
+    filename="tmp/env-%s.yaml" % timestamp()
+    yaml.SafeDumper.ignore_aliases=lambda *args: True
+    with open(filename, 'w') as f:
+        f.write(yaml.safe_dump(env,
+                               default_flow_style=False))
+    
 def deploy_env(config, template):
     logging.info("deploying stack")
     def stack_exists(stackname):
@@ -182,13 +182,9 @@ if __name__=="__main__":
         add_staging(config)
         push_lambdas(config)
         env=synth_env(config)
-        dump_env(env)
+        push_templates(config, env)
         calc_metrics(env)
-        push_templates(config, env)                
-        # START TEMP CODE
-        print ("\n%s\n" % yaml.safe_dump(env["master"],
-                                         default_flow_style=False))
-        # END TEMP CODE
+        dump_env(env)
         deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      

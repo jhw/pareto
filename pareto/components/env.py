@@ -66,6 +66,10 @@ def add_dashboards(config, templates, filters=TypeFilters):
     templates["dashboard"]=template.render()
         
 def add_master(config, templates, filters=TypeFilters):
+    def stack_id(stackname):
+        return logical_id("%s-stack" % stackname)
+    def output_ref(name, attr):
+        return {"Fn::GetAtt": [name, "Outputs.%s" % attr]}
     def filter_outputs(templates, filters):        
         outputs={}
         for tempname, template in templates.items():
@@ -74,10 +78,6 @@ def add_master(config, templates, filters=TypeFilters):
                                 for paramname in template["Outputs"]
                                 if "Outputs" in template})
         return outputs
-    def stack_id(stackname):
-        return logical_id("%s-stack" % stackname)
-    def output_ref(name, attr):
-        return {"Fn::GetAtt": [name, "Outputs.%s" % attr]}
     def format_params(paramnames, outputs):
         return {paramname: output_ref(stack_id(outputs.pop(paramname)),
                                       paramname)
@@ -95,10 +95,10 @@ def add_master(config, templates, filters=TypeFilters):
         stack.update({"name": tempname,
                       "params": params})
         return stack
-    def format_outputs(paramnames, outputs):
-        return {paramname: {"Value": output_ref(stack_id(outputs.pop(paramname)),
-                                                paramname)}
-                for paramname in list(paramnames)}
+    def format_outputs(outputs):
+        return {paramname: {"Value": output_ref(stack_id(tempname),
+                                                paramname)}         
+                for paramname, tempname in outputs.items()}        
     def init_template(config, templates, filters):
         outputs=filter_outputs(templates, filters)
         components=[init_stack(config, tempname, template, outputs)
@@ -107,8 +107,7 @@ def add_master(config, templates, filters=TypeFilters):
         for kwargs in components:
             stack=synth_stack(**kwargs)
             template.update(stack)
-        template["outputs"]=format_outputs(outputs.keys(),
-                                           outputs)
+        template["outputs"]=format_outputs(outputs)
         return template.render()
     templates["master"]=init_template(config, templates, filters)
         
