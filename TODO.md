@@ -1,6 +1,5 @@
 ### short
 
-- add back lambda testing
 - add back lambda push
 - template push
 
@@ -81,6 +80,7 @@
   
 ### done
 
+- add back lambda testing
 - simplify dashboard marshalling
 - dashboard to filter for the existence of functions
 - dashboard stack

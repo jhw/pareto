@@ -18,6 +18,32 @@ def load_config(configfile, stagename):
     config["stage"]=stagename
     return config
 
+@toggle_aws_profile
+def run_tests(config):
+    logging.info("running tests")
+    def index_test(component, klassname="IndexTest"):    
+        modname="%s.test" % underscore(component["name"])
+        try:
+            mod=__import__(modname, fromlist=[klassname])
+        except ModuleNotFoundError:
+            raise RuntimeError("%s does not exist" % modname)
+        klass=getattr(mod, klassname)
+        if not klass:
+            raise RuntimeError("%s does not exist in %s" % (klassname,
+                                                            modname))
+        return klass
+    klasses=[index_test(component)
+             for component in filter_functions(config["components"])]
+    suite=unittest.TestSuite()
+    for klass in klasses:
+        suite.addTest(unittest.makeSuite(klass))
+    runner=unittest.TextTestRunner()
+    results=runner.run(suite)
+    nfailures, nerrors = len(results.failures), len(results.errors)
+    if (nfailures > 0 or nerrors > 0):
+        raise RuntimeError("Tests failed with %i failures / %i errors" % (nfailures, nerrors))        
+    return results
+
 def add_staging(config):
     def lambda_key(name, timestamp):
         return "%s/%s-%s.zip" % (Config["AppName"],
@@ -44,15 +70,16 @@ if __name__=="__main__":
             raise RuntimeError("Stage name is invalid")
         config=load_config(configfile, stagename)
         preprocess(config)
+        run_tests(config)
         add_staging(config)
         env=synth_env(config)
-        yaml.SafeDumper.ignore_aliases=lambda *args: True
-        dashboard=env.pop("dashboard")
-        print (yaml.safe_dump(dashboard,
-                              default_flow_style=False))
+        # print (env)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
         logging.error(error)                      
     except RuntimeError as error:
         logging.error(error)                      
+
+
+        
