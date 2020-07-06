@@ -2,6 +2,15 @@
 
 from pareto.scripts import *
 
+def fetch_events(stackname):
+    stacknames=[stack["StackName"]
+                for stack in CF.describe_stacks()["Stacks"]
+                if stack["StackName"].startswith(stackname)]
+    events=[]
+    for stackname in stacknames:
+        events+=CF.describe_stack_events(StackName=stackname)["StackEvents"]
+    return events
+
 if __name__=="__main__":
     try:
         if len(sys.argv) < 2:
@@ -11,12 +20,12 @@ if __name__=="__main__":
             raise RuntimeError("Stage name is invalid")
         stackname="%s-%s" % (Config["AppName"],
                              stagename)
-        resp=CF.describe_stack_events(StackName=stackname)
-        events=sorted(resp["StackEvents"],
+        events=sorted(fetch_events(stackname),
                       key=lambda x: x["Timestamp"])
-        def lookup(event, attr):
-            return event[attr] if attr in event else ""
+        def lookup(event, attr, sz=32):
+            return str(event[attr])[:sz] if attr in event else ""
         table=pd.DataFrame([{"timestamp": lookup(event, "Timestamp"),
+                             "stack": lookup(event, "StackName"),
                              "logical_id": lookup(event, "LogicalResourceId"),
                              "physical_id": lookup(event, "PhysicalResourceId"),
                              "type": lookup(event, "ResourceType"),
