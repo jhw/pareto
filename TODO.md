@@ -1,10 +1,11 @@
 ### short
 
+- dashboard needs to return template
+- special dashboard template which does JSON conversion and has empty property ?
 - adapt inspection scripts for multiple stacks
 
 ### medium
 
-- avoid filtering for functions at env/dashboard level ?
 - better ways of handling app/stage/region/bucket props ?
 
 - layers [notes]
