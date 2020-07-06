@@ -55,6 +55,43 @@ def add_staging(config):
         key=lambda_key(component["name"], ts)
         component["staging"]={"bucket": bucket,
                               "key": key}
+
+def push_lambdas(config):
+    def validate_lambda(component):
+        if not os.path.exists("lambda/%s" % underscore(component["name"])):
+            raise RuntimeError("%s lambda does not exist" % component["name"])
+    def is_valid(filename, ignore=["test.py$",
+                                   ".pyc$"]):
+        for pat in ignore:
+            if re.search(pat, filename)!=None:
+                return False
+        return True
+    def write_zipfile(component, zf):
+        path, count = "lambda/%s" % underscore(component["name"]), 0
+        for root, dirs, files in os.walk(path):
+            for filename in files:
+                if is_valid(filename):
+                    zf.write(os.path.join(root, filename),
+                             arcname=filename)
+                    count+=1
+        if not count:
+            raise RuntimeError("no files found in %s" % path)
+    def init_zipfile(component):
+        zfname="tmp/%s" % component["staging"]["key"].split("/")[-1]
+        zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
+        write_zipfile(component, zf)
+        zf.close()
+        return zfname
+    def push_lambda(component, zfname):
+        S3.upload_file(zfname,
+                       component["staging"]["bucket"],
+                       component["staging"]["key"],
+                       ExtraArgs={'ContentType': 'application/zip'})
+    for component in filter_functions(config["components"]):
+        logging.info("pushing %s lambda" % component["name"])
+        validate_lambda(component)
+        zfname=init_zipfile(component)
+        push_lambda(component, zfname)
         
 if __name__=="__main__":
     try:
@@ -72,6 +109,7 @@ if __name__=="__main__":
         preprocess(config)
         run_tests(config)
         add_staging(config)
+        push_lambdas(config)
         env=synth_env(config)
         # print (env)
     except ClientError as error:

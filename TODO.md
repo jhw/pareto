@@ -1,16 +1,15 @@
 ### short
 
-- add back lambda push
-- template push
-
 - add back metrics
-  - table for all stacks
+- add metrics alerts
 
-- test nested stacks
+- template push
 
 - refactor events/resources/failures scripts
   - iterate across all stacks
   - dump interleaved results
+
+- test nested stacks
 
 ### medium
 
@@ -80,6 +79,7 @@
   
 ### done
 
+- add back lambda push
 - add back lambda testing
 - simplify dashboard marshalling
 - dashboard to filter for the existence of functions
