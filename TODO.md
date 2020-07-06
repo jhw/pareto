@@ -1,7 +1,11 @@
 ### short
 
-- bad cloudformation ref
-- test nested stacks
+```
+Template error: instance of Fn::GetAtt references undefined resource HelloAction2
+```
+
+- *** s3 event notifications are still using direct function arn refs rather than refs to params ***
+
 - adapt inspection scripts for multiple stacks
 
 ### medium
@@ -77,6 +81,12 @@
   
 ### done
 
+- json templates not yaml :-)
+- access denied error
+  - do s3 templates exist ?
+- weird that doesn't include triggers stack
+- remove empty templates ?
+- bad cloudformation ref
 - master outputs must be nested under value
 - outputs ref to be part of attr not stack name
 - add back stack dumping
