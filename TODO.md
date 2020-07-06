@@ -1,15 +1,15 @@
 ### short
 
+- simplify master stack params, output creation
+- avoid filtering for functions at env/dashboard level ?
+- harmonise s3 lambda, template paths
+  - remember lambda path should not include stage name
+
 - adapt inspection scripts for multiple stacks
 
 ### medium
 
-- harmonise s3 lambda, template paths
-  - remember lambda path should not include stage name
-
-- simplify master stack params, output creation
 - better ways of handling app/stage/region/bucket props ?
-- avoid filtering for functions at env/dashboard level ?
 
 - layers [notes]
 - secrets manager
