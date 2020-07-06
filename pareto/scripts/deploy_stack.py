@@ -57,9 +57,9 @@ def run_tests(config):
 def add_staging(config):
     logging.info("adding staging")
     def lambda_key(name, timestamp):
-        return "%s/%s-%s.zip" % (config["app"],
-                                 name,
-                                 timestamp)
+        return "%s/lambdas/%s-%s.zip" % (config["app"],
+                                         name,
+                                         timestamp)
     ts=timestamp()
     for component in filter_functions(config["components"]):
         key=lambda_key(component["name"], ts)

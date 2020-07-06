@@ -1,13 +1,10 @@
 ### short
 
-- avoid filtering for functions at env/dashboard level ?
-- harmonise s3 lambda, template paths
-  - remember lambda path should not include stage name
-
 - adapt inspection scripts for multiple stacks
 
 ### medium
 
+- avoid filtering for functions at env/dashboard level ?
 - better ways of handling app/stage/region/bucket props ?
 
 - layers [notes]
@@ -32,6 +29,10 @@
 
 ### thoughts
 
+- deployment to stage assets in /tmp with directory paths ?
+  - no it just complicates things by need to add extra paths
+  - remember is just a tmp directory
+  - should be able to tell what u have in there from filename alone  
 - aggregate IAM roles ?
   - doesn't seem worth it when unlikely to be template size constraint
 - consider converting Template to extend object not dict ?
@@ -74,6 +75,8 @@
   
 ### done
 
+- harmonise s3 lambda, template paths
+  - remember lambda path should not include stage name
 - simplify master stack params, output creation
 
 ```
