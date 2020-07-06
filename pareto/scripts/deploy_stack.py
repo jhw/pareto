@@ -47,9 +47,9 @@ if __name__=="__main__":
         add_staging(config)
         env=synth_env(config)
         yaml.SafeDumper.ignore_aliases=lambda *args: True
-        with open("tmp/stack.yaml", 'w') as f:
-            f.write(yaml.safe_dump(env,
-                                   default_flow_style=False))
+        dashboard=env.pop("dashboard")
+        print (yaml.safe_dump(dashboard,
+                              default_flow_style=False))
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

@@ -1,8 +1,5 @@
 ### short
 
-- simplify dashboard marshalling
-- dashboard to filter for the existence of functions
-
 - add back lambda testing
 - add back lambda push
 - template push
@@ -17,6 +14,9 @@
   - dump interleaved results
 
 ### medium
+
+- better ways of handling app/stage/region/bucket props ?
+- avoid filtering for functions at env/dashboard level ?
 
 - sns topics
 - cloudwatch alerts
@@ -81,6 +81,8 @@
   
 ### done
 
+- simplify dashboard marshalling
+- dashboard to filter for the existence of functions
 - dashboard stack
 - refactor creation of api/action/trigger stacks as per master
   - avoid popping components
