@@ -43,16 +43,17 @@ def add_dashboards(config, templates, filters=TypeFilters):
                if k!="components"}
         group["components"]=components
         return group
-    def filter_types(components):
-        return list(set([component["type"]
-                         for component in components]))
+    def has_dashboard(components):
+        types=list(set([component["type"]
+                        for component in components]))
+        return "function" in types
     def init_groups(config, filters):
         groups={}
         for key, filterfn in filters.items():
             components=[component
                          for component in config["components"]
                          if filterfn(component)]
-            if "function" not in filter_types(components):
+            if not has_dashboard(components):
                 continue
             group=init_group(config, components)
             groups[key]=group

@@ -1,17 +1,16 @@
 ### short
 
-- better handling of empty dashboards
-  - DashTemplate w/ json rendering, empty() property ?
+- nest app/stage/region/bucket in config.globals
 
-- layers [notes]
+- layers
 - secrets manager
 
 ### medium
 
 - should stage name really be part of API GW URL ?
-- better ways of handling app/stage/region/bucket props ?
 
 - replace timestamp with git version
+- capture events list as fixtures
 - scaffold generator [notes]
 - sns topics
 - cloudwatch alerts
@@ -31,6 +30,8 @@
 
 ### thoughts
 
+- custom template type for dashboard ?
+  - seems like overkill 
 - deployment to stage assets in /tmp with directory paths ?
   - no it just complicates things by need to add extra paths
   - remember is just a tmp directory
