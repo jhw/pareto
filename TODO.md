@@ -1,16 +1,16 @@
 ### short
 
-- adapt inspection scripts for multiple stacks
-
-### medium
-
 - better handling of empty dashboards
   - DashTemplate w/ json rendering, empty() property ?
-  
-- better ways of handling app/stage/region/bucket props ?
 
 - layers [notes]
 - secrets manager
+
+### medium
+
+- should stage name really be part of API GW URL ?
+- better ways of handling app/stage/region/bucket props ?
+
 - replace timestamp with git version
 - scaffold generator [notes]
 - sns topics
@@ -77,6 +77,7 @@
   
 ### done
 
+- adapt inspection scripts for multiple stacks
 - dashboard needs to return template
 - harmonise s3 lambda, template paths
   - remember lambda path should not include stage name

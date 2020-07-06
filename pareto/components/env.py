@@ -64,7 +64,13 @@ def add_dashboards(config, templates, filters=TypeFilters):
         dashboard=synth_dashboard(**kwargs)
         template.update(dashboard)
     templates["dashboard"]=template.render()
-        
+
+"""
+- currently set up to output any un- consumed nested stack outputs from main template
+- you probably don't have to do this as /scripts/list_outputs.py could always iterate through nested stacks for outputs
+- but it seems quite a nice feature for relatively little cost
+"""
+    
 def add_master(config, templates, filters=TypeFilters):
     def stack_id(stackname):
         return logical_id("%s-stack" % stackname)

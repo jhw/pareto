@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+"""
+- currently just showing stuff from master template
+- ie assumes anything from a nested templates is just internal wiring
+"""
+
 from pareto.scripts import *
 
 if __name__=="__main__":
