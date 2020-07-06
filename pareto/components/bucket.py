@@ -45,7 +45,7 @@ def synth_bucket(**kwargs):
             - NB also recommends using SourceAccount as account not included in S3 arn format
             """
             eventsource="arn:aws:s3:::%s" % resource_id(kwargs)
-            funcname=fn_getatt(action["name"], "Arn")
+            funcname=ref("%s-arn" % action["name"])
             props={"Action": "lambda:InvokeFunction",
                    "FunctionName": funcname,
                    "SourceAccount": fn_sub("${AWS::AccountId}"),

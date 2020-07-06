@@ -1,11 +1,5 @@
 ### short
 
-```
-Template error: instance of Fn::GetAtt references undefined resource HelloAction2
-```
-
-- *** s3 event notifications are still using direct function arn refs rather than refs to params ***
-
 - adapt inspection scripts for multiple stacks
 
 ### medium
@@ -80,6 +74,12 @@ Template error: instance of Fn::GetAtt references undefined resource HelloAction
   - not really required as this is about deployment not runtime
   
 ### done
+
+```
+Template error: instance of Fn::GetAtt references undefined resource HelloAction2
+```
+
+- *** s3 event notifications are still using direct function arn refs rather than refs to params ***
 
 - json templates not yaml :-)
 - access denied error
