@@ -1,8 +1,5 @@
 ### short
 
-- add back metrics
-- add metrics alerts
-
 - template push
 
 - refactor events/resources/failures scripts
@@ -16,20 +13,19 @@
 - better ways of handling app/stage/region/bucket props ?
 - avoid filtering for functions at env/dashboard level ?
 
-- sns topics
-- cloudwatch alerts
-- secrets manager 
-- preprocessor json schema
+- layers [notes]
+- secrets manager
 - replace timestamp with git version
 - scaffold generator [notes]
-- layers [notes]
+- sns topics
+- cloudwatch alerts
+- preprocessor json schema
 - pip dependency installation
 
 ### v1.1
 
-- sqs fifo
-- aggregate IAM roles
 - CI pipeline [notes]
+- sqs fifo
 - topology chart generation
 - custom lambda authorisers
 - cognito
@@ -39,6 +35,8 @@
 
 ### thoughts
 
+- aggregate IAM roles ?
+  - doesn't seem worth it when unlikely to be template size constraint
 - consider converting Template to extend object not dict ?
   - no point
 - investigate template usage of lists of tuples (dicts ?)
@@ -79,6 +77,8 @@
   
 ### done
 
+- add back metrics
+- add metrics alerts
 - add back lambda push
 - add back lambda testing
 - simplify dashboard marshalling

@@ -8,6 +8,16 @@ from pareto.components.preprocessor import preprocess
 
 from pareto.components.env import synth_env
 
+"""
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
+"""
+
+Metrics={
+    "resources": (lambda x: (len(x["Resources"]) if "Resources" in x else 0)/200),
+    "outputs": (lambda x: (len(x["Outputs"]) if "Outputs" in x else 0)/60),
+    "template_size": (lambda x: (len(json.dumps(x))/51200))
+    }
+
 def load_config(configfile, stagename):
     with open(configfile, 'r') as f:
         config=yaml.load(f.read(),
@@ -45,6 +55,7 @@ def run_tests(config):
     return results
 
 def add_staging(config):
+    logging.info("adding staging")
     def lambda_key(name, timestamp):
         return "%s/%s-%s.zip" % (Config["AppName"],
                                  name,
@@ -57,6 +68,7 @@ def add_staging(config):
                               "key": key}
 
 def push_lambdas(config):
+    logging.info("pushing lambdas")
     def validate_lambda(component):
         if not os.path.exists("lambda/%s" % underscore(component["name"])):
             raise RuntimeError("%s lambda does not exist" % component["name"])
@@ -92,6 +104,25 @@ def push_lambdas(config):
         validate_lambda(component)
         zfname=init_zipfile(component)
         push_lambda(component, zfname)
+
+def calc_metrics(templates, metrics=Metrics):
+    logging.info("calculating template metrics")
+    def calc_metrics(tempname, template, metrics):
+        outputs={"name": tempname}
+        outputs.update({metrickey: metricfn(template)
+                        for metrickey, metricfn in metrics.items()})
+        return outputs
+    def validate_metrics(metrics):
+        for row in metrics:
+            for attr in row.keys():
+                if attr=="name":
+                    continue
+                if row[attr]:
+                    raise RuntimeError("%s %s > 100%" % (row["name"],
+                                                         row[attr]))
+    metrics=[calc_metrics(tempname, template, metrics)
+             for tempname, template in templates.items()]
+    print ("\n%s\n" % pd.DataFrame(metrics))
         
 if __name__=="__main__":
     try:
@@ -111,7 +142,7 @@ if __name__=="__main__":
         add_staging(config)
         push_lambdas(config)
         env=synth_env(config)
-        # print (env)
+        calc_metrics(env)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
