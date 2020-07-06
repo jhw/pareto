@@ -1,8 +1,8 @@
 ### short
 
-- adapt inspection scripts for multiple stacks
-
+- add back deployment script
 - test nested stacks
+- adapt inspection scripts for multiple stacks
 
 ### medium
 
