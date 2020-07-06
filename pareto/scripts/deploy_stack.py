@@ -95,12 +95,13 @@ def push_lambdas(config):
         zf.close()
         return zfname
     def push_lambda(component, zfname):
+        logging.info("pushing %s" % component["staging"]["key"])
         S3.upload_file(zfname,
                        component["staging"]["bucket"],
                        component["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
     for component in filter_functions(config["components"]):
-        logging.info("pushing %s lambda" % component["name"])
+        # logging.info("pushing %s lambda" % component["name"])
         validate_lambda(component)
         zfname=init_zipfile(component)
         push_lambda(component, zfname)
@@ -123,7 +124,24 @@ def calc_metrics(templates, metrics=Metrics):
     metrics=[calc_metrics(tempname, template, metrics)
              for tempname, template in templates.items()]
     print ("\n%s\n" % pd.DataFrame(metrics))
-        
+
+def push_templates(config, templates):
+    logging.info("pushing templates")
+    def push_template(config, tempname, template):
+        key="%s-%s/templates/%s.json" % (config["app"],
+                                         config["stage"],
+                                         tempname)
+        logging.info("pushing %s" % key)
+        body=json.dumps(template).encode("utf-8")
+        S3.put_object(Bucket=config["bucket"],
+                      Key=key,
+                      Body=body,
+                      ContentType='application/json')
+    for tempname, template in templates.items():
+        if tempname=="master":
+            continue
+        push_template(config, tempname, template)
+    
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
@@ -143,6 +161,9 @@ if __name__=="__main__":
         push_lambdas(config)
         env=synth_env(config)
         calc_metrics(env)
+        push_templates(config, env)
+        print (yaml.safe_dump(env["master"],
+                              default_flow_style=False))
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

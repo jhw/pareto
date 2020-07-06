@@ -1,15 +1,14 @@
 ### short
 
-- template push
-
-- refactor events/resources/failures scripts
-  - iterate across all stacks
-  - dump interleaved results
+- adapt inspection scripts for multiple stacks
 
 - test nested stacks
 
 ### medium
 
+- harmonise s3 lambda, template paths
+  - remember lambda path should not include stage name
+  
 - better ways of handling app/stage/region/bucket props ?
 - avoid filtering for functions at env/dashboard level ?
 
@@ -77,6 +76,7 @@
   
 ### done
 
+- template push
 - add back metrics
 - add metrics alerts
 - add back lambda push
