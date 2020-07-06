@@ -105,6 +105,13 @@ def push_lambdas(config):
         zfname=init_zipfile(component)
         push_lambda(component, zfname)
 
+def dump_env(env):
+    filename="tmp/env-%s.yaml" % timestamp()
+    yaml.SafeDumper.ignore_aliases=lambda *args: True
+    with open(filename, 'w') as f:
+        f.write(yaml.safe_dump(env,
+                               default_flow_style=False))
+            
 def calc_metrics(templates, metrics=Metrics):
     logging.info("calculating template metrics")
     def calc_metrics(tempname, template, metrics):
@@ -175,13 +182,13 @@ if __name__=="__main__":
         add_staging(config)
         push_lambdas(config)
         env=synth_env(config)
-        # START TEMP CODE
-        with open("tmp/stack.yaml", 'w') as f:
-            f.write(yaml.safe_dump(env,
-                                   default_flow_style=False))
-        # END TEMP CODE
+        dump_env(env)
         calc_metrics(env)
-        push_templates(config, env)
+        push_templates(config, env)                
+        # START TEMP CODE
+        print ("\n%s\n" % yaml.safe_dump(env["master"],
+                                         default_flow_style=False))
+        # END TEMP CODE
         deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
