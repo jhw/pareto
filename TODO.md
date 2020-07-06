@@ -1,6 +1,7 @@
 ### short
 
-- add back deployment script
+- add back stack dumping
+- nested stack params require refs
 - test nested stacks
 - adapt inspection scripts for multiple stacks
 
@@ -76,6 +77,7 @@
   
 ### done
 
+- add back deployment script
 - fix back refs to Config
 - template push
 - add back metrics

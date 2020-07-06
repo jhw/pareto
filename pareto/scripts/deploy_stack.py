@@ -140,7 +140,23 @@ def push_templates(config, templates):
         if tempname=="master":
             continue
         push_template(config, tempname, template)
-    
+
+def deploy_env(config, template):
+    logging.info("deploying stack")
+    def stack_exists(stackname):
+        stacknames=[stack["StackName"]
+                    for stack in CF.describe_stacks()["Stacks"]]
+        return stackname in stacknames
+    stackname="%s-%s" % (config["app"],
+                         config["stage"])
+    action="update" if stack_exists(stackname) else "create"
+    fn=getattr(CF, "%s_stack" % action)
+    fn(StackName=stackname,
+       TemplateBody=json.dumps(template),
+       Capabilities=["CAPABILITY_IAM"])
+    waiter=CF.get_waiter("stack_%s_complete" % action)
+    waiter.wait(StackName=stackname)
+        
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
@@ -159,10 +175,14 @@ if __name__=="__main__":
         add_staging(config)
         push_lambdas(config)
         env=synth_env(config)
+        # START TEMP CODE
+        with open("tmp/stack.yaml", 'w') as f:
+            f.write(yaml.safe_dump(env,
+                                   default_flow_style=False))
+        # END TEMP CODE
         calc_metrics(env)
         push_templates(config, env)
-        print (yaml.safe_dump(env["master"],
-                              default_flow_style=False))
+        deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
