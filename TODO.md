@@ -1,6 +1,6 @@
 ### short
 
-- nested stack params require refs
+- master outputs must be nested under value
 - test nested stacks
 - adapt inspection scripts for multiple stacks
 
@@ -76,6 +76,7 @@
   
 ### done
 
+- outputs ref to be part of attr not stack name
 - add back stack dumping
 - add back deployment script
 - fix back refs to Config

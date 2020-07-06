@@ -75,21 +75,12 @@ def add_master(config, templates, filters=TypeFilters):
                                 if "Outputs" in template})
         return outputs
     def format_params(paramnames, outputs):
-        """
-        - global fn_getatt doesn't support 
-          - pre- hungarorised names
-          - template outputs syntax
-        """
-        def fn_getatt(name, attr):
-            return {"Fn::GetAtt": [name, attr]}
         def stack_id(stackname):
-            return "%s.Outputs" % logical_id("%s-stack" % stackname)
-        """
-        - NB pops internal outputs so they are not exported
-        - will fail if two triggers want to bind to the same action
-        """
-        return {paramname: fn_getatt(stack_id(outputs.pop(paramname)),
-                                     paramname)
+            return logical_id("%s-stack" % stackname)
+        def output_ref(name, attr):
+            return {"Fn::GetAtt": [name, "Outputs.%s" % attr]}
+        return {paramname: output_ref(stack_id(outputs.pop(paramname)),
+                                      paramname)
                 for paramname in list(paramnames)}
     def init_params(template, outputs):
         return format_params(template["Parameters"].keys(),
