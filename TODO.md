@@ -1,11 +1,12 @@
 ### short
 
-- dashboard needs to return template
-- special dashboard template which does JSON conversion and has empty property ?
 - adapt inspection scripts for multiple stacks
 
 ### medium
 
+- better handling of empty dashboards
+  - DashTemplate w/ json rendering, empty() property ?
+  
 - better ways of handling app/stage/region/bucket props ?
 
 - layers [notes]
@@ -76,6 +77,7 @@
   
 ### done
 
+- dashboard needs to return template
 - harmonise s3 lambda, template paths
   - remember lambda path should not include stage name
 - simplify master stack params, output creation

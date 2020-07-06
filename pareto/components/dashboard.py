@@ -79,8 +79,7 @@ def synth_dashboard(**kwargs):
         props={"DashboardName": resource_id(kwargs),
                "DashboardBody": json.dumps(layout)}
         return "AWS::CloudWatch::Dashboard", props
-    resources=[Dashboard(**kwargs)]
-    return {"resources": resources}
+    return Template(resources=[Dashboard(**kwargs)])
 
 if __name__=="__main__":
     pass
