@@ -1,6 +1,6 @@
 ### short
 
-- master outputs must be nested under value
+- bad cloudformation ref
 - test nested stacks
 - adapt inspection scripts for multiple stacks
 
@@ -8,7 +8,8 @@
 
 - harmonise s3 lambda, template paths
   - remember lambda path should not include stage name
-  
+
+- simplify master stack params, output creation
 - better ways of handling app/stage/region/bucket props ?
 - avoid filtering for functions at env/dashboard level ?
 
@@ -76,6 +77,7 @@
   
 ### done
 
+- master outputs must be nested under value
 - outputs ref to be part of attr not stack name
 - add back stack dumping
 - add back deployment script
