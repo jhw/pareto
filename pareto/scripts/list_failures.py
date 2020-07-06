@@ -2,6 +2,15 @@
 
 from pareto.scripts import *
 
+def fetch_events(stackname):
+    stacknames=[stack["StackName"]
+                for stack in CF.describe_stacks()["Stacks"]
+                if stack["StackName"].startswith(stackname)]
+    events=[]
+    for stackname in stacknames:
+        events+=CF.describe_stack_events(StackName=stackname)["StackEvents"]
+    return events
+
 if __name__=="__main__":
     try:
         if len(sys.argv) < 2:
@@ -11,21 +20,18 @@ if __name__=="__main__":
             raise RuntimeError("Stage name is invalid")
         stackname="%s-%s" % (Config["AppName"],
                              stagename)
-        resp=CF.describe_stack_events(StackName=stackname)
-        events=sorted([event for event in resp["StackEvents"]
+        events=sorted([event for event in fetch_events(stackname)
                        if ("FAIL" in event["ResourceStatus"] and
                            event["ResourceStatusReason"]!="Resource creation cancelled")],                      
                       key=lambda x: x["Timestamp"])
-        """
-        - because pandas truncates column width :-(
-        """
         def lookup(event, attr):
             return event[attr] if attr in event else ""
         for event in events:
-            print ("%s\t\t%s\t\t%s\t\t%s" % (lookup(event, "Timestamp"),
-                                             lookup(event, "LogicalResourceId"),
-                                             lookup(event, "ResourceType"),
-                                             lookup(event, "ResourceStatusReason")))
+            print ("%s\t%s\t%s\t%s\t%s" % (lookup(event, "Timestamp"),
+                                           lookup(event, "StackName"),
+                                           lookup(event, "LogicalResourceId"),
+                                           lookup(event, "ResourceType"),
+                                           lookup(event, "ResourceStatusReason")))
     except ClientError as error:
         print (error)
     except RuntimeError as error:
