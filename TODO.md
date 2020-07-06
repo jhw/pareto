@@ -76,6 +76,7 @@
   
 ### done
 
+- fix back refs to Config
 - template push
 - add back metrics
 - add metrics alerts
