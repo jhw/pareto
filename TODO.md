@@ -2,12 +2,20 @@
 
 - layer compatible runtime
 - layer bucket, s3 key [including version]
+
+- resources missing stage name
+  - layer
+  - dead letter queue
+  - policy
+  - rest api  
+
+- use resource id (kwargs, name)
+  - but you need global name
+  - maybe add suffix ?
+  
+- helper to ensure they are suffixed properly ?
+
 - function layer references
-
-- a log of minor lambda resources are missing stage name
-  - policy, layer etc
-  - helper to ensure they are suffixed properly ?
-
 - script to build individual layers
 - deployment script to check layers exist
 
