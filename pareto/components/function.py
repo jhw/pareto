@@ -44,10 +44,7 @@ def synth_function(**kwargs):
         return IamRole(**rolekwargs)
     @resource(suffix="dlq")
     def FunctionDeadLetterQueue(**kwargs):
-        name=resource_id(suffix="dlq",
-                         **kwargs)
-        props={"QueueName": name}
-        return "AWS::SQS::Queue", props
+        return "AWS::SQS::Queue", {}
     @resource(suffix="version")
     def FunctionVersion(**kwargs):
         props={"FunctionName": ref(kwargs["name"])}
@@ -56,7 +53,7 @@ def synth_function(**kwargs):
     def FunctionEventConfig(retries=0,
                             **kwargs):
         qualifier=fn_getatt("%s-version" % kwargs["name"], "Version")
-        props={"FunctionName": resource_id(**kwargs),
+        props={"FunctionName": ref(kwargs["name"]),
                "Qualifier": qualifier,
                "MaximumRetryAttempts": retries}
         return "AWS::Lambda::EventInvokeConfig", props
