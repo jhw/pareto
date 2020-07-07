@@ -1,6 +1,5 @@
-### short
+f### short
 
-- IamRole to be part of function component
 - remove support for managed iam policies
 - nest app/stage/region/bucket in config.globals
 - remove master outputs
@@ -93,6 +92,7 @@
   
 ### done
 
+- IamRole to be part of function component
 - adapt inspection scripts for multiple stacks
 - dashboard needs to return template
 - harmonise s3 lambda, template paths
