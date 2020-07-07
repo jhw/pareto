@@ -1,7 +1,6 @@
-f### short
+### short
 
-- remove master outputs
-  - list_outputs.py to iterate over all nested stacks
+- rename deploy_stack.py config to avoid confusion with Config
 
 ### layers
 
@@ -15,7 +14,6 @@ f### short
 
 ### medium
 
-- rename deploy_stack.py config to avoid confusion with Config
 - check allowing retries for scrapers
 - should stage name really be part of API GW URL ?
 
@@ -41,6 +39,8 @@ f### short
 
 ### thoughts
 
+- remove master outputs / list_outputs.py to iterate over all nested stacks
+  - no because add_master() is quite elegant and it doesn't take much work to do this 
 - move type filters into __init__.py ?
   - no because filters are different
 - custom template type for dashboard ?
