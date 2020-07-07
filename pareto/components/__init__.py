@@ -1,6 +1,6 @@
 import json, re, yaml
 
-def resource_id(kwargs):
+def resource_id(**kwargs):
     def labelise(text):
         return "-".join([tok.lower()
                          for tok in re.split("\\s|\\_", text)])    

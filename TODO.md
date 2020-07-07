@@ -1,23 +1,23 @@
 ### short [layers]
 
-- layer compatible runtime
-- layer bucket, s3 key [including version]
-
-- resources missing stage name
+- adapt resource_id to take optional suffix
+- ensure all names are created using resource_id
   - layer
   - dead letter queue
   - policy
   - rest api  
 
-- use resource id (kwargs, name)
-  - but you need global name
-  - maybe add suffix ?
-  
-- helper to ensure they are suffixed properly ?
+- check anything which uses fn_getatt(arn) utilises resource_id in first arg
+- ensure all functions taking kwargs actuall take **kwargs
 
+- layer compatible runtime
+  - runtime needs to be extracted somehow
+  
+- layer bucket, s3 key [including version]
 - function layer references
 - script to build individual layers
-- deployment script to check layers exist
+- deploy_stack.py to check layers exist
+- deploy_stack.py to check for existence of names -stage suffix
 
 ### medium
 
@@ -100,6 +100,7 @@
   
 ### done
 
+- convert resource id to accept **kwargs
 - layer name
 - new layer component
 - nest app/stage/region/bucket in config.globals

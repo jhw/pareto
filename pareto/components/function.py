@@ -20,11 +20,11 @@ def synth_function(**kwargs):
                  runtime="python3.7",
                  timeout=30,
                  **kwargs):
-        dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
+        dlqarn=fn_getatt("%s-dlq" % kwargs["name"], "Arn")
         rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
         props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
                         "S3Key": kwargs["staging"]["key"]},
-               "FunctionName": resource_id(kwargs),
+               "FunctionName": resource_id(**kwargs),
                "Handler": handler,
                "MemorySize": memory,
                "DeadLetterConfig": {"TargetArn": dlqarn},                   
@@ -42,9 +42,9 @@ def synth_function(**kwargs):
         rolekwargs["name"]=kwargs["name"]
         rolekwargs["service"]="lambda.amazonaws.com"
         return IamRole(**rolekwargs)
-    @resource(suffix="dead-letter-queue")
+    @resource(suffix="dlq")
     def FunctionDeadLetterQueue(**kwargs):
-        name="%s-dead-letter-queue" % kwargs["name"]
+        name="%s-dlq" % kwargs["name"]
         props={"QueueName": name}
         return "AWS::SQS::Queue", props
     @resource(suffix="version")
@@ -55,7 +55,7 @@ def synth_function(**kwargs):
     def FunctionEventConfig(retries=0,
                             **kwargs):
         qualifier=fn_getatt("%s-version" % kwargs["name"], "Version")
-        props={"FunctionName": resource_id(kwargs),
+        props={"FunctionName": resource_id(**kwargs),
                "Qualifier": qualifier,
                "MaximumRetryAttempts": retries}
         return "AWS::Lambda::EventInvokeConfig", props
