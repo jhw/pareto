@@ -73,8 +73,6 @@ def synth_function(**kwargs):
             single policy only for the moment
             """
             props["Policies"]=[policy(kwargs["permissions"])]
-        if "policies" in kwargs:
-            props["ManagedPolicyArns"]=kwargs["policies"]
         return "AWS::IAM::Role", props
     """
     - api-gw currently very bare bones and missing

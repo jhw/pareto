@@ -1,6 +1,5 @@
 f### short
 
-- remove support for managed iam policies
 - nest app/stage/region/bucket in config.globals
 - remove master outputs
   - list_outputs.py to iterate over all nested stacks
@@ -92,6 +91,7 @@ f### short
   
 ### done
 
+- remove support for managed iam policies
 - IamRole to be part of function component
 - adapt inspection scripts for multiple stacks
 - dashboard needs to return template
