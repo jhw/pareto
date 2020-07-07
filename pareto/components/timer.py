@@ -3,7 +3,7 @@ from pareto.components import *
 def synth_timer(**kwargs):
     @resource()
     def EventRule(**kwargs):
-        action={"Id": resource_name(**kwargs),
+        action={"Id": resource_name(kwargs),
                 "Input": json.dumps(kwargs["payload"]),
                 "Arn": fn_getatt(kwargs["action"]["name"], "Arn")}
         expr="rate(%s)" % kwargs["rate"]

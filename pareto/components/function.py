@@ -12,7 +12,7 @@ def synth_function(**kwargs):
         rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
         props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
                         "S3Key": kwargs["staging"]["key"]},
-               "FunctionName": resource_name(**kwargs),
+               "FunctionName": resource_name(kwargs),
                "Handler": handler,
                "MemorySize": memory,
                "DeadLetterConfig": {"TargetArn": dlqarn},                   

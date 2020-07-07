@@ -1,8 +1,5 @@
 ### short
 
-- resource decorator to use blank props as default
-- consider reverting resource_id/name to take kwargs not **kwargs
-
 ### layers
 
 - layer compatible runtime
@@ -17,6 +14,8 @@
 - check allowing retries for scrapers
 - should stage name really be part of API GW URL ?
 
+- managed layers
+  - don't want to always be creating numpy layer
 - secrets manager
 - replace timestamp with git version
 - scaffold generator [notes]
@@ -27,8 +26,6 @@
 
 ### v1.1
 
-- managed IAM policies, layers ?
-- sqs fifo ?
 - CI pipeline [notes]
 - topology chart generation
 - custom lambda authorisers
@@ -39,6 +36,13 @@
 
 ### thoughts
 
+- managed IAM policies ?
+  - not clear u need them
+- sqs fifo ?
+  - not clear u need it
+- resource decorator to use blank props as default
+  - there's no nice easy way to add a default second arg I don't think
+  - simpler to make it explicit
 - deploy_stack.py to check for existence of names -stage suffix
   - is probably overkill if you have reduced use of resource_name to bare minimum and are also using random_name in many unimportant places
 - don't include empty props ?
@@ -99,6 +103,7 @@
   
 ### done
 
+- consider reverting resource_id/name to take kwargs not **kwargs
 - remove dict handling in list_outputs.py
 - remove export of outputs
 - outputs script to iterate over all templates
