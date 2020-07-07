@@ -1,19 +1,8 @@
 ### short [layers]
 
-- then had better redeploy and make sure the damn thing still actually deploys okay, with the full hello.yaml input
-
-- test selectively removing names
-- test replacing resource_id based references with arns or similar
-
-- problem creating policy name via resource id
-
-- check if resource names are required
-
-- replace local refs to function names with arns
-  - as they use logical id rather than (more complex) resource name
-  - except in the case of s3 source arn
-
-- ensure all functions taking kwargs actually take **kwargs
+- try removing rest API name
+- see if you still need resource suffix support
+- randomise policy name
 
 - layer compatible runtime
   - runtime needs to be extracted somehow
@@ -105,6 +94,12 @@
   
 ### done
 
+- replace local refs to function names with arns
+  - as they use logical id rather than (more complex) resource name
+  - except in the case of s3 source arn
+- then had better redeploy and make sure the damn thing still actually deploys okay, with the full hello.yaml input
+- test selectively removing names
+- test replacing resource_id based references with arns or similar
 - adapt resource_id to take optional suffix
 - convert resource id to accept **kwargs
 - layer name
