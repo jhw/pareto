@@ -79,35 +79,5 @@ class Template(dict):
                 for k, v in self.items()
                 if len(v) > 0}
                 
-@resource(suffix="role")
-def IamRole(**kwargs):
-    def assume_role_policy_doc():
-        statement=[{"Action": "sts:AssumeRole",
-                    "Effect": "Allow",
-                    "Principal": {"Service": kwargs["service"]}}]
-        return {"Statement": statement,
-                "Version": "2012-10-17"}
-    def policy(permissions):
-        """
-        policy name required I believe
-        """
-        name="%s-policy" % kwargs["name"]
-        statement=[{"Action": permission,
-                    "Effect": "Allow",
-                    "Resource": "*"}
-                   for permission in permissions]
-        return {"PolicyDocument": {"Statement": statement,
-                                   "Version": "2012-10-17"},
-                "PolicyName": name}
-    props={"AssumeRolePolicyDocument": assume_role_policy_doc()}
-    if "permissions" in kwargs:
-        """
-        single policy only for the moment
-        """
-        props["Policies"]=[policy(kwargs["permissions"])]
-    if "policies" in kwargs:
-        props["ManagedPolicyArns"]=kwargs["policies"]
-    return "AWS::IAM::Role", props
-
 if __name__=="__main__":
     pass

@@ -185,7 +185,7 @@ if __name__=="__main__":
         push_templates(config, env)
         calc_metrics(env)
         dump_env(env)
-        deploy_env(config, env["master"])
+        # deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

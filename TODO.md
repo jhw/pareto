@@ -1,7 +1,7 @@
 ### short
 
-- move type filters into __init__.py
 - IamRole to be part of function component
+- remove support for managed iam policies
 - nest app/stage/region/bucket in config.globals
 - remove master outputs
   - list_outputs.py to iterate over all nested stacks
@@ -43,6 +43,8 @@
 
 ### thoughts
 
+- move type filters into __init__.py ?
+  - no because filters are different
 - custom template type for dashboard ?
   - seems like overkill 
 - deployment to stage assets in /tmp with directory paths ?
