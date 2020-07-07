@@ -1,5 +1,8 @@
 ### short
 
+- use template variables for stage name
+- add decorator to fill in blank resource props
+
 ### layers
 
 - layer compatible runtime
@@ -12,7 +15,6 @@
 ### medium
 
 - check allowing retries for scrapers
-- should stage name really be part of API GW URL ?
 
 - managed layers
   - don't want to always be creating numpy layer
@@ -103,6 +105,7 @@
   
 ### done
 
+- should stage name really be part of API GW URL ?
 - consider reverting resource_id/name to take kwargs not **kwargs
 - remove dict handling in list_outputs.py
 - remove export of outputs

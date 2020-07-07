@@ -1,3 +1,13 @@
+### API gateway stage names 7/7/20
+
+- should apigw include stage that references stage name ?
+- feels like it's intended for a single deployment with multiple stages
+- but we have multiple deployments, one for each stage
+- but unfortunately you need a stage as part of the apigw arn, eg
+- arn:aws:execute-api:eu-west-1:${AWS::AccountId}:${rest_api}/dev/GET/
+- however no need to hardcode it like this
+- should use templating as `AWS::ApiGateway::Stage` has ref of `StageName` parameter (dev, prod)
+
 ### layer and iam pooling 6/7/20
 
 - iam pooling seemed a nice idea but maybe not essential
