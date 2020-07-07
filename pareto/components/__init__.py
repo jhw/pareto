@@ -1,4 +1,9 @@
-import json, re, yaml
+import json, random, re, yaml
+
+def random_name(prefix, n=32):
+    salt="".join([chr(65+int(26*random.random()))
+                  for i in range(n)])
+    return "%s-%s" % (prefix, salt)
 
 def resource_id(**kwargs):
     def labelise(text):

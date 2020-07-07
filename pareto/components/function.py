@@ -1,7 +1,5 @@
 from pareto.components import *
 
-import random
-
 """
 LambdaLayer:
     Properties:
@@ -73,14 +71,6 @@ def synth_function(**kwargs):
                         "Principal": {"Service": kwargs["service"]}}]
             return {"Statement": statement,
                     "Version": "2012-10-17"}
-        """
-        - policy name is required unfortunately
-        - but no particular need to give it a meaningful name
-        """
-        def random_policy_name(n=32):
-            salt="".join([chr(65+int(26*random.random()))
-                          for i in range(n)])
-            return "inline-policy-%s" % salt
         def policy(permissions):            
             statement=[{"Action": permission,
                         "Effect": "Allow",
@@ -88,7 +78,7 @@ def synth_function(**kwargs):
                        for permission in permissions]
             return {"PolicyDocument": {"Statement": statement,
                                        "Version": "2012-10-17"},
-                    "PolicyName": random_policy_name()}
+                    "PolicyName": random_name("inline-policy")} # "conditional"
         props={"AssumeRolePolicyDocument": assume_role_policy_doc()}
         if "permissions" in kwargs:
             props["Policies"]=[policy(kwargs["permissions"])]
@@ -102,7 +92,8 @@ def synth_function(**kwargs):
     """
     @resource(suffix="api-gw-rest-api")
     def ApiGwRestApi(**kwargs):
-        return "AWS::ApiGateway::RestApi", {}
+        props={"Name": random_name("rest-api")} # not 
+        return "AWS::ApiGateway::RestApi", props
     @resource(suffix="api-gw-deployment")
     def ApiGwDeployment(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
