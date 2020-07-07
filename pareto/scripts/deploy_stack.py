@@ -178,7 +178,6 @@ if __name__=="__main__":
             raise RuntimeError("stage name is invalid")
         config=load_config(configfile, stagename)
         preprocess(config)
-        """
         run_tests(config)
         add_staging(config)
         push_lambdas(config)
@@ -187,11 +186,6 @@ if __name__=="__main__":
         calc_metrics(env)
         dump_env(env)
         deploy_env(config, env["master"])
-        """
-        add_staging(config)
-        env=synth_env(config)
-        print (yaml.safe_dump(env["action"],
-                              default_flow_style=False))
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

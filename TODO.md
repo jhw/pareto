@@ -1,5 +1,10 @@
 ### short [layers]
 
+- then had better redeploy and make sure the damn thing still actually deploys okay, with the full hello.yaml input
+
+- test selectively removing names
+- test replacing resource_id based references with arns or similar
+
 - problem creating policy name via resource id
 
 - check if resource names are required
@@ -9,8 +14,6 @@
   - except in the case of s3 source arn
 
 - ensure all functions taking kwargs actually take **kwargs
-
-- then had better redeploy and make sure the damn thing still actually deploys okay, with the full hello.yaml input
 
 - layer compatible runtime
   - runtime needs to be extracted somehow
