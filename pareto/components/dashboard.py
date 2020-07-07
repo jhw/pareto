@@ -30,7 +30,7 @@ def synth_dashboard(**kwargs):
     def init_chart(kwargs, src):
         def init_metrics(chart):
             metrics=chart["metrics"]
-            name=resource_id(**kwargs)
+            name=resource_name(**kwargs)
             for key in ["FunctionName",
                         "Resource"]:
                 i=metrics[0].index(key)
@@ -76,7 +76,7 @@ def synth_dashboard(**kwargs):
                 for component in kwargs["components"]
                 if component["type"]=="function"]
         layout=grid_layout(charts)
-        props={"DashboardName": resource_id(**kwargs),
+        props={"DashboardName": resource_name(**kwargs),
                "DashboardBody": json.dumps(layout)}
         return "AWS::CloudWatch::Dashboard", props
     return Template(resources=[Dashboard(**kwargs)])

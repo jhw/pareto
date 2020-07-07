@@ -41,7 +41,7 @@ def synth_table(**kwargs):
         props={"BillingMode": "PAY_PER_REQUEST", 
                "AttributeDefinitions": attributes,
                "KeySchema": keyschema,
-               "TableName": resource_id(**kwargs)}
+               "TableName": resource_name(**kwargs)}
         if indexes!=[]:
             props["GlobalSecondaryIndexes"]=indexes
         if "action" in kwargs:

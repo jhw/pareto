@@ -3,7 +3,7 @@ from pareto.components import *
 def synth_queue(**kwargs):
     @resource()
     def Queue(**kwargs):        
-        props={"QueueName": resource_id(**kwargs)}
+        props={"QueueName": resource_name(**kwargs)}
         return "AWS::SQS::Queue", props
     def LambdaMapping(**kwargs):
         suffix="%s-mapping" % kwargs["action"]["name"]

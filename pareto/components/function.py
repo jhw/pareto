@@ -20,11 +20,11 @@ def synth_function(**kwargs):
                  runtime="python3.7",
                  timeout=30,
                  **kwargs):
-        dlqarn=fn_getatt("%s-dlq" % kwargs["name"], "Arn")
+        dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
         rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
         props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
                         "S3Key": kwargs["staging"]["key"]},
-               "FunctionName": resource_id(**kwargs),
+               "FunctionName": resource_name(**kwargs),
                "Handler": handler,
                "MemorySize": memory,
                "DeadLetterConfig": {"TargetArn": dlqarn},                   
@@ -42,7 +42,7 @@ def synth_function(**kwargs):
         rolekwargs["name"]=kwargs["name"]
         rolekwargs["service"]="lambda.amazonaws.com"
         return IamRole(**rolekwargs)
-    @resource(suffix="dlq")
+    @resource(suffix="dead-letter-queue")
     def FunctionDeadLetterQueue(**kwargs):
         return "AWS::SQS::Queue", {}
     @resource(suffix="version")
