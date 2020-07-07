@@ -61,10 +61,7 @@ def synth_function(**kwargs):
         suffix="%s-layer" % layer["name"]
         @resource(suffix=suffix)
         def Layer(**kwargs):
-            name=resource_id(suffix="%s-layer" % layer["name"],
-                             **kwargs)
-            props={"LayerName": name}
-            return "AWS::Lambda::LayerVersion", props
+            return "AWS::Lambda::LayerVersion", {}
         return Layer(**kwargs)
     @resource(suffix="role")
     def IamRole(**kwargs):
@@ -75,10 +72,6 @@ def synth_function(**kwargs):
             return {"Statement": statement,
                     "Version": "2012-10-17"}
         def policy(permissions):
-            """
-            name=resource_id(suffix="policy",
-                             **kwargs)
-            """
             name="%s-policy" % kwargs["name"]
             statement=[{"Action": permission,
                         "Effect": "Allow",

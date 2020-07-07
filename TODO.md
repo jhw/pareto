@@ -1,6 +1,5 @@
 ### short
 
-- see if you still need resource suffix support
 - randomise policy name
 - don't include empty props
 
@@ -95,6 +94,7 @@
   
 ### done
 
+- see if you still need resource suffix support
 - try removing rest API name
 - replace local refs to function names with arns
   - as they use logical id rather than (more complex) resource name
