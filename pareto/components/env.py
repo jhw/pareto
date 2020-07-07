@@ -76,10 +76,10 @@ def add_master(config, templates, filters=TypeFilters):
     def filter_outputs(templates, filters):        
         outputs={}
         for tempname, template in templates.items():
-            if tempname in filters:
+            if (tempname in filters and
+                "Outputs" in template):
                 outputs.update({paramname: tempname
-                                for paramname in template["Outputs"]
-                                if "Outputs" in template})
+                                for paramname in template["Outputs"]})
         return outputs
     def format_params(paramnames, outputs):
         return {paramname: output_ref(stack_id(outputs.pop(paramname)),

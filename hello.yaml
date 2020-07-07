@@ -1,10 +1,4 @@
 components:
-- type: api
-  name: hello-get-api
-  method: GET
-- type: api
-  name: hello-post-api
-  method: POST
 - type: bucket
   name: hello-bucket
   website: true
@@ -17,40 +11,3 @@ components:
   target:
     type: bucket
     name: hello-bucket
-- type: table
-  name: hello-table
-  fields:
-  - name: my-hash
-    type: string
-    primary: true
-- type: action
-  name: hello-action-2
-  trigger:
-    type: bucket
-    name: hello-bucket
-    path: bar
-  target:
-    type: table
-    name: hello-table
-- type: queue
-  name: hello-queue
-  batch: 1
-- type: action
-  name: hello-action-3
-  trigger:
-    type: table
-    name: hello-table
-  target:
-    type: queue
-    name: hello-queue
-- type: action
-  name: hello-action-4
-  permissions:
-  - "translate:*"
-  trigger:
-    type: queue
-    name: hello-queue
-  target:
-    type: bucket
-    name: hello-bucket
-
