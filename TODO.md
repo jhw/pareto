@@ -1,6 +1,5 @@
 ### short
 
-- use template variables for stage name
 - add decorator to fill in blank resource props
 
 ### layers
@@ -13,7 +12,9 @@
 
 ### medium
 
+- consider how to avoid `ref("%s-xxx" % kwargs["name"])`
 - check allowing retries for scrapers
+
 - managed layers
   - don't want to always be creating numpy layer
 - secrets manager
@@ -104,6 +105,7 @@
   
 ### done
 
+- use template variables for stage name
 - ping api gw endpoints
 - check api gateway handler code in api actions
 - should stage name really be part of API GW URL ?
