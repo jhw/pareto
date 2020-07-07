@@ -103,10 +103,7 @@ def synth_function(**kwargs):
     """
     @resource(suffix="api-gw-rest-api")
     def ApiGwRestApi(**kwargs):
-        name=resource_id(suffix="api-gw-rest-api",
-                         **kwargs)
-        props={"Name": name}
-        return "AWS::ApiGateway::RestApi", props
+        return "AWS::ApiGateway::RestApi", {}
     @resource(suffix="api-gw-deployment")
     def ApiGwDeployment(**kwargs):
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])

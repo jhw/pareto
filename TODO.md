@@ -1,6 +1,5 @@
 ### short
 
-- try removing rest API name
 - see if you still need resource suffix support
 - randomise policy name
 - don't include empty props
@@ -96,6 +95,7 @@
   
 ### done
 
+- try removing rest API name
 - replace local refs to function names with arns
   - as they use logical id rather than (more complex) resource name
   - except in the case of s3 source arn
