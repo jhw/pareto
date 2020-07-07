@@ -1,16 +1,16 @@
 ### short [layers]
 
-- ensure all names are created using resource_id
-  - layer
-  - dead letter queue
-  - policy
-  - rest api  
+- problem creating policy name via resource id
+
+- check if resource names are required
 
 - replace local refs to function names with arns
   - as they use logical id rather than (more complex) resource name
   - except in the case of s3 source arn
 
 - ensure all functions taking kwargs actually take **kwargs
+
+- then had better redeploy and make sure the damn thing still actually deploys okay, with the full hello.yaml input
 
 - layer compatible runtime
   - runtime needs to be extracted somehow

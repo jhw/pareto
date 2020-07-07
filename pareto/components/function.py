@@ -44,7 +44,8 @@ def synth_function(**kwargs):
         return IamRole(**rolekwargs)
     @resource(suffix="dlq")
     def FunctionDeadLetterQueue(**kwargs):
-        name="%s-dlq" % kwargs["name"]
+        name=resource_id(suffix="dlq",
+                         **kwargs)
         props={"QueueName": name}
         return "AWS::SQS::Queue", props
     @resource(suffix="version")
@@ -63,8 +64,8 @@ def synth_function(**kwargs):
         suffix="%s-layer" % layer["name"]
         @resource(suffix=suffix)
         def Layer(**kwargs):
-            name="%s-%s-layer" % (kwargs["name"],
-                                  layer["name"])
+            name=resource_id(suffix="%s-layer" % layer["name"],
+                             **kwargs)
             props={"LayerName": name}
             return "AWS::Lambda::LayerVersion", props
         return Layer(**kwargs)
@@ -78,7 +79,8 @@ def synth_function(**kwargs):
                     "Version": "2012-10-17"}
         def policy(permissions):
             """
-            policy name required I believe
+            name=resource_id(suffix="policy",
+                             **kwargs)
             """
             name="%s-policy" % kwargs["name"]
             statement=[{"Action": permission,
@@ -104,7 +106,8 @@ def synth_function(**kwargs):
     """
     @resource(suffix="api-gw-rest-api")
     def ApiGwRestApi(**kwargs):
-        name="%s-api-gw-rest-api" % kwargs["name"]
+        name=resource_id(suffix="api-gw-rest-api",
+                         **kwargs)
         props={"Name": name}
         return "AWS::ApiGateway::RestApi", props
     @resource(suffix="api-gw-deployment")
