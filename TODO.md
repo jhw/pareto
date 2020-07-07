@@ -1,11 +1,14 @@
 ### short [layers]
 
-- adapt resource_id to take optional suffix
 - ensure all names are created using resource_id
   - layer
   - dead letter queue
   - policy
   - rest api  
+
+- replace local refs to function names with arns
+  - as they use logical id rather than (more complex) resource name
+  - except in the case of s3 source arn
 
 - ensure all functions taking kwargs actually take **kwargs
 
@@ -99,6 +102,7 @@
   
 ### done
 
+- adapt resource_id to take optional suffix
 - convert resource id to accept **kwargs
 - layer name
 - new layer component

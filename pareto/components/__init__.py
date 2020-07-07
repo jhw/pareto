@@ -3,9 +3,12 @@ import json, re, yaml
 def resource_id(**kwargs):
     def labelise(text):
         return "-".join([tok.lower()
-                         for tok in re.split("\\s|\\_", text)])    
+                         for tok in re.split("\\s|\\_", text)])
+    attrs=["app", "name", "stage"]
+    if "suffix" in kwargs:
+        attrs.insert(2, "suffix")
     return "-".join([labelise(kwargs[attr])
-                     for attr in ["app", "name", "stage"]])
+                     for attr in attrs])
 
 def logical_id(name):
     def hungarorise(text):
