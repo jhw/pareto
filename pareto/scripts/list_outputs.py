@@ -2,20 +2,13 @@
 
 from pareto.scripts import *
 
-"""
-- using dict because outputs may duplicated, exported from one nested template and then re- exported from master
-"""
-
 def fetch_outputs(stackname):
-    outputs={}
+    outputs=[]
     for stack in CF.describe_stacks()["Stacks"]:
         if (stack["StackName"].startswith(stackname) and
             "Outputs" in stack):
-            for output in stack["Outputs"]:
-                if ("OutputKey" in output and
-                    "OutputValue" in output):
-                    outputs[output["OutputKey"]]=output["OutputValue"]
-    return [(k, v) for k, v in outputs.items()]
+            outputs+=stack["Outputs"]
+    return outputs
 
 if __name__=="__main__":
     try:
@@ -26,10 +19,14 @@ if __name__=="__main__":
             raise RuntimeError("Stage name is invalid")
         stackname="%s-%s" % (Config["AppName"],
                              stagename)
+        """
+        - assuming every Output is guaranteed to have OutputKey, OutputValue
+        """
         outputs=sorted(fetch_outputs(stackname),
-                       key=lambda x: x[0])
-        for key, value in outputs:
-            print ("%s\t\t%s" % (key, value))
+                       key=lambda x: x["OutputKey"])
+        for output in outputs:
+            print ("%s\t\t%s" % (output["OutputKey"],
+                                 output["OutputValue"]))
     except ClientError as error:
         print (error)
     except RuntimeError as error:

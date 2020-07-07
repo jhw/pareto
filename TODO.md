@@ -1,7 +1,6 @@
 ### short
 
-- remove dict handling in list_outputs.py
-- resource decorator to blank props if missing
+- resource decorator to use blank props as default
 - consider reverting resource_id/name to take kwargs not **kwargs
 
 ### layers
@@ -12,7 +11,6 @@
 - function layer references
 - script to build individual layers
 - deploy_stack.py to check layers exist
-- deploy_stack.py to check for existence of names -stage suffix
 
 ### medium
 
@@ -41,7 +39,9 @@
 
 ### thoughts
 
-- don't include empty props
+- deploy_stack.py to check for existence of names -stage suffix
+  - is probably overkill if you have reduced use of resource_name to bare minimum and are also using random_name in many unimportant places
+- don't include empty props ?
   - fails if u delete them
 - only add bucket name if website ?
   - no it could be something u want a dashboard for
@@ -99,6 +99,7 @@
   
 ### done
 
+- remove dict handling in list_outputs.py
 - remove export of outputs
 - outputs script to iterate over all templates
 - rename resource_id as resource_name
