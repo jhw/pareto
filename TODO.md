@@ -1,8 +1,4 @@
-### short
-
-- rename deploy_stack.py config to avoid confusion with Config
-
-### layers
+### short [layers]
 
 - new layer component
   - single package, versioning optional
@@ -27,9 +23,9 @@
 
 ### v1.1
 
-- managed IAM policies, layers
+- managed IAM policies, layers ?
+- sqs fifo ?
 - CI pipeline [notes]
-- sqs fifo
 - topology chart generation
 - custom lambda authorisers
 - cognito
@@ -39,6 +35,8 @@
 
 ### thoughts
 
+- rename deploy_stack.py config to avoid confusion with Config ?
+  - no I prefer using config to dsl
 - remove master outputs / list_outputs.py to iterate over all nested stacks
   - no because add_master() is quite elegant and it doesn't take much work to do this 
 - move type filters into __init__.py ?
