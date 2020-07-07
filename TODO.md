@@ -7,8 +7,7 @@
   - policy
   - rest api  
 
-- check anything which uses fn_getatt(arn) utilises resource_id in first arg
-- ensure all functions taking kwargs actuall take **kwargs
+- ensure all functions taking kwargs actually take **kwargs
 
 - layer compatible runtime
   - runtime needs to be extracted somehow
