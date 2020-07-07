@@ -1,15 +1,16 @@
 ### short
 
+- check api gateway handler code in api actions
+- ping api gw endpoints
 - use template variables for stage name
 - add decorator to fill in blank resource props
 
 ### layers
 
+- script to build individual layers
 - layer compatible runtime
-  - runtime needs to be extracted somehow  
 - layer bucket, s3 key [including version]
 - function layer references
-- script to build individual layers
 - deploy_stack.py to check layers exist
 
 ### medium
