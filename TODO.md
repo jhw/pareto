@@ -2,7 +2,6 @@
 
 - resource decorator to blank props if missing
 - consider reverting resource_id/name to take kwargs not **kwargs
-- outputs script to iterate over all templates
 
 ### layers
 
@@ -99,6 +98,7 @@
   
 ### done
 
+- outputs script to iterate over all templates
 - rename resource_id as resource_name
 - add back rest api name
 - randomise policy name

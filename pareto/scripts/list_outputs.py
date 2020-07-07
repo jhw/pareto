@@ -1,11 +1,21 @@
 #!/usr/bin/env python
 
+from pareto.scripts import *
+
 """
-- currently just showing stuff from master template
-- ie assumes anything from a nested templates is just internal wiring
+- using dict because outputs may duplicated, exported from one nested template and then re- exported from master
 """
 
-from pareto.scripts import *
+def fetch_outputs(stackname):
+    outputs={}
+    for stack in CF.describe_stacks()["Stacks"]:
+        if (stack["StackName"].startswith(stackname) and
+            "Outputs" in stack):
+            for output in stack["Outputs"]:
+                if ("OutputKey" in output and
+                    "OutputValue" in output):
+                    outputs[output["OutputKey"]]=output["OutputValue"]
+    return [(k, v) for k, v in outputs.items()]
 
 if __name__=="__main__":
     try:
@@ -16,19 +26,10 @@ if __name__=="__main__":
             raise RuntimeError("Stage name is invalid")
         stackname="%s-%s" % (Config["AppName"],
                              stagename)
-        stacks={stack["StackName"]:stack
-                for stack in CF.describe_stacks()["Stacks"]}
-        if stackname not in stacks:
-            raise RuntimeError("%s not found" % stackname)
-        outputs=stacks[stackname]["Outputs"]        
-        """
-        - because pandas truncates column width :-(
-        """
-        def lookup(output, attr):
-            return output[attr] if attr in output else ""
-        for output in outputs:
-            print ("%s\t\t%s" % (lookup(output, "OutputKey"),
-                                 lookup(output, "OutputValue")))
+        outputs=sorted(fetch_outputs(stackname),
+                       key=lambda x: x[0])
+        for key, value in outputs:
+            print ("%s\t\t%s" % (key, value))
     except ClientError as error:
         print (error)
     except RuntimeError as error:
