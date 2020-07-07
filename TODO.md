@@ -1,5 +1,6 @@
 ### short
 
+- remove dict handling in list_outputs.py
 - resource decorator to blank props if missing
 - consider reverting resource_id/name to take kwargs not **kwargs
 
@@ -98,6 +99,7 @@
   
 ### done
 
+- remove export of outputs
 - outputs script to iterate over all templates
 - rename resource_id as resource_name
 - add back rest api name

@@ -62,16 +62,10 @@ def add_dashboards(config, templates, filters=TypeFilters):
         template.update(dashboard)
     templates["dashboard"]=template.render()
 
-"""
-- currently set up to output any un- consumed nested stack outputs from main template
-- you probably don't have to do this as /scripts/list_outputs.py could always iterate through nested stacks for outputs
-- but it seems quite a nice feature for relatively little cost
-"""
-    
 def add_master(config, templates, filters=TypeFilters):
     def stack_id(stackname):
         return logical_id("%s-stack" % stackname)
-    def output_ref(name, attr):
+    def get_attr(name, attr):
         return {"Fn::GetAtt": [name, "Outputs.%s" % attr]}
     def filter_outputs(templates, filters):        
         outputs={}
@@ -82,8 +76,8 @@ def add_master(config, templates, filters=TypeFilters):
                                 for paramname in template["Outputs"]})
         return outputs
     def format_params(paramnames, outputs):
-        return {paramname: output_ref(stack_id(outputs.pop(paramname)),
-                                      paramname)
+        return {paramname: get_attr(stack_id(outputs.pop(paramname)),
+                                    paramname)
                 for paramname in list(paramnames)}
     def init_params(template, outputs):
         return format_params(template["Parameters"].keys(),
@@ -96,10 +90,6 @@ def add_master(config, templates, filters=TypeFilters):
         stack.update({"name": tempname,
                       "params": params})
         return stack
-    def format_outputs(outputs):
-        return {paramname: {"Value": output_ref(stack_id(tempname),
-                                                paramname)}         
-                for paramname, tempname in outputs.items()}        
     def init_template(config, templates, filters):
         outputs=filter_outputs(templates, filters)
         components=[init_stack(config, tempname, template, outputs)
@@ -108,7 +98,6 @@ def add_master(config, templates, filters=TypeFilters):
         for kwargs in components:
             stack=synth_stack(**kwargs)
             template.update(stack)
-        template["outputs"]=format_outputs(outputs)
         return template.render()
     templates["master"]=init_template(config, templates, filters)
         
