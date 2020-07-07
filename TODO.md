@@ -1,12 +1,14 @@
-### short [layers]
+### short
 
 - try removing rest API name
 - see if you still need resource suffix support
 - randomise policy name
+- don't include empty props
+
+### layers
 
 - layer compatible runtime
-  - runtime needs to be extracted somehow
-  
+  - runtime needs to be extracted somehow  
 - layer bucket, s3 key [including version]
 - function layer references
 - script to build individual layers
