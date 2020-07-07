@@ -1,11 +1,9 @@
-### short
+### short [layers]
 
-- add decorator to fill in blank resource props
+- script to build single package layer with optional version
 
-### layers
-
-- script to build individual layers
-- layer compatible runtime
+- layer component
+  - pass layer runtime
 - layer bucket, s3 key [including version]
 - function layer references
 - deploy_stack.py to check layers exist
@@ -105,6 +103,7 @@
   
 ### done
 
+- add decorator to fill in blank resource props
 - use template variables for stage name
 - ping api gw endpoints
 - check api gateway handler code in api actions

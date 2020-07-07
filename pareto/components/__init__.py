@@ -34,21 +34,30 @@ def parameter(name, type_="String"):
     return (logical_id(name), {"Type": type_})
 
 def resource(suffix=None):
-    def format_depends(v):
-        return [logical_id(name)
-                for name in v]
+    def fill_in_props(fn):
+        def wrapped(values, **kwargs):
+            if not isinstance(values, tuple):
+                values=(values, {})
+            return fn(values, **kwargs)
+        return wrapped
     def format_value(k, v):
+        def format_depends(v):
+            return [logical_id(name)
+                    for name in v]
         return format_depends(v) if k=="DependsOn" else v
+    @fill_in_props
+    def format_values(values,
+                      attrs=["Type", "Properties", "DependsOn"]):
+        return {k:format_value(k, v)
+                for k, v in zip(attrs[:len(values)],
+                                values)}
     def decorator(fn):
-        def wrapped(attrs=["Type", "Properties", "DependsOn"],
-                    *args, **kwargs):
+        def wrapped(*args, **kwargs):
             name="%s-%s" % (kwargs["name"],
                             suffix) if suffix else kwargs["name"]
             key=logical_id(name)
             values=fn(*args, **kwargs)
-            return (key, {k:format_value(k, v)
-                          for k, v in zip(attrs[:len(values)],
-                                          values)})
+            return (key, format_values(values))
         return wrapped
     return decorator
 

@@ -32,7 +32,7 @@ def synth_function(**kwargs):
         return IamRole(**rolekwargs)
     @resource(suffix="dead-letter-queue")
     def FunctionDeadLetterQueue(**kwargs):
-        return "AWS::SQS::Queue", {}
+        return "AWS::SQS::Queue"
     @resource(suffix="version")
     def FunctionVersion(**kwargs):
         props={"FunctionName": ref(kwargs["name"])}
@@ -66,31 +66,31 @@ def synth_function(**kwargs):
             props["Policies"]=[policy(kwargs["permissions"])]
         return "AWS::IAM::Role", props
     """
-    - apigw currently very bare bones and missing
+    - api-gw currently very bare bones and missing
       - resource
       - account + cw role
-    - in order not to have too many apigw resources and breach CF limit
+    - in order not to have too many api-gw resources and breach CF limit
     - see https://gist.github.com/jhw/fba6bed6637e784b735c57505d62bba8 for options
     """
-    @resource(suffix="apigw-rest-api")
+    @resource(suffix="api-gw-rest-api")
     def ApiGwRestApi(**kwargs):
         props={"Name": random_name("rest-api")} # not 
         return "AWS::ApiGateway::RestApi", props
-    @resource(suffix="apigw-deployment")
+    @resource(suffix="api-gw-deployment")
     def ApiGwDeployment(**kwargs):
-        restapi=ref("%s-apigw-rest-api" % kwargs["name"])
+        restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         props={"RestApiId": restapi}
-        method="%s-apigw-method" % kwargs["name"]
+        method="%s-api-gw-method" % kwargs["name"]
         return "AWS::ApiGateway::Deployment", props, [method]
-    @resource(suffix="apigw-stage")
+    @resource(suffix="api-gw-stage")
     def ApiGwStage(**kwargs):
-        restapi=ref("%s-apigw-rest-api" % kwargs["name"])
-        deployment=ref("%s-apigw-deployment" % kwargs["name"])
+        restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
+        deployment=ref("%s-api-gw-deployment" % kwargs["name"])
         props={"RestApiId": restapi,
                "DeploymentId": deployment,
                "StageName": kwargs["stage"]}
         return "AWS::ApiGateway::Stage", props
-    @resource(suffix="apigw-method")
+    @resource(suffix="api-gw-method")
     def ApiGwMethod(**kwargs):
         arnpattern="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
         lambdaarn=fn_getatt(kwargs["name"], "Arn")
@@ -100,8 +100,8 @@ def synth_function(**kwargs):
         integration={"Uri": uri,
                      "IntegrationHttpMethod": "POST",
                      "Type": "AWS_PROXY"}
-        restapi=ref("%s-apigw-rest-api" % kwargs["name"])
-        parent=fn_getatt("%s-apigw-rest-api" % kwargs["name"],
+        restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
+        parent=fn_getatt("%s-api-gw-rest-api" % kwargs["name"],
                          "RootResourceId")
         props={"AuthorizationType": "NONE",
                "RestApiId": restapi,
@@ -109,11 +109,11 @@ def synth_function(**kwargs):
                "HttpMethod": kwargs["api"]["method"],
                "Integration": integration}
         return "AWS::ApiGateway::Method", props
-    @resource(suffix="apigw-permission")
+    @resource(suffix="api-gw-permission")
     def ApiGwPermission(**kwargs):
         arnpattern="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
-        restapi=ref("%s-apigw-rest-api" % kwargs["name"])
-        stagename=ref("%s-apigw-stage" % kwargs["name"])
+        restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
+        stagename=ref("%s-api-gw-stage" % kwargs["name"])
         eventparams={"rest_api": restapi,
                      "stage_name": stagename}
         eventsource=fn_sub(arnpattern % (kwargs["region"],
@@ -129,8 +129,8 @@ def synth_function(**kwargs):
     def ApiGwUrl(**kwargs):
         urlpattern="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
         url=urlpattern % kwargs["region"]
-        restapi=ref("%s-apigw-rest-api" % kwargs["name"])
-        stagename=ref("%s-apigw-stage" % kwargs["name"])
+        restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
+        stagename=ref("%s-api-gw-stage" % kwargs["name"])
         urlparams={"rest_api": restapi,
                    "stage_name": stagename}
         return fn_sub(url, urlparams)
