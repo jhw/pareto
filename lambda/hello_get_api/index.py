@@ -5,6 +5,16 @@ logger.setLevel(logging.INFO)
 
 logging.getLogger('botocore').setLevel(logging.WARNING)
 
+def api_gateway(fn):
+    def wrapped(event, context):
+        resp=fn(event, context)
+        return {"statusCode": 200,
+                "headers": {"Content-Type": "application/json",
+                            "Access-Control-Allow-Origin": "*"},
+                "body": json.dumps(resp)}
+    return wrapped
+
+@api_gateway
 def handler(event, context):
     logging.info(event)
     return event

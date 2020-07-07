@@ -1,7 +1,5 @@
 ### short
 
-- check api gateway handler code in api actions
-- ping api gw endpoints
 - use template variables for stage name
 - add decorator to fill in blank resource props
 
@@ -16,15 +14,15 @@
 ### medium
 
 - check allowing retries for scrapers
-
 - managed layers
   - don't want to always be creating numpy layer
 - secrets manager
 - replace timestamp with git version
 - scaffold generator [notes]
   - capture list of sample events as fixtures
+  - auto- generate root test.py
 - cloudwatch alerts [+ sns topics]
-- preprocessor json schema
+- preprocessor for json schema
 - pip dependency installation
 
 ### v1.1
@@ -106,6 +104,8 @@
   
 ### done
 
+- ping api gw endpoints
+- check api gateway handler code in api actions
 - should stage name really be part of API GW URL ?
 - consider reverting resource_id/name to take kwargs not **kwargs
 - remove dict handling in list_outputs.py
