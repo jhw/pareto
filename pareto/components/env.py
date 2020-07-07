@@ -16,9 +16,7 @@ TypeFilters={
 
 def add_component_groups(config, templates, filters=TypeFilters):
     def init_component(config, component):
-        component.update({k:config[k]
-                          for k in config
-                          if k!="components"})
+        component.update(config["globals"])
         return component
     def group_components(config, filters):
         return {key: [init_component(config, component)
@@ -38,9 +36,7 @@ def add_component_groups(config, templates, filters=TypeFilters):
 
 def add_dashboards(config, templates, filters=TypeFilters):
     def init_group(config, components):
-        group={k:config[k]
-               for k in config
-               if k!="components"}
+        group=dict(config["globals"])
         group["components"]=components
         return group
     def has_dashboard(components):
@@ -94,9 +90,7 @@ def add_master(config, templates, filters=TypeFilters):
                              outputs) if "Parameters" in template else {}
     def init_stack(config, tempname, template, outputs):
         stack={}
-        stack.update({k:config[k]
-                      for k in config
-                      if k!="components"})
+        stack.update(config["globals"])
         params=init_params(template,
                            outputs)
         stack.update({"name": tempname,

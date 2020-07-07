@@ -1,6 +1,5 @@
 f### short
 
-- nest app/stage/region/bucket in config.globals
 - remove master outputs
   - list_outputs.py to iterate over all nested stacks
 
@@ -16,6 +15,7 @@ f### short
 
 ### medium
 
+- rename deploy_stack.py config to avoid confusion with Config
 - check allowing retries for scrapers
 - should stage name really be part of API GW URL ?
 
@@ -91,6 +91,7 @@ f### short
   
 ### done
 
+- nest app/stage/region/bucket in config.globals
 - remove support for managed iam policies
 - IamRole to be part of function component
 - adapt inspection scripts for multiple stacks

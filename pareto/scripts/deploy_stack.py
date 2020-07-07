@@ -22,10 +22,10 @@ def load_config(configfile, stagename):
     with open(configfile, 'r') as f:
         config=yaml.load(f.read(),
                          Loader=yaml.FullLoader)
-    config["app"]=Config["AppName"]
-    config["region"]=Config["AWSRegion"]
-    config["bucket"]=Config["S3StagingBucket"]
-    config["stage"]=stagename
+    config["globals"]={"app": Config["AppName"],
+                       "region": Config["AWSRegion"],
+                       "bucket": Config["S3StagingBucket"],
+                       "stage": stagename}
     return config
 
 @toggle_aws_profile
@@ -57,13 +57,13 @@ def run_tests(config):
 def add_staging(config):
     logging.info("adding staging")
     def lambda_key(name, timestamp):
-        return "%s/lambdas/%s-%s.zip" % (config["app"],
+        return "%s/lambdas/%s-%s.zip" % (config["globals"]["app"],
                                          name,
                                          timestamp)
     ts=timestamp()
     for component in filter_functions(config["components"]):
         key=lambda_key(component["name"], ts)
-        component["staging"]={"bucket": config["bucket"],
+        component["staging"]={"bucket": config["globals"]["bucket"],
                               "key": key}
 
 def push_lambdas(config):
@@ -108,12 +108,12 @@ def push_lambdas(config):
 def push_templates(config, templates):
     logging.info("pushing templates")
     def push_template(config, tempname, template):
-        key="%s-%s/templates/%s.json" % (config["app"],
-                                         config["stage"],
+        key="%s-%s/templates/%s.json" % (config["globals"]["app"],
+                                         config["globals"]["stage"],
                                          tempname)
         logging.info("pushing %s" % key)
         body=json.dumps(template).encode("utf-8")
-        S3.put_object(Bucket=config["bucket"],
+        S3.put_object(Bucket=config["globals"]["bucket"],
                       Key=key,
                       Body=body,
                       ContentType='application/json')
@@ -154,8 +154,8 @@ def deploy_env(config, template):
         stacknames=[stack["StackName"]
                     for stack in CF.describe_stacks()["Stacks"]]
         return stackname in stacknames
-    stackname="%s-%s" % (config["app"],
-                         config["stage"])
+    stackname="%s-%s" % (config["globals"]["app"],
+                         config["globals"]["stage"])
     action="update" if stack_exists(stackname) else "create"
     fn=getattr(CF, "%s_stack" % action)
     fn(StackName=stackname,
