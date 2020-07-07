@@ -1,7 +1,9 @@
 ### short
 
-- randomise policy name
-- don't include empty props
+- add back rest api name
+- rename resource_id as resource_name
+- resource decorator to blank props if missing
+- consider reverting resource_id/name to take kwargs not **kwargs
 
 ### layers
 
@@ -40,6 +42,10 @@
 
 ### thoughts
 
+- don't include empty props
+  - fails if u delete them
+- only add bucket name if website ?
+  - no it could be something u want a dashboard for
 - rename deploy_stack.py config to avoid confusion with Config ?
   - no I prefer using config to dsl
 - remove master outputs / list_outputs.py to iterate over all nested stacks
@@ -94,6 +100,7 @@
   
 ### done
 
+- randomise policy name
 - see if you still need resource suffix support
 - try removing rest API name
 - replace local refs to function names with arns

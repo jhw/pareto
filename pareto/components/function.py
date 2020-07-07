@@ -1,5 +1,7 @@
 from pareto.components import *
 
+import random
+
 """
 LambdaLayer:
     Properties:
@@ -71,20 +73,24 @@ def synth_function(**kwargs):
                         "Principal": {"Service": kwargs["service"]}}]
             return {"Statement": statement,
                     "Version": "2012-10-17"}
-        def policy(permissions):
-            name="%s-policy" % kwargs["name"]
+        """
+        - policy name is required unfortunately
+        - but no particular need to give it a meaningful name
+        """
+        def random_policy_name(n=32):
+            salt="".join([chr(65+int(26*random.random()))
+                          for i in range(n)])
+            return "inline-policy-%s" % salt
+        def policy(permissions):            
             statement=[{"Action": permission,
                         "Effect": "Allow",
                         "Resource": "*"}
                        for permission in permissions]
             return {"PolicyDocument": {"Statement": statement,
                                        "Version": "2012-10-17"},
-                    "PolicyName": name}
+                    "PolicyName": random_policy_name()}
         props={"AssumeRolePolicyDocument": assume_role_policy_doc()}
         if "permissions" in kwargs:
-            """
-            single policy only for the moment
-            """
             props["Policies"]=[policy(kwargs["permissions"])]
         return "AWS::IAM::Role", props
     """
