@@ -1,24 +1,37 @@
 ### short
 
+- move type filters into __init__.py
+- IamRole to be part of function component
 - nest app/stage/region/bucket in config.globals
+- remove master outputs
+  - list_outputs.py to iterate over all nested stacks
 
-- layers
-- secrets manager
+### layers
+
+- new layer component
+  - single package, versioning optional
+- build layers from dsl specification
+  - well defined S3 key format
+- include layer references within functions
+- script to build individual layers
+- deployment script to check layers exist
 
 ### medium
 
+- check allowing retries for scrapers
 - should stage name really be part of API GW URL ?
 
+- secrets manager
 - replace timestamp with git version
-- capture events list as fixtures
 - scaffold generator [notes]
-- sns topics
-- cloudwatch alerts
+  - capture list of sample events as fixtures
+- cloudwatch alerts [+ sns topics]
 - preprocessor json schema
 - pip dependency installation
 
 ### v1.1
 
+- managed IAM policies, layers
 - CI pipeline [notes]
 - sqs fifo
 - topology chart generation

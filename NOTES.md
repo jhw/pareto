@@ -1,3 +1,21 @@
+### layer and iam pooling 6/7/20
+
+- iam pooling seemed a nice idea but maybe not essential
+- but difficulty is layers suffer from the same problem, but this time they are essential
+- ie can't have each function having its own individual layers
+- unless you decide on a single layer for all functions, containing all deps and forcing each function to take it
+- well actually maybe unique layers aren't the worst way to go
+- can treat them the same as optional IAM resources
+- so for any function, specify a package layer with an optional version
+- layers are specified on per- package, per version (optional) basis
+- function component can create a layer resources if they are required, and then include the layer references within the function
+- the layer resource will need to include a file reference in a commonly agreed format
+- then u need a script to build the individual layers
+- then deployment script will need to check that the layers actually exist
+- and probably u need to test layers by including them within an index.py
+- and don't forget u will need local dependencies to test
+- then also need support for AWS layer ARNs (managed layers ?)
+
 ### master stack 5/7/20
 
 - can you build master stack in the same way you do components, specifically using synth_template ?
