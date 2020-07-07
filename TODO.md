@@ -1,8 +1,12 @@
 ### short [layers]
 
-- layer name
+- layer compatible runtime
 - layer bucket, s3 key [including version]
 - function layer references
+
+- a log of minor lambda resources are missing stage name
+  - policy, layer etc
+  - helper to ensure they are suffixed properly ?
 
 - script to build individual layers
 - deployment script to check layers exist
@@ -88,6 +92,7 @@
   
 ### done
 
+- layer name
 - new layer component
 - nest app/stage/region/bucket in config.globals
 - remove support for managed iam policies

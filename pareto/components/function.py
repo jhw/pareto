@@ -63,7 +63,9 @@ def synth_function(**kwargs):
         suffix="%s-layer" % layer["name"]
         @resource(suffix=suffix)
         def Layer(**kwargs):
-            props={}
+            name="%s-%s-layer" % (kwargs["name"],
+                                  layer["name"])
+            props={"LayerName": name}
             return "AWS::Lambda::LayerVersion", props
         return Layer(**kwargs)
     @resource(suffix="role")
