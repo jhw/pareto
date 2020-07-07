@@ -11,3 +11,5 @@ components:
   target:
     type: bucket
     name: hello-bucket
+  layers:
+  - name: lxml

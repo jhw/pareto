@@ -1,10 +1,9 @@
 ### short [layers]
 
-- new layer component
-  - single package, versioning optional
-- build layers from dsl specification
-  - well defined S3 key format
-- include layer references within functions
+- layer name
+- layer bucket, s3 key [including version]
+- function layer references
+
 - script to build individual layers
 - deployment script to check layers exist
 
@@ -89,6 +88,7 @@
   
 ### done
 
+- new layer component
 - nest app/stage/region/bucket in config.globals
 - remove support for managed iam policies
 - IamRole to be part of function component

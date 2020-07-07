@@ -1,5 +1,17 @@
 from pareto.components import *
 
+"""
+LambdaLayer:
+    Properties:
+      CompatibleRuntimes:
+        - Ref: LambdaRuntime
+      Content:
+        S3Bucket: !Ref S3DeployBucket
+        S3Key: !Ref S3LayerKey
+      LayerName: !Sub "${AppName}-lambda-layer-${StageName}"
+    Type: AWS::Lambda::LayerVersion
+"""
+
 def synth_function(**kwargs):
     @resource()
     def Function(concurrency=None,
@@ -47,6 +59,13 @@ def synth_function(**kwargs):
                "Qualifier": qualifier,
                "MaximumRetryAttempts": retries}
         return "AWS::Lambda::EventInvokeConfig", props
+    def Layer(kwargs, layer):
+        suffix="%s-layer" % layer["name"]
+        @resource(suffix=suffix)
+        def Layer(**kwargs):
+            props={}
+            return "AWS::Lambda::LayerVersion", props
+        return Layer(**kwargs)
     @resource(suffix="role")
     def IamRole(**kwargs):
         def assume_role_policy_doc():
@@ -136,6 +155,9 @@ def synth_function(**kwargs):
                                  FunctionDeadLetterQueue(**kwargs),
                                  FunctionVersion(**kwargs),
                                  FunctionEventConfig(**kwargs)])
+    if "layers" in kwargs:
+        template["resources"]+=[Layer(kwargs, layer)
+                                for layer in kwargs["layers"]]
     if "api" in kwargs:
         template["resources"]+=[ApiGwRestApi(**kwargs),
                                 ApiGwDeployment(**kwargs),
