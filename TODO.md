@@ -1,23 +1,27 @@
 ### short
 
-- reference checker
+- replace app.props with globals section in dsl config
 
-- script to build single package layer with optional version
+- secrets [notes]
 
 ### layers
 
+- script to build single package layer
+  - optional version
 - layer component
   - pass layer runtime
-- layer bucket, s3 key [including version]
+- layer bucket, s3 key
+  - including version
+  - default LATEST
 - function layer references
 - deploy_stack.py to check layers exist
+- managed layer support
+  - don't create a layer if in arn format
 
 ### medium
 
 - check allowing retries for scrapers
 
-- managed layer support
-- secrets
 - replace lambda timestamp salt with git commit
 - scaffold generator [notes]
   - capture list of sample events as fixtures
@@ -106,6 +110,7 @@
   
 ### done
 
+- reference checker
 - add decorator to fill in blank resource props
 - use template variables for stage name
 - ping api gw endpoints

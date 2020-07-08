@@ -66,6 +66,98 @@ def add_staging(config):
         component["staging"]={"bucket": config["globals"]["bucket"],
                               "key": key}
 
+"""
+- cloudformation will check this for you early in deployment process
+- but still better to have local version to get early warning I think
+- in particular is effective at checking references to logical id which may have been incorrectly coded within components
+"""
+        
+def check_refs(templates):
+    logging.info("checking template refs")
+    def filter_resource_ids(template):
+        ids=[]
+        for attr in ["Resources", "Parameters"]:
+            if attr in template:
+                ids+=template[attr].keys()
+        return ids
+    def is_new_ref(key, element, refs):
+        return (key=="Ref" and
+                type(element)==str and
+                element not in refs)
+    def is_new_getatt(key, element, refs):
+        return (key=="Fn::GetAtt" and
+                type(element)==list and
+                type(element[0])==str and
+                element[0] not in refs)
+    def filter_refs(element, refs):
+        if isinstance(element, list):
+            for subelement in element:
+                filter_refs(subelement, refs)
+        elif isinstance(element, dict):
+            for key, subelement in element.items():
+                if is_new_ref(key, subelement, refs):
+                    # print ("ref: %s" % subelement)
+                    refs.append(subelement)
+                elif is_new_getatt(key, subelement, refs):
+                    # print ("getatt: %s" % subelement[0])
+                    refs.append(subelement[0])
+                else:
+                    filter_refs(subelement, refs)
+        else:
+            pass
+    def check_refs(tempname, template):
+        resourceids=filter_resource_ids(template)
+        refs=[]
+        filter_refs(template, refs)
+        for ref in refs:
+            if ref not in resourceids:
+                raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
+    for tempname, template in templates.items():
+        check_refs(tempname, template)
+        
+def check_metrics(templates, metrics=Metrics):
+    logging.info("checking template metrics")
+    def calc_metrics(tempname, template, metrics):
+        outputs={"name": tempname}
+        outputs.update({metrickey: metricfn(template)
+                        for metrickey, metricfn in metrics.items()})
+        return outputs
+    def validate_metrics(metrics, limit=0.9):
+        for row in metrics:
+            for attr in row.keys():
+                if (type(row[attr])==float and
+                    row[attr] > limit):
+                    raise RuntimeError("%s %s exceeds limit" % (row["name"],
+                                                                attr))
+    metrics=[calc_metrics(tempname, template, metrics)
+             for tempname, template in templates.items()]
+    print ("\n%s\n" % pd.DataFrame(metrics))
+    validate_metrics(metrics)
+
+def dump_env(env):
+    filename="tmp/env-%s.yaml" % timestamp()
+    yaml.SafeDumper.ignore_aliases=lambda *args: True
+    with open(filename, 'w') as f:
+        f.write(yaml.safe_dump(env,
+                               default_flow_style=False))
+
+def push_templates(config, templates):
+    logging.info("pushing templates")
+    def push_template(config, tempname, template):
+        key="%s-%s/templates/%s.json" % (config["globals"]["app"],
+                                         config["globals"]["stage"],
+                                         tempname)
+        logging.info("pushing %s" % key)
+        body=json.dumps(template).encode("utf-8")
+        S3.put_object(Bucket=config["globals"]["bucket"],
+                      Key=key,
+                      Body=body,
+                      ContentType='application/json')
+    for tempname, template in templates.items():
+        if tempname=="master":
+            continue
+        push_template(config, tempname, template)
+
 def push_lambdas(config):
     logging.info("pushing lambdas")
     def validate_lambda(component):
@@ -100,54 +192,10 @@ def push_lambdas(config):
                        component["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
     for component in filter_functions(config["components"]):
-        # logging.info("pushing %s lambda" % component["name"])
         validate_lambda(component)
         zfname=init_zipfile(component)
         push_lambda(component, zfname)
-            
-def push_templates(config, templates):
-    logging.info("pushing templates")
-    def push_template(config, tempname, template):
-        key="%s-%s/templates/%s.json" % (config["globals"]["app"],
-                                         config["globals"]["stage"],
-                                         tempname)
-        logging.info("pushing %s" % key)
-        body=json.dumps(template).encode("utf-8")
-        S3.put_object(Bucket=config["globals"]["bucket"],
-                      Key=key,
-                      Body=body,
-                      ContentType='application/json')
-    for tempname, template in templates.items():
-        if tempname=="master":
-            continue
-        push_template(config, tempname, template)
-
-def calc_metrics(templates, metrics=Metrics):
-    logging.info("calculating template metrics")
-    def calc_metrics(tempname, template, metrics):
-        outputs={"name": tempname}
-        outputs.update({metrickey: metricfn(template)
-                        for metrickey, metricfn in metrics.items()})
-        return outputs
-    def validate_metrics(metrics, limit=0.9):
-        for row in metrics:
-            for attr in row.keys():
-                if (type(row[attr])==float and
-                    row[attr] > limit):
-                    raise RuntimeError("%s %s exceeds limit" % (row["name"],
-                                                                attr))
-    metrics=[calc_metrics(tempname, template, metrics)
-             for tempname, template in templates.items()]
-    print ("\n%s\n" % pd.DataFrame(metrics))
-    validate_metrics(metrics)
-
-def dump_env(env):
-    filename="tmp/env-%s.yaml" % timestamp()
-    yaml.SafeDumper.ignore_aliases=lambda *args: True
-    with open(filename, 'w') as f:
-        f.write(yaml.safe_dump(env,
-                               default_flow_style=False))
-    
+        
 def deploy_env(config, template):
     logging.info("deploying stack")
     def stack_exists(stackname):
@@ -180,11 +228,12 @@ if __name__=="__main__":
         preprocess(config)
         run_tests(config)
         add_staging(config)
-        push_lambdas(config)
         env=synth_env(config)
-        push_templates(config, env)
-        calc_metrics(env)
+        check_refs(env)
+        check_metrics(env)
         dump_env(env)
+        push_templates(config, env)
+        push_lambdas(config)
         deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      

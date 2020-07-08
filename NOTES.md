@@ -1,3 +1,11 @@
+### secrets 8/7/20
+
+- hopefully shouldn't be too hard
+- separate `secrets` attr in config
+- add secrets to master stack
+- nest JSON values if secret is complex
+- err that's it
+
 ### API gateway stage names 7/7/20
 
 - should apigw include stage that references stage name ?
