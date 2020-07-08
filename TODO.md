@@ -1,6 +1,10 @@
-### short [layers]
+### short
+
+- reference checker
 
 - script to build single package layer with optional version
+
+### layers
 
 - layer component
   - pass layer runtime
@@ -10,18 +14,16 @@
 
 ### medium
 
-- consider how to avoid `ref("%s-xxx" % kwargs["name"])`
 - check allowing retries for scrapers
 
-- managed layers
-  - don't want to always be creating numpy layer
-- secrets manager
-- replace timestamp with git version
+- managed layer support
+- secrets
+- replace lambda timestamp salt with git commit
 - scaffold generator [notes]
   - capture list of sample events as fixtures
   - auto- generate root test.py
 - cloudwatch alerts [+ sns topics]
-- preprocessor for json schema
+- dsl json schema
 - pip dependency installation
 
 ### v1.1
@@ -30,12 +32,13 @@
 - topology chart generation
 - custom lambda authorisers
 - cognito
-- route 53
+- route 53/cloudfront
 - appsync/graphql
-- cloudfront
 
 ### thoughts
 
+- consider how to avoid `ref("%s-xxx" % kwargs["name"])`
+  - use reference checker
 - managed IAM policies ?
   - not clear u need them
 - sqs fifo ?

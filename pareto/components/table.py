@@ -61,7 +61,6 @@ def synth_table(**kwargs):
     template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:
         actionarn=parameter("%s-arn" % kwargs["action"]["name"])
-        template.setdefault("parameters", [])
         template["parameters"].append(actionarn)
         template["resources"].append(LambdaMapping(**kwargs))
     return template

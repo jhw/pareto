@@ -24,9 +24,6 @@ def ref(name):
 def fn_getatt(name, attr):
     return {"Fn::GetAtt": [logical_id(name), attr]}
 
-def fn_join(args, delimiter=""):    
-    return {"Fn::Join": [delimiter, args]}
-
 def fn_sub(expr, kwargs={}):    
     return {"Fn::Sub": [expr, kwargs]}
 

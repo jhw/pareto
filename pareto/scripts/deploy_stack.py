@@ -129,17 +129,17 @@ def calc_metrics(templates, metrics=Metrics):
         outputs.update({metrickey: metricfn(template)
                         for metrickey, metricfn in metrics.items()})
         return outputs
-    def validate_metrics(metrics):
+    def validate_metrics(metrics, limit=0.9):
         for row in metrics:
             for attr in row.keys():
-                if attr=="name":
-                    continue
-                if row[attr]:
-                    raise RuntimeError("%s %s > 100%" % (row["name"],
-                                                         row[attr]))
+                if (type(row[attr])==float and
+                    row[attr] > limit):
+                    raise RuntimeError("%s %s exceeds limit" % (row["name"],
+                                                                attr))
     metrics=[calc_metrics(tempname, template, metrics)
              for tempname, template in templates.items()]
     print ("\n%s\n" % pd.DataFrame(metrics))
+    validate_metrics(metrics)
 
 def dump_env(env):
     filename="tmp/env-%s.yaml" % timestamp()

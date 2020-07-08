@@ -19,7 +19,6 @@ def synth_queue(**kwargs):
     template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:
         actionarn=parameter("%s-arn" % kwargs["action"]["name"])
-        template.setdefault("parameters", [])
         template["parameters"].append(actionarn)
         template["resources"].append(LambdaMapping(**kwargs))
     return template
