@@ -1,6 +1,5 @@
 ### short [two-stage]
 
-- pip install python git
 - separate lambda push from deploy stack
 - deploy stack to list S3 deployments and use latest
 - demo routine to find latest lambda git commit
@@ -104,6 +103,7 @@
   
 ### done
 
+- pip install python git
 - script to list artifacts
 - script to clean artifacts
 - validate staging bucket exists

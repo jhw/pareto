@@ -2,3 +2,4 @@ awscli
 botocore
 boto3
 pandas
+gitpython
