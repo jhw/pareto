@@ -4,10 +4,6 @@ from botocore.exceptions import ClientError, WaiterError
 
 import pandas as pd
 
-Config=dict([tuple(row.split("="))
-             for row in open("app.props").read().split("\n")
-             if "=" in row])
-
 CF, S3 = boto3.client("cloudformation"), boto3.client("s3")
 
 # https://stackoverflow.com/questions/14058453/making-python-loggers-output-all-messages-to-stdout-in-addition-to-log-file
@@ -20,6 +16,22 @@ def init_stdout_logger(level):
     formatter=logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
     root.addHandler(handler)
+
+def load_config(args):
+    if len(args) < 3:
+        raise RuntimeError("please enter config file, stage name")
+    configfile, stagename = args[1:3]
+    if not configfile.endswith(".yaml"):
+        raise RuntimeError("config must be a yaml file")
+    if not os.path.exists(configfile):
+        raise RuntimeError("config file does not exist")
+    if stagename not in ["dev", "prod"]:
+        raise RuntimeError("stage name is invalid")
+    with open(configfile, 'r') as f:
+        config=yaml.load(f.read(),
+                         Loader=yaml.FullLoader)
+    config["globals"]["stage"]=stagename
+    return config    
     
 """
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html

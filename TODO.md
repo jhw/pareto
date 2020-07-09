@@ -1,8 +1,10 @@
 ### short
 
-- replace app.props with globals section in dsl config
 - rename app as name
 - lookup region from env
+- insert bucket into special ["staging"] entry
+
+- check allowing retries for scrapers
 
 ### layers
 
@@ -20,7 +22,7 @@
 
 ### medium
 
-- check allowing retries for scrapers
+- secrets
 
 - lambda management
   - separate lambda push from deploy
@@ -28,10 +30,7 @@
   - lambda push to only push if new commit
   - deploy_stack.py to lookup latest unless commit specified
 
-- secrets
 - scaffold generator [notes]
-  - capture list of sample events as fixtures
-  - auto- generate root test.py
 - cloudwatch alerts [+ sns topics]
 - dsl json schema
 - pip dependency installation
@@ -116,6 +115,7 @@
   
 ### done
 
+- replace app.props with globals section in dsl config
 - reference checker
 - add decorator to fill in blank resource props
 - use template variables for stage name

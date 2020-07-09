@@ -13,13 +13,9 @@ def fetch_resources(stackname):
 
 if __name__=="__main__":
     try:
-        if len(sys.argv) < 2:
-            raise RuntimeError("Please enter stage name")
-        stagename=sys.argv[1]
-        if stagename not in ["dev", "prod"]:
-            raise RuntimeError("Stage name is invalid")
-        stackname="%s-%s" % (Config["AppName"],
-                             stagename)        
+        config=load_config(sys.argv)        
+        stackname="%s-%s" % (config["globals"]["app"],
+                             config["globals"]["stage"])
         resources=sorted(fetch_resources(stackname),
                          key=lambda x: x["Timestamp"])
         def lookup(event, attr, sz=32):

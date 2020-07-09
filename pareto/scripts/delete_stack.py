@@ -41,13 +41,9 @@ def delete_stack(stackname):
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
-        if len(sys.argv) < 2:
-            raise RuntimeError("Please enter stage name")
-        stagename=sys.argv[1]
-        if stagename not in ["dev", "prod"]:
-            raise RuntimeError("Stage name is invalid")
-        stackname="%s-%s" % (Config["AppName"],
-                             stagename)
+        config=load_config(sys.argv)
+        stackname="%s-%s" % (config["globals"]["app"],
+                             config["globals"]["stage"])
         delete_stack(stackname)
         waiter=CF.get_waiter("stack_delete_complete")
         waiter.wait(StackName=stackname)

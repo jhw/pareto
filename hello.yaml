@@ -1,3 +1,7 @@
+globals:
+  app: pareto-demo
+  bucket: wol-deployments
+  region: eu-west-1
 components:
 - type: api
   name: hello-get-api

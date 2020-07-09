@@ -18,16 +18,6 @@ Metrics={
     "template_size": (lambda x: (len(json.dumps(x))/51200))
     }
 
-def load_config(configfile, stagename):
-    with open(configfile, 'r') as f:
-        config=yaml.load(f.read(),
-                         Loader=yaml.FullLoader)
-    config["globals"]={"app": Config["AppName"],
-                       "region": Config["AWSRegion"],
-                       "bucket": Config["S3StagingBucket"],
-                       "stage": stagename}
-    return config
-
 @toggle_aws_profile
 def run_tests(config):
     logging.info("running tests")
@@ -213,18 +203,9 @@ def deploy_env(config, template):
     waiter.wait(StackName=stackname)
         
 if __name__=="__main__":
-    try:
+    try:        
         init_stdout_logger(logging.INFO)
-        if len(sys.argv) < 3:
-            raise RuntimeError("please enter config file, stage name")
-        configfile, stagename = sys.argv[1:3]
-        if not configfile.endswith(".yaml"):
-            raise RuntimeError("config must be a yaml file")
-        if not os.path.exists(configfile):
-            raise RuntimeError("config file does not exist")
-        if stagename not in ["dev", "prod"]:
-            raise RuntimeError("stage name is invalid")
-        config=load_config(configfile, stagename)
+        config=load_config(sys.argv)
         preprocess(config)
         run_tests(config)
         add_staging(config)
