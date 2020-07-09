@@ -215,7 +215,7 @@ if __name__=="__main__":
         dump_env(env)
         push_templates(config, env)
         push_lambdas(config)
-        deploy_env(config, env["master"])
+        # deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

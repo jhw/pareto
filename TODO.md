@@ -1,8 +1,8 @@
 ### short
 
-- lookup region from env
-
 - check allowing retries for scrapers
+
+- secrets
 
 ### layers
 
@@ -20,8 +20,6 @@
 
 ### medium
 
-- secrets
-
 - lambda management
   - separate lambda push from deploy
   - add git commit as additional file salt
@@ -36,11 +34,11 @@
 ### v1.1
 
 - CI pipeline [notes]
-- topology chart generation
 - custom lambda authorisers
 - cognito
 - route 53/cloudfront
 - appsync/graphql
+- topology chart generation
 
 ### thoughts
 
@@ -117,6 +115,8 @@
   
 ### done
 
+- validate staging bucket exists
+- lookup region from env
 - replace app.props with globals section in dsl config
 - reference checker
 - add decorator to fill in blank resource props

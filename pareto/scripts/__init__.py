@@ -17,20 +17,39 @@ def init_stdout_logger(level):
     handler.setFormatter(formatter)
     root.addHandler(handler)
 
-def load_config(args):
+def load_config(args):    
+    def validate_configfile(configfile):
+        if not configfile.endswith(".yaml"):
+            raise RuntimeError("config must be a yaml file")
+        if not os.path.exists(configfile):
+            raise RuntimeError("config file does not exist")
+    def validate_stagename(stagename):
+        if stagename not in ["dev", "prod"]:
+            raise RuntimeError("stage name is invalid")
+    def load_config(configfile):
+        with open(configfile, 'r') as f:
+            config=yaml.load(f.read(),
+                             Loader=yaml.FullLoader)
+        return config
+    def init_region(config):
+        region=boto3.session.Session().region_name
+        if region in ['', None]:
+            raise RuntimeError("region is not set in AWS profile")
+        config["globals"]["region"]=region
+    def validate_bucket(config):
+        bucketnames=[bucket["Name"]
+                     for bucket in S3.list_buckets()["Buckets"]]
+        if config["globals"]["bucket"] not in bucketnames:
+            raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
     if len(args) < 3:
         raise RuntimeError("please enter config file, stage name")
     configfile, stagename = args[1:3]
-    if not configfile.endswith(".yaml"):
-        raise RuntimeError("config must be a yaml file")
-    if not os.path.exists(configfile):
-        raise RuntimeError("config file does not exist")
-    if stagename not in ["dev", "prod"]:
-        raise RuntimeError("stage name is invalid")
-    with open(configfile, 'r') as f:
-        config=yaml.load(f.read(),
-                         Loader=yaml.FullLoader)
+    validate_configfile(configfile)
+    validate_stagename(stagename)
+    config=load_config(configfile)    
     config["globals"]["stage"]=stagename
+    init_region(config)
+    validate_bucket(config)
     return config    
     
 """
