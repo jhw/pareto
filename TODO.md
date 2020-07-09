@@ -1,8 +1,8 @@
 ### short
 
 - replace app.props with globals section in dsl config
-
-- secrets [notes]
+- rename app as name
+- lookup region from env
 
 ### layers
 
@@ -22,7 +22,13 @@
 
 - check allowing retries for scrapers
 
-- replace lambda timestamp salt with git commit
+- lambda management
+  - separate lambda push from deploy
+  - add git commit as additional file salt
+  - lambda push to only push if new commit
+  - deploy_stack.py to lookup latest unless commit specified
+
+- secrets
 - scaffold generator [notes]
   - capture list of sample events as fixtures
   - auto- generate root test.py
