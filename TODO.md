@@ -1,8 +1,6 @@
 ### short
 
-- rename app as name
 - lookup region from env
-- insert bucket into special ["staging"] entry
 
 - check allowing retries for scrapers
 
@@ -46,6 +44,10 @@
 
 ### thoughts
 
+- rename globals.bucket as staging.bucket ?
+  - no because it's just an extra dict you've got to copy to each component
+- rename globals.app as globals.name ?
+  - no because conflicts with resource.name 
 - consider how to avoid `ref("%s-xxx" % kwargs["name"])`
   - use reference checker
 - managed IAM policies ?
