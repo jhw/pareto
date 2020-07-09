@@ -1,7 +1,8 @@
 ### short [two-stage]
 
-- separate lambda push from deploy stack
+- demo script to test lambdas
 - deploy stack to list S3 deployments and use latest
+
 - demo routine to find latest lambda git commit
 - add git commit as additional S3 file salt
 - lambda push to only push if new commit found
@@ -103,6 +104,7 @@
   
 ### done
 
+- separate lambda push from deploy stack
 - pip install python git
 - script to list artifacts
 - script to clean artifacts
