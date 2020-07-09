@@ -1,10 +1,8 @@
 ### short [two-stage]
 
-- script to list artifacts
-- script to clean artifacts
+- pip install python git
 - separate lambda push from deploy stack
 - deploy stack to list S3 deployments and use latest
-- pip install python git
 - demo routine to find latest lambda git commit
 - add git commit as additional S3 file salt
 - lambda push to only push if new commit found
@@ -106,6 +104,8 @@
   
 ### done
 
+- script to list artifacts
+- script to clean artifacts
 - validate staging bucket exists
 - lookup region from env
 - replace app.props with globals section in dsl config
