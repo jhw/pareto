@@ -2,8 +2,6 @@
 
 from pareto.scripts import *
 
-import unittest, zipfile
-
 from pareto.components.preprocessor import preprocess
 
 from pareto.components.env import synth_env
@@ -17,44 +15,6 @@ Metrics={
     "outputs": (lambda x: (len(x["Outputs"]) if "Outputs" in x else 0)/60),
     "template_size": (lambda x: (len(json.dumps(x))/51200))
     }
-
-@toggle_aws_profile
-def run_tests(config):
-    logging.info("running tests")
-    def index_test(component, klassname="IndexTest"):    
-        modname="%s.test" % underscore(component["name"])
-        try:
-            mod=__import__(modname, fromlist=[klassname])
-        except ModuleNotFoundError:
-            raise RuntimeError("%s does not exist" % modname)
-        klass=getattr(mod, klassname)
-        if not klass:
-            raise RuntimeError("%s does not exist in %s" % (klassname,
-                                                            modname))
-        return klass
-    klasses=[index_test(component)
-             for component in filter_functions(config["components"])]
-    suite=unittest.TestSuite()
-    for klass in klasses:
-        suite.addTest(unittest.makeSuite(klass))
-    runner=unittest.TextTestRunner()
-    results=runner.run(suite)
-    nfailures, nerrors = len(results.failures), len(results.errors)
-    if (nfailures > 0 or nerrors > 0):
-        raise RuntimeError("Tests failed with %i failures / %i errors" % (nfailures, nerrors))        
-    return results
-
-def add_staging(config):
-    logging.info("adding staging")
-    def lambda_key(name, timestamp):
-        return "%s/lambdas/%s-%s.zip" % (config["globals"]["app"],
-                                         name,
-                                         timestamp)
-    ts=timestamp()
-    for component in filter_functions(config["components"]):
-        key=lambda_key(component["name"], ts)
-        component["staging"]={"bucket": config["globals"]["bucket"],
-                              "key": key}
 
 """
 - cloudformation will check this for you early in deployment process
@@ -148,44 +108,6 @@ def push_templates(config, templates):
             continue
         push_template(config, tempname, template)
 
-def push_lambdas(config):
-    logging.info("pushing lambdas")
-    def validate_lambda(component):
-        if not os.path.exists("lambda/%s" % underscore(component["name"])):
-            raise RuntimeError("%s lambda does not exist" % component["name"])
-    def is_valid(filename, ignore=["test.py$",
-                                   ".pyc$"]):
-        for pat in ignore:
-            if re.search(pat, filename)!=None:
-                return False
-        return True
-    def write_zipfile(component, zf):
-        path, count = "lambda/%s" % underscore(component["name"]), 0
-        for root, dirs, files in os.walk(path):
-            for filename in files:
-                if is_valid(filename):
-                    zf.write(os.path.join(root, filename),
-                             arcname=filename)
-                    count+=1
-        if not count:
-            raise RuntimeError("no files found in %s" % path)
-    def init_zipfile(component):
-        zfname="tmp/%s" % component["staging"]["key"].split("/")[-1]
-        zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-        write_zipfile(component, zf)
-        zf.close()
-        return zfname
-    def push_lambda(component, zfname):
-        logging.info("pushing %s" % component["staging"]["key"])
-        S3.upload_file(zfname,
-                       component["staging"]["bucket"],
-                       component["staging"]["key"],
-                       ExtraArgs={'ContentType': 'application/zip'})
-    for component in filter_functions(config["components"]):
-        validate_lambda(component)
-        zfname=init_zipfile(component)
-        push_lambda(component, zfname)
-        
 def deploy_env(config, template):
     logging.info("deploying stack")
     def stack_exists(stackname):
@@ -207,14 +129,11 @@ if __name__=="__main__":
         init_stdout_logger(logging.INFO)
         config=load_config(sys.argv)
         preprocess(config)
-        run_tests(config)
-        add_staging(config)
         env=synth_env(config)
         check_refs(env)
         check_metrics(env)
         dump_env(env)
         push_templates(config, env)
-        push_lambdas(config)
         # deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
