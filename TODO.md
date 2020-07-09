@@ -1,16 +1,17 @@
-### short [two-stage]
-
-- demo script to test lambdas
-- deploy stack to list S3 deployments and use latest
+### short [python-git]
 
 - demo routine to find latest lambda git commit
 - add git commit as additional S3 file salt
-- lambda push to only push if new commit found
+  - as timestamp suffix so can order by time
+- lambda push to check existing deployments
+  - only push if existing commit not found
 - change deploy stack to handle salt in filenames
-- deploy stack to lookup latest (timestamp) unless commit specified
+- extend deploy stack to lookup specific commit if specified
+  - else use latest
 
 ### medium
 
+- add option not to specify stage name for artifacts scripts
 - check allowing retries for scrapers
 
 - layers [notes]
@@ -104,6 +105,8 @@
   
 ### done
 
+- log lambdas being used
+- deploy stack to list S3 deployments and use latest
 - separate lambda push from deploy stack
 - pip install python git
 - script to list artifacts

@@ -16,6 +16,40 @@ Metrics={
     "template_size": (lambda x: (len(json.dumps(x))/51200))
     }
 
+def add_staging(config):
+    logging.info("adding staging")
+    def fetch_s3(config):
+        resp=S3.list_objects(Bucket=config["globals"]["bucket"],
+                             Prefix="%s/lambdas" % config["globals"]["app"])
+        return resp["Contents"] if "Contents" in resp else []
+    def lambda_name(s3key):
+        return "-".join(s3key.split("/")[-1].split(".")[0].split("-")[:-6])     
+    def filter_latest(config):
+        resp=S3.list_objects(Bucket=config["globals"]["bucket"],
+                             Prefix="%s/lambdas" % config["globals"]["app"])
+        s3keys=[obj["Key"]
+                for obj in fetch_s3(config)
+                if obj["Key"].endswith(".zip")]
+        lambdakeys={}
+        for s3key in sorted(s3keys):
+            lambdaname=lambda_name(s3key)
+            lambdakeys[lambdaname]=s3key
+        return lambdakeys
+    def add_staging(components, lambdakeys, missing):
+        for component in filter_functions(components):
+            if component["name"] in lambdakeys:
+                component["staging"]={"bucket": config["globals"]["bucket"],
+                                      "key": lambdakeys[component["name"]]}
+            else:
+                missing.append(component["name"])        
+    lambdakeys=filter_latest(config)
+    for k, v in lambdakeys.items():
+        logging.info("%s => %s" % (k, v))        
+    missing=[]
+    add_staging(config["components"], lambdakeys, missing)
+    if missing!=[]:
+        raise RuntimeError("no deployable[s] found for %s" % ", ".join(missing))
+
 """
 - cloudformation will check this for you early in deployment process
 - but still better to have local version to get early warning I think
@@ -129,12 +163,13 @@ if __name__=="__main__":
         init_stdout_logger(logging.INFO)
         config=load_config(sys.argv)
         preprocess(config)
+        add_staging(config)
         env=synth_env(config)
         check_refs(env)
         check_metrics(env)
         dump_env(env)
         push_templates(config, env)
-        # deploy_env(config, env["master"])
+        deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
