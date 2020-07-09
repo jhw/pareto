@@ -1,3 +1,17 @@
+### layers 9/7/20
+
+- script to build single package layer
+  - optional version
+- layer component
+  - pass layer runtime
+- layer bucket, s3 key
+  - including version
+  - default LATEST
+- function layer references
+- deploy_stack.py to check layers exist
+- managed layer support
+  - don't create a layer if in arn format
+
 ### secrets 8/7/20
 
 - hopefully shouldn't be too hard

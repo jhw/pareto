@@ -1,31 +1,21 @@
-### short
+### short [lambda management]
 
-- check allowing retries for scrapers
-
-- secrets
-
-### layers
-
-- script to build single package layer
-  - optional version
-- layer component
-  - pass layer runtime
-- layer bucket, s3 key
-  - including version
-  - default LATEST
-- function layer references
-- deploy_stack.py to check layers exist
-- managed layer support
-  - don't create a layer if in arn format
+- separate lambda push from deploy stack
+- deploy stack to list S3 deployments and use latest
+- pip install python git
+- demo routine to find latest lambda git commit
+- add git commit as additional S3 file salt
+- lambda push to only push if new commit found
+- script to clean s3 deployments
+- change deploy stack to handle salt in filenames
+- deploy stack to lookup latest (timestamp) unless commit specified
 
 ### medium
 
-- lambda management
-  - separate lambda push from deploy
-  - add git commit as additional file salt
-  - lambda push to only push if new commit
-  - deploy_stack.py to lookup latest unless commit specified
+- check allowing retries for scrapers
 
+- layers [notes]
+- secrets [notes]
 - scaffold generator [notes]
 - cloudwatch alerts [+ sns topics]
 - dsl json schema
