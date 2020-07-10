@@ -1,5 +1,11 @@
 ### short [python-git]
 
+- get new files added to repo
+- list lambdas as roots
+- store with root rather than diff
+- exit when complete
+- add max iterations or cutoff
+
 - demo routine to find latest lambda git commit
 - add git commit as additional S3 file salt
   - as timestamp suffix so can order by time
