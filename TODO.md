@@ -1,11 +1,5 @@
 ### short
 
-- scripts to handle stack query errors during deletion
-
-```
-An error occurred (ValidationError) when calling the DescribeStackEvents operation: Stack [pareto-demo-dev-DashboardStack-19NKH4R342WC7] does not exist
-```
-
 - allow specific lambda commits to be specified
 - avoid need to specify stage name with arifact scripts
 
@@ -21,6 +15,8 @@ An error occurred (ValidationError) when calling the DescribeStackEvents operati
 ### v1.1
 
 - CI pipeline [notes]
+  - replace deploy_lambdas.py with Github Action
+  
 - custom lambda authorisers
 - cognito
 - route 53/cloudfront
@@ -101,6 +97,12 @@ An error occurred (ValidationError) when calling the DescribeStackEvents operati
   - not really required as this is about deployment not runtime
   
 ### done
+
+- scripts to handle stack query errors during deletion
+
+```
+An error occurred (ValidationError) when calling the DescribeStackEvents operation: Stack [pareto-demo-dev-DashboardStack-19NKH4R342WC7] does not exist
+```
 
 - check optional lambda memory, timeout params
 - allow lambda retries to be specified in config

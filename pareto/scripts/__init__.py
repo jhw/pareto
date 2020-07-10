@@ -1,6 +1,6 @@
 import datetime, boto3, json, logging, os, re, sys, yaml
 
-from botocore.exceptions import ClientError, WaiterError
+from botocore.exceptions import ClientError, ValidationError, WaiterError
 
 import pandas as pd
 

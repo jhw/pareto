@@ -8,7 +8,10 @@ def fetch_resources(stackname):
                 if stack["StackName"].startswith(stackname)]
     resources=[]
     for stackname in stacknames:
-        resources+=CF.describe_stack_resources(StackName=stackname)["StackResources"]
+        try:
+            resources+=CF.describe_stack_resources(StackName=stackname)["StackResources"]
+        except ValidationError:
+            pass
     return resources
 
 if __name__=="__main__":

@@ -8,7 +8,10 @@ def fetch_events(stackname):
                 if stack["StackName"].startswith(stackname)]
     events=[]
     for stackname in stacknames:
-        events+=CF.describe_stack_events(StackName=stackname)["StackEvents"]
+        try:
+            events+=CF.describe_stack_events(StackName=stackname)["StackEvents"]
+        except ValidationError:
+            pass
     return events
 
 if __name__=="__main__":
