@@ -2,9 +2,9 @@ from git import Repo
 
 import datetime
 
-def get_latest_commits(repo, roots,                       
-                       ignore=["test.py"],
-                       window=90):
+def latest_commits(repo, roots,                       
+                   ignore=["test.py"],
+                   window=90):
     def diff_commits(c1, c0):
         modified=[] 
         for diff in c0.diff(c1):
@@ -61,7 +61,7 @@ if __name__=="__main__":
     import os
     roots=["lambda/%s" % path
            for path in os.listdir("lambda")]
-    latest=get_latest_commits(Repo("."), roots)
+    latest=latest_commits(Repo("."), roots)
     print (latest)
             
     
