@@ -107,6 +107,9 @@ def add_staging(config, commits):
     def lambda_key(name, commits):
         hexsha=commits[name][0]
         timestamp=re.sub("\\W", "-", commits[name][1])
+        """
+        - timestamp before hexsha so deployables can be sorted
+        """
         return "%s/lambdas/%s-%s-%s.zip" % (config["globals"]["app"],
                                             name,
                                             timestamp,

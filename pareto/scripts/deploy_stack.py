@@ -23,7 +23,10 @@ def add_staging(config):
                              Prefix="%s/lambdas" % config["globals"]["app"])
         return resp["Contents"] if "Contents" in resp else []
     def lambda_name(s3key):
-        return "-".join(s3key.split("/")[-1].split(".")[0].split("-")[:-6])     
+        """
+        - [:-7] because you have six timestamp segments and a final hexsha
+        """
+        return "-".join(s3key.split("/")[-1].split(".")[0].split("-")[:-7])     
     def filter_latest(config):
         resp=S3.list_objects(Bucket=config["globals"]["bucket"],
                              Prefix="%s/lambdas" % config["globals"]["app"])

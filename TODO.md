@@ -1,12 +1,17 @@
 ### short [python-git]
 
-- adapt deploy stack to handle new file format
 - check if lambda exists before pushing
 
 - extend deploy stack to lookup specific commit if specified
   - else use latest
 
 ### medium
+
+- scripts to handle stack query errors during deletion
+
+```
+An error occurred (ValidationError) when calling the DescribeStackEvents operation: Stack [pareto-demo-dev-DashboardStack-19NKH4R342WC7] does not exist
+```
 
 - add option not to specify stage name for artifacts scripts
 - check allowing retries for scrapers
@@ -102,6 +107,7 @@
   
 ### done
 
+- adapt deploy stack to handle new file format
 - use commit timestamp rather than generated timestamp
 - add git commit as additional S3 file salt
   - as timestamp suffix so can order by time
