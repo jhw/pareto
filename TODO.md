@@ -1,12 +1,9 @@
 ### short [python-git]
 
-- get new files added to repo
-
-- add git commit as additional S3 file salt
-  - as timestamp suffix so can order by time
-- lambda push to check existing deployments
-  - only push if existing commit not found
+- use commit timestamp rather than generated timestamp
+- then check if file exists before pushing
 - change deploy stack to handle salt in filenames
+
 - extend deploy stack to lookup specific commit if specified
   - else use latest
 
@@ -106,6 +103,9 @@
   
 ### done
 
+- add git commit as additional S3 file salt
+  - as timestamp suffix so can order by time
+- get new files added to repo
 - demo routine to find latest lambda git commit
 - list lambdas as roots
 - store with root rather than diff
