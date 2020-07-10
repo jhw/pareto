@@ -1,5 +1,7 @@
 ### short
 
+- allow lambda retries to be specified in config
+
 - scripts to handle stack query errors during deletion
 
 ```
@@ -8,7 +10,6 @@ An error occurred (ValidationError) when calling the DescribeStackEvents operati
 
 - allow specific lambda commits to be specified
 - avoid need to specify stage name with arifact scripts
-- allow lambda retries to be specified in config
 
 ### medium
 
