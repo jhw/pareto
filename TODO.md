@@ -1,12 +1,7 @@
 ### short [python-git]
 
 - get new files added to repo
-- list lambdas as roots
-- store with root rather than diff
-- exit when complete
-- add max iterations or cutoff
 
-- demo routine to find latest lambda git commit
 - add git commit as additional S3 file salt
   - as timestamp suffix so can order by time
 - lambda push to check existing deployments
@@ -111,6 +106,11 @@
   
 ### done
 
+- demo routine to find latest lambda git commit
+- list lambdas as roots
+- store with root rather than diff
+- exit when complete
+- add max iterations or cutoff
 - log lambdas being used
 - deploy stack to list S3 deployments and use latest
 - separate lambda push from deploy stack
