@@ -41,7 +41,7 @@ def run_tests(config):
 def format_commits(fn):
     def wrapped(*args, **kwargs):
         commits=fn(*args, **kwargs)
-        return {k.split("/")[1].replace("_", "-"):v[0]
+        return {k.split("/")[1].replace("_", "-"):v
                 for k, v in commits.items()}
     return wrapped
 
@@ -104,14 +104,15 @@ def latest_commits(repo=Repo("."),
 
 def add_staging(config, commits):
     logging.info("adding staging")
-    def lambda_key(name, commits, timestamp):
+    def lambda_key(name, commits):
+        hexsha=commits[name][0]
+        timestamp=re.sub("\\W", "-", commits[name][1])
         return "%s/lambdas/%s-%s-%s.zip" % (config["globals"]["app"],
                                             name,
                                             timestamp,
-                                            commits[name])
-    ts=timestamp()
+                                            hexsha)
     for component in filter_functions(config["components"]):
-        key=lambda_key(component["name"], commits, ts)
+        key=lambda_key(component["name"], commits)
         component["staging"]={"bucket": config["globals"]["bucket"],
                               "key": key}
 

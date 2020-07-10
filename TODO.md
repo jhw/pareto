@@ -1,8 +1,7 @@
 ### short [python-git]
 
-- use commit timestamp rather than generated timestamp
-- then check if file exists before pushing
-- change deploy stack to handle salt in filenames
+- adapt deploy stack to handle new file format
+- check if lambda exists before pushing
 
 - extend deploy stack to lookup specific commit if specified
   - else use latest
@@ -103,6 +102,7 @@
   
 ### done
 
+- use commit timestamp rather than generated timestamp
 - add git commit as additional S3 file salt
   - as timestamp suffix so can order by time
 - get new files added to repo
