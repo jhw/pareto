@@ -41,7 +41,7 @@ def latest_commits(repo, roots,
         @property
         def complete(self):
             return len(self)==len(self.roots)
-    commits=sorted(repo.iter_commits(),
+    commits=sorted(repo.iter_commits(repo.active_branch),
                    key=lambda x: x.committed_datetime)
     latest=Latest(roots=roots,
                   ignore=ignore)
