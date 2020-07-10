@@ -1,7 +1,5 @@
 ### short
 
-- allow lambda retries to be specified in config
-
 - scripts to handle stack query errors during deletion
 
 ```
@@ -104,6 +102,8 @@ An error occurred (ValidationError) when calling the DescribeStackEvents operati
   
 ### done
 
+- check optional lambda memory, timeout params
+- allow lambda retries to be specified in config
 - check if lambda exists before pushing
 - adapt deploy stack to handle new file format
 - use commit timestamp rather than generated timestamp
