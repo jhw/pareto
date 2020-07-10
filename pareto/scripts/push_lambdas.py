@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-- this script should probably be a Github Action in due course
+- should be replaced with Github Action in fullness of time :)
 """
 
 from pareto.scripts import *
@@ -146,6 +146,16 @@ def push_lambdas(config):
         write_zipfile(component, zf)
         zf.close()
         return zfname
+    def check_exists(fn):
+        def wrapped(component, zfname):
+            try:
+                S3.head_object(Bucket=component["staging"]["bucket"],
+                               Key=component["staging"]["key"])
+                logging.warning("%s exists" % component["staging"]["key"])
+            except ClientError as error:
+                return fn(component, zfname)
+        return wrapped
+    @check_exists
     def push_lambda(component, zfname):
         logging.info("pushing %s" % component["staging"]["key"])
         S3.upload_file(zfname,

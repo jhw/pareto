@@ -1,11 +1,4 @@
-### short [python-git]
-
-- check if lambda exists before pushing
-
-- extend deploy stack to lookup specific commit if specified
-  - else use latest
-
-### medium
+### short
 
 - scripts to handle stack query errors during deletion
 
@@ -13,11 +6,14 @@
 An error occurred (ValidationError) when calling the DescribeStackEvents operation: Stack [pareto-demo-dev-DashboardStack-19NKH4R342WC7] does not exist
 ```
 
-- add option not to specify stage name for artifacts scripts
-- check allowing retries for scrapers
+- allow specific lambda commits to be specified
+- avoid need to specify stage name with arifact scripts
+- allow lambda retries to be specified in config
 
-- layers [notes]
+### medium
+
 - secrets [notes]
+- layers [notes]
 - scaffold generator [notes]
 - cloudwatch alerts [+ sns topics]
 - dsl json schema
@@ -107,6 +103,7 @@ An error occurred (ValidationError) when calling the DescribeStackEvents operati
   
 ### done
 
+- check if lambda exists before pushing
 - adapt deploy stack to handle new file format
 - use commit timestamp rather than generated timestamp
 - add git commit as additional S3 file salt
