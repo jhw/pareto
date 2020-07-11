@@ -1,13 +1,17 @@
 ### short
 
-- secrets [notes]
+- add_staging to use fetch_s3
+- fetch_s3 to use paginator
+- change add_staging so s3 files are fetched first and then grouped
+- add method to group lambda keys by commit as well as latest
+- add option to pass thru commit
 
 ### medium
 
-- allow specific lambda commits to be specified
 - avoid need to specify stage name with arifact scripts
 - convert dsl to use apis/actions/triggers keys
 
+- secrets [notes]
 - layers [notes]
 - scaffold generator [notes]
 - cloudwatch alerts [+ sns topics]
