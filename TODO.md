@@ -1,11 +1,12 @@
-### short
+### short 
+
+- layer generation script
 
 ### medium
 
 - avoid need to specify stage name with arifact scripts
 - convert dsl to use apis/actions/triggers keys
 
-- secrets [notes]
 - layers [notes]
 - scaffold generator [notes]
 - cloudwatch alerts [+ sns topics]
@@ -98,6 +99,11 @@
   
 ### done
 
+- add secrets to resources
+- add sample secret to config
+- master to iterate over secrets
+- add secret component to master stack
+- add support for complex/JSON secrets
 - add more specific error messages on staging failure
 - commit lookup seems to be failing
 - separate filter_keys from add_staging

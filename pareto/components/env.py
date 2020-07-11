@@ -90,6 +90,15 @@ def add_master(config, templates, filters=TypeFilters):
         stack.update({"name": tempname,
                       "params": params})
         return stack
+    def add_secrets(config, template):
+        @resource(suffix="secret")
+        def Secret(**kwargs):
+            secret=kwargs["value"] if type(kwargs["value"])==str else json.dumps(kwargs["value"])
+            props={"Name": kwargs["name"],
+                   "SecretString": secret}
+            return "AWS::SecretsManager::Secret", props        
+        template["resources"]+=[Secret(**secret)
+                                for secret in config["secrets"]]
     def init_template(config, templates, filters):
         outputs=filter_outputs(templates, filters)
         components=[init_stack(config, tempname, template, outputs)
@@ -98,6 +107,8 @@ def add_master(config, templates, filters=TypeFilters):
         for kwargs in components:
             stack=synth_stack(**kwargs)
             template.update(stack)
+        if "secrets" in config:
+            add_secrets(config, template)
         return template.render()
     templates["master"]=init_template(config, templates, filters)
         
