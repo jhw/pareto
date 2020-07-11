@@ -18,18 +18,16 @@ Metrics={
 
 def add_staging(config):
     logging.info("adding staging")
-    def fetch_s3(config):
-        resp=S3.list_objects(Bucket=config["globals"]["bucket"],
-                             Prefix="%s/lambdas" % config["globals"]["app"])
-        return resp["Contents"] if "Contents" in resp else []
     def lambda_name(s3key):
         """
         - [:-7] because you have six timestamp segments and a final hexsha
         """
         return "-".join(s3key.split("/")[-1].split(".")[0].split("-")[:-7])     
-    def filter_latest(config):
+    def fetch_s3(config):
         resp=S3.list_objects(Bucket=config["globals"]["bucket"],
                              Prefix="%s/lambdas" % config["globals"]["app"])
+        return resp["Contents"] if "Contents" in resp else []
+    def filter_latest(config):
         s3keys=[obj["Key"]
                 for obj in fetch_s3(config)
                 if obj["Key"].endswith(".zip")]
@@ -172,7 +170,7 @@ if __name__=="__main__":
         check_metrics(env)
         dump_env(env)
         push_templates(config, env)
-        deploy_env(config, env["master"])
+        # deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

@@ -1,6 +1,5 @@
 ### short
 
-- add_staging to use fetch_s3
 - fetch_s3 to use paginator
 - change add_staging so s3 files are fetched first and then grouped
 - add method to group lambda keys by commit as well as latest
@@ -104,6 +103,7 @@
   
 ### done
 
+- add_staging to use fetch_s3
 - scripts to handle stack query errors during deletion
 
 ```
