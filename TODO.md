@@ -1,7 +1,5 @@
 ### short
 
-- add more specific error messages on staging failure
-
 ### medium
 
 - avoid need to specify stage name with arifact scripts
@@ -100,6 +98,7 @@
   
 ### done
 
+- add more specific error messages on staging failure
 - commit lookup seems to be failing
 - separate filter_keys from add_staging
 - add option to pass thru commit

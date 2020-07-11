@@ -37,50 +37,49 @@ def add_staging(config):
             if "Contents" in struct:
                 keys+=[obj["Key"] for obj in struct["Contents"]]
         return keys
-    def filter_latest(s3keys):
+    def latest_keys(s3keys):
         keys={}
         for s3key in sorted(s3keys):
             name=lambda_name(s3key)
             keys[name]=s3key
         return keys
-    def group_commits(s3keys):
-        groups={}
+    def commit_keys(s3keys):
+        keys={}
         for s3key in s3keys:
             name=lambda_name(s3key)
-            groups.setdefault(name, {})
+            keys.setdefault(name, {})
             hexsha=hex_sha(s3key)
-            groups[name][hexsha]=s3key
-        return groups
-    def init_keys(components, latest, commits):
-        keys, missing = {}, []
+            keys[name][hexsha]=s3key
+        return keys
+    def assign_keys(components, latest, commits):
+        keys, errors = {}, []
         for component in filter_functions(components):
             if "commit" in component:
                 if component["commit"] in commits[component["name"]]:
                     keys[component["name"]]=commits[component["name"]][component["commit"]]
                 else:
-                    missing.append(component["name"])
+                    errors.append("commit %s not found for %s" % (component["commit"], component["name"]))
             else:
                 if component["name"] in latest:
                     keys[component["name"]]=latest[component["name"]]
                 else:
-                    missing.append(component["name"])
-        return keys, missing
-    def dump_keys(keys):
-        for k, v in keys.items():
-            logging.info("%s => %s" % (k, v))
+                    errors.append("no deployables found for %s" % component["name"])
+        return keys, errors
     def add_staging(components, keys):
         for component in filter_functions(components):
             component["staging"]={"bucket": config["globals"]["bucket"],
                                   "key": keys[component["name"]]}
+    def dump_keys(keys):
+        for k, v in keys.items():
+            logging.info("%s => %s" % (k, v))
     s3keys=fetch_keys(config)
-    keys, missing = init_keys(config["components"],
-                              filter_latest(s3keys),
-                              group_commits(s3keys))
-    if missing!=[]:
-        raise RuntimeError("no deployable[s] found for %s" % ", ".join(missing))    
-    dump_keys(keys)                    
+    keys, errors = assign_keys(config["components"],
+                               latest_keys(s3keys),
+                               commit_keys(s3keys))
+    if errors!=[]:
+        raise RuntimeError(", ".join(errors))
     add_staging(config["components"], keys)
-
+    dump_keys(keys)                    
 
 """
 - cloudformation will check this for you early in deployment process
@@ -201,7 +200,7 @@ if __name__=="__main__":
         check_metrics(env)
         dump_env(env)
         push_templates(config, env)
-        # deploy_env(config, env["master"])
+        deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
