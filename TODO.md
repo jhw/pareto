@@ -1,6 +1,6 @@
 ### short
 
-- commit lookup seems to be failing
+- add more specific error messages on staging failure
 
 ### medium
 
@@ -100,6 +100,7 @@
   
 ### done
 
+- commit lookup seems to be failing
 - separate filter_keys from add_staging
 - add option to pass thru commit
 - add method to group lambda keys by commit as well as latest

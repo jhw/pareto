@@ -12,7 +12,7 @@ components:
   name: hello-bucket
   website: true
 - type: action
-  name: hello-action-1  
+  name: hello-action-1
   trigger:
     type: bucket
     name: hello-bucket

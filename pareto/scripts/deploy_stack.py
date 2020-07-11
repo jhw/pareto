@@ -55,7 +55,7 @@ def add_staging(config):
         keys, missing = {}, []
         for component in filter_functions(components):
             if "commit" in component:
-                if component["commit"] in commits:
+                if component["commit"] in commits[component["name"]]:
                     keys[component["name"]]=commits[component["name"]][component["commit"]]
                 else:
                     missing.append(component["name"])
