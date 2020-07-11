@@ -1,5 +1,6 @@
 ### short 
 
+- lambda path class to help scripts
 - layer generation script
 
 ### medium
