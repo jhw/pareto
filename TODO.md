@@ -1,11 +1,13 @@
 ### short
 
-- allow specific lambda commits to be specified
-- avoid need to specify stage name with arifact scripts
+- secrets [notes]
 
 ### medium
 
-- secrets [notes]
+- allow specific lambda commits to be specified
+- avoid need to specify stage name with arifact scripts
+- convert dsl to use apis/actions/triggers keys
+
 - layers [notes]
 - scaffold generator [notes]
 - cloudwatch alerts [+ sns topics]
