@@ -23,33 +23,40 @@ def add_staging(config):
         - [:-7] because you have six timestamp segments and a final hexsha
         """
         return "-".join(s3key.split("/")[-1].split(".")[0].split("-")[:-7])     
-    def fetch_s3(config):
-        resp=S3.list_objects(Bucket=config["globals"]["bucket"],
-                             Prefix="%s/lambdas" % config["globals"]["app"])
-        return resp["Contents"] if "Contents" in resp else []
-    def filter_latest(config):
-        s3keys=[obj["Key"]
-                for obj in fetch_s3(config)
-                if obj["Key"].endswith(".zip")]
-        lambdakeys={}
+    def fetch_keys(config):
+        paginator=S3.get_paginator("list_objects_v2")
+        pages=paginator.paginate(Bucket=config["globals"]["bucket"],
+                                 Prefix="%s/lambdas" % config["globals"]["app"])
+        keys=[]
+        for struct in pages:
+            if "Contents" in struct:
+                keys+=[obj["Key"] for obj in struct["Contents"]]
+        return keys
+    def filter_latest(s3keys):
+        keys={}
         for s3key in sorted(s3keys):
-            lambdaname=lambda_name(s3key)
-            lambdakeys[lambdaname]=s3key
-        return lambdakeys
-    def add_staging(components, lambdakeys, missing):
+            key=lambda_name(s3key)
+            keys[key]=s3key
+        return keys
+    def validate_keys(components, keys):
+        missing=[component["name"]                 
+                 for component in filter_functions(components)
+                 if component["name"] not in keys]
+        if missing!=[]:
+            raise RuntimeError("no deployable[s] found for %s" % ", ".join(missing))
+    def add_staging(components, keys):
         for component in filter_functions(components):
-            if component["name"] in lambdakeys:
-                component["staging"]={"bucket": config["globals"]["bucket"],
-                                      "key": lambdakeys[component["name"]]}
-            else:
-                missing.append(component["name"])        
-    lambdakeys=filter_latest(config)
-    for k, v in lambdakeys.items():
-        logging.info("%s => %s" % (k, v))        
-    missing=[]
-    add_staging(config["components"], lambdakeys, missing)
-    if missing!=[]:
-        raise RuntimeError("no deployable[s] found for %s" % ", ".join(missing))
+            component["staging"]={"bucket": config["globals"]["bucket"],
+                                  "key": keys[component["name"]]}
+    def dump_keys(keys):
+        for k, v in keys.items():
+            logging.info("%s => %s" % (k, v))
+    s3keys=fetch_keys(config)
+    latestkeys=filter_latest(s3keys)
+    keys=latestkeys # NB
+    validate_keys(config["components"], keys)
+    add_staging(config["components"], keys)
+    dump_keys(keys)
 
 """
 - cloudformation will check this for you early in deployment process
