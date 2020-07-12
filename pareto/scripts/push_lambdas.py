@@ -137,15 +137,10 @@ def latest_commits(repo=Repo("."),
 def add_staging(config, commits):
     logging.info("adding staging")
     def lambda_key(name, commits):
-        hexsha=commits[name][0]
-        timestamp=re.sub("\\W", "-", commits[name][1])
-        """
-        - timestamp before hexsha so deployables can be sorted
-        """
-        return "%s/lambdas/%s-%s-%s.zip" % (config["globals"]["app"],
-                                            name,
-                                            timestamp,
-                                            hexsha)
+        return str(LambdaKey(app=config["globals"]["app"],
+                             name=name,
+                             hexsha=commits[name][0],
+                             timestamp=commits[name][1]))
     for component in filter_functions(config["components"]):
         key=lambda_key(component["name"], commits)
         component["staging"]={"bucket": config["globals"]["bucket"],

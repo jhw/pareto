@@ -36,5 +36,22 @@ def validate_bucket(config):
     if config["globals"]["bucket"] not in bucketnames:
         raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
 
+class LambdaKey(dict):
+    def __init_(self, kwargs):
+        dict.__init__(self, kwargs)
+    def __str__(self):
+        """
+        - timestamp before hexsha so deployables can be sorted
+        """
+        def format_timestamp(value):
+            if isinstance(value, datetime.datetime):
+                return value.strftime("%Y-%m-%d-%H-%M-%S")
+            else:
+                return re.sub("\\W", "-", str(value))
+        return "%s/lambdas/%s-%s-%s.zip" % (self["app"],
+                                            self["name"],
+                                            format_timestamp(self["timestamp"]),
+                                            self["hexsha"])
+            
 if __name__=="__main__":
     pass
