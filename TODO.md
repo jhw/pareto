@@ -1,24 +1,24 @@
 ### short 
 
+- argsparse
 - lambda path class to help scripts
 - layer generation script
 
 ### medium
 
-- avoid need to specify stage name with arifact scripts
 - convert dsl to use apis/actions/triggers keys
 
-- layers [notes]
-- scaffold generator [notes]
-- cloudwatch alerts [+ sns topics]
+- layers
+- scaffold generator
+- cloudwatch alerts
 - dsl json schema
 - pip dependency installation
 
 ### v1.1
 
-- CI pipeline [notes]
-  - replace deploy_lambdas.py with Github Action
-  
+- eventbridge
+- github actions
+- ci pipeline  
 - custom lambda authorisers
 - cognito
 - route 53/cloudfront
