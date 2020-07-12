@@ -17,52 +17,8 @@ def init_stdout_logger(level):
     handler.setLevel(level)
     formatter=logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
-    root.addHandler(handler)
+    root.addHandler(handler)    
     
-def init_region(config):
-    region=boto3.session.Session().region_name
-    if region in ['', None]:
-        raise RuntimeError("region is not set in AWS profile")
-    config["globals"]["region"]=region
-
-def validate_bucket(config):
-    bucketnames=[bucket["Name"]
-                 for bucket in S3.list_buckets()["Buckets"]]
-    if config["globals"]["bucket"] not in bucketnames:
-        raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
-    
-"""
-- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
-"""
-
-def list_profiles():
-    config=open("%s/.aws/config" % os.path.expanduser("~")).read()
-    return [re.sub("profile ", "", row[1:-1])
-            for row in config.split("\n")
-            if (len(row) > 2 and
-                row[0]=="[" and
-                row[-1]=="]")]
-
-Profiles=list_profiles()
-
-"""
-- temporarily disable AWS creds whilst running tests to avoid messing with production environment :-/
-- must have an AWS profile entitled `dummy` for this to work
-"""
-
-def toggle_aws_profile(fn):
-    def wrapped(config, dummy="dummy"):
-        profile=os.environ["AWS_PROFILE"]
-        if dummy not in Profiles:
-            raise Runtime("`%s` profile not found" % dummy)
-        logging.info("blanking AWS profile")
-        os.environ["AWS_PROFILE"]=dummy
-        resp=fn(config)
-        logging.info("resetting AWS profile")
-        os.environ["AWS_PROFILE"]=profile
-        return resp
-    return wrapped
-
 def timestamp():
     return datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
 
@@ -73,6 +29,12 @@ def filter_functions(components):
 
 def underscore(text):
     return text.replace("-", "_")
+
+def validate_bucket(config):
+    bucketnames=[bucket["Name"]
+                 for bucket in S3.list_buckets()["Buckets"]]
+    if config["globals"]["bucket"] not in bucketnames:
+        raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
 
 if __name__=="__main__":
     pass

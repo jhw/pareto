@@ -1,11 +1,12 @@
 ### short 
 
-- argsparse
 - lambda path class to help scripts
 - layer generation script
 
 ### medium
 
+- convert setenv.sh tp python and move into scripts
+- search_replace.py
 - convert dsl to use apis/actions/triggers keys
 
 - layers
@@ -100,6 +101,7 @@
   
 ### done
 
+- argsparse
 - add secrets to resources
 - add sample secret to config
 - master to iterate over secrets

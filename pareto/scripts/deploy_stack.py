@@ -16,6 +16,12 @@ Metrics={
     "template_size": (lambda x: (len(json.dumps(x))/51200))
     }
 
+def init_region(config):
+    region=boto3.session.Session().region_name
+    if region in ['', None]:
+        raise RuntimeError("region is not set in AWS profile")
+    config["globals"]["region"]=region
+
 def add_staging(config):
     logging.info("adding staging")
     def lambda_name(s3key):
@@ -202,8 +208,8 @@ if __name__=="__main__":
           - prod
         """, Loader=yaml.FullLoader)
         args=argsparse(sys.argv[1:], argsconfig)
-        config=args["config"]
-        config["globals"]["stage"]=args["stage"]
+        config=args.pop("config")
+        config["globals"]["stage"]=args.pop("stage")
         init_region(config)    
         validate_bucket(config)
         preprocess(config)

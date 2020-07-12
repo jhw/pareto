@@ -41,7 +41,18 @@ def delete_stack(stackname):
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
-        config=load_config(sys.argv)
+        argsconfig=yaml.load("""
+        - name: config
+          type: file
+        - name: stage
+          type: enum
+          options:
+          - dev
+          - prod
+        """, Loader=yaml.FullLoader)
+        args=argsparse(sys.argv[1:], argsconfig)
+        config=args.pop("config")
+        config["globals"]["stage"]=args.pop("stage")
         stackname="%s-%s" % (config["globals"]["app"],
                              config["globals"]["stage"])
         delete_stack(stackname)
