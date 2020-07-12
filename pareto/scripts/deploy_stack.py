@@ -192,7 +192,20 @@ def deploy_env(config, template):
 if __name__=="__main__":
     try:        
         init_stdout_logger(logging.INFO)
-        config=load_config(sys.argv)
+        argsconfig=yaml.load("""
+        - name: config
+          type: file
+        - name: stage
+          type: enum
+          options:
+          - dev
+          - prod
+        """, Loader=yaml.FullLoader)
+        args=argsparse(sys.argv[1:], argsconfig)
+        config=args["config"]
+        config["globals"]["stage"]=args["stage"]
+        init_region(config)    
+        validate_bucket(config)
         preprocess(config)
         add_staging(config)
         env=synth_env(config)

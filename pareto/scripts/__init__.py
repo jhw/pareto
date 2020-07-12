@@ -2,6 +2,8 @@ import datetime, boto3, json, logging, os, re, sys, yaml
 
 from botocore.exceptions import ClientError, ValidationError, WaiterError
 
+from argsparse import argsparse
+
 import pandas as pd
 
 CF, S3 = boto3.client("cloudformation"), boto3.client("s3")
@@ -16,41 +18,18 @@ def init_stdout_logger(level):
     formatter=logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
     root.addHandler(handler)
+    
+def init_region(config):
+    region=boto3.session.Session().region_name
+    if region in ['', None]:
+        raise RuntimeError("region is not set in AWS profile")
+    config["globals"]["region"]=region
 
-def load_config(args):    
-    def validate_configfile(configfile):
-        if not configfile.endswith(".yaml"):
-            raise RuntimeError("config must be a yaml file")
-        if not os.path.exists(configfile):
-            raise RuntimeError("config file does not exist")
-    def validate_stagename(stagename):
-        if stagename not in ["dev", "prod"]:
-            raise RuntimeError("stage name is invalid")
-    def load_config(configfile):
-        with open(configfile, 'r') as f:
-            config=yaml.load(f.read(),
-                             Loader=yaml.FullLoader)
-        return config
-    def init_region(config):
-        region=boto3.session.Session().region_name
-        if region in ['', None]:
-            raise RuntimeError("region is not set in AWS profile")
-        config["globals"]["region"]=region
-    def validate_bucket(config):
-        bucketnames=[bucket["Name"]
-                     for bucket in S3.list_buckets()["Buckets"]]
-        if config["globals"]["bucket"] not in bucketnames:
-            raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
-    if len(args) < 3:
-        raise RuntimeError("please enter config file, stage name")
-    configfile, stagename = args[1:3]
-    validate_configfile(configfile)
-    validate_stagename(stagename)
-    config=load_config(configfile)    
-    config["globals"]["stage"]=stagename
-    init_region(config)
-    validate_bucket(config)
-    return config    
+def validate_bucket(config):
+    bucketnames=[bucket["Name"]
+                 for bucket in S3.list_buckets()["Buckets"]]
+    if config["globals"]["bucket"] not in bucketnames:
+        raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
     
 """
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html

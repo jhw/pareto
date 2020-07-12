@@ -71,7 +71,7 @@ def argsparse(args, config):
     def parse(value, item):
         fn=eval("parse_%s" % item["type"])
         return fn(value)
-    return {item["Name"]:parse(value, item)
+    return {item["name"]:parse(value, item)
             for value, item in zip(args, config)}
 
 if __name__=="__main__":
