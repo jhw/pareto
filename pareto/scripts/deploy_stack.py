@@ -24,16 +24,6 @@ def init_region(config):
 
 def add_staging(config):
     logging.info("adding staging")
-    def lambda_name(s3key):
-        """
-        - [:-7] because you have six timestamp segments and a final hexsha
-        """
-        return "-".join(s3key.split("/")[-1].split(".")[0].split("-")[:-7])
-    def hex_sha(s3key):
-        """
-        - hexsha is the final segment within the filename
-        """
-        return s3key.split("/")[-1].split(".")[0].split("-")[-1]
     def fetch_keys(config):
         paginator=S3.get_paginator("list_objects_v2")
         pages=paginator.paginate(Bucket=config["globals"]["bucket"],
@@ -46,16 +36,15 @@ def add_staging(config):
     def latest_keys(s3keys):
         keys={}
         for s3key in sorted(s3keys):
-            name=lambda_name(s3key)
-            keys[name]=s3key
+            key=LambdaKey.parse(s3key)
+            keys[key["name"]]=s3key
         return keys
     def commit_keys(s3keys):
         keys={}
         for s3key in s3keys:
-            name=lambda_name(s3key)
-            keys.setdefault(name, {})
-            hexsha=hex_sha(s3key)
-            keys[name][hexsha]=s3key
+            key=LambdaKey.parse(s3key)
+            keys.setdefault(key["name"], {})
+            keys[key["name"]][key["hexsha"]]=s3key
         return keys
     def assign_keys(components, latest, commits):
         keys, errors = {}, []

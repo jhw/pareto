@@ -1,4 +1,4 @@
-import datetime, boto3, json, logging, os, re, sys, yaml
+import datetime, boto3, json, logging, os, re, sys, unittest, yaml
 
 from botocore.exceptions import ClientError, ValidationError, WaiterError
 
@@ -36,13 +36,32 @@ def validate_bucket(config):
     if config["globals"]["bucket"] not in bucketnames:
         raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
 
+"""
+- timestamp before hexsha so deployables can be sorted
+"""
+        
 class LambdaKey(dict):
-    def __init_(self, kwargs):
+
+    @classmethod
+    def parse(self, s3key):
+        key=LambdaKey()
+        def pop_timestamp(tokens):
+            ts=[int(tokens.pop())
+                for i in range(6)]
+            ts.reverse()
+            return datetime.datetime(*ts)
+        tokens=s3key.split("/")
+        key["app"]=tokens[0]
+        tokens=tokens[-1].split(".")[0].split("-")
+        key["hexsha"]=tokens.pop()
+        key["timestamp"]=pop_timestamp(tokens)
+        key["name"]="-".join(tokens)
+        return key
+
+    def __init_(self, kwargs={}):
         dict.__init__(self, kwargs)
+
     def __str__(self):
-        """
-        - timestamp before hexsha so deployables can be sorted
-        """
         def format_timestamp(value):
             if isinstance(value, datetime.datetime):
                 return value.strftime("%Y-%m-%d-%H-%M-%S")
@@ -52,6 +71,25 @@ class LambdaKey(dict):
                                             self["name"],
                                             format_timestamp(self["timestamp"]),
                                             self["hexsha"])
+
+class LambdaKeyTest(unittest.TestCase):
+
+    App="my-app"
+    Name="hello-world"
+    Timestamp=datetime.datetime(*[1970, 12, 20, 19, 30, 0])
+    Hexsha="ABCDEFGH"
+
+    Key="my-app/lambdas/hello-world-1970-12-20-19-30-00-ABCDEFGH.zip"
+    
+    def test_new(self):
+        key=LambdaKey(**{attr: getattr(self, attr.capitalize())
+                         for attr in ["app", "name", "timestamp", "hexsha"]})
+        self.assertEqual(str(key), self.Key)
+
+    def test_parse(self):
+        key=LambdaKey.parse(self.Key)
+        for attr in ["app", "name", "timestamp", "hexsha"]:
+            self.assertEqual(key[attr], getattr(self, attr.capitalize()))
             
 if __name__=="__main__":
-    pass
+    unittest.main()

@@ -1,10 +1,10 @@
 ### short 
 
-- lambda path class to help scripts
 - layer generation script
 
 ### medium
 
+- class based structure to filter lambda deployables by latest, commits etc
 - convert setenv.sh tp python and move into scripts
 - convert dsl to use apis/actions/triggers keys
 
@@ -16,6 +16,7 @@
 
 ### v1.1
 
+- apigateway2
 - eventbridge
 - github actions
 - ci pipeline  
@@ -100,6 +101,7 @@
   
 ### done
 
+- lambda path class to help scripts
 - search_replace.py
 - argsparse
 - add secrets to resources
