@@ -6,7 +6,6 @@
 ### medium
 
 - convert setenv.sh tp python and move into scripts
-- search_replace.py
 - convert dsl to use apis/actions/triggers keys
 
 - layers
@@ -101,6 +100,7 @@
   
 ### done
 
+- search_replace.py
 - argsparse
 - add secrets to resources
 - add sample secret to config
