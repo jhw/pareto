@@ -1,13 +1,18 @@
-### short 
+### short [layers]
 
-- convert preprocessor to use explicit apis/actions/triggers groups
-- add group to preprocessor output to avoid need for filtering at env level
-
-- layer generation script
+- use package name as layer name
+- pass package details to command line
+- test with multi- package package [pymorphy]
+- handle role arn, runtime properly
+- waiter
+- buildspec logger
 
 ### medium
 
-- layers
+- convert preprocessor to use explicit apis/actions/triggers groups
+- add group to preprocessor output to avoid need for filtering at env level
+- script to inspect logs
+
 - scaffold generator
 - cloudwatch alerts
 - dsl json schema
@@ -27,6 +32,8 @@
 
 ### thoughts
 
+- add back separate build stage so you can push multiple packages to build ?
+  - no u don't need this as can use wildcards
 - convert setenv.sh tp python and move into scripts ?
   - no because you don't want it to be part of pareto
 - rename globals.bucket as staging.bucket ?
@@ -102,6 +109,7 @@
   
 ### done
 
+- layer generation script
 - class based structure to filter lambda deployables by latest, commits etc
 - lambda path class to help scripts
 - search_replace.py
