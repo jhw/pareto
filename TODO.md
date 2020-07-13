@@ -1,6 +1,5 @@
 ### short 
 
-- convert setenv.sh tp python and move into scripts
 - convert dsl to use apis/actions/triggers keys
 - dsl to include group in output so u can remove filters
 
@@ -29,6 +28,8 @@
 
 ### thoughts
 
+- convert setenv.sh tp python and move into scripts ?
+  - no because you don't want it to be part of pareto
 - rename globals.bucket as staging.bucket ?
   - no because it's just an extra dict you've got to copy to each component
 - rename globals.app as globals.name ?
