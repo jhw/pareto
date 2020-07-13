@@ -1,19 +1,19 @@
 ### short [layers]
 
-- use templates for buildspec runtime insertion
-- insert package name from command line
-- test with multi- package package [pymorphy]
+- pip package version suppprt
+- create new build if project already exists
+- test waiter
+
 - handle role arn, runtime properly
-- project deletion
-- waiter
 - buildspec logger
-- use codebuild versions
+- pip install from git
 
 ### medium
 
 - convert preprocessor to use explicit apis/actions/triggers groups
 - add group to preprocessor output to avoid need for filtering at env level
-- script to inspect logs
+
+- script to inspect lambda logs
 
 - scaffold generator
 - cloudwatch alerts
@@ -111,6 +111,10 @@
   
 ### done
 
+- add config["build"]
+- insert package name from command line
+- test with multi- package package [pymorphy]
+- use templates for buildspec runtime insertion
 - upgrade pip
 - use package name as layer name
 - layer generation script

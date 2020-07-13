@@ -2,42 +2,54 @@
 
 from pareto.scripts import *
 
+from jinja2 import Template
+
 CB=boto3.client("codebuild")
 
-BuildSpec="""
-version: 0.2
+BuildSpec=Template("""
+version: {{ version }}
 phases:
   install:
     runtime-versions:
-      python: $RUNTIME_VERSION
+      python: {{ runtime }}
     commands:
       - mkdir -p build/python
       - pip install --upgrade pip
-      - pip install --upgrade --target build/python pyyaml
+      - pip install --upgrade --target build/python {{ package }}
 artifacts:
   files:
     - '**/*'
   base-directory: build
-  name: pyyaml-LATEST.zip
-"""
+  name: {{ package }}-LATEST.zip
+""")
 
 def project_name(config):
-    return "%s-pyyaml-layer" % config["globals"]["app"]    
+    return "%s-%s-layer" % (config["globals"]["app"],
+                            config["build"]["package"])
 
 """
-aws codebuild delete-project --name pareto-demo-pyyaml-layer aws codebuild delete-project --name pareto-demo-pyyaml-layer
+- aws codebuild delete-project --name pareto-demo-pyyaml-layer aws codebuild delete-project --name pareto-demo-pyyaml-layer
 """
 
-def init_project(config, buildspec):
+def init_project(config,
+                 template=BuildSpec):
     def format_args(args):
         return [{"name": name,
                  "value": value}
                 for name, value in args.items()]
-    args={"RUNTIME_VERSION": config["globals"]["runtime"]}
     env={"type": "LINUX_CONTAINER",
          "image": "aws/codebuild/standard:2.0",
          "computeType": "BUILD_GENERAL1_SMALL",
-         "environmentVariables": format_args(args)}
+         "environmentVariables": []}
+    args={"version": "0.2",
+          "package": config["build"]["package"],
+          "runtime": config["build"]["runtime"]}        
+    buildspec=template.render(args)
+    # START TEMP CODE
+    print ("-------------------------------")
+    print (buildspec)
+    print ("-------------------------------")
+    # END TEMP CODE
     source={"type": "NO_SOURCE",
             "buildspec": buildspec}
     artifacts={"type": "S3",
@@ -49,7 +61,7 @@ def init_project(config, buildspec):
                              source=source,
                              artifacts=artifacts,
                              environment=env,
-                             serviceRole=config["globals"]["role"])
+                             serviceRole=config["build"]["role"])
 
 if __name__=="__main__":
     try:
@@ -57,13 +69,16 @@ if __name__=="__main__":
         argsconfig=yaml.load("""
         - name: config
           type: file
+        - name: package
+          type: str
         """, Loader=yaml.FullLoader)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        validate_bucket(config)
+        validate_bucket(config)        
         # START TEMP CODE
-        config["globals"]["role"]="arn:aws:iam::119552584133:role/slow-russian-codebuild"
-        config["globals"]["runtime"]="3.7"
+        config["build"]={"package": args["package"],
+                         "runtime": "3.7",
+                         "role": "arn:aws:iam::119552584133:role/slow-russian-codebuild"}
         # END TEMP CODE
         init_project(config, BuildSpec)
         print (CB.start_build(projectName=project_name(config))["build"]["arn"])
