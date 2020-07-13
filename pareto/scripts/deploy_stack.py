@@ -22,31 +22,36 @@ def init_region(config):
         raise RuntimeError("region is not set in AWS profile")
     config["globals"]["region"]=region
 
-def add_staging(config):
-    logging.info("adding staging")
-    def fetch_keys(config):
+class S3Keys(list):
+
+    def __init__(self, config):
+        list.__init__(self)
         paginator=S3.get_paginator("list_objects_v2")
         pages=paginator.paginate(Bucket=config["globals"]["bucket"],
                                  Prefix="%s/lambdas" % config["globals"]["app"])
-        keys=[]
         for struct in pages:
             if "Contents" in struct:
-                keys+=[obj["Key"] for obj in struct["Contents"]]
-        return keys
-    def latest_keys(s3keys):
+                self+=[obj["Key"] for obj in struct["Contents"]]
+                
+    @property
+    def latest(self):
         keys={}
-        for s3key in sorted(s3keys):
+        for s3key in sorted(self):
             key=LambdaKey.parse(s3key)
             keys[key["name"]]=s3key
         return keys
-    def commit_keys(s3keys):
+
+    @property
+    def commits(self):
         keys={}
-        for s3key in s3keys:
+        for s3key in self:
             key=LambdaKey.parse(s3key)
             keys.setdefault(key["name"], {})
             keys[key["name"]][key["hexsha"]]=s3key
         return keys
-    def assign_keys(components, latest, commits):
+
+    def assign(self, components):
+        latest, commits = self.latest, self.commits
         keys, errors = {}, []
         for component in filter_functions(components):
             if "commit" in component:
@@ -60,6 +65,9 @@ def add_staging(config):
                 else:
                     errors.append("no deployables found for %s" % component["name"])
         return keys, errors
+    
+def add_staging(config):
+    logging.info("adding staging")
     def add_staging(components, keys):
         for component in filter_functions(components):
             component["staging"]={"bucket": config["globals"]["bucket"],
@@ -67,10 +75,8 @@ def add_staging(config):
     def dump_keys(keys):
         for k, v in keys.items():
             logging.info("%s => %s" % (k, v))
-    s3keys=fetch_keys(config)
-    keys, errors = assign_keys(config["components"],
-                               latest_keys(s3keys),
-                               commit_keys(s3keys))
+    s3keys=S3Keys(config)
+    keys, errors = s3keys.assign(config["components"])
     if errors!=[]:
         raise RuntimeError(", ".join(errors))
     add_staging(config["components"], keys)
@@ -208,7 +214,7 @@ if __name__=="__main__":
         check_metrics(env)
         dump_env(env)
         push_templates(config, env)
-        deploy_env(config, env["master"])
+        # deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

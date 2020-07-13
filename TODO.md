@@ -1,12 +1,10 @@
 ### short 
 
-- convert dsl to use apis/actions/triggers keys
-- dsl to include group in output so u can remove filters
+- replace components with separate apis/actions/triggers groups
+
+- layer generation script
 
 ### medium
-
-- class based structure to filter lambda deployables by latest, commits etc
-- layer generation script
 
 - layers
 - scaffold generator
@@ -103,6 +101,7 @@
   
 ### done
 
+- class based structure to filter lambda deployables by latest, commits etc
 - lambda path class to help scripts
 - search_replace.py
 - argsparse
