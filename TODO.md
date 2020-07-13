@@ -1,9 +1,11 @@
 ### short [layers]
 
-- use package name as layer name
-- pass package details to command line
+- try without pip installation
+- use templates for buildspec runtime insertion
+- insert package name from command line
 - test with multi- package package [pymorphy]
 - handle role arn, runtime properly
+- project deletion
 - waiter
 - buildspec logger
 
@@ -109,6 +111,7 @@
   
 ### done
 
+- use package name as layer name
 - layer generation script
 - class based structure to filter lambda deployables by latest, commits etc
 - lambda path class to help scripts

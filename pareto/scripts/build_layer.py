@@ -11,20 +11,23 @@ phases:
     runtime-versions:
       python: $RUNTIME_VERSION
     commands:
-      - echo "running install phase"
       - apt-get update
-      - apt-get install zip python3-pip -y
+      - apt-get install python3-pip -y
       - mkdir -p build/python
       - pip3 install --upgrade --target build/python pyyaml
 artifacts:
   files:
     - '**/*'
   base-directory: build
-  name: yaml-LATEST.zip
+  name: pyyaml-LATEST.zip
 """
 
 def project_name(config):
-    return "%s-lxml-layer" % config["globals"]["app"]    
+    return "%s-pyyaml-layer" % config["globals"]["app"]    
+
+"""
+aws codebuild delete-project --name pareto-demo-pyyaml-layer aws codebuild delete-project --name pareto-demo-pyyaml-layer
+"""
 
 def init_project(config, buildspec):
     def format_args(args):
