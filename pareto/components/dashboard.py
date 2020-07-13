@@ -1,6 +1,6 @@
 from pareto.components import *
 
-Root="pareto/charts"
+Root="pareto/fixtures/charts"
 
 """
 ### Chart src
