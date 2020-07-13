@@ -11,10 +11,9 @@ phases:
     runtime-versions:
       python: $RUNTIME_VERSION
     commands:
-      - apt-get update
-      - apt-get install python3-pip -y
       - mkdir -p build/python
-      - pip3 install --upgrade --target build/python pyyaml
+      - pip install --upgrade pip
+      - pip install --upgrade --target build/python pyyaml
 artifacts:
   files:
     - '**/*'

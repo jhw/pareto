@@ -1,6 +1,5 @@
 ### short [layers]
 
-- try without pip installation
 - use templates for buildspec runtime insertion
 - insert package name from command line
 - test with multi- package package [pymorphy]
@@ -8,6 +7,7 @@
 - project deletion
 - waiter
 - buildspec logger
+- use codebuild versions
 
 ### medium
 
@@ -111,6 +111,7 @@
   
 ### done
 
+- upgrade pip
 - use package name as layer name
 - layer generation script
 - class based structure to filter lambda deployables by latest, commits etc
