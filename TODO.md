@@ -1,12 +1,13 @@
 ### short 
 
-- layer generation script
+- convert setenv.sh tp python and move into scripts
+- convert dsl to use apis/actions/triggers keys
+- dsl to include group in output so u can remove filters
 
 ### medium
 
 - class based structure to filter lambda deployables by latest, commits etc
-- convert setenv.sh tp python and move into scripts
-- convert dsl to use apis/actions/triggers keys
+- layer generation script
 
 - layers
 - scaffold generator
