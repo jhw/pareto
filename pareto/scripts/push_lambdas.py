@@ -10,7 +10,7 @@ from pareto.components.preprocessor import preprocess
 
 from git import Repo
 
-import unittest, zipfile
+import zipfile
 
 """
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html

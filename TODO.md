@@ -1,6 +1,7 @@
 ### short 
 
-- replace components with separate apis/actions/triggers groups
+- convert preprocessor to use explicit apis/actions/triggers groups
+- add group to preprocessor output to avoid need for filtering at env level
 
 - layer generation script
 
