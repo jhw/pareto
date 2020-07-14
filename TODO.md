@@ -1,6 +1,5 @@
 ### short [layers]
 
-- parse package on input
 - add versioning option to package
 - add decorator to delete project if already exists
 - status poller / waiter

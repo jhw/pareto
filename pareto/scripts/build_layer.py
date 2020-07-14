@@ -15,17 +15,20 @@ phases:
     commands:
       - mkdir -p build/python
       - pip install --upgrade pip
-      - pip install --upgrade --target build/python {{ package }}
+      - pip install --upgrade --target build/python {{ package.name }}
 artifacts:
   files:
     - '**/*'
   base-directory: build
-  name: {{ package }}-LATEST.zip
+  name: {{ package.name }}-LATEST.zip
 """
 
 def project_name(config, package):
     return "%s-%s-layer" % (config["globals"]["app"],
-                            package)
+                            package["name"])
+
+def parse_package(packagestr):
+    return {"name": packagestr}
 
 """
 aws codebuild delete-project --name pareto-demo-pymorphy2-layer
@@ -68,9 +71,10 @@ if __name__=="__main__":
         """, Loader=yaml.FullLoader)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        validate_bucket(config)        
-        init_project(config, args["package"])
-        print (CB.start_build(projectName=project_name(config, args["package"]))["build"]["arn"])
+        validate_bucket(config)
+        package=parse_package(args.pop("package"))
+        init_project(config, package)
+        print (CB.start_build(projectName=project_name(config, package)))
     except ClientError as error:
         logging.error(str(error))
     except RuntimeError as error:
