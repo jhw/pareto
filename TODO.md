@@ -1,18 +1,16 @@
-### short [layers]
+### short [scripts]
 
-- add decorator to delete project if already exists
-- status poller / waiter
-- buildspec logger script
+- inspect codebuild logs
+- inspect lambda logs
+- create codebuild role
 
 ### medium
 
 - lambda, layer runtimes to work from same config arg
+- layer components
 
 - refactor component workflow to use groups throughout
   - preprocessor -> components -> env
-
-- script to create codebuild role
-- script to inspect lambda logs
 
 - scaffold generator
 - cloudwatch alerts
@@ -116,6 +114,8 @@
   
 ### done
 
+- status poller / waiter
+- add decorator to delete project if already exists
 - add versioning option to package
 - test not overriding artifact name
 - test removing environment variables
