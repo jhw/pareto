@@ -1,7 +1,5 @@
 ### short [layers]
 
-- argsparse to return dict
-- add support for non- required args
 - extend global names (staging/bucket ?)
 - add codebuild role, runtime to globals
 
@@ -40,6 +38,8 @@
 
 ### thoughts
 
+- add support for optional args ?
+  - only required for version, and think this is better specified as suffix
 - add back separate build stage so you can push multiple packages to build ?
   - no u don't need this as can use wildcards
 - convert setenv.sh tp python and move into scripts ?
