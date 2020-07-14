@@ -1,4 +1,4 @@
-import datetime, boto3, json, logging, os, re, sys, unittest, yaml
+import datetime, boto3, json, logging, os, re, sys, time, unittest, yaml
 
 from botocore.exceptions import ClientError, ValidationError, WaiterError
 
@@ -6,7 +6,9 @@ from argsparse import argsparse
 
 import pandas as pd
 
-CF, S3 = boto3.client("cloudformation"), boto3.client("s3")
+from jinja2 import Template
+
+CF, S3, Logs = boto3.client("cloudformation"), boto3.client("s3"), boto3.client("logs")
 
 # https://stackoverflow.com/questions/14058453/making-python-loggers-output-all-messages-to-stdout-in-addition-to-log-file
 
@@ -100,6 +102,27 @@ class LambdaKeys(list):
             keys.setdefault(key["name"], {})
             keys[key["name"]][key["hexsha"]]=s3key
         return keys
+
+def layer_project_name(config, package):
+    return "%s-%s-layer" % (config["globals"]["app"],
+                            package["name"])
+    
+def validate_layer_package(fn):
+    def wrapped(packagestr):
+        if ("-" in packagestr and
+            not re.search("\\-(\\d+\\.)*\\d+$", packagestr)):
+            raise RuntimeError("package definition has invalid format")
+        return fn(packagestr)
+    return wrapped
+
+@validate_layer_package
+def parse_layer_package(packagestr):
+    tokens=packagestr.split("-")
+    package={"name": tokens[0]}
+    if len(tokens) > 1:
+        package["version"]={"raw": tokens[1],
+                            "formatted": tokens[1].replace(".", "-")}
+    return package
     
 class LambdaKeyTest(unittest.TestCase):
 

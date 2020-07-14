@@ -1,13 +1,12 @@
-### short [scripts]
+### short
 
-- inspect codebuild logs
-- inspect lambda logs
-- create codebuild role
+- script to lambda logs
+- script to create codebuild role
+- lambda, layer runtimes to work from same config arg
+
+- layer components
 
 ### medium
-
-- lambda, layer runtimes to work from same config arg
-- layer components
 
 - refactor component workflow to use groups throughout
   - preprocessor -> components -> env
@@ -114,6 +113,7 @@
   
 ### done
 
+- inspect codebuild logs
 - status poller / waiter
 - add decorator to delete project if already exists
 - add versioning option to package

@@ -7,10 +7,6 @@
 
 from pareto.scripts import *
 
-from jinja2 import Template
-
-import time
-
 CB=boto3.client("codebuild")
 
 LatestBuildSpec="""
@@ -47,32 +43,11 @@ artifacts:
   name: {{ package.name }}-{{ package.version.formatted }}.zip
 """
 
-def project_name(config, package):
-    return "%s-%s-layer" % (config["globals"]["app"],
-                            package["name"])
-
-def validate_package(fn):
-    def wrapped(packagestr):
-        if ("-" in packagestr and
-            not re.search("\\-(\\d+\\.)*\\d+$", packagestr)):
-            raise RuntimeError("package definition has invalid format")
-        return fn(packagestr)
-    return wrapped
-
-@validate_package
-def parse_package(packagestr):
-    tokens=packagestr.split("-")
-    package={"name": tokens[0]}
-    if len(tokens) > 1:
-        package["version"]={"raw": tokens[1],
-                            "formatted": tokens[1].replace(".", "-")}
-    return package
-
 def reset_project(fn,
                   maxtries=10,
                   wait=1):
     def wrapped(config, package):
-        projectname=project_name(config, package)
+        projectname=layer_project_name(config, package)
         for i in range(maxtries):
             projects=CB.list_projects()["projects"]
             if projectname in projects:
@@ -110,7 +85,7 @@ def init_project(config, package):
                "path": "%s/layers" % config["globals"]["app"],
                "overrideArtifactName": True, # default is CB project name
                "packaging": "ZIP"}
-    return CB.create_project(name=project_name(config, package),
+    return CB.create_project(name=layer_project_name(config, package),
                              source=source,
                              artifacts=artifacts,
                              environment=env,
@@ -129,7 +104,7 @@ def run_project(config, package,
             resp["ids"]==[]):
             raise RuntimeError("no build ids found")
         return CB.batch_get_builds(ids=resp["ids"])["builds"].pop()
-    projectname=project_name(config, package)    
+    projectname=layer_project_name(config, package)    
     CB.start_build(projectName=projectname)
     for i in range(maxtries):
         time.sleep(wait)
@@ -153,7 +128,7 @@ if __name__=="__main__":
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         validate_bucket(config)
-        package=parse_package(args.pop("package"))
+        package=parse_layer_package(args.pop("package"))
         init_project(config, package)
         run_project(config, package)
     except ClientError as error:
