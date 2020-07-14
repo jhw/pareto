@@ -1,6 +1,6 @@
 ### short
 
-- script to lambda logs
+- script to search lambda logs
 - script to create codebuild role
 - lambda, layer runtimes to work from same config arg
 
