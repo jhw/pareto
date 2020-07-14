@@ -40,8 +40,7 @@ def init_project(config, package,
                 for name, value in args.items()]
     env={"type": "LINUX_CONTAINER",
          "image": "aws/codebuild/standard:2.0",
-         "computeType": "BUILD_GENERAL1_SMALL",
-         "environmentVariables": []}
+         "computeType": "BUILD_GENERAL1_SMALL"}
     args={"version": "0.2",
           "package": package,
           "runtime": config["globals"]["runtime"]}

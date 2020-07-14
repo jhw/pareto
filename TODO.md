@@ -1,6 +1,5 @@
 ### short [layers]
 
-- test removing environment variables
 - test not overriding artifact name
 - pip package version support
   - include package in version arg
@@ -120,6 +119,7 @@
   
 ### done
 
+- test removing environment variables
 - add codebuild role, runtime to globals
 - move lamdba keys into scripts/__init__.py
 - remove app.props
