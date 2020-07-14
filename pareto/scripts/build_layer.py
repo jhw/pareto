@@ -6,7 +6,7 @@ from jinja2 import Template
 
 CB=boto3.client("codebuild")
 
-BuildSpec=Template("""
+LatestBuildSpec="""
 version: {{ version }}
 phases:
   install:
@@ -21,7 +21,7 @@ artifacts:
     - '**/*'
   base-directory: build
   name: {{ package }}-LATEST.zip
-""")
+"""
 
 def project_name(config):
     return "%s-%s-layer" % (config["globals"]["app"],
@@ -31,8 +31,7 @@ def project_name(config):
 - aws codebuild delete-project --name pareto-demo-pyyaml-layer aws codebuild delete-project --name pareto-demo-pyyaml-layer
 """
 
-def init_project(config,
-                 template=BuildSpec):
+def init_project(config, buildspec):
     def format_args(args):
         return [{"name": name,
                  "value": value}
@@ -43,15 +42,11 @@ def init_project(config,
          "environmentVariables": []}
     args={"version": "0.2",
           "package": config["build"]["package"],
-          "runtime": config["build"]["runtime"]}        
-    buildspec=template.render(args)
-    # START TEMP CODE
-    print ("-------------------------------")
-    print (buildspec)
-    print ("-------------------------------")
-    # END TEMP CODE
+          "runtime": config["build"]["runtime"]}
+    template=Template(buildspec).render(args)
+    print (template)
     source={"type": "NO_SOURCE",
-            "buildspec": buildspec}
+            "buildspec": template}
     artifacts={"type": "S3",
                "location": config["globals"]["bucket"],
                "path": "%s/layers" % config["globals"]["app"],
@@ -80,7 +75,7 @@ if __name__=="__main__":
                          "runtime": "3.7",
                          "role": "arn:aws:iam::119552584133:role/slow-russian-codebuild"}
         # END TEMP CODE
-        init_project(config, BuildSpec)
+        init_project(config, LatestBuildSpec)
         print (CB.start_build(projectName=project_name(config))["build"]["arn"])
     except ClientError as error:
         logging.error(str(error))
