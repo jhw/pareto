@@ -173,6 +173,8 @@ if __name__=="__main__":
           options:
           - dev
           - prod
+        - name: live
+          type: bool
         """, Loader=yaml.FullLoader)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
@@ -186,7 +188,8 @@ if __name__=="__main__":
         check_metrics(env)
         dump_env(env)
         push_templates(config, env)
-        deploy_env(config, env["master"])
+        if args["live"]:
+            deploy_env(config, env["master"])
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

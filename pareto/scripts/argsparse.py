@@ -18,8 +18,13 @@ def parse_int(value):
     return int(value)
 def parse_float(value):
     return float(value)
+"""
+>>> bool("false")
+True
+"""
 def parse_bool(value):
-    return bool(value.lower().capitalize())
+    # return bool(value.lower().capitalize())
+    return value.lower() not in ["0", "false"]
 def parse_enum(value):
     return value
 def parse_str(value):

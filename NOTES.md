@@ -1,3 +1,13 @@
+### components 14/7/20
+
+```
+pareto/components/preprocessor.py
+pareto/components/dashboard.py
+pareto/components/env.py
+pareto/scripts/push_lambdas.py
+pareto/scripts/deploy_stack.py
+```
+
 ### components 13/7/20
 
 ```

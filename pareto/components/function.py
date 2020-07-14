@@ -5,7 +5,6 @@ def synth_function(**kwargs):
     def Function(concurrency=None,
                  handler="index.handler",
                  memory=512,
-                 runtime="python3.7",
                  timeout=30,
                  **kwargs):
         dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
@@ -17,7 +16,7 @@ def synth_function(**kwargs):
                "MemorySize": memory,
                "DeadLetterConfig": {"TargetArn": dlqarn},                   
                "Role": rolearn,
-               "Runtime": runtime,
+               "Runtime": "python%s" % kwargs["runtime"],
                "Timeout": timeout}
         if concurrency:
             props["ReservedConcurrentExecutions"]=concurrency

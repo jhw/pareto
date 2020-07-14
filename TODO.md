@@ -1,19 +1,16 @@
 ### short
 
-- deploy_stack.py dummy run
 - artifacts cleanup to remove codebuild admin role
-- lambda, layer runtimes to work from same config arg
+- notes re replacement of config.components
 
 ### medium
 
-- layer components
-
-- replacing config["components"] [notes]
-
+- replace config.components
+- layers
 - scaffold generator
 - cloudwatch alerts
-- dsl json schema
-- pip dependency installation
+- json schema for dsl
+- pip dependency installation 
 
 ### v1.1
 
@@ -114,6 +111,8 @@
   
 ### done
 
+- deploy_stack.py dummy run
+- lambda, layer runtimes to work from same config arg
 - script to create and delete sample policy w/ adminstrator access
   - https://stackoverflow.com/questions/44121532/how-to-create-aws-iam-role-attaching-managed-policy-only-using-boto3
 - replace config["role"] with dynamically managed policy
