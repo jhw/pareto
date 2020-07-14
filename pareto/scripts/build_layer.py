@@ -65,8 +65,15 @@ def reset_project(fn,
             raise RuntimeError("%s already exists" % projectname)
     return wrapped
 
+def assert_role(fn):
+    def wrapped(config, package):
+        return fn(config, package,
+                  "arn:aws:iam::119552584133:role/slow-russian-codebuild")
+    return wrapped
+
 @reset_project
-def init_project(config, package):
+@assert_role
+def init_project(config, package, rolearn):
     logging.info("creating project")
     def format_args(args):
         return [{"name": name,
@@ -87,13 +94,13 @@ def init_project(config, package):
     artifacts={"type": "S3",
                "location": config["globals"]["bucket"],
                "path": "%s/layers" % config["globals"]["app"],
-               "overrideArtifactName": True, # default is CB project name
+               "overrideArtifactName": True,
                "packaging": "ZIP"}
     return CB.create_project(name=layer_project_name(config, package),
                              source=source,
                              artifacts=artifacts,
                              environment=env,
-                             serviceRole=config["globals"]["role"])
+                             serviceRole=rolearn)
 
 def run_project(config, package,
                 wait=3,
