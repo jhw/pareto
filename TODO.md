@@ -1,6 +1,11 @@
 ### short [layers]
 
-- pip package version suppprt
+- argsparse to return dict
+- add support for non- required args
+- extend global names (staging/bucket ?)
+- add codebuild role, runtime to globals
+
+- pip package version support
 - create new build if project already exists
 - test waiter
 - test not overriding artifact name
@@ -112,6 +117,7 @@
   
 ### done
 
+- remove app.props
 - add config["build"]
 - insert package name from command line
 - test with multi- package package [pymorphy]
