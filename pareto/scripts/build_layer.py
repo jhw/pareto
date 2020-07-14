@@ -23,15 +23,17 @@ artifacts:
   name: {{ package }}-LATEST.zip
 """
 
-def project_name(config):
+def project_name(config, package):
     return "%s-%s-layer" % (config["globals"]["app"],
-                            config["build"]["package"])
+                            package)
 
 """
-- aws codebuild delete-project --name pareto-demo-pyyaml-layer aws codebuild delete-project --name pareto-demo-pyyaml-layer
+aws codebuild delete-project --name pareto-demo-pymorphy2-layer
+
 """
 
-def init_project(config, buildspec):
+def init_project(config, package,
+                 buildspec=LatestBuildSpec):
     def format_args(args):
         return [{"name": name,
                  "value": value}
@@ -41,10 +43,9 @@ def init_project(config, buildspec):
          "computeType": "BUILD_GENERAL1_SMALL",
          "environmentVariables": []}
     args={"version": "0.2",
-          "package": config["build"]["package"],
-          "runtime": config["build"]["runtime"]}
+          "package": package,
+          "runtime": config["globals"]["runtime"]}
     template=Template(buildspec).render(args)
-    print (template)
     source={"type": "NO_SOURCE",
             "buildspec": template}
     artifacts={"type": "S3",
@@ -52,11 +53,11 @@ def init_project(config, buildspec):
                "path": "%s/layers" % config["globals"]["app"],
                "overrideArtifactName": True,
                "packaging": "ZIP"}
-    return CB.create_project(name=project_name(config),
+    return CB.create_project(name=project_name(config, package),
                              source=source,
                              artifacts=artifacts,
                              environment=env,
-                             serviceRole=config["build"]["role"])
+                             serviceRole=config["globals"]["role"])
 
 if __name__=="__main__":
     try:
@@ -70,13 +71,8 @@ if __name__=="__main__":
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         validate_bucket(config)        
-        # START TEMP CODE
-        config["build"]={"package": args["package"],
-                         "runtime": "3.7",
-                         "role": "arn:aws:iam::119552584133:role/slow-russian-codebuild"}
-        # END TEMP CODE
-        init_project(config, LatestBuildSpec)
-        print (CB.start_build(projectName=project_name(config))["build"]["arn"])
+        init_project(config, args["package"])
+        print (CB.start_build(projectName=project_name(config, args["package"]))["build"]["arn"])
     except ClientError as error:
         logging.error(str(error))
     except RuntimeError as error:

@@ -1,22 +1,19 @@
 ### short [layers]
 
-- add codebuild role, runtime to globals
-
+- test removing environment variables
+- test not overriding artifact name
 - pip package version support
   - include package in version arg
 - create new build if project already exists
 - test waiter
-- test not overriding artifact name
-
-- handle role arn, runtime properly
 - buildspec logger
-- pip install from git
 
 ### medium
 
 - refactor component workflow to use groups throughout
   - preprocessor -> components -> env
 
+- script to create codebuild role
 - script to inspect lambda logs
 
 - scaffold generator
@@ -38,6 +35,8 @@
 
 ### thoughts
 
+- pip install from git ?
+  - probably not required at this stage
 - extend global names (staging/bucket ?)
   - no because you already include \"staging\" key as part of push_lambdas.py
 - add support for optional args ?
@@ -119,6 +118,7 @@
   
 ### done
 
+- add codebuild role, runtime to globals
 - move lamdba keys into scripts/__init__.py
 - remove app.props
 - add config["build"]
