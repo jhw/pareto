@@ -1,6 +1,5 @@
 ### short [layers]
 
-- add versioning option to package
 - add decorator to delete project if already exists
 - status poller / waiter
 - buildspec logger script
@@ -117,6 +116,7 @@
   
 ### done
 
+- add versioning option to package
 - test not overriding artifact name
 - test removing environment variables
 - add codebuild role, runtime to globals

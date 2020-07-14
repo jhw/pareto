@@ -23,19 +23,49 @@ artifacts:
   name: {{ package.name }}-LATEST.zip
 """
 
+VersionedBuildSpec="""
+version: {{ version }}
+phases:
+  install:
+    runtime-versions:
+      python: {{ runtime }}
+    commands:
+      - mkdir -p build/python
+      - pip install --upgrade pip
+      - pip install --upgrade --target build/python {{ package.name }}=={{ package.version.raw }}
+artifacts:
+  files:
+    - '**/*'
+  base-directory: build
+  name: {{ package.name }}-{{ package.version.formatted }}.zip
+"""
+
 def project_name(config, package):
     return "%s-%s-layer" % (config["globals"]["app"],
                             package["name"])
 
+def validate_package(fn):
+    def wrapped(packagestr):
+        if ("-" in packagestr and
+            not re.search("\\-(\\d+\\.)*\\d+$", packagestr)):
+            raise RuntimeError("package definition has invalid format")
+        return fn(packagestr)
+    return wrapped
+
+@validate_package
 def parse_package(packagestr):
-    return {"name": packagestr}
+    tokens=packagestr.split("-")
+    package={"name": tokens[0]}
+    if len(tokens) > 1:
+        package["version"]={"raw": tokens[1],
+                            "formatted": tokens[1].replace(".", "-")}
+    return package
 
 """
 aws codebuild delete-project --name pareto-demo-pymorphy2-layer
 """
 
-def init_project(config, package,
-                 buildspec=LatestBuildSpec):
+def init_project(config, package):
     def format_args(args):
         return [{"name": name,
                  "value": value}
@@ -46,7 +76,9 @@ def init_project(config, package,
     args={"version": "0.2",
           "package": package,
           "runtime": config["globals"]["runtime"]}
+    buildspec=VersionedBuildSpec if "version" in package else LatestBuildSpec
     template=Template(buildspec).render(args)
+    print ("\n%s\n" % template)
     source={"type": "NO_SOURCE",
             "buildspec": template}
     artifacts={"type": "S3",
