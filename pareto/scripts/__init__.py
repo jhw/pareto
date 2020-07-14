@@ -36,6 +36,35 @@ def validate_bucket(config):
     if config["globals"]["bucket"] not in bucketnames:
         raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
 
+class LambdaKeys(list):
+
+    def __init__(self, config):
+        list.__init__(self)
+        paginator=S3.get_paginator("list_objects_v2")
+        pages=paginator.paginate(Bucket=config["globals"]["bucket"],
+                                 Prefix="%s/lambdas" % config["globals"]["app"])
+        for struct in pages:
+            if "Contents" in struct:
+                self+=[obj["Key"] for obj in struct["Contents"]]
+                
+    @property
+    def latest(self):
+        keys={}
+        for s3key in sorted(self):
+            key=LambdaKey.parse(s3key)
+            keys[key["name"]]=s3key
+        return keys
+
+    @property
+    def commits(self):
+        keys={}
+        for s3key in self:
+            key=LambdaKey.parse(s3key)
+            keys.setdefault(key["name"], {})
+            keys[key["name"]][key["hexsha"]]=s3key
+        return keys
+
+    
 """
 - timestamp before hexsha so deployables can be sorted
 """

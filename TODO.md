@@ -1,9 +1,9 @@
 ### short [layers]
 
-- extend global names (staging/bucket ?)
 - add codebuild role, runtime to globals
 
 - pip package version support
+  - include package in version arg
 - create new build if project already exists
 - test waiter
 - test not overriding artifact name
@@ -38,6 +38,8 @@
 
 ### thoughts
 
+- extend global names (staging/bucket ?)
+  - no because you already include \"staging\" key as part of push_lambdas.py
 - add support for optional args ?
   - only required for version, and think this is better specified as suffix
 - add back separate build stage so you can push multiple packages to build ?
@@ -117,6 +119,7 @@
   
 ### done
 
+- move lamdba keys into scripts/__init__.py
 - remove app.props
 - add config["build"]
 - insert package name from command line
