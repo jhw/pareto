@@ -1,13 +1,11 @@
 ### short
 
-- replace role wait with waiter
-
 - deploy_stack.py dummy run
 - artifacts cleanup to remove codebuild admin role
+- lambda, layer runtimes to work from same config arg
 
 ### medium
 
-- lambda, layer runtimes to work from same config arg
 - layer components
 
 - replacing config["components"] [notes]
@@ -31,6 +29,8 @@
 
 ### thoughts
 
+- replace role wait with waiter ?
+  - doesn't seem to work
 - pip install from git ?
   - probably not required at this stage
 - extend global names (staging/bucket ?)

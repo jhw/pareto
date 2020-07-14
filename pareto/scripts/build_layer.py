@@ -78,6 +78,7 @@ def reset_project(fn,
 
 """
 - https://www.reddit.com/r/aws/comments/dzsi8x/exact_same_assumerole_document_still_getting/
+- using waiter doesn't seem to work, feels like role hasn't been registered by correct system
 """
 
 def assert_role(fn, wait=10):
@@ -100,7 +101,12 @@ def assert_role(fn, wait=10):
             rolearn=rolearns[rolename]
         else:
             logging.warning("creating admin role")
-            rolearn=create_role(rolename)
+            rolearn=create_role(rolename)            
+            """
+            logging.info("waiting for role ..")
+            waiter=IAM.get_waiter("role_exists")
+            waiter.wait(RoleName=rolename)
+            """
             logging.info("waiting %i seconds .." % wait)
             time.sleep(wait)
         return fn(config, package, rolearn)
