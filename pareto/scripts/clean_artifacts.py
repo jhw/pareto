@@ -28,5 +28,7 @@ if __name__=="__main__":
                     count+=1
         print ()
         print ("%i files deleted" % count)
+    except ClientError as error:
+        print (error)
     except RuntimeError as error:
         print ("Error: %s" % (str(error)))

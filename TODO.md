@@ -1,15 +1,16 @@
 ### short
 
-- script to search lambda logs
-- script to create codebuild role
-- lambda, layer runtimes to work from same config arg
+- script to create and delete sample policy w/ adminstrator access
+  - https://stackoverflow.com/questions/44121532/how-to-create-aws-iam-role-attaching-managed-policy-only-using-boto3
 
-- layer components
+- replace config["role"] with dynamically managed policy
 
 ### medium
 
-- refactor component workflow to use groups throughout
-  - preprocessor -> components -> env
+- lambda, layer runtimes to work from same config arg
+- layer components
+
+- replacing config["components"] [notes]
 
 - scaffold generator
 - cloudwatch alerts
@@ -113,6 +114,7 @@
   
 ### done
 
+- script to search lambda logs
 - inspect codebuild logs
 - status poller / waiter
 - add decorator to delete project if already exists

@@ -33,5 +33,7 @@ if __name__=="__main__":
         for event in sorted(events,
                             key=lambda x: x["timestamp"]):
             print (re.sub("\\r|\\n", "", event["message"]))
+    except ClientError as error:
+        print (error)
     except RuntimeError as error:
         print ("Error: %s" % str(error))

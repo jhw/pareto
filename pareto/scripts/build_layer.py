@@ -5,6 +5,10 @@
 - https://stackoverflow.com/questions/53733423/how-to-wait-for-a-codebuild-project-to-finish-building-before-finishing-a-boto3
 """
 
+"""
+- requires arn:aws:iam::aws:policy/AdministratorAccess
+"""
+
 from pareto.scripts import *
 
 CB=boto3.client("codebuild")
