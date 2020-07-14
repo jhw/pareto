@@ -1,13 +1,12 @@
 ### short
 
-- script to create and delete sample policy w/ adminstrator access
-  - https://stackoverflow.com/questions/44121532/how-to-create-aws-iam-role-attaching-managed-policy-only-using-boto3
+- replace role wait with waiter
 
-- replace config["role"] with dynamically managed policy
+- deploy_stack.py dummy run
+- artifacts cleanup to remove codebuild admin role
 
 ### medium
 
-- deploy_stack.py dummy run
 - lambda, layer runtimes to work from same config arg
 - layer components
 
@@ -115,6 +114,9 @@
   
 ### done
 
+- script to create and delete sample policy w/ adminstrator access
+  - https://stackoverflow.com/questions/44121532/how-to-create-aws-iam-role-attaching-managed-policy-only-using-boto3
+- replace config["role"] with dynamically managed policy
 - script to search lambda logs
 - inspect codebuild logs
 - status poller / waiter

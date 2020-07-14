@@ -11,7 +11,18 @@
 
 from pareto.scripts import *
 
-CB=boto3.client("codebuild")
+CB, IAM = boto3.client("codebuild"), boto3.client("iam")
+
+AdminAccessArn="arn:aws:iam::aws:policy/AdministratorAccess"
+
+CBPolicyDoc=yaml.load("""
+Statement:
+  - Action: sts:AssumeRole
+    Effect: Allow
+    Principal:
+      Service: codebuild.amazonaws.com
+Version: '2012-10-17'
+""", Loader=yaml.FullLoader)
 
 LatestBuildSpec="""
 version: {{ version }}
@@ -65,10 +76,34 @@ def reset_project(fn,
             raise RuntimeError("%s already exists" % projectname)
     return wrapped
 
-def assert_role(fn):
+"""
+- https://www.reddit.com/r/aws/comments/dzsi8x/exact_same_assumerole_document_still_getting/
+"""
+
+def assert_role(fn, wait=10):
+    def admin_role_name(config):
+        return "%s-admin-role" % config["globals"]["app"]
+    def create_role(rolename,
+                    adminarn=AdminAccessArn,
+                    policydoc=CBPolicyDoc):
+        role=IAM.create_role(RoleName=rolename,
+                             AssumeRolePolicyDocument=json.dumps(policydoc))
+        IAM.attach_role_policy(RoleName=rolename,
+                               PolicyArn=adminarn)
+        return role["Role"]["Arn"]
     def wrapped(config, package):
-        return fn(config, package,
-                  "arn:aws:iam::119552584133:role/slow-russian-codebuild")
+        rolename=admin_role_name(config)
+        rolearns={role["RoleName"]:role["Arn"]
+                  for role in IAM.list_roles()["Roles"]}
+        if rolename in rolearns:
+            logging.info("admin role exists")
+            rolearn=rolearns[rolename]
+        else:
+            logging.warning("creating admin role")
+            rolearn=create_role(rolename)
+            logging.info("waiting %i seconds .." % wait)
+            time.sleep(wait)
+        return fn(config, package, rolearn)
     return wrapped
 
 @reset_project
