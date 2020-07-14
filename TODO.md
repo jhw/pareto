@@ -10,6 +10,8 @@
 
 ### medium
 
+- lambda, layer runtimes to work from same config arg
+
 - refactor component workflow to use groups throughout
   - preprocessor -> components -> env
 
