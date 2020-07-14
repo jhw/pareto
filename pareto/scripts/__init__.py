@@ -2,7 +2,7 @@ import datetime, boto3, json, logging, os, re, sys, time, unittest, yaml
 
 from botocore.exceptions import ClientError, ValidationError, WaiterError
 
-from argsparse import argsparse
+from pareto.scripts.argsparse import argsparse
 
 import pandas as pd
 

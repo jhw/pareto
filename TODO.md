@@ -7,6 +7,7 @@
 
 ### medium
 
+- deploy_stack.py dummy run
 - lambda, layer runtimes to work from same config arg
 - layer components
 
