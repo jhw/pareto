@@ -29,7 +29,6 @@ def project_name(config, package):
 
 """
 aws codebuild delete-project --name pareto-demo-pymorphy2-layer
-
 """
 
 def init_project(config, package,
@@ -50,7 +49,7 @@ def init_project(config, package,
     artifacts={"type": "S3",
                "location": config["globals"]["bucket"],
                "path": "%s/layers" % config["globals"]["app"],
-               "overrideArtifactName": True,
+               "overrideArtifactName": True, # default is CB project name
                "packaging": "ZIP"}
     return CB.create_project(name=project_name(config, package),
                              source=source,

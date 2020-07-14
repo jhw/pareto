@@ -1,11 +1,10 @@
 ### short [layers]
 
-- test not overriding artifact name
-- pip package version support
-  - include package in version arg
-- create new build if project already exists
-- test waiter
-- buildspec logger
+- parse package on input
+- add versioning option to package
+- add decorator to delete project if already exists
+- status poller / waiter
+- buildspec logger script
 
 ### medium
 
@@ -119,6 +118,7 @@
   
 ### done
 
+- test not overriding artifact name
 - test removing environment variables
 - add codebuild role, runtime to globals
 - move lamdba keys into scripts/__init__.py
