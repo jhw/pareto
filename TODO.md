@@ -3,6 +3,7 @@
 - pip package version suppprt
 - create new build if project already exists
 - test waiter
+- test not overriding artifact name
 
 - handle role arn, runtime properly
 - buildspec logger
@@ -10,8 +11,8 @@
 
 ### medium
 
-- convert preprocessor to use explicit apis/actions/triggers groups
-- add group to preprocessor output to avoid need for filtering at env level
+- refactor component workflow to use groups throughout
+  - preprocessor -> components -> env
 
 - script to inspect lambda logs
 

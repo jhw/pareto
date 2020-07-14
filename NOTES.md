@@ -1,3 +1,20 @@
+### components 13/7/20
+
+```
+pareto/scripts/deploy_stack.py
+pareto/scripts/push_lambdas.py
+pareto/components/env.py
+pareto/components/preprocessor.py
+pareto/components/dashboard.py
+```
+
+- preprocessor currently picks items from the components list, remaps to groups and updates each component
+- so components list is ultimately maintained
+- dash iterates thru components and filters functions
+- do you really want to unpack groups into a list and then regroup at the env level ?
+- maybe is simpler to work with list internally, esp as you remap components ?
+- so then it feels like the list representation is an intermediate layer; that the env is really a kind of post- processor; so that then it feels like the preprocessor layer is missing a pre- preprocessor which converts from a nice grouped format into a components list
+
 ### layers 9/7/20
 
 - script to build single package layer
