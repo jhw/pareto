@@ -5,17 +5,11 @@
 - https://stackoverflow.com/questions/53733423/how-to-wait-for-a-codebuild-project-to-finish-building-before-finishing-a-boto3
 """
 
-"""
-- requires arn:aws:iam::aws:policy/AdministratorAccess
-"""
-
 from pareto.scripts import *
 
 CB, IAM = boto3.client("codebuild"), boto3.client("iam")
 
-AdminAccessArn="arn:aws:iam::aws:policy/AdministratorAccess"
-
-CBPolicyDoc=yaml.load("""
+RolePolicyDoc=yaml.load("""
 Statement:
   - Action: sts:AssumeRole
     Effect: Allow
@@ -78,19 +72,32 @@ def reset_project(fn,
 
 """
 - https://www.reddit.com/r/aws/comments/dzsi8x/exact_same_assumerole_document_still_getting/
-- using waiter doesn't seem to work, feels like role hasn't been registered by correct system
 """
 
 def assert_role(fn, wait=10):
     def admin_role_name(config):
         return "%s-admin-role" % config["globals"]["app"]
+    def policy_name(rolename):
+        return "%s-policy" % rolename
     def create_role(rolename,
-                    adminarn=AdminAccessArn,
-                    policydoc=CBPolicyDoc):
+                    permissions=["codebuild:*",
+                                 "s3:*",
+                                 "logs:*"],
+                    rolepolicydoc=RolePolicyDoc):
         role=IAM.create_role(RoleName=rolename,
-                             AssumeRolePolicyDocument=json.dumps(policydoc))
+                             AssumeRolePolicyDocument=json.dumps(rolepolicydoc))
+        policydoc={"Statement": [{"Action": permission,
+                                  "Effect": "Allow",
+                                  "Resource": "*"}
+                                 for permission in permissions],
+                   "Version": "2012-10-17"}
+        policy=IAM.create_policy(PolicyName=policy_name(rolename),
+                                 PolicyDocument=json.dumps(policydoc))
+        logging.info("waiting for policy creation ..")
+        waiter=IAM.get_waiter("policy_exists")
+        waiter.wait(PolicyArn=policy["Policy"]["Arn"])
         IAM.attach_role_policy(RoleName=rolename,
-                               PolicyArn=adminarn)
+                               PolicyArn=policy["Policy"]["Arn"])
         return role["Role"]["Arn"]
     def wrapped(config, package):
         rolename=admin_role_name(config)
