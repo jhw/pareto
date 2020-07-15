@@ -1,11 +1,9 @@
 ### short
 
-- clean_artifacts.py to remove codebuild admin role
-- notes re replacement of config.components
+- replace config.components
 
 ### medium
 
-- replace config.components
 - layers
 - scaffold generator
 - cloudwatch alerts
@@ -111,6 +109,7 @@
   
 ### done
 
+- clean_artifacts.py to remove codebuild admin role
 - clean_artifacts.py to remove codebuild projects
 - clean up methods used by scripts/__init__.py
 - scripts/helpers

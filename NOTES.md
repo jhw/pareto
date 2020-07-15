@@ -8,6 +8,14 @@ pareto/scripts/push_lambdas.py
 pareto/scripts/deploy_stack.py
 ```
 
+- preprocessor iterates through components, groups and modifies them
+- but components container structure is left unchanged
+- so will need to use map instead of list and in particular look for any filtering of components from list (is a proxy for map)
+- dashboard filters function so will need to iterate through apis and actions instead
+- env does various groupings of components so that will need to be eliminated
+- scripts stuff uses filter_functions which will need to be eliminated
+- maybe replace filter_functions with flatten_functions which appends actions and api groups together
+
 ### components 13/7/20
 
 ```
