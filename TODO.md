@@ -15,7 +15,8 @@
 - apigateway2
 - eventbridge
 - github actions
-- ci pipeline  
+- ci pipeline
+- lambda xray
 - custom lambda authorisers
 - cognito
 - route 53/cloudfront
