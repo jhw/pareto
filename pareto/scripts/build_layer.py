@@ -108,13 +108,13 @@ def assert_role(fn, wait=10):
             rolearn=rolearns[rolename]
         else:
             logging.warning("creating admin role")
-            rolearn=create_role(rolename)            
+            rolearn=create_role(rolename)
             """
-            logging.info("waiting for role ..")
+            logging.info("waiting for role creation ..")
             waiter=IAM.get_waiter("role_exists")
             waiter.wait(RoleName=rolename)
             """
-            logging.info("waiting %i seconds .." % wait)
+            logging.info("waiting arbitrary %i seconds .." % wait)
             time.sleep(wait)
         return fn(config, package, rolearn)
     return wrapped

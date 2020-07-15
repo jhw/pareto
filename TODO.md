@@ -1,8 +1,8 @@
 ### short
 
-- try custom policy with codebuild, s3 permissions
-- re- try waiter focused on policy
-- artifacts cleanup to remove codebuild admin role
+- add functions to xxx_artifacts.py
+- clean_artifacts.py to remove codebuild admin role
+- clean_artifacts.py to remove codebuild projects
 - scripts/helpers
 - notes re replacement of config.components
 
@@ -114,6 +114,8 @@
   
 ### done
 
+- try custom policy with codebuild, s3 permissions
+- re- try waiter focused on policy
 - deploy_stack.py dummy run
 - lambda, layer runtimes to work from same config arg
 - script to create and delete sample policy w/ adminstrator access
