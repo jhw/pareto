@@ -1,8 +1,8 @@
 ### short
 
+- clean up methods used by scripts/__init__.py
 - clean_artifacts.py to remove codebuild admin role
 - clean_artifacts.py to remove codebuild projects
-- scripts/helpers
 - notes re replacement of config.components
 
 ### medium
@@ -113,6 +113,7 @@
   
 ### done
 
+- scripts/helpers
 - add functions to xxx_artifacts.py
 - try custom policy with codebuild, s3 permissions
 - re- try waiter focused on policy

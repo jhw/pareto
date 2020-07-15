@@ -5,6 +5,7 @@
 """
 
 from pareto.scripts import *
+from pareto.scripts.helpers.lambdas import *
 
 from pareto.components.preprocessor import preprocess
 
