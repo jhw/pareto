@@ -2,9 +2,14 @@
 
 from pareto.scripts import *
 
-"""
-- you don't technically need the stage name here but hey
-"""
+def list_s3(config):
+    paginator=S3.get_paginator("list_objects_v2")
+    pages=paginator.paginate(Bucket=config["globals"]["bucket"],
+                             Prefix=config["globals"]["app"])
+    for struct in pages:
+        if "Contents" in struct:
+            for obj in struct["Contents"]:
+                print (obj["Key"])
 
 if __name__=="__main__":
     try:
@@ -14,18 +19,7 @@ if __name__=="__main__":
           type: file
         """, Loader=yaml.FullLoader)
         args=argsparse(sys.argv[1:], argsconfig)
-        config=args.pop("config")
-        paginator=S3.get_paginator("list_objects_v2")
-        pages=paginator.paginate(Bucket=config["globals"]["bucket"],
-                                 Prefix=config["globals"]["app"])
-        count=0
-        for struct in pages:
-            if "Contents" in struct:
-                for obj in struct["Contents"]:
-                    print (obj["Key"])
-                    count+=1
-        print ()
-        print ("%i files" % count)
+        list_s3(args["config"])
     except ClientError as error:
         print (error)
     except RuntimeError as error:

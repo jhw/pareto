@@ -1,6 +1,5 @@
 ### short
 
-- add functions to xxx_artifacts.py
 - clean_artifacts.py to remove codebuild admin role
 - clean_artifacts.py to remove codebuild projects
 - scripts/helpers
@@ -114,6 +113,7 @@
   
 ### done
 
+- add functions to xxx_artifacts.py
 - try custom policy with codebuild, s3 permissions
 - re- try waiter focused on policy
 - deploy_stack.py dummy run

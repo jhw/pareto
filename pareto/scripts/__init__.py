@@ -8,7 +8,10 @@ import pandas as pd
 
 from jinja2 import Template
 
-CF, S3, Logs = boto3.client("cloudformation"), boto3.client("s3"), boto3.client("logs")
+S3=boto3.client("s3")
+CF=boto3.client("cloudformation")
+Logs=boto3.client("logs")
+IAM=boto3.client("iam")
 
 # https://stackoverflow.com/questions/14058453/making-python-loggers-output-all-messages-to-stdout-in-addition-to-log-file
 

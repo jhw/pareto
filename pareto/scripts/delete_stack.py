@@ -2,8 +2,6 @@
 
 from pareto.scripts import *
 
-IAM=boto3.client("iam")
-
 def empty_bucket(bucketname):
     try:
         paginator=S3.get_paginator("list_objects_v2")
