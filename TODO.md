@@ -1,6 +1,5 @@
 ### short
 
-- clean up methods used by scripts/__init__.py
 - clean_artifacts.py to remove codebuild admin role
 - clean_artifacts.py to remove codebuild projects
 - notes re replacement of config.components
@@ -113,6 +112,7 @@
   
 ### done
 
+- clean up methods used by scripts/__init__.py
 - scripts/helpers
 - add functions to xxx_artifacts.py
 - try custom policy with codebuild, s3 permissions

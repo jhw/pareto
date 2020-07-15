@@ -45,6 +45,9 @@ def toggle_aws_profile(fn):
         return resp
     return wrapped
 
+def underscore(text):
+    return text.replace("-", "_")
+
 @toggle_aws_profile
 def run_tests(config):
     logging.info("running tests")

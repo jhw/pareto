@@ -124,6 +124,8 @@ def check_metrics(templates, metrics=Metrics):
     validate_metrics(metrics)
 
 def dump_env(env):
+    def timestamp():
+        return datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
     filename="tmp/env-%s.yaml" % timestamp()
     yaml.SafeDumper.ignore_aliases=lambda *args: True
     with open(filename, 'w') as f:
