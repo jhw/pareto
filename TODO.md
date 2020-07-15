@@ -1,7 +1,6 @@
 ### short
 
 - clean_artifacts.py to remove codebuild admin role
-- clean_artifacts.py to remove codebuild projects
 - notes re replacement of config.components
 
 ### medium
@@ -112,6 +111,7 @@
   
 ### done
 
+- clean_artifacts.py to remove codebuild projects
 - clean up methods used by scripts/__init__.py
 - scripts/helpers
 - add functions to xxx_artifacts.py

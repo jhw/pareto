@@ -12,6 +12,7 @@ S3=boto3.client("s3")
 CF=boto3.client("cloudformation")
 Logs=boto3.client("logs")
 IAM=boto3.client("iam")
+CB= boto3.client("codebuild")
 
 # https://stackoverflow.com/questions/14058453/making-python-loggers-output-all-messages-to-stdout-in-addition-to-log-file
 

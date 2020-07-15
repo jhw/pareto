@@ -8,8 +8,6 @@
 from pareto.scripts import *
 from pareto.scripts.helpers.layers import *
 
-CB, IAM = boto3.client("codebuild"), boto3.client("iam")
-
 RolePolicyDoc=yaml.load("""
 Statement:
   - Action: sts:AssumeRole
