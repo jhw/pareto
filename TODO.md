@@ -1,6 +1,9 @@
 ### short
 
+- try custom policy with codebuild, s3 permissions
+- re- try waiter focused on policy
 - artifacts cleanup to remove codebuild admin role
+- scripts/helpers
 - notes re replacement of config.components
 
 ### medium
