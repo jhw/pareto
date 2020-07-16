@@ -52,19 +52,19 @@ def add_dashboards(config, templates):
         template.update(dashboard)
     templates["dashboard"]=template.render()
 
-def add_master(config, templates, filters=TypeFilters):
+def add_master(config, templates):
     def stack_id(stackname):
         return logical_id("%s-stack" % stackname)
     def get_attr(name, attr):
         return {"Fn::GetAtt": [name, "Outputs.%s" % attr]}
-    def filter_outputs(templates, filters):        
+    def filter_outputs(config, templates):
         outputs={}
         for tempname, template in templates.items():
-            if (tempname in filters and
+            if (tempname in config["components"] and
                 "Outputs" in template):
                 outputs.update({paramname: tempname
                                 for paramname in template["Outputs"]})
-        return outputs
+        return outputs                
     def format_params(paramnames, outputs):
         return {paramname: get_attr(stack_id(outputs.pop(paramname)),
                                     paramname)
@@ -89,8 +89,8 @@ def add_master(config, templates, filters=TypeFilters):
             return "AWS::SecretsManager::Secret", props        
         template["resources"]+=[Secret(**secret)
                                 for secret in config["secrets"]]
-    def init_template(config, templates, filters):
-        outputs=filter_outputs(templates, filters)
+    def init_template(config, templates):
+        outputs=filter_outputs(config, templates)
         components=[init_stack(config, tempname, template, outputs)
                     for tempname, template in templates.items()]
         template=Template()
@@ -100,7 +100,7 @@ def add_master(config, templates, filters=TypeFilters):
         if "secrets" in config:
             add_secrets(config, template)
         return template.render()
-    templates["master"]=init_template(config, templates, filters)
+    templates["master"]=init_template(config, templates)
         
 def synth_env(config):
     templates={}
