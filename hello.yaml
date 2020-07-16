@@ -2,61 +2,62 @@ globals:
   app: pareto-demo
   bucket: wol-deployments
   runtime: "3.7"
-apis:
-- type: api
-  name: hello-get-api
-  method: GET
-- type: api
-  name: hello-post-api
-  method: POST
-triggers:
-- type: bucket
-  name: hello-bucket
-  website: true
-- type: table
-  name: hello-table
-  fields:
-  - name: my-hash
-    type: string
-    primary: true
-- type: queue
-  name: hello-queue
-  batch: 1
-actions:
-- type: action
-  name: hello-action-1
-  trigger:
-    type: bucket
+components:
+  apis:
+  - type: api
+    name: hello-get-api
+    method: GET
+  - type: api
+    name: hello-post-api
+    method: POST
+  triggers:
+  - type: bucket
     name: hello-bucket
-    path: foo
-  target:
-    type: bucket
-    name: hello-bucket
-- type: action
-  name: hello-action-2
-  trigger:
-    type: bucket
-    name: hello-bucket
-    path: bar
-  target:
-    type: table
+    website: true
+  - type: table
     name: hello-table
-- type: action
-  name: hello-action-3
-  trigger:
-    type: table
-    name: hello-table
-  target:
-    type: queue
+    fields:
+    - name: my-hash
+      type: string
+      primary: true
+  - type: queue
     name: hello-queue
-- type: action
-  name: hello-action-4
-  permissions:
-  - "translate:*"
-  trigger:
-    type: queue
-    name: hello-queue
-  target:
-    type: bucket
-    name: hello-bucket
+    batch: 1
+  actions:
+  - type: action
+    name: hello-action-1
+    trigger:
+      type: bucket
+      name: hello-bucket
+      path: foo
+    target:
+      type: bucket
+      name: hello-bucket
+  - type: action
+    name: hello-action-2
+    trigger:
+      type: bucket
+      name: hello-bucket
+      path: bar
+    target:
+      type: table
+      name: hello-table
+  - type: action
+    name: hello-action-3
+    trigger:
+      type: table
+      name: hello-table
+    target:
+      type: queue
+      name: hello-queue
+  - type: action
+    name: hello-action-4
+    permissions:
+    - "translate:*"
+    trigger:
+      type: queue
+      name: hello-queue
+    target:
+      type: bucket
+      name: hello-bucket
 

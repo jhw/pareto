@@ -1,11 +1,5 @@
 from pareto.components import *
 
-TypeFilters={
-    "api": lambda x: x["type"]=="api",
-    "action": lambda x: x["type"]=="action",
-    "trigger": lambda x: x["type"] not in ["action", "api"]
-    }
-
 TriggerConfig=yaml.load("""
 bucket:
   iam_name: s3
@@ -200,21 +194,14 @@ def cleanup(actions, **kwargs):
         for attr in ["trigger",
                      "target"]:
             action.pop(attr)
-        
-def preprocess(config, filters=TypeFilters):
-    def apply_filter(components, filterfn):
-        return [component
-                for component in components
-                if filterfn(component)]
-    kwargs={"%ss" % attr: apply_filter(config["components"],
-                                       filters[attr])
-            for attr in filters}
+
+def preprocess(config):
     for fn in [validate,
                remap_triggers,
                add_permissions,
                remap_types,
                cleanup]:
-        fn(**kwargs)
+        fn(**config["components"])
         
 if __name__=="__main__":
     try:

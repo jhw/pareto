@@ -1,6 +1,9 @@
-### short
+### short [kill-component-list]
 
-- replace config.components
+- dashboard.py
+- env.py
+- push_lambdas.py
+- deploy_stack.py
 
 ### medium
 
