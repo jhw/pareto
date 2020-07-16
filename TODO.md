@@ -1,6 +1,7 @@
 ### short [kill-component-list]
 
 - remove filters in env.py
+- check creation of component grouped templates in env.py
 - check deploy_stack.py
 
 ### medium
