@@ -1,6 +1,5 @@
 ### short [kill-component-list]
 
-- dashboard.py
 - env.py
 - push_lambdas.py
 - deploy_stack.py
