@@ -2,16 +2,27 @@ globals:
   app: pareto-demo
   bucket: wol-deployments
   runtime: "3.7"
-components:
+apis:
 - type: api
   name: hello-get-api
   method: GET
 - type: api
   name: hello-post-api
   method: POST
+triggers:
 - type: bucket
   name: hello-bucket
   website: true
+- type: table
+  name: hello-table
+  fields:
+  - name: my-hash
+    type: string
+    primary: true
+- type: queue
+  name: hello-queue
+  batch: 1
+actions:
 - type: action
   name: hello-action-1
   trigger:
@@ -21,12 +32,6 @@ components:
   target:
     type: bucket
     name: hello-bucket
-- type: table
-  name: hello-table
-  fields:
-  - name: my-hash
-    type: string
-    primary: true
 - type: action
   name: hello-action-2
   trigger:
@@ -36,9 +41,6 @@ components:
   target:
     type: table
     name: hello-table
-- type: queue
-  name: hello-queue
-  batch: 1
 - type: action
   name: hello-action-3
   trigger:
