@@ -1,11 +1,11 @@
 ### short [kill-component-list]
 
-- singularise keys returned by preprocessor and diff output
 - check deployment
 
 ### medium
 
-- consider if stack should take config file of lambdas
+- should component group names be singularised ?
+- should stack deployment take config file of lambdas ?
   - for future github actions support
 
 - layers
