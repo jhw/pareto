@@ -1,7 +1,7 @@
 ### short [kill-component-list]
 
-- env.py
 - push_lambdas.py
+- env.py
 - deploy_stack.py
 
 ### medium

@@ -31,10 +31,13 @@ def validate_bucket(config):
     if config["globals"]["bucket"] not in bucketnames:
         raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
     
-def filter_functions(components):
-    return [component
-            for component in components
-            if component["type"]=="function"]
+def filter_functions(groups):
+    functions=[]
+    for groupname, components in groups.items():
+        functions+=[component
+                    for component in components
+                    if component["type"]=="function"]
+    return functions
 
 if __name__=="__main__":
     pass
