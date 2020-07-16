@@ -1,6 +1,5 @@
 ### short [kill-component-list]
 
-- check creation of component grouped templates in env.py
 - check deploy_stack.py
 
 ### medium
