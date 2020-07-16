@@ -1,6 +1,7 @@
 ### short [kill-component-list]
 
-- check deploy_stack.py
+- singularise keys returned by preprocessor and diff output
+- check deployment
 
 ### medium
 
@@ -113,6 +114,7 @@
   
 ### done
 
+- check deploy_stack.py
 - push_lambdas.py
 - clean_artifacts.py to remove codebuild admin role
 - clean_artifacts.py to remove codebuild projects
