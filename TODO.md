@@ -1,7 +1,7 @@
 ### short [kill-component-list]
 
-- env.py
-- deploy_stack.py
+- remove filters in env.py
+- check deploy_stack.py
 
 ### medium
 

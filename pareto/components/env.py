@@ -8,21 +8,14 @@ from pareto.components.stack import synth_stack
 from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
 
-TypeFilters={
-    "api": lambda x: x["type"]=="function" and "api" in x,
-    "action": lambda x: x["type"]=="function" and "api" not in x,
-    "trigger": lambda x: x["type"]!="function"
-    }
-
-def add_component_groups(config, templates, filters=TypeFilters):
+def add_component_groups(config, templates):
     def init_component(config, component):
         component.update(config["globals"])
         return component
-    def group_components(config, filters):
+    def group_components(config):
         return {key: [init_component(config, component)
-                      for component in config["components"]
-                      if filters[key](component)]
-                for key in filters}
+                      for component in config["components"][key]]
+                for key in config["components"]}
     def init_template(components):
         template=Template()
         for kwargs in components:
@@ -30,7 +23,7 @@ def add_component_groups(config, templates, filters=TypeFilters):
             component=fn(**kwargs)
             template.update(component)
         return template.render()
-    groups=group_components(config, filters)
+    groups=group_components(config)
     for key, group in groups.items():
         templates[key]=init_template(group)
 
