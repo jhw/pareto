@@ -1,10 +1,12 @@
 ### short [kill-component-list]
 
-- push_lambdas.py
 - env.py
 - deploy_stack.py
 
 ### medium
+
+- consider if stack should take config file of lambdas
+  - for future github actions support
 
 - layers
 - scaffold generator
@@ -112,6 +114,7 @@
   
 ### done
 
+- push_lambdas.py
 - clean_artifacts.py to remove codebuild admin role
 - clean_artifacts.py to remove codebuild projects
 - clean up methods used by scripts/__init__.py
