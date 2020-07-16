@@ -14,8 +14,8 @@ def add_component_groups(config, templates):
         return component
     def group_components(config):
         return {key: [init_component(config, component)
-                      for component in config["components"][key]]
-                for key in config["components"]}
+                      for component in components]
+                for key, components in config["components"].items()}
     def init_template(components):
         template=Template()
         for kwargs in components:
@@ -27,7 +27,7 @@ def add_component_groups(config, templates):
     for key, group in groups.items():
         templates[key]=init_template(group)
 
-def add_dashboards(config, templates, filters=TypeFilters):
+def add_dashboards(config, templates):
     def init_group(config, components):
         group=dict(config["globals"])
         group["components"]=components
@@ -36,18 +36,15 @@ def add_dashboards(config, templates, filters=TypeFilters):
         types=list(set([component["type"]
                         for component in components]))
         return "function" in types
-    def init_groups(config, filters):
+    def init_groups(config):
         groups={}
-        for key, filterfn in filters.items():
-            components=[component
-                         for component in config["components"]
-                         if filterfn(component)]
+        for key, components in config["components"].items():
             if not has_dashboard(components):
                 continue
             group=init_group(config, components)
             groups[key]=group
         return groups
-    groups=init_groups(config, filters)
+    groups=init_groups(config)
     template=Template()    
     for key, kwargs in groups.items():
         kwargs["name"]="%s-dashboard" % key
