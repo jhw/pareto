@@ -1,6 +1,7 @@
-### short [kill-component-list]
+### short
 
-- check deployment
+- pluralise dashboard stack / template name
+- layers
 
 ### medium
 
@@ -8,7 +9,6 @@
 - should stack deployment take config file of lambdas ?
   - for future github actions support
 
-- layers
 - scaffold generator
 - cloudwatch alerts
 - json schema for dsl
@@ -114,6 +114,7 @@
   
 ### done
 
+- check deployment
 - check deploy_stack.py
 - push_lambdas.py
 - clean_artifacts.py to remove codebuild admin role
