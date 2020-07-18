@@ -1,13 +1,8 @@
 ### short
 
-- pluralise dashboard stack / template name
 - layers
 
 ### medium
-
-- should component group names be singularised ?
-- should stack deployment take config file of lambdas ?
-  - for future github actions support
 
 - scaffold generator
 - cloudwatch alerts
@@ -29,6 +24,10 @@
 
 ### thoughts
 
+- pass staging details as params ?
+  - no; see notes
+- pluralise dashboard stack / template name ?
+  - no is fine singular
 - replace role wait with waiter ?
   - doesn't seem to work
 - pip install from git ?

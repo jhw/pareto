@@ -1,3 +1,22 @@
+### lambda staging 18/7/20
+
+- does staging need to be refactored into two stage process in which staging keys are passed as parameters to templates ?
+- This is certainly possible as staging variables don’t actually include the stage name 
+- It also feels desirable as the current insertion of a staging attribute into kwargs feels like something of a hack
+- But it also involves more complexity
+- Because hard coded staging refs now have to be replaced with parameters and refs
+- And because these are part of nested stacks these parameters now have to be declared as part of the master stack and then passed as args to nested stacks
+- So you’re capping yourself at the max parameter level of 60 Params
+- But given that each lambda requires at least 3-4 resources in total then you are still more likely to hit the 200 resource limit first
+- And splitting things this ways isn’t really going to help with CI/cd because you still want to execute a single python script inside CodeBuild 
+- You can’t generate list of staged files using one script and then pass to second script
+- Because CodeBuild is bash not python
+- And can’t really argue this helps logging because you can always log the currently staged variables 
+- So overall it feels like this might be more trouble than it is worth
+- can’t name a benefit other than “feels cleaner” (because marshalling of stage parameters doesn’t need stage name)
+- But the suspect this is just replacing python staging of parameters with use of cloudformation parameter values
+- Feels better because hardcoding == bad but in fact it’s just more complex
+
 ### components 14/7/20
 
 ```
