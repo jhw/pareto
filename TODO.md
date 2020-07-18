@@ -1,6 +1,13 @@
-### short
+### short [layers]
 
-- layers
+- add simple layer name to config
+- basic layer component
+- create layer when name exists, with runtime
+- add arn reference to layer in function
+- layer helpers 
+- add layer staging to deploy stack
+- add layer versioning
+- allow layers to be specified by arn, in which case layer object not created
 
 ### medium
 
