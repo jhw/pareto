@@ -1,6 +1,5 @@
 ### short
 
-- add slash in lambda staging names
 - add layer staging classes
 - add layer staging hook into deploy_stack.py
 
@@ -38,6 +37,10 @@
 
 ### thoughts
 
+- separate lambda staging keys name (vs timestamp and commit) with hash ?
+  - problem is it complicates a lot of things, particularly saving to tmp
+  - and not clear if its consistent or not with other staged assets such as layers or templatea
+  - in the end it feels like the best thing to do is keep a flat directory structure
 - singularise stack names ?
   - no is too complex as means you also have to singularise references
   - if you really want to singularise stuff, singularise the keys in the dsl
