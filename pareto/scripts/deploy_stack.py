@@ -127,7 +127,10 @@ def check_metrics(templates, metrics=Metrics):
 def dump_env(env):
     def timestamp():
         return datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-    filename="tmp/env-%s.yaml" % timestamp()
+    tokens=["tmp", "env", "%s.yaml" % timestamp()]
+    dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
     yaml.SafeDumper.ignore_aliases=lambda *args: True
     with open(filename, 'w') as f:
         f.write(yaml.safe_dump(env,
