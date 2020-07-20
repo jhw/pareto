@@ -173,7 +173,10 @@ def push_lambdas(config):
         if not count:
             raise RuntimeError("no files found in %s" % path)
     def init_zipfile(component):
-        zfname="tmp/%s" % component["staging"]["key"].split("/")[-1]
+        tokens=["tmp"]+component["staging"]["key"].split("/")[-2:]
+        zfdir, zfname = "/".join(tokens[:-1]), "/".join(tokens)        
+        if not os.path.exists(zfdir):
+            os.makedirs(zfdir)
         zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
         write_zipfile(component, zf)
         zf.close()

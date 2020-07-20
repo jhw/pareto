@@ -37,10 +37,6 @@
 
 ### thoughts
 
-- separate lambda staging keys name (vs timestamp and commit) with hash ?
-  - problem is it complicates a lot of things, particularly saving to tmp
-  - and not clear if its consistent or not with other staged assets such as layers or templatea
-  - in the end it feels like the best thing to do is keep a flat directory structure
 - singularise stack names ?
   - no is too complex as means you also have to singularise references
   - if you really want to singularise stuff, singularise the keys in the dsl
@@ -87,10 +83,6 @@
   - no because filters are different
 - custom template type for dashboard ?
   - seems like overkill 
-- deployment to stage assets in /tmp with directory paths ?
-  - no it just complicates things by need to add extra paths
-  - remember is just a tmp directory
-  - should be able to tell what u have in there from filename alone  
 - aggregate IAM roles ?
   - doesn't seem worth it when unlikely to be template size constraint
 - consider converting Template to extend object not dict ?
@@ -133,6 +125,7 @@
   
 ### done
 
+- simplify lambda key filename with slash between name and ts/hexsha
 - move lambda helpers to lambda staging
 - check deployment
 - check deploy_stack.py

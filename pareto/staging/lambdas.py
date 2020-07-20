@@ -5,17 +5,12 @@ class LambdaStagingKey(dict):
     @classmethod
     def parse(self, s3key):
         key=LambdaStagingKey()
-        def pop_timestamp(tokens):
-            ts=[int(tokens.pop())
-                for i in range(6)]
-            ts.reverse()
-            return datetime.datetime(*ts)
         tokens=s3key.split("/")
         key["app"]=tokens[0]
+        key["name"]=tokens[2]
         tokens=tokens[-1].split(".")[0].split("-")
         key["hexsha"]=tokens.pop()
-        key["timestamp"]=pop_timestamp(tokens)
-        key["name"]="-".join(tokens)
+        key["timestamp"]=datetime.datetime(*[int(tok) for tok in tokens])
         return key
 
     def __init_(self, kwargs={}):
@@ -27,7 +22,7 @@ class LambdaStagingKey(dict):
                 return value.strftime("%Y-%m-%d-%H-%M-%S")
             else:
                 return re.sub("\\W", "-", str(value))
-        return "%s/lambdas/%s-%s-%s.zip" % (self["app"],
+        return "%s/lambdas/%s/%s-%s.zip" % (self["app"],
                                             self["name"],
                                             format_timestamp(self["timestamp"]),
                                             self["hexsha"])
@@ -67,7 +62,7 @@ class LambdaStagingKeyTest(unittest.TestCase):
     Timestamp=datetime.datetime(*[1970, 12, 20, 19, 30, 0])
     Hexsha="ABCDEFGH"
 
-    Key="my-app/lambdas/hello-world-1970-12-20-19-30-00-ABCDEFGH.zip"
+    Key="my-app/lambdas/hello-world/1970-12-20-19-30-00-ABCDEFGH.zip"
     
     def test_new(self):
         key=LambdaStagingKey(**{attr: getattr(self, attr.capitalize())
