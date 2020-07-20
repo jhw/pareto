@@ -1,5 +1,7 @@
 ### short
 
+- change layer deployable name to include slash
+
 - add layer staging classes
 - add layer staging hook into deploy_stack.py
 
