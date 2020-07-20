@@ -1,7 +1,5 @@
 ### short
 
-- dump_env to iterate over keys and dump separate stacks
-
 - add layer staging classes
 - add layer staging hook into deploy_stack.py
 
@@ -127,6 +125,7 @@
   
 ### done
 
+- dump_env to iterate over keys and dump separate stacks
 - add slash to tmp template asset
 - simplify lambda key filename with slash between name and ts/hexsha
 - move lambda helpers to lambda staging

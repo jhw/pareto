@@ -125,16 +125,16 @@ def check_metrics(templates, metrics=Metrics):
     validate_metrics(metrics)
 
 def dump_env(env):
-    def timestamp():
-        return datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-    tokens=["tmp", "env", "%s.yaml" % timestamp()]
-    dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
-    if not os.path.exists(dirname):
-        os.makedirs(dirname)
     yaml.SafeDumper.ignore_aliases=lambda *args: True
-    with open(filename, 'w') as f:
-        f.write(yaml.safe_dump(env,
-                               default_flow_style=False))
+    timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+    for tempname, template in env.items():
+        tokens=["tmp", "env", timestamp, "%s.yaml" % tempname]
+        dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+        with open(filename, 'w') as f:
+            f.write(yaml.safe_dump(template,
+                                   default_flow_style=False))
 
 def push_templates(config, templates):
     logging.info("pushing templates")
