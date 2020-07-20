@@ -74,7 +74,7 @@ def reset_project(fn,
 - https://www.reddit.com/r/aws/comments/dzsi8x/exact_same_assumerole_document_still_getting/
 """
 
-def assert_role(fn, wait=10):
+def assert_role(fn):
     def admin_role_name(config):
         return "%s-admin-role" % config["globals"]["app"]
     def policy_name(rolename):
@@ -109,19 +109,17 @@ def assert_role(fn, wait=10):
         else:
             logging.warning("creating admin role")
             rolearn=create_role(rolename)
-            """
             logging.info("waiting for role creation ..")
             waiter=IAM.get_waiter("role_exists")
             waiter.wait(RoleName=rolename)
-            """
-            logging.info("waiting arbitrary %i seconds .." % wait)
-            time.sleep(wait)
         return fn(config, package, rolearn)
     return wrapped
 
 @reset_project
 @assert_role
-def init_project(config, package, rolearn):
+def init_project(config, package, rolearn,
+                 maxtries=20,
+                 wait=3):
     logging.info("creating project")
     def format_args(args):
         return [{"name": name,
@@ -133,6 +131,7 @@ def init_project(config, package, rolearn):
     args={"version": "0.2",
           "package": package,
           "runtime": config["globals"]["runtime"]}
+    projectname=layer_project_name(config, package)
     buildspec=VersionedBuildSpec if "version" in package else LatestBuildSpec
     template=Template(buildspec).render(args)
     print (template)
@@ -145,12 +144,25 @@ def init_project(config, package, rolearn):
                                          package["name"]),
                "overrideArtifactName": True,
                "packaging": "ZIP"}
-    return CB.create_project(name=layer_project_name(config, package),
-                             source=source,
-                             artifacts=artifacts,
-                             environment=env,
-                             serviceRole=rolearn)
-
+    """
+    - because sometimes the iam role hasn't been propagated properly
+    - and the waiters don't catch it
+    - ERROR - An error occurred (InvalidInputException) when calling the CreateProject operation: CodeBuild is not authorized to perform: sts:AssumeRole on arn:aws:iam::119552584133:role/pareto-demo-admin-role
+    """
+    for i in range(maxtries):
+        try:
+            logging.info("trying to create project [%i/%i]" % (i+1, maxtries))
+            project=CB.create_project(name=projectname,
+                                      source=source,
+                                      artifacts=artifacts,
+                                      environment=env,
+                                      serviceRole=rolearn)
+            logging.info("project created :)")
+            return project
+        except ClientError as error:
+            time.sleep(wait)
+    raise RuntimeError("couldn't create codebuild project")
+                            
 def run_project(config, package,
                 wait=3,
                 maxtries=100,

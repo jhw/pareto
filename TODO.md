@@ -1,22 +1,18 @@
 ### short
 
+- build_layer.py to implement all time.sleep(wait) calls as decorators
+- codebuild to terminate on stage failure
+  - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
+- avoid deleting codebuild project
+  - create new build
+- lambda root dir to be specified as part of config
 - LayerPackage unit test
+- single test.py script
 - class to load layers from s3
-- capture and iterate over not authorized error
-
-```
-ERROR - An error occurred (InvalidInputException) when calling the CreateProject operation: CodeBuild is not authorized to perform: sts:AssumeRole on arn:aws:iam::119552584133:role/pareto-demo-admin-role
-```
 
 ### medium
 
-- avoid deleting codebuild project
-  - create new build
-- rename `lambda` dir as `hello` (since is demo)
-- test script for staging classes
-
 - layers
-
 - scaffold generator
 - cloudwatch alerts
 - json schema for dsl
@@ -124,6 +120,12 @@ ERROR - An error occurred (InvalidInputException) when calling the CreateProject
   - not really required as this is about deployment not runtime
   
 ### done
+
+- capture and iterate over not authorized error
+
+```
+ERROR - An error occurred (InvalidInputException) when calling the CreateProject operation: CodeBuild is not authorized to perform: sts:AssumeRole on arn:aws:iam::119552584133:role/pareto-demo-admin-role
+```
 
 - new layer package
 - move layer code locally again
