@@ -1,16 +1,12 @@
 ### short
 
-- new layer staging key
+- LayerPackage unit test
+- class to load layers from s3
+- capture and iterate over not authorized error
 
-### layers
-
-- add layer staging hook into deploy_stack.py
-- add simple layer name to config
-- basic layer component
-- create layer when name exists, with runtime
-- add arn reference to layer in function
-- add layer versioning
-- allow layers to be specified by arn, in which case layer object not created
+```
+ERROR - An error occurred (InvalidInputException) when calling the CreateProject operation: CodeBuild is not authorized to perform: sts:AssumeRole on arn:aws:iam::119552584133:role/pareto-demo-admin-role
+```
 
 ### medium
 
@@ -18,6 +14,8 @@
   - create new build
 - rename `lambda` dir as `hello` (since is demo)
 - test script for staging classes
+
+- layers
 
 - scaffold generator
 - cloudwatch alerts
@@ -127,6 +125,7 @@
   
 ### done
 
+- new layer package
 - move layer code locally again
 - change layer deployable name to include slash
 - dump_env to iterate over keys and dump separate stacks

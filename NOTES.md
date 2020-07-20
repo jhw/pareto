@@ -1,3 +1,13 @@
+### layers 20/7/20
+
+- add layer staging hook into deploy_stack.py
+- add simple layer name to config
+- basic layer component
+- create layer when name exists, with runtime
+- add arn reference to layer in function
+- add layer versioning
+- allow layers to be specified by arn, in which case layer object not created
+
 ### lambda staging 18/7/20
 
 - does staging need to be refactored into two stage process in which staging keys are passed as parameters to templates ?
