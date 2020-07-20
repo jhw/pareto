@@ -1,6 +1,5 @@
 ### short
 
-- move layer code locally again
 - new layer staging key
 
 ### layers
@@ -128,6 +127,7 @@
   
 ### done
 
+- move layer code locally again
 - change layer deployable name to include slash
 - dump_env to iterate over keys and dump separate stacks
 - add slash to tmp template asset
