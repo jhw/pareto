@@ -1,5 +1,6 @@
 ### short
 
+- add slash in lambda staging names
 - add layer staging classes
 - add layer staging hook into deploy_stack.py
 
