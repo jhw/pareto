@@ -1,12 +1,11 @@
 ### short
 
-- change layer deployable name to include slash
-
-- add layer staging classes
-- add layer staging hook into deploy_stack.py
+- move layer code locally again
+- new layer staging key
 
 ### layers
 
+- add layer staging hook into deploy_stack.py
 - add simple layer name to config
 - basic layer component
 - create layer when name exists, with runtime
@@ -16,6 +15,8 @@
 
 ### medium
 
+- avoid deleting codebuild project
+  - create new build
 - rename `lambda` dir as `hello` (since is demo)
 - test script for staging classes
 
@@ -127,6 +128,7 @@
   
 ### done
 
+- change layer deployable name to include slash
 - dump_env to iterate over keys and dump separate stacks
 - add slash to tmp template asset
 - simplify lambda key filename with slash between name and ts/hexsha

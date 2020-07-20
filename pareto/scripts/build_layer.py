@@ -31,7 +31,7 @@ artifacts:
   files:
     - '**/*'
   base-directory: build
-  name: {{ package.name }}-LATEST.zip
+  name: LATEST.zip
 """
 
 VersionedBuildSpec="""
@@ -48,7 +48,7 @@ artifacts:
   files:
     - '**/*'
   base-directory: build
-  name: {{ package.name }}-{{ package.version.formatted }}.zip
+  name: {{ package.version.formatted }}.zip
 """
 
 def reset_project(fn,
@@ -140,7 +140,8 @@ def init_project(config, package, rolearn):
             "buildspec": template}
     artifacts={"type": "S3",
                "location": config["globals"]["bucket"],
-               "path": "%s/layers" % config["globals"]["app"],
+               "path": "%s/layers/%s" % (config["globals"]["app"],
+                                         package["name"]),
                "overrideArtifactName": True,
                "packaging": "ZIP"}
     return CB.create_project(name=layer_project_name(config, package),
