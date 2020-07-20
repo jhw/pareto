@@ -6,7 +6,8 @@
 """
 
 from pareto.scripts import *
-from pareto.scripts.helpers.layers import *
+
+from pareto.staging.layers import *
 
 RolePolicyDoc=yaml.load("""
 Statement:

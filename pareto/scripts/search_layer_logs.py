@@ -5,7 +5,8 @@
 """
 
 from pareto.scripts import *
-from pareto.scripts.helpers.layers import *
+
+from pareto.staging.layers import *
 
 if __name__=="__main__":
     try:
