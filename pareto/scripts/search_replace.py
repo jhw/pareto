@@ -23,7 +23,7 @@ def refactor_src(pat, rep, root):
                     dest=open(newfilename, 'w')
                     dest.write(newtext)
                     dest.close()
-    refactor([root])
+    refactor(root.split("/"))
                         
 if __name__=="__main__":
     try:
@@ -36,6 +36,6 @@ if __name__=="__main__":
           type: str
         """, Loader=yaml.FullLoader)
         args=argsparse(sys.argv[1:], argsconfig)
-        refactor_src(*args)
+        refactor_src(**args)
     except RuntimeError as error:
         print ("Error: %s" % str(error))

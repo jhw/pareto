@@ -5,7 +5,8 @@
 """
 
 from pareto.scripts import *
-from pareto.scripts.helpers.lambdas import *
+
+from pareto.staging.lambdas import *
 
 from pareto.components.preprocessor import preprocess
 
@@ -141,7 +142,7 @@ def latest_commits(repo=Repo("."),
 def add_staging(config, commits):
     logging.info("adding staging")
     def lambda_key(name, commits):
-        return str(LambdaKey(app=config["globals"]["app"],
+        return str(LambdaStagingKey(app=config["globals"]["app"],
                              name=name,
                              hexsha=commits[name][0],
                              timestamp=commits[name][1]))

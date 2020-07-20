@@ -1,7 +1,5 @@
 ### short
 
-- remove "stack" from stacks
-- move lambda helpers to lambda staging
 - add layer staging classes
 - add layer staging hook into deploy_stack.py
 
@@ -16,6 +14,9 @@
 
 ### medium
 
+- rename `lambda` dir as `hello` (since is demo)
+- test script for staging classes
+
 - scaffold generator
 - cloudwatch alerts
 - json schema for dsl
@@ -23,19 +24,22 @@
 
 ### v1.1
 
+- cognito
 - apigateway2
 - eventbridge
+
 - github actions
 - ci pipeline
 - lambda xray
-- custom lambda authorisers
-- cognito
 - route 53/cloudfront
 - appsync/graphql
 - topology chart generation
 
 ### thoughts
 
+- singularise stack names ?
+  - no is too complex as means you also have to singularise references
+  - if you really want to singularise stuff, singularise the keys in the dsl
 - pass staging details as params ?
   - no; see notes
 - pluralise dashboard stack / template name ?
@@ -125,6 +129,7 @@
   
 ### done
 
+- move lambda helpers to lambda staging
 - check deployment
 - check deploy_stack.py
 - push_lambdas.py

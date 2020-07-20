@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from pareto.scripts import *
-from pareto.scripts.helpers.lambdas import *
+
+from pareto.staging.lambdas import *
 
 from pareto.components.preprocessor import preprocess
 from pareto.components.env import synth_env
@@ -46,7 +47,7 @@ def add_staging(config):
     def dump_keys(keys):
         for k, v in keys.items():
             logging.info("%s => %s" % (k, v))
-    s3keys=LambdaKeys(config=config,
+    s3keys=LambdaStagingKeys(config=config,
                       s3=S3)
     keys, errors = assign_keys(s3keys,
                                config["components"])

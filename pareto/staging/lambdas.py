@@ -1,10 +1,10 @@
 import datetime, re, unittest
 
-class LambdaKey(dict):
+class LambdaStagingKey(dict):
 
     @classmethod
     def parse(self, s3key):
-        key=LambdaKey()
+        key=LambdaStagingKey()
         def pop_timestamp(tokens):
             ts=[int(tokens.pop())
                 for i in range(6)]
@@ -32,7 +32,7 @@ class LambdaKey(dict):
                                             format_timestamp(self["timestamp"]),
                                             self["hexsha"])
     
-class LambdaKeys(list):
+class LambdaStagingKeys(list):
 
     def __init__(self, config, s3):
         list.__init__(self)
@@ -47,7 +47,7 @@ class LambdaKeys(list):
     def latest(self):
         keys={}
         for s3key in sorted(self):
-            key=LambdaKey.parse(s3key)
+            key=LambdaStagingKey.parse(s3key)
             keys[key["name"]]=s3key
         return keys
 
@@ -55,12 +55,12 @@ class LambdaKeys(list):
     def commits(self):
         keys={}
         for s3key in self:
-            key=LambdaKey.parse(s3key)
+            key=LambdaStagingKey.parse(s3key)
             keys.setdefault(key["name"], {})
             keys[key["name"]][key["hexsha"]]=s3key
         return keys
 
-class LambdaKeyTest(unittest.TestCase):
+class LambdaStagingKeyTest(unittest.TestCase):
 
     App="my-app"
     Name="hello-world"
@@ -70,12 +70,12 @@ class LambdaKeyTest(unittest.TestCase):
     Key="my-app/lambdas/hello-world-1970-12-20-19-30-00-ABCDEFGH.zip"
     
     def test_new(self):
-        key=LambdaKey(**{attr: getattr(self, attr.capitalize())
+        key=LambdaStagingKey(**{attr: getattr(self, attr.capitalize())
                          for attr in ["app", "name", "timestamp", "hexsha"]})
         self.assertEqual(str(key), self.Key)
 
     def test_parse(self):
-        key=LambdaKey.parse(self.Key)
+        key=LambdaStagingKey.parse(self.Key)
         for attr in ["app", "name", "timestamp", "hexsha"]:
             self.assertEqual(key[attr], getattr(self, attr.capitalize()))
             
