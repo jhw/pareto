@@ -1,12 +1,11 @@
 ### short
 
+- single test.py script
 - codebuild to terminate on stage failure
   - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
 - avoid deleting codebuild project
   - create new build
 - lambda root dir to be specified as part of config
-- LayerPackage unit test
-- single test.py script
 - class to load layers from s3
 
 ### medium
@@ -122,6 +121,7 @@
   
 ### done
 
+- LayerPackage unit test
 - single buildspec
 - capture and iterate over not authorized error
 
