@@ -22,7 +22,7 @@ if __name__=="__main__":
         """, Loader=yaml.FullLoader)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        package=LayerPackage.parse(args.pop("package"))
+        package=LayerPackage.parse_cli(args.pop("package"))
         loggroupname="/aws/codebuild/%s" % layer_project_name(config,
                                                               package)
         starttime=int(1000*(time.time()-args["window"]))                

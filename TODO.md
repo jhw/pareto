@@ -1,6 +1,5 @@
 ### short
 
-- change LayerPackage.parse to parse_cli
 - new LayerPackage.parse_s3
 - unit test for LayerPackage.parse_s3
 - new LayerPackages class which parses s3 files on initialisation
@@ -127,6 +126,7 @@
   
 ### done
 
+- change LayerPackage.parse to parse_cli
 - change LambdaCommits to parse keys on initialisation
 - lambda root dir to be specified as part of config
 - rename lambda key as lambda commit

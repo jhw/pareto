@@ -20,7 +20,7 @@ class LayerPackage(dict):
     
     @classmethod
     @validate
-    def parse(self, packagestr):
+    def parse_cli(self, packagestr):
         package=LayerPackage()
         tokens=packagestr.split(self.VersionDelimiter)
         package["name"]=tokens[0]
@@ -39,15 +39,15 @@ class LayerPackage(dict):
 
 class LayerPackageTest(unittest.TestCase):
 
-    def test_latest(self):        
-        key=LayerPackage.parse("pymorphy2")
+    def test_latest_cli(self):        
+        key=LayerPackage.parse_cli("pymorphy2")
         self.assertEqual(key["name"], "pymorphy2")
         self.assertEqual(key["version"], None)
         self.assertEqual(key["pip_source"], "pymorphy2")
         self.assertEqual(key["artifacts_name"], "LATEST.zip")
 
-    def test_version(self):        
-        key=LayerPackage.parse("pymorphy2=0.8")
+    def test_version_cli(self):        
+        key=LayerPackage.parse_cli("pymorphy2=0.8")
         self.assertEqual(key["name"], "pymorphy2")
         self.assertEqual(key["version"], "0.8")
         self.assertEqual(key["pip_source"], "pymorphy2==0.8")
