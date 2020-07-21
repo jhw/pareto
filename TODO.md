@@ -1,6 +1,6 @@
 ### short
 
-- refactor LayerPackage parse_xxx as create_xxx
+- refactor LambdaCommit.parse as LambdaCommit.create_s3
 - create_cli should really take config so it can include app
 - LayerPackage str() function to re- render s3 key
 - new LayerPackages class which parses s3 files on initialisation
@@ -128,6 +128,7 @@
   
 ### done
 
+- refactor LayerPackage parse_xxx as create_xxx
 - include app in LayerPackage.parse_s3
 - new LayerPackage.parse_s3
 - unit test for LayerPackage.parse_s3

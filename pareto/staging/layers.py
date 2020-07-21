@@ -22,7 +22,7 @@ class LayerPackage(dict):
     
     @classmethod
     @validate_cli
-    def parse_cli(self, pkgstr):
+    def create_cli(self, pkgstr):
         tokens=pkgstr.split(self.CLIDelimiter)
         pkg=LayerPackage()
         pkg["name"]=tokens[0]
@@ -42,7 +42,7 @@ class LayerPackage(dict):
     """
     
     @classmethod
-    def parse_s3(self, s3key):
+    def create_s3(self, s3key):
         tokens=s3key.split("/")
         pkg=LayerPackage()
         pkg["app"]=tokens[0]
@@ -58,28 +58,28 @@ class LayerPackage(dict):
 
 class LayerPackageTest(unittest.TestCase):
 
-    def test_parse_cli_latest(self):        
-        pkg=LayerPackage.parse_cli("pymorphy2")
+    def test_create_cli_latest(self):        
+        pkg=LayerPackage.create_cli("pymorphy2")
         self.assertEqual(pkg["name"], "pymorphy2")
         self.assertEqual(pkg["version"], None)
         self.assertEqual(pkg["pip_source"], "pymorphy2")
         self.assertEqual(pkg["artifacts_name"], "LATEST.zip")
 
-    def test_parse_cli_versioned(self):        
-        pkg=LayerPackage.parse_cli("pymorphy2=0.8")
+    def test_create_cli_versioned(self):        
+        pkg=LayerPackage.create_cli("pymorphy2=0.8")
         self.assertEqual(pkg["name"], "pymorphy2")
         self.assertEqual(pkg["version"], "0.8")
         self.assertEqual(pkg["pip_source"], "pymorphy2==0.8")
         self.assertEqual(pkg["artifacts_name"], "0-8.zip")
 
-    def test_parse_s3_latest(self):        
-        pkg=LayerPackage.parse_s3("foobar/layers/pymorphy2/LATEST.zip")
+    def test_create_s3_latest(self):        
+        pkg=LayerPackage.create_s3("foobar/layers/pymorphy2/LATEST.zip")
         self.assertEqual(pkg["app"], "foobar")
         self.assertEqual(pkg["name"], "pymorphy2")
         self.assertEqual(pkg["version"], None)
 
-    def test_parse_s3_versioned(self):        
-        pkg=LayerPackage.parse_s3("foobar/layers/pymorphy2/0-8.zip")
+    def test_create_s3_versioned(self):        
+        pkg=LayerPackage.create_s3("foobar/layers/pymorphy2/0-8.zip")
         self.assertEqual(pkg["app"], "foobar")
         self.assertEqual(pkg["name"], "pymorphy2")
         self.assertEqual(pkg["version"], "0.8")
