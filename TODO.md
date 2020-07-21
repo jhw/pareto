@@ -1,7 +1,10 @@
 ### short
 
-- avoid deleting codebuild project
-  - create new build
+- print project builds
+- filter out project reset ?
+- filter by status ? date ?
+- pop last project ?
+
 - lambda root dir to be specified as part of config
 - class to load layers from s3
 
@@ -28,6 +31,7 @@
 
 ### thoughts
 
+- rename codebuild logs file
 - build_layer.py to implement all time.sleep(wait) calls as decorators ?
   - structure doesn't really warrant it
 - singularise stack names ?
