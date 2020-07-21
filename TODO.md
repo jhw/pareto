@@ -1,8 +1,8 @@
 ### short
 
-- test for LayerPackage __str__
-- new LayerPackages class which parses s3 files on initialisation
-- s3 mock tests for LambdaCommits, LayerPackages
+- s3 mock test for LambdaCommits
+- new LayerPackages class
+- s3 mock test for LayerPackages
 
 - add layer staging to deploy_stack.py
 
@@ -127,6 +127,7 @@
   
 ### done
 
+- test for LayerPackage __str__
 - LayerPackage __str__ function to re- render s3 key
 - create_cli should really take config so it can include app
 - refactor LambdaCommit.parse as LambdaCommit.create_s3

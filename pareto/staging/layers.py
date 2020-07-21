@@ -58,7 +58,7 @@ class LayerPackage(dict):
         dict.__init__(self, kwargs)
 
     def __str__(self):
-        filename="%s.zip" % self["version"].replace(".", "-") if self["version"] else self.LatestZip
+        filename="%s.zip" % self["version"].replace(".", "-") if ("version" in self and self["version"]) else self.LatestZip
         return "%s/layers/%s/%s" % (self["app"],
                                     self["name"],
                                     filename)
@@ -94,6 +94,17 @@ class LayerPackageTest(unittest.TestCase):
         self.assertEqual(pkg["app"], "foobar")
         self.assertEqual(pkg["name"], "pymorphy2")
         self.assertEqual(pkg["version"], "0.8")
+
+    def test_str_latest(self):
+        pkg=LayerPackage(app="foobar",
+                         name="pymorphy2")
+        self.assertEqual("foobar/layers/pymorphy2/LATEST.zip", str(pkg))
+
+    def test_str_versioned(self):
+        pkg=LayerPackage(app="foobar",
+                         name="pymorphy2",
+                         version="0.8");
+        self.assertEqual("foobar/layers/pymorphy2/0-8.zip", str(pkg))
             
 if __name__=="__main__":
     unittest.main()
