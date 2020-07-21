@@ -1,5 +1,9 @@
 ### short
 
+- include app in LayerPackage.parse_s3
+- rename parse_ as create_
+  - lambdas also
+
 - new LayerPackages class which parses s3 files on initialisation
 
 - add layer staging to deploy_stack.py

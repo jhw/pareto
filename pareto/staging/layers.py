@@ -38,12 +38,14 @@ class LayerPackage(dict):
 
     """
     - no need to include `pip_source` and `artifacts_name" when loading from s3 as not creating any new layers at this stage
+    - but you need to include `app` if you want to render to s3
     """
     
     @classmethod
     def parse_s3(self, s3key):
         tokens=s3key.split("/")
         pkg=LayerPackage()
+        pkg["app"]=tokens[0]
         pkg["name"]=tokens[-2]
         if tokens[-1]==self.LatestZip:
             pkg["version"]=None
@@ -71,12 +73,14 @@ class LayerPackageTest(unittest.TestCase):
         self.assertEqual(pkg["artifacts_name"], "0-8.zip")
 
     def test_parse_s3_latest(self):        
-        pkg=LayerPackage.parse_s3("foobar/lambdas/pymorphy2/LATEST.zip")
+        pkg=LayerPackage.parse_s3("foobar/layers/pymorphy2/LATEST.zip")
+        self.assertEqual(pkg["app"], "foobar")
         self.assertEqual(pkg["name"], "pymorphy2")
         self.assertEqual(pkg["version"], None)
 
     def test_parse_s3_versioned(self):        
-        pkg=LayerPackage.parse_s3("foobar/lambdas/pymorphy2/0-8.zip")
+        pkg=LayerPackage.parse_s3("foobar/layers/pymorphy2/0-8.zip")
+        self.assertEqual(pkg["app"], "foobar")
         self.assertEqual(pkg["name"], "pymorphy2")
         self.assertEqual(pkg["version"], "0.8")
             
