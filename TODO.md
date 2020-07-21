@@ -1,5 +1,7 @@
 ### short
 
+- rename lambda as src
+
 - s3 mock test for LambdaCommits
 - new LayerPackages class
 - s3 mock test for LayerPackages
