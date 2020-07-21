@@ -1,6 +1,5 @@
 ### short
 
-- refactor package as pkg
 - new LayerPackages class which parses s3 files on initialisation
 
 - add layer staging to deploy_stack.py
@@ -29,12 +28,13 @@
 
 ### thoughts
 
+- change package refs to pkg ?
+  - not worth it
 - clean up codebuild project every time ?
   - no because then you probably want to clean the role also which can be successfully reused
   - is probably better to have empty_artifacts.py do a global clean
 - avoid resetting codebuild project every time ?
   - problem is buildspec is part of source arg passed to create_project
-- rename codebuild logs file
 - build_layer.py to implement all time.sleep(wait) calls as decorators ?
   - structure doesn't really warrant it
 - singularise stack names ?
