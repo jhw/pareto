@@ -3,15 +3,15 @@ import datetime, re, unittest
 class LambdaCommit(dict):
 
     @classmethod
-    def parse(self, s3key):
-        key=LambdaCommit()
-        tokens=s3key.split("/")
-        key["app"]=tokens[0]
-        key["name"]=tokens[2]
+    def parse(self, key):
+        commit=LambdaCommit()
+        tokens=key.split("/")
+        commit["app"]=tokens[0]
+        commit["name"]=tokens[2]
         tokens=tokens[-1].split(".")[0].split("-")
-        key["hexsha"]=tokens.pop()
-        key["timestamp"]=datetime.datetime(*[int(tok) for tok in tokens])
-        return key
+        commit["hexsha"]=tokens.pop()
+        commit["timestamp"]=datetime.datetime(*[int(tok) for tok in tokens])
+        return commit
 
     def __init_(self, kwargs={}):
         dict.__init__(self, kwargs)
@@ -36,23 +36,23 @@ class LambdaCommits(list):
                                  Prefix="%s/lambdas" % config["globals"]["app"])
         for struct in pages:
             if "Contents" in struct:
-                self+=[obj["Key"] for obj in struct["Contents"]]
+                self+=[LambdaCommit.parse(obj["Key"])
+                       for obj in struct["Contents"]]
 
     @property
-    def groups(self):
+    def grouped_keys(self):
         keys={}
-        for s3key in self:
-            key=LambdaCommit.parse(s3key)
-            keys.setdefault(key["name"], {})
-            keys[key["name"]][key["hexsha"]]=s3key
+        for commit in self:
+            keys.setdefault(commit["name"], {})
+            keys[commit["name"]][commit["hexsha"]]=str(commit)
         return keys
                 
     @property
-    def latest(self):
+    def latest_keys(self):
         keys={}
-        for s3key in sorted(self):
-            key=LambdaCommit.parse(s3key)
-            keys[key["name"]]=s3key
+        for commit in sorted(self,
+                             key=lambda x: x["timestamp"]):
+            keys[commit["name"]]=str(commit)
         return keys
 
 class LambdaCommitTest(unittest.TestCase):
@@ -65,14 +65,14 @@ class LambdaCommitTest(unittest.TestCase):
     Key="my-app/lambdas/hello-world/1970-12-20-19-30-00-ABCDEFGH.zip"
     
     def test_new(self):
-        key=LambdaCommit(**{attr: getattr(self, attr.capitalize())
-                         for attr in ["app", "name", "timestamp", "hexsha"]})
-        self.assertEqual(str(key), self.Key)
+        commit=LambdaCommit(**{attr: getattr(self, attr.capitalize())
+                               for attr in ["app", "name", "timestamp", "hexsha"]})
+        self.assertEqual(str(commit), self.Key)
 
     def test_parse(self):
-        key=LambdaCommit.parse(self.Key)
+        commit=LambdaCommit.parse(self.Key)
         for attr in ["app", "name", "timestamp", "hexsha"]:
-            self.assertEqual(key[attr], getattr(self, attr.capitalize()))
+            self.assertEqual(commit[attr], getattr(self, attr.capitalize()))
             
 if __name__=="__main__":
     unittest.main()

@@ -1,6 +1,9 @@
 ### short
 
-- class to load layers from s3
+- change LayerPackage.parse to parse_cli
+- new LayerPackage.parse_s3
+- unit test for LayerPackage.parse_s3
+- new LayerPackages class which parses s3 files on initialisation
 
 - add layer staging to deploy_stack.py
 
@@ -124,6 +127,7 @@
   
 ### done
 
+- change LambdaCommits to parse keys on initialisation
 - lambda root dir to be specified as part of config
 - rename lambda key as lambda commit
 - codebuild to terminate on stage failure

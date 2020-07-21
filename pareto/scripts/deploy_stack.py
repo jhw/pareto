@@ -29,8 +29,8 @@ def add_staging(config):
         for component in filter_functions(components):
             component["staging"]={"bucket": config["globals"]["bucket"],
                                   "key": keys[component["name"]]}
-    def assign_commits(commits, components):
-        latest, groups = commits.latest, commits.groups
+    def assign_keys(commits, components):
+        groups, latest = commits.grouped_keys, commits.latest_keys
         keys, errors = {}, []
         for component in filter_functions(components):
             if "commit" in component:
@@ -49,8 +49,8 @@ def add_staging(config):
             logging.info("%s => %s" % (k, v))
     commits=LambdaCommits(config=config,
                           s3=S3)
-    keys, errors = assign_commits(commits,
-                                  config["components"])
+    keys, errors = assign_keys(commits,
+                               config["components"])
     if errors!=[]:
         raise RuntimeError(", ".join(errors))
     add_staging(config["components"], keys)
