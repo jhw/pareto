@@ -194,7 +194,8 @@ if __name__=="__main__":
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         validate_bucket(config)
-        package=LayerPackage.create_cli(args.pop("package"))
+        package=LayerPackage.create_cli(config,
+                                        args.pop("package"))
         init_project(config, package)
         run_project(config, package)
     except ClientError as error:

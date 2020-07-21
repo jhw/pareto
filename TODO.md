@@ -1,10 +1,10 @@
 ### short
 
-- create_cli should really take config so it can include app
-- LayerPackage str() function to re- render s3 key
+- LayerPackage __str__ function to re- render s3 key
+- test for LayerPackage __str__
 - new LayerPackages class which parses s3 files on initialisation
-
 - s3 mock tests for LambdaCommits, LayerPackages
+
 - add layer staging to deploy_stack.py
 
 ### medium
@@ -128,6 +128,7 @@
   
 ### done
 
+- create_cli should really take config so it can include app
 - refactor LambdaCommit.parse as LambdaCommit.create_s3
 - refactor LayerPackage parse_xxx as create_xxx
 - include app in LayerPackage.parse_s3

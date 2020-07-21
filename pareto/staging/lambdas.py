@@ -64,15 +64,17 @@ class LambdaCommitTest(unittest.TestCase):
 
     Key="my-app/lambdas/hello-world/1970-12-20-19-30-00-ABCDEFGH.zip"
     
-    def test_new(self):
+    def test_create_s3(self):
+        commit=LambdaCommit.create_s3(self.Key)
+        for attr in ["app", "name", "timestamp", "hexsha"]:
+            self.assertEqual(commit[attr], getattr(self, attr.capitalize()))
+
+    def test_str(self):
         commit=LambdaCommit(**{attr: getattr(self, attr.capitalize())
                                for attr in ["app", "name", "timestamp", "hexsha"]})
         self.assertEqual(str(commit), self.Key)
 
-    def test_parse(self):
-        commit=LambdaCommit.parse(self.Key)
-        for attr in ["app", "name", "timestamp", "hexsha"]:
-            self.assertEqual(commit[attr], getattr(self, attr.capitalize()))
+
             
 if __name__=="__main__":
     unittest.main()

@@ -11,20 +11,21 @@ class LayerPackage(dict):
     LatestZip="LATEST.zip"
     
     def validate_cli(fn):
-        def wrapped(self, pkgstr):
+        def wrapped(self, config, pkgstr):
             if "-" in pkgstr:
                 raise RuntimeError("please use = as version delimiter")
             if (self.CLIDelimiter in pkgstr and
                 not re.search("(\\d+\\.)*\\d+$", pkgstr)):
                 raise RuntimeError("package definition has invalid format")
-            return fn(self, pkgstr)
+            return fn(self, config, pkgstr)
         return wrapped
     
     @classmethod
     @validate_cli
-    def create_cli(self, pkgstr):
+    def create_cli(self, config, pkgstr):
         tokens=pkgstr.split(self.CLIDelimiter)
         pkg=LayerPackage()
+        pkg["app"]=config["globals"]["app"]
         pkg["name"]=tokens[0]
         if len(tokens) > 1:
             pkg["version"]=tokens[1]
@@ -58,15 +59,19 @@ class LayerPackage(dict):
 
 class LayerPackageTest(unittest.TestCase):
 
+    Config={"globals": {"app": "foobar"}}
+    
     def test_create_cli_latest(self):        
-        pkg=LayerPackage.create_cli("pymorphy2")
+        pkg=LayerPackage.create_cli(self.Config,
+                                    "pymorphy2")
         self.assertEqual(pkg["name"], "pymorphy2")
         self.assertEqual(pkg["version"], None)
         self.assertEqual(pkg["pip_source"], "pymorphy2")
         self.assertEqual(pkg["artifacts_name"], "LATEST.zip")
 
     def test_create_cli_versioned(self):        
-        pkg=LayerPackage.create_cli("pymorphy2=0.8")
+        pkg=LayerPackage.create_cli(self.Config,
+                                    "pymorphy2=0.8")
         self.assertEqual(pkg["name"], "pymorphy2")
         self.assertEqual(pkg["version"], "0.8")
         self.assertEqual(pkg["pip_source"], "pymorphy2==0.8")
