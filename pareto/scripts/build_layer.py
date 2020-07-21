@@ -18,7 +18,7 @@ Statement:
 Version: '2012-10-17'
 """, Loader=yaml.FullLoader)
 
-LatestBuildSpec="""
+BuildSpec="""
 version: {{ version }}
 phases:
   install:
@@ -27,29 +27,12 @@ phases:
     commands:
       - mkdir -p build/python
       - pip install --upgrade pip
-      - pip install --upgrade --target build/python {{ package.name }}
+      - pip install --upgrade --target build/python {{ package.pip_source }}
 artifacts:
   files:
     - '**/*'
   base-directory: build
-  name: LATEST.zip
-"""
-
-VersionedBuildSpec="""
-version: {{ version }}
-phases:
-  install:
-    runtime-versions:
-      python: {{ runtime }}
-    commands:
-      - mkdir -p build/python
-      - pip install --upgrade pip
-      - pip install --upgrade --target build/python {{ package.name }}=={{ package.version.raw }}
-artifacts:
-  files:
-    - '**/*'
-  base-directory: build
-  name: {{ package.version.formatted }}.zip
+  name: {{ package.artifacts_name }}
 """
 
 def reset_project(fn,
@@ -118,6 +101,7 @@ def assert_role(fn):
 @reset_project
 @assert_role
 def init_project(config, package, rolearn,
+                 buildspec=BuildSpec,
                  maxtries=20,
                  wait=3):
     logging.info("creating project")
@@ -132,7 +116,6 @@ def init_project(config, package, rolearn,
           "package": package,
           "runtime": config["globals"]["runtime"]}
     projectname=layer_project_name(config, package)
-    buildspec=VersionedBuildSpec if "version" in package else LatestBuildSpec
     template=Template(buildspec).render(args)
     print (template)
     print ()

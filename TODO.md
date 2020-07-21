@@ -1,6 +1,5 @@
 ### short
 
-- build_layer.py to implement all time.sleep(wait) calls as decorators
 - codebuild to terminate on stage failure
   - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
 - avoid deleting codebuild project
@@ -33,6 +32,8 @@
 
 ### thoughts
 
+- build_layer.py to implement all time.sleep(wait) calls as decorators ?
+  - structure doesn't really warrant it
 - singularise stack names ?
   - no is too complex as means you also have to singularise references
   - if you really want to singularise stuff, singularise the keys in the dsl
@@ -121,6 +122,7 @@
   
 ### done
 
+- single buildspec
 - capture and iterate over not authorized error
 
 ```

@@ -24,13 +24,12 @@ class LayerPackage(dict):
         package=LayerPackage()
         tokens=packagestr.split(self.VersionDelimiter)
         package["name"]=tokens[0]
-        """
-        - if version doesn't exist then don't set it
-        - build_layer.py assumes missing version == LATEST
-        """
         if len(tokens) > 1:
-            package["version"]={"raw": tokens[1],
-                                "formatted": tokens[1].replace(".", "-")}
+            package["pip_source"]="%s==%s" % tuple(tokens)
+            package["artifacts_name"]="%s.zip" % tokens[1].replace(".", "-")
+        else:
+            package["pip_source"]=package["name"]
+            package["artifacts_name"]="LATEST.zip"
         return package
 
     def __init_(self, kwargs={}):
