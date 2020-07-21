@@ -1,5 +1,6 @@
 globals:
   app: pareto-demo
+  src: lambda
   bucket: wol-deployments
   runtime: "3.7"
 components:

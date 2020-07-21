@@ -83,9 +83,8 @@ def format_commits(fn):
     return wrapped
 
 @format_commits
-def latest_commits(repo=Repo("."),
-                   roots=["lambda/%s" % path
-                          for path in os.listdir("lambda")],              
+def latest_commits(config,
+                   repo=Repo("."),
                    ignore=["test.py"]):
     logging.info("filtering latest commits")
     def diff_commits(c1, c0):
@@ -128,6 +127,8 @@ def latest_commits(repo=Repo("."),
     commits=sorted(repo.iter_commits(repo.active_branch),
                    key=lambda x: x.committed_datetime)
     commits.reverse()
+    roots=["%s/%s" % (config["globals"]["src"], path)
+           for path in os.listdir(config["globals"]["src"])]              
     latest=Latest(roots=roots,
                   ignore=ignore)
     for c0, c1 in zip(commits[:-1], commits[1:]):
@@ -153,17 +154,21 @@ def add_staging(config, commits):
 
 def push_lambdas(config):
     logging.info("pushing lambdas")
-    def validate_lambda(component):
-        if not os.path.exists("lambda/%s" % underscore(component["name"])):
-            raise RuntimeError("%s lambda does not exist" % component["name"])
+    def validate_lambda(config, component):
+        path="%s/%s" % (config["globals"]["src"],
+                        underscore(component["name"]))
+        if not os.path.exists(path):
+            raise RuntimeError("%s does not exist" % path)
     def is_valid(filename, ignore=["test.py$",
                                    ".pyc$"]):
         for pat in ignore:
             if re.search(pat, filename)!=None:
                 return False
         return True
-    def write_zipfile(component, zf):
-        path, count = "lambda/%s" % underscore(component["name"]), 0
+    def write_zipfile(config, component, zf):
+        path="%s/%s" % (config["globals"]["src"],
+                        underscore(component["name"]))
+        count=0
         for root, dirs, files in os.walk(path):
             for filename in files:
                 if is_valid(filename):
@@ -172,13 +177,13 @@ def push_lambdas(config):
                     count+=1
         if not count:
             raise RuntimeError("no files found in %s" % path)
-    def init_zipfile(component):
+    def init_zipfile(config, component):
         tokens=["tmp"]+component["staging"]["key"].split("/")[-2:]
         zfdir, zfname = "/".join(tokens[:-1]), "/".join(tokens)        
         if not os.path.exists(zfdir):
             os.makedirs(zfdir)
         zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-        write_zipfile(component, zf)
+        write_zipfile(config, component, zf)
         zf.close()
         return zfname
     def check_exists(fn):
@@ -198,8 +203,8 @@ def push_lambdas(config):
                        component["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
     for component in filter_functions(config["components"]):
-        validate_lambda(component)
-        zfname=init_zipfile(component)
+        validate_lambda(config, component)
+        zfname=init_zipfile(config, component)
         push_lambda(component, zfname)
         
 if __name__=="__main__":
@@ -214,7 +219,8 @@ if __name__=="__main__":
         validate_bucket(config)
         preprocess(config)
         run_tests(config)
-        add_staging(config, latest_commits())
+        commits=latest_commits(config)
+        add_staging(config, commits)
         push_lambdas(config)
     except ClientError as error:
         logging.error(error)                      

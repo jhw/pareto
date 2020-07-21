@@ -2,7 +2,7 @@
 
 - class to load layers from s3
 
-- lambda root dir to be specified as part of config
+- add layer staging to deploy_stack.py
 
 ### medium
 
@@ -124,6 +124,7 @@
   
 ### done
 
+- lambda root dir to be specified as part of config
 - rename lambda key as lambda commit
 - codebuild to terminate on stage failure
   - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
