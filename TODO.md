@@ -1,6 +1,5 @@
 ### short
 
-- LayerPackage __str__ function to re- render s3 key
 - test for LayerPackage __str__
 - new LayerPackages class which parses s3 files on initialisation
 - s3 mock tests for LambdaCommits, LayerPackages
@@ -128,6 +127,7 @@
   
 ### done
 
+- LayerPackage __str__ function to re- render s3 key
 - create_cli should really take config so it can include app
 - refactor LambdaCommit.parse as LambdaCommit.create_s3
 - refactor LayerPackage parse_xxx as create_xxx

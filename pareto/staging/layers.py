@@ -57,6 +57,12 @@ class LayerPackage(dict):
     def __init_(self, kwargs={}):
         dict.__init__(self, kwargs)
 
+    def __str__(self):
+        filename="%s.zip" % self["version"].replace(".", "-") if self["version"] else self.LatestZip
+        return "%s/layers/%s/%s" % (self["app"],
+                                    self["name"],
+                                    filename)
+        
 class LayerPackageTest(unittest.TestCase):
 
     Config={"globals": {"app": "foobar"}}

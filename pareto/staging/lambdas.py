@@ -73,8 +73,6 @@ class LambdaCommitTest(unittest.TestCase):
         commit=LambdaCommit(**{attr: getattr(self, attr.capitalize())
                                for attr in ["app", "name", "timestamp", "hexsha"]})
         self.assertEqual(str(commit), self.Key)
-
-
             
 if __name__=="__main__":
     unittest.main()
