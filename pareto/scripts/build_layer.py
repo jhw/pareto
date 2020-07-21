@@ -18,6 +18,10 @@ Statement:
 Version: '2012-10-17'
 """, Loader=yaml.FullLoader)
 
+"""
+- https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
+"""
+
 BuildSpec="""
 version: {{ version }}
 phases:
@@ -28,6 +32,9 @@ phases:
       - mkdir -p build/python
       - pip install --upgrade pip
       - pip install --upgrade --target build/python {{ package.pip_source }}
+  post_build:
+    commands:
+      - bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"
 artifacts:
   files:
     - '**/*'

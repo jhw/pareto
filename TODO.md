@@ -1,7 +1,5 @@
 ### short
 
-- codebuild to terminate on stage failure
-  - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
 - avoid deleting codebuild project
   - create new build
 - lambda root dir to be specified as part of config
@@ -120,6 +118,8 @@
   
 ### done
 
+- codebuild to terminate on stage failure
+  - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
 - single test.py script
 - LayerPackage unit test
 - single buildspec
