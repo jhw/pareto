@@ -3,7 +3,7 @@ import datetime, re, unittest
 class LambdaCommit(dict):
 
     @classmethod
-    def parse(self, key):
+    def create_s3(self, key):
         commit=LambdaCommit()
         tokens=key.split("/")
         commit["app"]=tokens[0]
@@ -36,7 +36,7 @@ class LambdaCommits(list):
                                  Prefix="%s/lambdas" % config["globals"]["app"])
         for struct in pages:
             if "Contents" in struct:
-                self+=[LambdaCommit.parse(obj["Key"])
+                self+=[LambdaCommit.create_s3(obj["Key"])
                        for obj in struct["Contents"]]
 
     @property
