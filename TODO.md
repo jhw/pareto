@@ -1,6 +1,5 @@
 ### short
 
-- single test.py script
 - codebuild to terminate on stage failure
   - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
 - avoid deleting codebuild project
@@ -121,6 +120,7 @@
   
 ### done
 
+- single test.py script
 - LayerPackage unit test
 - single buildspec
 - capture and iterate over not authorized error
