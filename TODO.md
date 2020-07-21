@@ -1,7 +1,6 @@
 ### short
 
-- new LayerPackage.parse_s3
-- unit test for LayerPackage.parse_s3
+- refactor package as pkg
 - new LayerPackages class which parses s3 files on initialisation
 
 - add layer staging to deploy_stack.py
@@ -126,6 +125,8 @@
   
 ### done
 
+- new LayerPackage.parse_s3
+- unit test for LayerPackage.parse_s3
 - change LayerPackage.parse to parse_cli
 - change LambdaCommits to parse keys on initialisation
 - lambda root dir to be specified as part of config
