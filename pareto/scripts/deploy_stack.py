@@ -29,13 +29,13 @@ def add_staging(config):
         for component in filter_functions(components):
             component["staging"]={"bucket": config["globals"]["bucket"],
                                   "key": keys[component["name"]]}
-    def assign_keys(s3keys, components):
-        latest, commits = s3keys.latest, s3keys.commits
+    def assign_commits(commits, components):
+        latest, groups = commits.latest, commits.groups
         keys, errors = {}, []
         for component in filter_functions(components):
             if "commit" in component:
-                if component["commit"] in commits[component["name"]]:
-                    keys[component["name"]]=commits[component["name"]][component["commit"]]
+                if component["commit"] in groups[component["name"]]:
+                    keys[component["name"]]=groups[component["name"]][component["commit"]]
                 else:
                     errors.append("commit %s not found for %s" % (component["commit"], component["name"]))
             else:
@@ -47,10 +47,10 @@ def add_staging(config):
     def dump_keys(keys):
         for k, v in keys.items():
             logging.info("%s => %s" % (k, v))
-    s3keys=LambdaStagingKeys(config=config,
-                      s3=S3)
-    keys, errors = assign_keys(s3keys,
-                               config["components"])
+    commits=LambdaCommits(config=config,
+                          s3=S3)
+    keys, errors = assign_commits(commits,
+                                  config["components"])
     if errors!=[]:
         raise RuntimeError(", ".join(errors))
     add_staging(config["components"], keys)

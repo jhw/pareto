@@ -2,10 +2,10 @@
 
 import unittest
 
-from pareto.staging.lambdas import LambdaStagingKeyTest
+from pareto.staging.lambdas import LambdaCommitTest
 from pareto.staging.layers import LayerPackageTest
 
-Tests=[LambdaStagingKeyTest,
+Tests=[LambdaCommitTest,
        LayerPackageTest]
 
 if __name__=="__main__":

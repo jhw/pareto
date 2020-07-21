@@ -124,6 +124,7 @@
   
 ### done
 
+- rename lambda key as lambda commit
 - codebuild to terminate on stage failure
   - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
 - single test.py script

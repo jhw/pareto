@@ -142,10 +142,10 @@ def latest_commits(repo=Repo("."),
 def add_staging(config, commits):
     logging.info("adding staging")
     def lambda_key(name, commits):
-        return str(LambdaStagingKey(app=config["globals"]["app"],
-                             name=name,
-                             hexsha=commits[name][0],
-                             timestamp=commits[name][1]))
+        return str(LambdaCommit(app=config["globals"]["app"],
+                                name=name,
+                                hexsha=commits[name][0],
+                                timestamp=commits[name][1]))
     for component in filter_functions(config["components"]):
         key=lambda_key(component["name"], commits)
         component["staging"]={"bucket": config["globals"]["bucket"],

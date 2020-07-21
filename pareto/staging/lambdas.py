@@ -1,10 +1,10 @@
 import datetime, re, unittest
 
-class LambdaStagingKey(dict):
+class LambdaCommit(dict):
 
     @classmethod
     def parse(self, s3key):
-        key=LambdaStagingKey()
+        key=LambdaCommit()
         tokens=s3key.split("/")
         key["app"]=tokens[0]
         key["name"]=tokens[2]
@@ -27,7 +27,7 @@ class LambdaStagingKey(dict):
                                             format_timestamp(self["timestamp"]),
                                             self["hexsha"])
     
-class LambdaStagingKeys(list):
+class LambdaCommits(list):
 
     def __init__(self, config, s3):
         list.__init__(self)
@@ -37,25 +37,25 @@ class LambdaStagingKeys(list):
         for struct in pages:
             if "Contents" in struct:
                 self+=[obj["Key"] for obj in struct["Contents"]]
+
+    @property
+    def groups(self):
+        keys={}
+        for s3key in self:
+            key=LambdaCommit.parse(s3key)
+            keys.setdefault(key["name"], {})
+            keys[key["name"]][key["hexsha"]]=s3key
+        return keys
                 
     @property
     def latest(self):
         keys={}
         for s3key in sorted(self):
-            key=LambdaStagingKey.parse(s3key)
+            key=LambdaCommit.parse(s3key)
             keys[key["name"]]=s3key
         return keys
 
-    @property
-    def commits(self):
-        keys={}
-        for s3key in self:
-            key=LambdaStagingKey.parse(s3key)
-            keys.setdefault(key["name"], {})
-            keys[key["name"]][key["hexsha"]]=s3key
-        return keys
-
-class LambdaStagingKeyTest(unittest.TestCase):
+class LambdaCommitTest(unittest.TestCase):
 
     App="my-app"
     Name="hello-world"
@@ -65,12 +65,12 @@ class LambdaStagingKeyTest(unittest.TestCase):
     Key="my-app/lambdas/hello-world/1970-12-20-19-30-00-ABCDEFGH.zip"
     
     def test_new(self):
-        key=LambdaStagingKey(**{attr: getattr(self, attr.capitalize())
+        key=LambdaCommit(**{attr: getattr(self, attr.capitalize())
                          for attr in ["app", "name", "timestamp", "hexsha"]})
         self.assertEqual(str(key), self.Key)
 
     def test_parse(self):
-        key=LambdaStagingKey.parse(self.Key)
+        key=LambdaCommit.parse(self.Key)
         for attr in ["app", "name", "timestamp", "hexsha"]:
             self.assertEqual(key[attr], getattr(self, attr.capitalize()))
             
