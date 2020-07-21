@@ -1,9 +1,8 @@
 ### short
 
-- include app in LayerPackage.parse_s3
-- rename parse_ as create_
-  - lambdas also
-
+- refactor LayerPackage parse_xxx as create_xxx
+- create_cli should really take config so it can include app
+- LayerPackage str() function to re- render s3 key
 - new LayerPackages class which parses s3 files on initialisation
 
 - add layer staging to deploy_stack.py
@@ -129,6 +128,7 @@
   
 ### done
 
+- include app in LayerPackage.parse_s3
 - new LayerPackage.parse_s3
 - unit test for LayerPackage.parse_s3
 - change LayerPackage.parse to parse_cli
