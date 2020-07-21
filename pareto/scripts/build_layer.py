@@ -42,6 +42,10 @@ artifacts:
   name: {{ package.artifacts_name }}
 """
 
+"""
+- need to reset project / create new one because `buildspec` (the thing that likely gets changed) is part of the `source` arg passed to `create_project` :/
+"""
+
 def reset_project(fn,
                   maxtries=10,
                   wait=1):

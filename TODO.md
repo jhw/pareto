@@ -1,16 +1,13 @@
 ### short
 
-- print project builds
-- filter out project reset ?
-- filter by status ? date ?
-- pop last project ?
+- class to load layers from s3
 
 - lambda root dir to be specified as part of config
-- class to load layers from s3
 
 ### medium
 
 - layers
+
 - scaffold generator
 - cloudwatch alerts
 - json schema for dsl
@@ -22,8 +19,8 @@
 - apigateway2
 - eventbridge
 
-- github actions
 - ci pipeline
+- github actions
 - lambda xray
 - route 53/cloudfront
 - appsync/graphql
@@ -31,6 +28,11 @@
 
 ### thoughts
 
+- clean up codebuild project every time ?
+  - no because then you probably want to clean the role also which can be successfully reused
+  - is probably better to have empty_artifacts.py do a global clean
+- avoid resetting codebuild project every time ?
+  - problem is buildspec is part of source arg passed to create_project
 - rename codebuild logs file
 - build_layer.py to implement all time.sleep(wait) calls as decorators ?
   - structure doesn't really warrant it
