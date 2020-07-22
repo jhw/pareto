@@ -1,6 +1,5 @@
 ### short
 
-- test.py to blank AWS profile
 - LayerPackages.exists w/ test
 - rename add_staging as add_lambda_staging
 
@@ -125,6 +124,7 @@
   
 ### done
 
+- test.py to blank AWS profile
 - s3 mock test for LayerPackages
 - new LayerPackages class
 - s3 mock test for LambdaCommits
