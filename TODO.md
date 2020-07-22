@@ -1,6 +1,5 @@
 ### short
 
-- new LayerPackages class
 - s3 mock test for LayerPackages
 
 - test.py to blank AWS profile
@@ -128,6 +127,7 @@
   
 ### done
 
+- new LayerPackages class
 - s3 mock test for LambdaCommits
 - test for LayerPackage __str__
 - LayerPackage __str__ function to re- render s3 key

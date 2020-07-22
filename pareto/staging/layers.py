@@ -62,7 +62,19 @@ class LayerPackage(dict):
         return "%s/layers/%s/%s" % (self["app"],
                                     self["name"],
                                     filename)
-        
+
+class LayerPackages(list):
+
+    def __init__(self, config, s3):
+        list.__init__(self)
+        paginator=s3.get_paginator("list_objects_v2")
+        pages=paginator.paginate(Bucket=config["globals"]["bucket"],
+                                 Prefix="%s/layers" % config["globals"]["app"])
+        for struct in pages:
+            if "Contents" in struct:
+                self+=[LayerPackage.create_s3(obj["Key"])
+                       for obj in struct["Contents"]]
+    
 class LayerPackageTest(unittest.TestCase):
 
     Config={"globals": {"app": "foobar"}}
