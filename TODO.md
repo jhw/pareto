@@ -1,9 +1,9 @@
 ### short
 
-- ensure iterate over dsl component keys rather than hardcoded list of keys
 - replace trigger group with nested template for each of queue/table/bucket etc
 - replace function with separate action, api components
 - replace bucket with separate bucket, website components
+- common directories for common components
 - extend preprocessor name and type checking
 
 - set classpath dynamically from globals["src"]
@@ -143,6 +143,7 @@
   
 ### done
 
+- ensure iterate over dsl component keys rather than hardcoded list of keys
 - rename hello/lambda as demo/demo
   - causes push_lambdas.py to fail
   - no it doesn't, u have to change classpath
