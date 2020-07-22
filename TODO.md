@@ -1,12 +1,11 @@
 ### short
 
-- rename lambda as src
-
-- s3 mock test for LambdaCommits
 - new LayerPackages class
 - s3 mock test for LayerPackages
 
-- add layer staging to deploy_stack.py
+- test.py to blank AWS profile
+- rename lambda as src
+- rename deploy_stack.py add_staging as add_lambda_staging
 
 ### medium
 
@@ -129,6 +128,7 @@
   
 ### done
 
+- s3 mock test for LambdaCommits
 - test for LayerPackage __str__
 - LayerPackage __str__ function to re- render s3 key
 - create_cli should really take config so it can include app
