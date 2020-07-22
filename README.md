@@ -1,2 +1,2 @@
-A framework to simplify complex serverless depoyments
+[OTP](https://learnyousomeerlang.com/what-is-otp) for AWS serverless
 
