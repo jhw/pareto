@@ -1,9 +1,8 @@
 ### short
 
-- LayerPackages class instance methods + test
+- rename add_staging as add_lambda_staging
+- LayerPackages.exists w/ test
 - test.py to blank AWS profile
-- rename lambda as src
-- rename deploy_stack.py add_staging as add_lambda_staging
 
 ### medium
 
