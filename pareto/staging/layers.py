@@ -76,7 +76,13 @@ class LayerPackages(list):
             if "Contents" in struct:
                 self+=[LayerPackage.create_s3(obj["Key"])
                        for obj in struct["Contents"]]
-    
+
+    def exists(self, package):
+        for pkg in self:
+            if str(pkg)==str(package):
+                return True
+        return False
+                
 class LayerPackageTest(unittest.TestCase):
 
     Config={"globals": {"app": "foobar"}}
@@ -140,10 +146,15 @@ class LayerPackagesTest(unittest.TestCase):
                                Key=key,
                                Body="{}")
         
-    def test_hello(self):
+    def test_exists(self):
         bucketname=self.Config["globals"]["bucket"]
         packages=LayerPackages(self.Config, self.s3)
         self.assertEqual(len(packages), len(self.Keys))
+        for k, v in [("pymorphy2", True),
+                     ("pymorphy2=0.8", True),
+                     ("foobar", False)]:
+            package=LayerPackage.create_cli(self.Config, k)
+            self.assertEqual(packages.exists(package), v)
         
     def tearDown(self):
         bucketname=self.Config["globals"]["bucket"]
