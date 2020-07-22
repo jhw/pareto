@@ -1,7 +1,14 @@
-### short [layers]
+### short
 
-- remove api/action types from config
 - rename hello/lambda as demo/demo
+  - causes push_lambdas.py to fail
+- remove types from apis, actions
+  - causes preprocessor to fail
+- dsl triggers/targets shouldn't require types
+  - remove types from dsl key, if names are unique ?
+
+### layers
+
 - add nested lambda key to staging
 - change lambda staging so leaf values are objects not strings
 - add sample layer config to hello.yaml
