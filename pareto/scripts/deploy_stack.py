@@ -23,8 +23,8 @@ def init_region(config):
         raise RuntimeError("region is not set in AWS profile")
     config["globals"]["region"]=region
 
-def add_staging(config):
-    logging.info("adding staging")
+def add_lambda_staging(config):
+    logging.info("adding lambda staging")
     def add_staging(components, keys):
         for component in filter_functions(components):
             component["staging"]={"bucket": config["globals"]["bucket"],
@@ -189,7 +189,7 @@ if __name__=="__main__":
         init_region(config)    
         validate_bucket(config)
         preprocess(config)
-        add_staging(config)
+        add_lambda_staging(config)
         env=synth_env(config)
         check_refs(env)
         check_metrics(env)

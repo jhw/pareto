@@ -2,7 +2,6 @@ import boto3, re, unittest
 
 from moto import mock_s3
 
-
 def layer_project_name(config, pkg):
     return "%s-%s-layer" % (config["globals"]["app"],
                             pkg["name"])
