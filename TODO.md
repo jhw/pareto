@@ -1,7 +1,6 @@
 ### short
 
-- s3 mock test for LayerPackages
-
+- LayerPackages class instance methods + test
 - test.py to blank AWS profile
 - rename lambda as src
 - rename deploy_stack.py add_staging as add_lambda_staging
@@ -127,6 +126,7 @@
   
 ### done
 
+- s3 mock test for LayerPackages
 - new LayerPackages class
 - s3 mock test for LambdaCommits
 - test for LayerPackage __str__

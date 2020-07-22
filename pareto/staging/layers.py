@@ -1,4 +1,7 @@
-import re, unittest
+import boto3, re, unittest
+
+from moto import mock_s3
+
 
 def layer_project_name(config, pkg):
     return "%s-%s-layer" % (config["globals"]["app"],
@@ -117,7 +120,41 @@ class LayerPackageTest(unittest.TestCase):
                          name="pymorphy2",
                          version="0.8");
         self.assertEqual("foobar/layers/pymorphy2/0-8.zip", str(pkg))
-            
+
+@mock_s3
+class LayerPackagesTest(unittest.TestCase):
+
+    Config={"globals": {"app": "my-app",
+                        "bucket": "foobar"}}
+
+    Keys=["my-app/layers/lxml/LATEST.zip",
+          "my-app/layers/pymorphy2/LATEST.zip",
+          "my-app/layers/pymorphy2/0-8.zip"]
+    
+    def setUp(self):
+        self.s3=boto3.client("s3")
+        bucketname=self.Config["globals"]["bucket"]
+        self.s3.create_bucket(Bucket=bucketname,
+                              CreateBucketConfiguration={'LocationConstraint': 'EU'})
+        for key in self.Keys:
+            self.s3.put_object(Bucket=bucketname,
+                               Key=key,
+                               Body="{}")
+        
+    def test_hello(self):
+        bucketname=self.Config["globals"]["bucket"]
+        packages=LayerPackages(self.Config, self.s3)
+        self.assertEqual(len(packages), len(self.Keys))
+        
+    def tearDown(self):
+        bucketname=self.Config["globals"]["bucket"]
+        struct=self.s3.list_objects(Bucket=bucketname)
+        if "Contents" in struct:
+            for obj in struct["Contents"]:
+                self.s3.delete_object(Bucket=self.Config["globals"]["bucket"],
+                                      Key=obj["Key"])
+        self.s3.delete_bucket(Bucket=bucketname)
+        
 if __name__=="__main__":
     unittest.main()
 
