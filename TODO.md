@@ -33,6 +33,7 @@
 - apigateway2
 - eventbridge
 
+- ses
 - ci pipeline
 - github actions
 - lambda xray
