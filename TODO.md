@@ -1,13 +1,19 @@
-### short
+### short [layers]
 
-- LayerPackages.exists w/ test
+- add nested lambda key to staging
+- change lambda staging so leaf values are objects not strings
+- add sample layer config to hello.yaml
+- add layer staging to deploy_stack.py
+  - validate layer exists in s3
+  - leaf objects as per lambdas
+- new layer component in functions
+- create layer component if layer config exists
+- add support for layer arns
 
 ### medium
 
-- layers
-
-- scaffold generator
 - cloudwatch alerts
+- scaffold generator
 - json schema for dsl
 - pip dependency installation 
 
@@ -123,6 +129,7 @@
   
 ### done
 
+- LayerPackages.exists w/ test
 - rename add_staging as add_lambda_staging
 - test.py to blank AWS profile
 - s3 mock test for LayerPackages
