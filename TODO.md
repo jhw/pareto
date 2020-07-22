@@ -1,5 +1,7 @@
 ### short [layers]
 
+- remove api/action types from config
+- rename hello/lambda as demo/demo
 - add nested lambda key to staging
 - change lambda staging so leaf values are objects not strings
 - add sample layer config to hello.yaml
