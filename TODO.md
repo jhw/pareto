@@ -2,10 +2,8 @@
 
 - rename hello/lambda as demo/demo
   - causes push_lambdas.py to fail
-- remove types from apis, actions
-  - causes preprocessor to fail
-- dsl triggers/targets shouldn't require types
-  - remove types from dsl key, if names are unique ?
+  
+- add trigger type exists check in preprocessor
 
 ### layers
 
@@ -140,6 +138,10 @@
   
 ### done
 
+- remove types from apis, actions
+  - causes preprocessor to fail
+- dsl triggers/targets shouldn't require types
+  - remove types from dsl key, if names are unique ?
 - LayerPackages.exists w/ test
 - rename add_staging as add_lambda_staging
 - test.py to blank AWS profile

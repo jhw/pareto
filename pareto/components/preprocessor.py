@@ -12,15 +12,11 @@ queue:
   event_sourced: true
 """, Loader=yaml.FullLoader)
 
-def KeyFn(component):
-    return "%s/%s" % (component["type"],
-                      component["name"])
-
 def validate(**kwargs):
     def assert_unique(**kwargs):
         keys=[]
         for attr in kwargs:
-            keys+=[KeyFn(component)
+            keys+=[component["name"]
                    for component in kwargs[attr]]
         ukeys=list(set(keys))
         if len(keys)!=len(ukeys):
@@ -29,12 +25,12 @@ def validate(**kwargs):
         def assert_refs(action, trigmap):
             for attr in ["trigger",
                          "target"]:
-                trigkey=KeyFn(action[attr])
+                trigkey=action[attr]["name"]
                 if trigkey not in trigmap:
-                    raise RuntimeError("%s %s %s not found" % (KeyFn(action),
+                    raise RuntimeError("%s %s %s not found" % (action["name"],
                                                                attr,
                                                                trigkey))
-        trigmap={KeyFn(trigger):trigger
+        trigmap={trigger["name"]:trigger
                  for trigger in triggers}
         for action in actions:
             assert_refs(action, trigmap)
@@ -55,14 +51,14 @@ def remap_triggers(actions, triggers, **kwargs):
         actionnames=[action["name"]
                      for action in trigger["actions"]]
         if action["name"] in actionnames:
-            raise RuntimeError("%s already mapped" % KeyFn(trigger))
+            raise RuntimeError("%s already mapped" % trigger["name"])
         trigaction={"name": action["name"],
                     "path": action["trigger"]["path"]}
         trigger["actions"].append(trigaction)
     def assert_unmapped(fn):
         def wrapped(action, trigger):
             if "action" in trigger:
-                raise RuntimeError("trigger %s already mapped" % KeyFn(trigger))
+                raise RuntimeError("trigger %s already mapped" % trigger["name"])
             return fn(action, trigger)
         return wrapped
     @assert_unmapped
@@ -77,10 +73,10 @@ def remap_triggers(actions, triggers, **kwargs):
     def remap_timer(action, trigger):    
         trigaction={"name": action["name"]}
         trigger["action"]=trigaction
-    trigmap={KeyFn(trigger):trigger
+    trigmap={trigger["name"]:trigger
              for trigger in triggers}
     for action in actions:
-        trigger=trigmap[KeyFn(action["trigger"])]
+        trigger=trigmap[action["trigger"]["name"]]
         remapfn=eval("remap_%s" % trigger["type"])
         remapfn(action=action,
                 trigger=trigger)
@@ -113,8 +109,8 @@ class Iam(list):
 
     @classmethod
     def attach(self, fn):
-        def wrapped(component):
-            iam=fn(component)
+        def wrapped(component, triggermap):
+            iam=fn(component, triggermap)
             if (iam and
                 not iam.is_empty):
                 component["iam"]={"permissions": iam.render()}
@@ -141,33 +137,40 @@ class Iam(list):
         return list(self)
 
 def add_permissions(**kwargs):
-    def func_permissions(component, attrs):
-        def trigger_permissions(iam, trigger):
-            trigconf=TriggerConfig[trigger["type"]]
+    def func_permissions(component, triggermap, attrs):
+        def trigger_permissions(trigger, triggertype, iam):
+            trigconf=TriggerConfig[triggertype]
             if trigconf["event_sourced"]:
                 iam.add(trigconf["iam_name"])
-        def target_permissions(iam, target):
-            targconf=TriggerConfig[target["type"]]
+        def target_permissions(target, targettype, iam):
+            targconf=TriggerConfig[targettype]
             iam.add(targconf["iam_name"])
         iam=Iam.initialise(component)
         for attr in attrs:
             if attr in component:
                 fn=eval("%s_permissions" % attr)
-                fn(iam, component[attr])
+                triggertype=triggermap[component[attr]["name"]]["type"]
+                fn(component[attr], triggertype, iam)                    
         return iam        
     @Iam.attach
-    def api_permissions(api):
-        return func_permissions(component, ["target"])
+    def api_permissions(component, triggermap):
+        return func_permissions(component,
+                                triggermap,
+                                ["target"])
     @Iam.attach
-    def action_permissions(action):
-        return func_permissions(component, ["trigger", "target"])
+    def action_permissions(component, triggermap):
+        return func_permissions(component,
+                                triggermap,
+                                ["trigger", "target"])
     @Iam.attach
-    def trigger_permissions(trigger):
+    def trigger_permissions(component, triggermap):                  
         pass
+    triggermap={trigger["name"]:trigger
+                for trigger in kwargs["triggers"]}
     for attr in kwargs:
         for component in kwargs[attr]:
             fn=eval("%s_permissions" % (attr[:-1]))
-            fn(component)
+            fn(component, triggermap)
 
 """
 - DSL follows zapier model of actions and triggers, and adds apis
