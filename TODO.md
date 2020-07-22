@@ -8,6 +8,9 @@
 
 - set classpath dynamically from globals["src"]
   - https://stackoverflow.com/questions/3108285/in-python-script-how-do-i-set-pythonpath/3108301
+  - push_lambdas.py, test.py
+  - test.py needs to load config
+
 - changing lambda source cause push_lambdas to fail
 
 ### layers
