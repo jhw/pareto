@@ -21,6 +21,7 @@
 
 ### medium
 
+- apigw request validation
 - cloudwatch alerts
 - scaffold generator
 - json schema for dsl
