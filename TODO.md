@@ -1,8 +1,8 @@
 ### short
 
-- rename add_staging as add_lambda_staging
-- LayerPackages.exists w/ test
 - test.py to blank AWS profile
+- LayerPackages.exists w/ test
+- rename add_staging as add_lambda_staging
 
 ### medium
 
