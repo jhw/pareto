@@ -1,6 +1,5 @@
 ### short [nested actions]
 
-- convert api to work with method, permissions nested under actions key
 - table, timer, queue to add single action
   - replace imported arn parameter with local arn ref (see api)
 - bucket/website to add multiple actions
@@ -140,6 +139,7 @@
   
 ### done
 
+- convert api to work with method, permissions nested under actions key
 - add permissions to all triggers in config
 - remove actions config, component
 - apigw resources not being created
