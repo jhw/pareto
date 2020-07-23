@@ -1,6 +1,7 @@
 ### short [nested actions]
 
 - separate out and rename website components
+- website_config not being used
 - separate website module again
 
 - check output suffixes
