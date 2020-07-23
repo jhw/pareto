@@ -1,6 +1,16 @@
-### short 
+### short [nested actions]
 
-- nested actions [notes]
+- merge bucket and website into single module / separate components
+- move function and related iam stuff into components root
+- modify action, api to use new root level function
+- remove target permissions model
+- simplify trigger permissions to they are specified in dsl
+- (can TriggerConfig be removed ?)
+- nest actions within triggers
+  - cretate functions inside trigger components
+  - allow nested actions to be optional
+  - replace function arn param creation and ref with direct function arn ref
+- see if master template function arn import/export can be removed
 
 ### medium
 
