@@ -1,9 +1,7 @@
 ### short [nested actions]
 
-- check use of decorators in table/queue/timer LambdaPermissions
-  - why doesn't bucket use the same ?
-- see if LambdaMapping can be abstracted
-
+- harmonise use of funcname, funcarn
+- separate secrets stack
 - merge ActionRole and IamRole
 - s3 action path should default to /
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
@@ -14,7 +12,6 @@
 - dynamic pythonpath [notes]
 - layers [notes]
 
-- separate secrets stack
 - apigw request validation
 - cloudwatch alerts
 - scaffold generator
@@ -37,6 +34,8 @@
 
 ### thoughts
 
+- see if LambdaMapping can be abstracted
+  - no they are fairly unique
 - see if permissions generation code can be harmonised like iam roles
   - no; quite specific
 - harmonise permission resource names (LambdaPermission, ApiGwPermission) ?
@@ -141,6 +140,8 @@
   
 ### done
 
+- check use of decorators in table/queue/timer LambdaPermissions
+  - why doesn't bucket use the same ?
 - unpack components
 - rename function as action
 - remove preprocessor add_types.py

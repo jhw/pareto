@@ -7,17 +7,14 @@ def Queue(**kwargs):
     props={"QueueName": resource_name(kwargs)}
     return "AWS::SQS::Queue", props
 
-def LambdaMapping(**kwargs):
-    suffix="%s-mapping" % kwargs["name"]
-    @resource(suffix)
-    def LambdaMapping(batch=1, **kwargs):
-        funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
-        eventsource=fn_getatt(kwargs["name"], "Arn")
-        props={"FunctionName": funcarn,
-               "EventSourceArn": eventsource,
-               "BatchSize": batch}
-        return "AWS::Lambda::EventSourceMapping", props
-    return LambdaMapping(**kwargs)
+@resource(suffix="action-mapping")
+def QueueActionMapping(batch=1, **kwargs):
+    funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    eventsource=fn_getatt(kwargs["name"], "Arn")
+    props={"FunctionName": funcarn,
+           "EventSourceArn": eventsource,
+           "BatchSize": batch}
+    return "AWS::Lambda::EventSourceMapping", props
 
 def synth_queue(**kwargs):
     template=Template(resources=[Queue(**kwargs)])
@@ -27,7 +24,7 @@ def synth_queue(**kwargs):
                                 ActionDeadLetterQueue(**kwargs),
                                 ActionVersion(**kwargs),
                                 ActionEventConfig(**kwargs),
-                                LambdaMapping(**kwargs)]
+                                QueueActionMapping(**kwargs)]
     return template
 
 if __name__=="__main__":

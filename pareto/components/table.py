@@ -50,17 +50,14 @@ def Table(stream={"type": "NEW_IMAGE"},
         props["StreamSpecification"]={"StreamViewType": stream["type"]}
     return "AWS::DynamoDB::Table", props
 
-def LambdaMapping(**kwargs):
-    suffix="%s-mapping" % kwargs["name"]
-    @resource(suffix)
-    def LambdaMapping(**kwargs):
-        funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
-        eventsource=fn_getatt(kwargs["name"], "StreamArn")
-        props={"FunctionName": funcarn,
-               "EventSourceArn": eventsource,
-               "StartingPosition": "LATEST"}
-        return "AWS::Lambda::EventSourceMapping", props
-    return LambdaMapping(**kwargs)
+@resource(suffix="action-mapping")
+def TableActionMapping(**kwargs):
+    funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    eventsource=fn_getatt(kwargs["name"], "StreamArn")
+    props={"FunctionName": funcarn,
+           "EventSourceArn": eventsource,
+           "StartingPosition": "LATEST"}
+    return "AWS::Lambda::EventSourceMapping", props
 
 def synth_table(**kwargs):
     template=Template(resources=[Table(**kwargs)])
@@ -70,7 +67,7 @@ def synth_table(**kwargs):
                                 ActionDeadLetterQueue(**kwargs),
                                 ActionVersion(**kwargs),
                                 ActionEventConfig(**kwargs),
-                                LambdaMapping(**kwargs)]
+                                TableActionMapping(**kwargs)]
     return template
 
 if __name__=="__main__":
