@@ -1,13 +1,15 @@
 ### short [nested actions]
 
+- refactor filter_functions
+  - how is this going to work if u can't infer functions from components any more ?
+
 - remove parameter import/export at master level
 
 - rename function as action
-- refactor function filtering (dashboards, push_lambdas, deploy_stack)
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 - harmonise permission resource names (LambdaPermission, ApiGwPermission)
-- refactor handling of multiple s3 actions/roles
-- remove preprocessor
+  - single Permission to which u pass source ?
+- remove preprocessor or integrate it elsewhere
 - add sample timer to hello.yaml
 
 ### medium
