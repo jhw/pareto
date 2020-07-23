@@ -1,7 +1,7 @@
 ### short [nested actions]
 
-- bucket/website to add multiple actions
-  - replace imported arn parameter with local arn ref (see api)
+- restrict bucket to single action
+  - else you will have to rename functions!
 
 - rename function as action
 - remove parameter import/export from master template creation
@@ -139,6 +139,8 @@
   
 ### done
 
+- bucket/website to add multiple actions
+  - replace imported arn parameter with local arn ref (see api)
 - table, timer, queue to add single action
   - replace imported arn parameter with local arn ref (see api)
 - convert api to work with method, permissions nested under actions key
