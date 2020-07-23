@@ -1,6 +1,6 @@
 from pareto.components import *
 
-def synth_function(**kwargs):
+def synth_api(**kwargs):
     @resource()
     def Function(concurrency=None,
                  handler="index.handler",

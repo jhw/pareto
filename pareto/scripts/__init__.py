@@ -30,13 +30,16 @@ def validate_bucket(config):
                  for bucket in S3.list_buckets()["Buckets"]]
     if config["globals"]["bucket"] not in bucketnames:
         raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
+
+"""
+- want to avoid hardcoding `apis` and `actions` in the future
+"""
     
-def filter_functions(groups):
+def filter_functions(groups, groupnames=["apis", "actions"]):
     functions=[]
     for groupname, components in groups.items():
-        functions+=[component
-                    for component in components
-                    if component["type"]=="function"]
+        if groupname in groupnames:
+            functions+=components
     return functions
 
 if __name__=="__main__":

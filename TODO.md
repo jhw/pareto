@@ -1,8 +1,11 @@
 ### short 
 
-- replace function with separate action, api components
-  - remove function type remapping
-
+- simplify remap function so just adds types
+  - should apply to all components
+- dashboards is empty
+- remove `stack` suffix from stacks name
+  - requires support for blank suffix
+- pluralise dashboards name
 - common directories for common components
 
 ### medium
@@ -33,6 +36,7 @@
 
 ### thoughts
 
+  - no be
 - change package refs to pkg ?
   - not worth it
 - clean up codebuild project every time ?
@@ -130,6 +134,9 @@
   
 ### done
 
+- apis and actions need type variables
+- replace function with separate action, api components
+  - remove function type remapping
 - replace bucket with separate bucket, website components
 - filter_triggers function
 - replace trigger group with nested template for each of queue/table/bucket etc

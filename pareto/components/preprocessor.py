@@ -195,10 +195,10 @@ def add_permissions(**components):
 
 def remap_types(**components):
     def remap_api(api):
-        api["type"]="function"
+        api["type"]="api"
         api["api"]={"method": api.pop("method")}
     def remap_action(action):        
-        action["type"]="function"
+        action["type"]="action"
     for attr in components:
         for component in components[attr]:
             if attr[:-1] not in TriggerConfig:
