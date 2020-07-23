@@ -1,6 +1,5 @@
 ### short [nested actions]
 
-- lambda permission logical names are messed up
 - bucket names need to include actions
 - dashboards will need to be adjusted for function names
 
@@ -143,6 +142,7 @@
   
 ### done
 
+- lambda permission logical names are messed up
 - s3 notification bindings are missing
 - permissions are missing from roles
 - refactor filter_functions

@@ -18,24 +18,21 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
         props["NotificationConfiguration"]=notifications
     return "AWS::S3::Bucket", props
 
-def LambdaPermission(kwargs):
-    suffix="%s-permission" % kwargs["name"]
-    @resource(suffix=suffix)
-    def LambdaPermission(**kwargs):
-        """
+@resource(suffix="action-permission")
+def LambdaPermission(**kwargs):
+    """
         - https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
         - Fn::GetAtt Arn doesn't work for S3 lambda notifications :-(
         - NB also recommends using SourceAccount as account not included in S3 arn format
         """
-        eventsource="arn:aws:s3:::%s" % resource_name(kwargs)
-        funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
-        props={"Action": "lambda:InvokeFunction",
-               "FunctionName": funcarn,
-               "SourceAccount": fn_sub("${AWS::AccountId}"),
-               "SourceArn": eventsource,
-               "Principal": "s3.amazonaws.com"}
-        return "AWS::Lambda::Permission", props
-    return LambdaPermission(**kwargs)
+    eventsource="arn:aws:s3:::%s" % resource_name(kwargs)
+    funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    props={"Action": "lambda:InvokeFunction",
+           "FunctionName": funcarn,
+           "SourceAccount": fn_sub("${AWS::AccountId}"),
+           "SourceArn": eventsource,
+           "Principal": "s3.amazonaws.com"}
+    return "AWS::Lambda::Permission", props
 
 def add_action(kwargs, template):
     template["resources"]+=[Function(**kwargs),
@@ -43,7 +40,7 @@ def add_action(kwargs, template):
                             FunctionDeadLetterQueue(**kwargs),
                             FunctionVersion(**kwargs),
                             FunctionEventConfig(**kwargs),
-                            LambdaPermission(kwargs)]
+                            LambdaPermission(**kwargs)]
 
 def synth_bucket(**kwargs):
     template=Template(resources=[Bucket(**kwargs)])
