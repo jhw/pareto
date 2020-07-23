@@ -1,8 +1,5 @@
 ### short [nested actions]
 
-- bucket names need to include actions
-- dashboards will need to be adjusted for function names
-
 - remove parameter import/export at master level
 
 - find a new home for function stuff rather than components.functions
@@ -10,8 +7,6 @@
   - only required by deploy_stack.py but should be able to lookup from groupname
 - rename function as action
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
-- harmonise permission resource names (LambdaPermission, ApiGwPermission)
-  - single Permission to which u pass source ?
 - remove preprocessor or integrate it elsewhere
 - add sample timer to hello.yaml
 
@@ -43,6 +38,9 @@
 
 ### thoughts
 
+- harmonise permission resource names (LambdaPermission, ApiGwPermission) ?
+  - single Permission to which u pass source ?
+  - probably not worth it
 - convert to class based representation ?
   - doesn't seem worth it right now
 - change package refs to pkg ?
