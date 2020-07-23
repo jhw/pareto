@@ -105,7 +105,7 @@ def synth_api(**kwargs):
         props={"AuthorizationType": "NONE",
                "RestApiId": restapi,
                "ResourceId": parent,
-               "HttpMethod": kwargs["api"]["method"],
+               "HttpMethod": kwargs["method"],
                "Integration": integration}
         return "AWS::ApiGateway::Method", props
     @resource(suffix="api-gw-permission")
@@ -116,7 +116,7 @@ def synth_api(**kwargs):
         eventparams={"rest_api": restapi,
                      "stage_name": stagename}
         eventsource=fn_sub(arnpattern % (kwargs["region"],
-                                         kwargs["api"]["method"]),
+                                         kwargs["method"]),
                            eventparams)
         funcname=fn_getatt(kwargs["name"], "Arn")
         props={"Action": "lambda:InvokeFunction",

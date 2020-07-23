@@ -1,7 +1,5 @@
 ### short 
 
-- allow method to be top level api parameter
-
 - remove `stack` suffix from stacks name
   - requires support for blank suffix
 
@@ -137,6 +135,7 @@
   
 ### done
 
+- allow method to be top level api parameter
 - dashboards is empty
 - simplify remap function so just adds types
   - should apply to all components
