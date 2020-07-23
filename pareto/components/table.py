@@ -53,7 +53,7 @@ def synth_table(**kwargs):
         suffix="%s-mapping" % kwargs["action"]["name"]
         @resource(suffix)
         def LambdaMapping(**kwargs):
-            funcarn=ref("%s-action-arn" % kwargs["action"]["name"])
+            funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
             eventsource=fn_getatt(kwargs["name"], "StreamArn")
             props={"FunctionName": funcarn,
                    "EventSourceArn": eventsource,

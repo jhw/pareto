@@ -1,6 +1,5 @@
 ### short [nested actions]
 
-- check arn bindings of all actions
 - remove parameter import/export at master level
 
 - rename function as action
@@ -138,6 +137,7 @@
   
 ### done
 
+- check arn bindings of all actions
 - investigate why lambda permission needs a second action arg
 - bucket/website to add multiple actions
   - replace imported arn parameter with local arn ref (see api)
