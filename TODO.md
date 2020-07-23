@@ -8,6 +8,7 @@
 
 - remove parameter import/export at master level
 
+- find a new home for function stuff rather than components.functions
 - remove preprocessor add_types.py
   - only required by deploy_stack.py but should be able to lookup from groupname
 - rename function as action
