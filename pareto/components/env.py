@@ -16,16 +16,16 @@ def add_component_groups(config, templates):
         return {key: [init_component(config, component)
                       for component in components]
                 for key, components in config["components"].items()}
-    def init_template(components):
+    def init_template(key, components):
         template=Template()
         for kwargs in components:
-            fn=eval("synth_%s" % kwargs["type"])                
+            fn=eval("synth_%s" % key[:-1])                
             component=fn(**kwargs)
             template.update(component)
         return template.render()
     groups=group_components(config)
     for key, group in groups.items():
-        templates[key]=init_template(group)
+        templates[key]=init_template(key, group)
 
 def add_dashboards(config, templates):
     def init_group(config, components):

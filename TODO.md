@@ -1,9 +1,5 @@
 ### short [nested actions]
 
-- remove preprocessor add_types.py
-  - only required by deploy_stack.py but should be able to lookup from groupname
-- remove preprocessor or integrate it elsewhere
-
 - see if permissions generation code can be harmonised like iam roles
 - find a better place for function stuff rather than components.functions
 - rename function as action
@@ -141,6 +137,9 @@
   
 ### done
 
+- remove preprocessor add_types.py
+  - only required by deploy_stack.py but should be able to lookup from groupname
+- remove preprocessor or integrate it elsewhere
 - remove parameter import/export at master level
 - lambda permission logical names are messed up
 - s3 notification bindings are missing

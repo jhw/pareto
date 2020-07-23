@@ -10,8 +10,6 @@ from pareto.staging.lambdas import *
 
 from pareto.scripts.helpers.profiles import toggle_aws_profile
 
-from pareto.components.preprocessor import preprocess
-
 from git import Repo
 
 import zipfile
@@ -187,7 +185,6 @@ if __name__=="__main__":
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         validate_bucket(config)
-        preprocess(config)
         run_tests(config)
         commits=latest_commits(config)
         add_staging(config, commits)

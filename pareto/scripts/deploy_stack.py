@@ -4,7 +4,6 @@ from pareto.scripts import *
 
 from pareto.staging.lambdas import *
 
-from pareto.components.preprocessor import preprocess
 from pareto.components.env import synth_env
 
 """
@@ -188,7 +187,6 @@ if __name__=="__main__":
         config["globals"]["stage"]=args.pop("stage")
         init_region(config)    
         validate_bucket(config)
-        preprocess(config)
         add_lambda_staging(config)
         env=synth_env(config)
         check_refs(env)
