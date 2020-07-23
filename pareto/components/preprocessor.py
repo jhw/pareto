@@ -44,8 +44,7 @@ def validate(**components):
             raise RuntimeError("keys are not unique")
     def assert_triggers(**components):
         def assert_refs(action, trigmap):
-            for attr in ["trigger",
-                         "target"]:
+            for attr in ["trigger"]:
                 trigkey=action[attr]["name"]
                 if trigkey not in trigmap:
                     raise RuntimeError("%s %s %s not found" % (action["name"],
@@ -102,106 +101,15 @@ def remap_triggers(**components):
         remapfn(action=action,
                 trigger=trigger)
 
-"""
-- whole level of permissions needs adding
-- any non- event sourced target (s3, sns, cloudwatch event) needs permission to call lambda
-- but you don't have to worry about that, lambda permission is added by underlying pareto component
-- action may need permissions to call target
-- that target may a trigger (s3/sqs/ddb) or a non trigger (eg polly, translate)
-- can infer trigger target permissions if target info is included at action level
-- however needs to pass through non- trigger target permissions
-- then a further problem with event source mappings (sqs, ddb, kinesis)
-- although these are billed as event sourced, reality is that they poll their triggers
-- hence they need "lookback" permissions to do that
-"""
-
-class Iam(list):
-
-    @classmethod
-    def initialise(self,
-                   component,
-                   defaults=["logs",
-                             "sqs"]): # for dead letter queues
-        permissions=component.pop("permissions") if "permissions" in component else []
-        iam=Iam(permissions)
-        for permission in defaults:
-            iam.add(permission)
-        return iam
-
-    @classmethod
-    def attach(self, fn):
-        def wrapped(component, triggermap):
-            iam=fn(component, triggermap)
-            if (iam and
-                not iam.is_empty):
-                component["iam"]={"permissions": iam.render()}
-        return wrapped
-
-    def __init__(self, items):
-        return list.__init__(self, items)
-
-    def expand(fn):
-        def wrapped(self, name):
-            return fn(self, "%s:*" % name if ":" not in name else name)
-        return wrapped
-
-    @expand
-    def add(self, permission):
-        if permission not in self:
-            self.append(permission)
-
-    @property
-    def is_empty(self):
-        return len(self)==0
-
-    def render(self):
-        return list(self)
-
-def add_permissions(**components):
-    def func_permissions(component, triggermap, attrs):
-        def trigger_permissions(trigger, triggertype, iam):
-            trigconf=TriggerConfig[triggertype]
-            if trigconf["event_sourced"]:
-                iam.add(trigconf["iam_name"])
-        def target_permissions(target, targettype, iam):
-            targconf=TriggerConfig[targettype]
-            iam.add(targconf["iam_name"])
-        iam=Iam.initialise(component)
-        for attr in attrs:
-            if attr in component:
-                fn=eval("%s_permissions" % attr)
-                triggertype=triggermap[component[attr]["name"]]["type"]
-                fn(component[attr], triggertype, iam)                    
-        return iam        
-    @Iam.attach
-    def api_permissions(component, triggermap):
-        return func_permissions(component,
-                                triggermap,
-                                ["target"])
-    @Iam.attach
-    def action_permissions(component, triggermap):
-        return func_permissions(component,
-                                triggermap,
-                                ["trigger", "target"])
-    triggermap={trigger["name"]:trigger
-                for trigger in filter_triggers(components)}
-    for attr in components:
-        for component in components[attr]:
-            if attr[:-1] not in TriggerConfig:
-                fn=eval("%s_permissions" % (attr[:-1]))
-                fn(component, triggermap)
-
 def cleanup(actions, **components):
     for action in actions:
-        for attr in ["trigger",
-                     "target"]:
+        for attr in ["trigger"]:
             action.pop(attr)
 
 def preprocess(config):
     for fn in [add_types,
                validate,
                remap_triggers,
-               # add_permissions,
                cleanup]:
         fn(**config["components"])
         

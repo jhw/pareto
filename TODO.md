@@ -1,11 +1,10 @@
 ### short [nested actions]
 
-- replace lookback permissions with custom permissions
-- see if iam stuff can be removed from preprocessor
-- remove target stuff
 - combine bucket and website into single module
 - move function stuff into root
 - simplyify action and api to use function
+
+- add sample timer
 
 ### medium
 
@@ -133,6 +132,9 @@
   
 ### done
 
+- replace lookback permissions with custom permissions
+- see if iam stuff can be removed from preprocessor
+- remove target stuff
 - remap_types to add function parameter
   - rationalise handling of function detection
 - remove `stack` suffix from stacks name
