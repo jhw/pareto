@@ -1,5 +1,19 @@
 ### nested actions 23/7/20
 
+- target is definitely over optimisation and needs to be removed
+- if you bind actions to triggers then each action can request very specific look back permissions
+- if Iam is simplified and you no longer need to remap triggers then feels like preprocessor fades away and is maybe only used for name validation
+- function filtering should also fade away since every trigger can potentially include a function
+- but do u really want separate dashboards for each trigger type?
+- probably yes you do
+- actions no longer need unique names, they can take names of parent triggers
+- but should probably use a function suffix
+- check how api does it
+- api is the model for all other triggers
+- consider it an externally pinged trigger 
+
+### nested actions 23/7/20
+
 - all actions to be nested under trigger types ?
 - dedicated action type should disappear
 - similar to how apigw+function works
