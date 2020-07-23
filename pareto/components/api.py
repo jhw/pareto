@@ -61,9 +61,9 @@ def ApiGwActionPermission(**kwargs):
     eventsource=fn_sub(arnpattern % (kwargs["region"],
                                      kwargs["method"]),
                        eventparams)
-    funcname=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
     props={"Action": "lambda:InvokeFunction",
-           "FunctionName": funcname,
+           "FunctionName": funcarn,
            "Principal": "apigateway.amazonaws.com",
            "SourceArn": eventsource}
     return "AWS::Lambda::Permission", props

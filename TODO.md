@@ -1,6 +1,9 @@
 ### short [nested actions]
 
-- harmonise use of funcname, funcarn
+- separate out and rename website components
+- separate website module again
+
+- check output suffixes
 - separate secrets stack
 - merge ActionRole and IamRole
 - s3 action path should default to /
@@ -140,6 +143,7 @@
   
 ### done
 
+- harmonise use of funcname, funcarn
 - check use of decorators in table/queue/timer LambdaPermissions
   - why doesn't bucket use the same ?
 - unpack components
