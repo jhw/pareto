@@ -72,21 +72,17 @@ def synth_api(**kwargs):
         urlparams={"rest_api": restapi,
                    "stage_name": stagename}
         return fn_sub(url, urlparams)
-    template=Template(resources=[Function(**kwargs),
-                                 FunctionRole(**kwargs),
-                                 FunctionDeadLetterQueue(**kwargs),
-                                 FunctionVersion(**kwargs),
-                                 FunctionEventConfig(**kwargs)])
-    if "api" in kwargs:
-        template["resources"]+=[ApiGwRestApi(**kwargs),
-                                ApiGwDeployment(**kwargs),
-                                ApiGwStage(**kwargs),
-                                ApiGwMethod(**kwargs),
-                                ApiGwPermission(**kwargs)]
-        template["outputs"].append(ApiGwUrl(**kwargs))
-    else:
-        template["outputs"].append(FunctionArn(**kwargs))
-    return template
+    return Template(resources=[Function(**kwargs),
+                               FunctionRole(**kwargs),
+                               FunctionDeadLetterQueue(**kwargs),
+                               FunctionVersion(**kwargs),
+                               FunctionEventConfig(**kwargs),
+                               ApiGwRestApi(**kwargs),
+                               ApiGwDeployment(**kwargs),
+                               ApiGwStage(**kwargs),
+                               ApiGwMethod(**kwargs),
+                               ApiGwPermission(**kwargs)],
+                    outputs=[ApiGwUrl(**kwargs)])
 
 if __name__=="__main__":
     pass

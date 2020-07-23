@@ -134,6 +134,7 @@
   
 ### done
 
+- apigw resources not being created
 - replace iam/permissions with simply permissions
 - move function stuff into root
 - simplyify action and api to use function
