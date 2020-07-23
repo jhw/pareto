@@ -22,8 +22,8 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
         props.update(notifications_configs(event, kwargs))
     return "AWS::S3::Bucket", props
 
-def LambdaPermission(kwargs, action):
-    suffix="%s-permission" % action["name"]
+def LambdaPermission(kwargs):
+    suffix="%s-permission" % kwargs["action"]["name"]
     @resource(suffix=suffix)
     def LambdaPermission(**kwargs):
         """
@@ -32,7 +32,7 @@ def LambdaPermission(kwargs, action):
         - NB also recommends using SourceAccount as account not included in S3 arn format
         """
         eventsource="arn:aws:s3:::%s" % resource_name(kwargs)
-        funcname=ref("%s-action-arn" % action["name"])
+        funcname=ref("%s-action-arn" % kwargs["action"]["name"])
         props={"Action": "lambda:InvokeFunction",
                "FunctionName": funcname,
                "SourceAccount": fn_sub("${AWS::AccountId}"),
@@ -47,7 +47,7 @@ def add_action(kwargs, template):
                             FunctionDeadLetterQueue(**kwargs),
                             FunctionVersion(**kwargs),
                             FunctionEventConfig(**kwargs),
-                            LambdaPermission(kwargs, kwargs["action"])]
+                            LambdaPermission(kwargs)]
 
 def synth_bucket(**kwargs):
     template=Template(resources=[Bucket(**kwargs)])
