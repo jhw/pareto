@@ -1,13 +1,14 @@
 ### short [nested actions]
 
-- remove parameter import/export at master level
-
-- find a new home for function stuff rather than components.functions
 - remove preprocessor add_types.py
   - only required by deploy_stack.py but should be able to lookup from groupname
-- rename function as action
-- replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 - remove preprocessor or integrate it elsewhere
+
+- see if permissions generation code can be harmonised like iam roles
+- find a better place for function stuff rather than components.functions
+- rename function as action
+- s3 action path should default to /
+- replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 - add sample timer to hello.yaml
 
 ### medium
@@ -140,6 +141,7 @@
   
 ### done
 
+- remove parameter import/export at master level
 - lambda permission logical names are messed up
 - s3 notification bindings are missing
 - permissions are missing from roles

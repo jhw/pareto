@@ -54,32 +54,9 @@ def add_dashboards(config, templates):
     templates["dashboards"]=template.render()
 
 def add_master(config, templates):
-    def stack_id(stackname):
-        return logical_id(stackname) # NB no -stack suffix
-    def get_attr(name, attr):
-        return {"Fn::GetAtt": [name, "Outputs.%s" % attr]}
-    def filter_outputs(config, templates):
-        outputs={}
-        for tempname, template in templates.items():
-            if (tempname in config["components"] and
-                "Outputs" in template):
-                outputs.update({paramname: tempname
-                                for paramname in template["Outputs"]})
-        return outputs                
-    def format_params(paramnames, outputs):
-        return {paramname: get_attr(stack_id(outputs.pop(paramname)),
-                                    paramname)
-                for paramname in list(paramnames)}
-    def init_params(template, outputs):
-        return format_params(template["Parameters"].keys(),
-                             outputs) if "Parameters" in template else {}
-    def init_stack(config, tempname, template, outputs):
-        stack={}
+    def init_stack(config, tempname):
+        stack={"name": tempname}
         stack.update(config["globals"])
-        params=init_params(template,
-                           outputs)
-        stack.update({"name": tempname,
-                      "params": params})
         return stack
     def add_secrets(config, template):
         @resource(suffix="secret")
@@ -91,9 +68,8 @@ def add_master(config, templates):
         template["resources"]+=[Secret(**secret)
                                 for secret in config["secrets"]]
     def init_template(config, templates):
-        outputs=filter_outputs(config, templates)
-        components=[init_stack(config, tempname, template, outputs)
-                    for tempname, template in templates.items()]
+        components=[init_stack(config, tempname)
+                    for tempname in templates.keys()]
         template=Template()
         for kwargs in components:
             stack=synth_stack(**kwargs)
