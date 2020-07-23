@@ -1,10 +1,7 @@
 ### short [nested actions]
 
-- move function stuff into root
-- simplyify action and api to use function
-
-- replace arn parameters and refs with local arn refs (see api/api gateway)
 - add -function suffix to function names
+- replace arn parameters and refs with local arn refs (see api/api gateway)
 - convert to class based representation
 - add sample timer
 
@@ -134,6 +131,8 @@
   
 ### done
 
+- move function stuff into root
+- simplyify action and api to use function
 - combine bucket and website into single module
 - replace lookback permissions with custom permissions
 - see if iam stuff can be removed from preprocessor
