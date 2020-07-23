@@ -1,7 +1,7 @@
 from pareto.components import *
 
 def lambda_notification_config(action, event):
-    arn=ref("%s-arn" % action["name"])
+    arn=ref("%s-action-arn" % action["name"])
     rules=[{"Name": "prefix",
             "Value": action["path"]}]
     return {"Event": event["type"],
@@ -32,7 +32,7 @@ def LambdaPermission(kwargs, action):
         - NB also recommends using SourceAccount as account not included in S3 arn format
         """
         eventsource="arn:aws:s3:::%s" % resource_name(kwargs)
-        funcname=ref("%s-arn" % action["name"])
+        funcname=ref("%s-action-arn" % action["name"])
         props={"Action": "lambda:InvokeFunction",
                "FunctionName": funcname,
                "SourceAccount": fn_sub("${AWS::AccountId}"),
@@ -44,7 +44,7 @@ def LambdaPermission(kwargs, action):
 def synth_bucket(**kwargs):
     template=Template(resources=[Bucket(**kwargs)])
     def add_action(kwargs, action, template):
-        template["parameters"].append(parameter("%s-arn" % action["name"]))
+        template["parameters"].append(parameter("%s-action-arn" % action["name"]))
         template["resources"].append(LambdaPermission(kwargs, action))
     if "actions" in kwargs:
         for action in kwargs["actions"]:
@@ -81,7 +81,7 @@ def synth_website(**kwargs):
                                  BucketPolicy(**kwargs)],
                       outputs=[BucketUrl(**kwargs)])    
     def add_action(kwargs, action, template):
-        template["parameters"].append(parameter("%s-arn" % action["name"]))
+        template["parameters"].append(parameter("%s-action-arn" % action["name"]))
         template["resources"].append(LambdaPermission(kwargs, action))
     if "actions" in kwargs:
         for action in kwargs["actions"]:

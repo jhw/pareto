@@ -1,12 +1,15 @@
 ### short [nested actions]
 
-- test adding -action suffix to function
+- add permissions to all triggers in config
+- remove actions config, component
+- all trigger components to add function resources
+- replace trigger function parameters with local arn refs
+- remove trigger remapping stuff from pre-processor
+- rename function as action
+- remove parameter import/export from master template creation
+- refactor function filtering (dashboards, push_lambdas, deploy_stack)
+- replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 
-- proposal to replace independent actions with trigger- nested actions
-
-- replace arn parameters and refs with local arn refs (see api/api gateway)
-- convert to class based representation
-- function should be renamed action once original action removed
 - add sample timer
 
 ### medium
@@ -37,7 +40,8 @@
 
 ### thoughts
 
-  - no be
+- convert to class based representation ?
+  - doesn't seem worth it right now
 - change package refs to pkg ?
   - not worth it
 - clean up codebuild project every time ?

@@ -15,7 +15,7 @@ def synth_timer(**kwargs):
         @resource(suffix=suffix)
         def LambdaPermission(**kwargs):
             eventsource=fn_getatt(kwargs["name"], "Arn")
-            funcarn=ref("%s-arn" % kwargs["action"]["name"])
+            funcarn=ref("%s-action-arn" % kwargs["action"]["name"])
             props={"Action": "lambda:InvokeFunction",
                    "FunctionName": funcarn,
                    "Principal": "events.amazonaws.com",

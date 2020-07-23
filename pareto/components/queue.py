@@ -9,7 +9,7 @@ def synth_queue(**kwargs):
         suffix="%s-mapping" % kwargs["action"]["name"]
         @resource(suffix)
         def LambdaMapping(batch=1, **kwargs):
-            funcarn=ref("%s-arn" % kwargs["action"]["name"])
+            funcarn=ref("%s-action-arn" % kwargs["action"]["name"])
             eventsource=fn_getatt(kwargs["name"], "Arn")
             props={"FunctionName": funcarn,
                    "EventSourceArn": eventsource,
@@ -18,7 +18,7 @@ def synth_queue(**kwargs):
         return LambdaMapping(**kwargs)
     template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:
-        actionarn=parameter("%s-arn" % kwargs["action"]["name"])
+        actionarn=parameter("%s-action-arn" % kwargs["action"]["name"])
         template["parameters"].append(actionarn)
         template["resources"].append(LambdaMapping(**kwargs))
     return template

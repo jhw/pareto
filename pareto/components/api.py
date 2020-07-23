@@ -31,7 +31,7 @@ def synth_api(**kwargs):
     @resource(suffix="api-gw-method")
     def ApiGwMethod(**kwargs):
         arnpattern="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
-        lambdaarn=fn_getatt(kwargs["name"], "Arn")
+        lambdaarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
         uriparams={"lambda_arn": lambdaarn}
         uri=fn_sub(arnpattern % kwargs["region"],
                    uriparams)
@@ -57,7 +57,7 @@ def synth_api(**kwargs):
         eventsource=fn_sub(arnpattern % (kwargs["region"],
                                          kwargs["method"]),
                            eventparams)
-        funcname=fn_getatt(kwargs["name"], "Arn")
+        funcname=fn_getatt("%s-action" % kwargs["name"], "Arn")
         props={"Action": "lambda:InvokeFunction",
                "FunctionName": funcname,
                "Principal": "apigateway.amazonaws.com",

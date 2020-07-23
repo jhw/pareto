@@ -1,13 +1,13 @@
 from pareto.components import *
 
-@resource()
+@resource(suffix="action")
 def Function(concurrency=None,
              handler="index.handler",
              memory=512,
              timeout=30,
              **kwargs):
-    dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
-    rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
+    dlqarn=fn_getatt("%s-action-dead-letter-queue" % kwargs["name"], "Arn")
+    rolearn=fn_getatt("%s-action-role" % kwargs["name"], "Arn")
     props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
                     "S3Key": kwargs["staging"]["key"]},
            "FunctionName": resource_name(kwargs),
@@ -21,9 +21,9 @@ def Function(concurrency=None,
         props["ReservedConcurrentExecutions"]=concurrency
     return "AWS::Lambda::Function", props
 
-@output(suffix="arn")
+@output(suffix="action-arn")
 def FunctionArn(**kwargs):
-    return fn_getatt(kwargs["name"], "Arn")
+    return fn_getatt("%s-action" % kwargs["name"], "Arn")
 
 def FunctionRole(**kwargs):
     rolekwargs={}
@@ -33,25 +33,25 @@ def FunctionRole(**kwargs):
     rolekwargs["service"]="lambda.amazonaws.com"
     return IamRole(**rolekwargs)
 
-@resource(suffix="dead-letter-queue")
+@resource(suffix="action-dead-letter-queue")
 def FunctionDeadLetterQueue(**kwargs):
     return "AWS::SQS::Queue"
 
-@resource(suffix="version")
+@resource(suffix="action-version")
 def FunctionVersion(**kwargs):
-    props={"FunctionName": ref(kwargs["name"])}
+    props={"FunctionName": ref("%s-action" % kwargs["name"])}
     return "AWS::Lambda::Version", props
 
-@resource(suffix="event-config")
+@resource(suffix="action-event-config")
 def FunctionEventConfig(retries=0,
                         **kwargs):
-    qualifier=fn_getatt("%s-version" % kwargs["name"], "Version")
-    props={"FunctionName": ref(kwargs["name"]),
+    qualifier=fn_getatt("%s-action-version" % kwargs["name"], "Version")
+    props={"FunctionName": ref("%s-action" % kwargs["name"]),
            "Qualifier": qualifier,
            "MaximumRetryAttempts": retries}
     return "AWS::Lambda::EventInvokeConfig", props
 
-@resource(suffix="role")
+@resource(suffix="action-role")
 def IamRole(**kwargs):
     def assume_role_policy_doc():
         statement=[{"Action": "sts:AssumeRole",
