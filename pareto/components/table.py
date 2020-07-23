@@ -2,9 +2,18 @@ from pareto.components import *
 
 from pareto.components.action import *
 
-DDBTypes={"string": "S",
-          "int": "N",
-          "float": "N"}
+DDBTypes=yaml.load("""
+string: S
+int: N
+float: N
+""", Loader=yaml.FullLoader)
+
+EventMappingPermissions=yaml.load("""
+- dynamodb:GetRecords
+- dynamodb:GetShardIterator
+- dynamodb:DescribeStream
+- dynamodb:ListStreams 
+""", Loader=yaml.FullLoader)
 
 @resource()
 def Table(stream={"type": "NEW_IMAGE"},
@@ -59,6 +68,17 @@ def TableActionMapping(**kwargs):
            "StartingPosition": "LATEST"}
     return "AWS::Lambda::EventSourceMapping", props
 
+def event_mapping_permissions(fn):
+    def wrapped(**kwargs):
+        if "action" in kwargs:
+            kwargs["action"].setdefault("permissions", [])
+            permissions=kwargs["action"]["permissions"]
+            if "dynamodb:*" not in permissions:
+                permissions+=EventMappingPermissions
+        return fn(**kwargs)
+    return wrapped
+
+@event_mapping_permissions
 def synth_table(**kwargs):
     template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:

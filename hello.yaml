@@ -27,9 +27,7 @@ components:
     - name: my-hash
       type: string
       primary: true
-    action:
-      permissions:
-      - "dynamodb:*"
+    action: {}
   queues:
   - name: hello-queue
     batch: 1

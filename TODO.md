@@ -1,7 +1,7 @@
 ### short
 
-- ddb event mapping
 - note regarding specific sqs permissions
+- replace s3 permission with something custom
 
 - add sample timer to hello.yaml
 
