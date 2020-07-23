@@ -1,6 +1,9 @@
 ### short [nested actions]
 
-- add -function suffix to function names
+- proposal to replace independent actions with trigger- nested actions
+
+- functions should have -function suffix
+  - but may affect arn refs elsewhere
 - replace arn parameters and refs with local arn refs (see api/api gateway)
 - convert to class based representation
 - add sample timer
@@ -131,6 +134,7 @@
   
 ### done
 
+- replace iam/permissions with simply permissions
 - move function stuff into root
 - simplyify action and api to use function
 - combine bucket and website into single module

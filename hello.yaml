@@ -7,20 +7,18 @@ components:
   apis:
   - name: hello-get-api
     method: GET
-    iam:
-      permissions:
-      - "logs:*"
-      - "s3:*"
-      - "sqs:*"
-      - "dynamodb:*"
+    permissions:
+    - "logs:*"
+    - "s3:*"
+    - "sqs:*"
+    - "dynamodb:*"
   - name: hello-post-api
     method: POST
-    iam:
-      permissions:
-      - "logs:*"
-      - "s3:*"
-      - "sqs:*"
-      - "dynamodb:*"
+    permissions:
+    - "logs:*"
+    - "s3:*"
+    - "sqs:*"
+    - "dynamodb:*"
   buckets:
   - name: hello-bucket
   websites:
@@ -36,41 +34,37 @@ components:
     batch: 1
   actions:
   - name: hello-action-1
-    iam:
-      permissions:
-      - "logs:*"
-      - "s3:*"
-      - "sqs:*"
-      - "dynamodb:*"
+    permissions:
+    - "logs:*"
+    - "s3:*"
+    - "sqs:*"
+    - "dynamodb:*"
     trigger:
       name: hello-bucket
       path: foo
   - name: hello-action-2
-    iam:
-      permissions:
-      - "logs:*"
-      - "s3:*"
-      - "sqs:*"
-      - "dynamodb:*"
+    permissions:
+    - "logs:*"
+    - "s3:*"
+    - "sqs:*"
+    - "dynamodb:*"
     trigger:
       name: hello-bucket
       path: bar
   - name: hello-action-3
-    iam:
-      permissions:
-      - "logs:*"
-      - "s3:*"
-      - "sqs:*"
-      - "dynamodb:*"
+    permissions:
+    - "logs:*"
+    - "s3:*"
+    - "sqs:*"
+    - "dynamodb:*"
     trigger:
       name: hello-table
   - name: hello-action-4
-    iam:
-      permissions:
-      - "logs:*"
-      - "s3:*"
-      - "sqs:*"
-      - "dynamodb:*"
+    permissions:
+    - "logs:*"
+    - "s3:*"
+    - "sqs:*"
+    - "dynamodb:*"
     trigger:
       name: hello-queue
 

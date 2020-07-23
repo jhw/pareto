@@ -26,8 +26,10 @@ def FunctionArn(**kwargs):
     return fn_getatt(kwargs["name"], "Arn")
 
 def FunctionRole(**kwargs):
-    rolekwargs=dict(kwargs["iam"])
+    rolekwargs={}
     rolekwargs["name"]=kwargs["name"]
+    if "permissions" in kwargs:
+        rolekwargs["permissions"]=kwargs["permissions"]
     rolekwargs["service"]="lambda.amazonaws.com"
     return IamRole(**rolekwargs)
 
