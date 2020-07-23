@@ -1,5 +1,8 @@
 ### short [nested actions]
 
+- unpack components
+
+- merge ActionRole and IamRole
 - s3 action path should default to /
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 - add sample timer to hello.yaml
