@@ -1,3 +1,29 @@
+### nested actions 23/7/20
+
+- all actions to be nested under trigger types ?
+- dedicated action type should disappear
+- similar to how apigw+function works
+
+### dynamic pythonpath 23/7/20
+
+- set pythonpath dynamically from globals["src"]
+- https://stackoverflow.com/questions/3108285/in-python-script-how-do-i-set-pythonpath/3108301
+- affects push_lambdas.py, test.py
+- test.py needs to load config
+- changing lambda source then causes push_lambdas.py to fail
+
+### layers 23/7/20
+
+- add nested lambda key to staging
+- change lambda staging so leaf values are objects not strings
+- add sample layer config to hello.yaml
+- add layer staging to deploy_stack.py
+  - validate layer exists in s3
+  - leaf objects as per lambdas
+- new layer component in functions
+- create layer component if layer config exists
+- add support for layer arns
+
 ### layers 20/7/20
 
 - add layer staging hook into deploy_stack.py

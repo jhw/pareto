@@ -1,31 +1,19 @@
-### short
+### short [remove-trigger-group]
 
+- filter_triggers function
 - replace trigger group with nested template for each of queue/table/bucket etc
+
 - replace function with separate action, api components
 - replace bucket with separate bucket, website components
+
 - common directories for common components
 - extend preprocessor name and type checking
 
-- set classpath dynamically from globals["src"]
-  - https://stackoverflow.com/questions/3108285/in-python-script-how-do-i-set-pythonpath/3108301
-  - push_lambdas.py, test.py
-  - test.py needs to load config
-
-- changing lambda source cause push_lambdas to fail
-
-### layers
-
-- add nested lambda key to staging
-- change lambda staging so leaf values are objects not strings
-- add sample layer config to hello.yaml
-- add layer staging to deploy_stack.py
-  - validate layer exists in s3
-  - leaf objects as per lambdas
-- new layer component in functions
-- create layer component if layer config exists
-- add support for layer arns
-
 ### medium
+
+- nested actions [notes]
+- dynamic pythonpath [notes]
+- layers [notes]
 
 - apigw request validation
 - cloudwatch alerts
