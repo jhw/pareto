@@ -7,6 +7,10 @@ components:
   secrets:
   - name: foo
     value: bar
+  timers:
+  - name: hello-timer
+    rate: "1 hour"
+    action: {}
   apis:
   - name: hello-get
     method: GET
