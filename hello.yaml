@@ -21,50 +21,36 @@ components:
     - "dynamodb:*"
   buckets:
   - name: hello-bucket
-  websites:
+    path: foo
+    permissions:
+    - "logs:*"
+    - "s3:*"
+    - "sqs:*"
+    - "dynamodb:*"
+  websites:  
   - name: hello-website
+    path: bar
+    permissions:
+    - "logs:*"
+    - "s3:*"
+    - "sqs:*"
+    - "dynamodb:*"
   tables:
   - name: hello-table
     fields:
     - name: my-hash
       type: string
       primary: true
+    permissions:
+    - "logs:*"
+    - "s3:*"
+    - "sqs:*"
+    - "dynamodb:*"
   queues:
   - name: hello-queue
     batch: 1
-  actions:
-  - name: hello-action-1
     permissions:
     - "logs:*"
     - "s3:*"
     - "sqs:*"
     - "dynamodb:*"
-    trigger:
-      name: hello-bucket
-      path: foo
-  - name: hello-action-2
-    permissions:
-    - "logs:*"
-    - "s3:*"
-    - "sqs:*"
-    - "dynamodb:*"
-    trigger:
-      name: hello-bucket
-      path: bar
-  - name: hello-action-3
-    permissions:
-    - "logs:*"
-    - "s3:*"
-    - "sqs:*"
-    - "dynamodb:*"
-    trigger:
-      name: hello-table
-  - name: hello-action-4
-    permissions:
-    - "logs:*"
-    - "s3:*"
-    - "sqs:*"
-    - "dynamodb:*"
-    trigger:
-      name: hello-queue
-

@@ -3,6 +3,8 @@
 - add permissions to all triggers in config
 - remove actions config, component
 - all trigger components to add function resources
+- ** restrict bucket to single action **
+- ** nest path, permissions under action key **
 - replace trigger function parameters with local arn refs
 - remove trigger remapping stuff from pre-processor
 - rename function as action
