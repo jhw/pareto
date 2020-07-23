@@ -1,17 +1,16 @@
 ### short [nested actions]
 
-- add permissions to all triggers in config
-- remove actions config, component
-- all trigger components to add function resources
-- ** restrict bucket to single action **
-- ** nest path, permissions under action key **
-- replace trigger function parameters with local arn refs
-- remove trigger remapping stuff from pre-processor
+- convert api to work with method, permissions nested under actions key
+- table, timer, queue to add single action
+  - replace imported arn parameter with local arn ref (see api)
+- bucket/website to add multiple actions
+  - replace imported arn parameter with local arn ref (see api)
+
 - rename function as action
 - remove parameter import/export from master template creation
 - refactor function filtering (dashboards, push_lambdas, deploy_stack)
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
-
+- remove preprocessor
 - add sample timer
 
 ### medium
@@ -141,6 +140,8 @@
   
 ### done
 
+- add permissions to all triggers in config
+- remove actions config, component
 - apigw resources not being created
 - replace iam/permissions with simply permissions
 - move function stuff into root

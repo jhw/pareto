@@ -6,51 +6,56 @@ globals:
 components:
   apis:
   - name: hello-get-api
-    method: GET
-    permissions:
-    - "logs:*"
-    - "s3:*"
-    - "sqs:*"
-    - "dynamodb:*"
+    action:
+      method: GET
+      permissions:
+      - "logs:*"
+      - "s3:*"
+      - "sqs:*"
+      - "dynamodb:*"
   - name: hello-post-api
-    method: POST
-    permissions:
-    - "logs:*"
-    - "s3:*"
-    - "sqs:*"
-    - "dynamodb:*"
+    action:
+      method: POST
+      permissions:
+      - "logs:*"
+      - "s3:*"
+      - "sqs:*"
+      - "dynamodb:*"
   buckets:
   - name: hello-bucket
-    path: foo
-    permissions:
-    - "logs:*"
-    - "s3:*"
-    - "sqs:*"
-    - "dynamodb:*"
+    actions:
+    - path: foo
+      permissions:
+      - "logs:*"
+      - "s3:*"
+      - "sqs:*"
+      - "dynamodb:*"
+    - path: bar
+      permissions:
+      - "logs:*"
+      - "s3:*"
+      - "sqs:*"
+      - "dynamodb:*"
   websites:  
   - name: hello-website
-    path: bar
-    permissions:
-    - "logs:*"
-    - "s3:*"
-    - "sqs:*"
-    - "dynamodb:*"
   tables:
   - name: hello-table
     fields:
     - name: my-hash
       type: string
       primary: true
-    permissions:
-    - "logs:*"
-    - "s3:*"
-    - "sqs:*"
-    - "dynamodb:*"
+    action:
+      permissions:
+      - "logs:*"
+      - "s3:*"
+      - "sqs:*"
+      - "dynamodb:*"
   queues:
   - name: hello-queue
     batch: 1
-    permissions:
-    - "logs:*"
-    - "s3:*"
-    - "sqs:*"
-    - "dynamodb:*"
+    action:
+      permissions:
+      - "logs:*"
+      - "s3:*"
+      - "sqs:*"
+      - "dynamodb:*"
