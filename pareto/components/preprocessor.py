@@ -12,16 +12,29 @@ queue:
   event_sourced: true
 """, Loader=yaml.FullLoader)
 
-def validate(**kwargs):
-    def assert_unique(**kwargs):
+"""
+- this is a temportary function which should wither away over time if actions ceases to be a dedicated class and instead all actions get nested under trigger classes
+"""
+
+def filter_triggers(components):
+    triggers=[]
+    for groupname, group in components.items():
+        if groupname[:-1] in TriggerConfig:
+            for component in group:
+                component["type"]=groupname[:-1]
+                triggers.append(component)
+    return triggers
+
+def validate(**components):
+    def assert_unique(**components):
         keys=[]
-        for attr in kwargs:
+        for attr in components:
             keys+=[component["name"]
-                   for component in kwargs[attr]]
+                   for component in components[attr]]
         ukeys=list(set(keys))
         if len(keys)!=len(ukeys):
             raise RuntimeError("keys are not unique")
-    def assert_triggers(actions, triggers, **kwargs):
+    def assert_triggers(**components):
         def assert_refs(action, trigmap):
             for attr in ["trigger",
                          "target"]:
@@ -31,12 +44,12 @@ def validate(**kwargs):
                                                                attr,
                                                                trigkey))
         trigmap={trigger["name"]:trigger
-                 for trigger in triggers}
-        for action in actions:
+                 for trigger in filter_triggers(components)}
+        for action in components["actions"]:
             assert_refs(action, trigmap)
     for fn in [assert_unique,
                assert_triggers]:
-        fn(**kwargs)
+        fn(**components)
             
 """
 - DSL is action- centric; triggers are nested under actions, and reflect event type information
@@ -45,7 +58,7 @@ def validate(**kwargs):
 - remap_triggers therefore converts this action- centric model to a trigger- centric one used by underlying pareto components
 """
         
-def remap_triggers(actions, triggers, **kwargs):
+def remap_triggers(**components):
     def remap_bucket(action, trigger):
         trigger.setdefault("actions", [])
         actionnames=[action["name"]
@@ -74,8 +87,8 @@ def remap_triggers(actions, triggers, **kwargs):
         trigaction={"name": action["name"]}
         trigger["action"]=trigaction
     trigmap={trigger["name"]:trigger
-             for trigger in triggers}
-    for action in actions:
+             for trigger in filter_triggers(components)}
+    for action in components["actions"]:
         trigger=trigmap[action["trigger"]["name"]]
         remapfn=eval("remap_%s" % trigger["type"])
         remapfn(action=action,
@@ -136,7 +149,7 @@ class Iam(list):
     def render(self):
         return list(self)
 
-def add_permissions(**kwargs):
+def add_permissions(**components):
     def func_permissions(component, triggermap, attrs):
         def trigger_permissions(trigger, triggertype, iam):
             trigconf=TriggerConfig[triggertype]
@@ -162,15 +175,13 @@ def add_permissions(**kwargs):
         return func_permissions(component,
                                 triggermap,
                                 ["trigger", "target"])
-    @Iam.attach
-    def trigger_permissions(component, triggermap):                  
-        pass
     triggermap={trigger["name"]:trigger
-                for trigger in kwargs["triggers"]}
-    for attr in kwargs:
-        for component in kwargs[attr]:
-            fn=eval("%s_permissions" % (attr[:-1]))
-            fn(component, triggermap)
+                for trigger in filter_triggers(components)}
+    for attr in components:
+        for component in components[attr]:
+            if attr[:-1] not in TriggerConfig:
+                fn=eval("%s_permissions" % (attr[:-1]))
+                fn(component, triggermap)
 
 """
 - DSL follows zapier model of actions and triggers, and adds apis
@@ -179,20 +190,19 @@ def add_permissions(**kwargs):
 - trigger types don't need remapping as they are already defined as underlying pareto component type
 """
 
-def remap_types(**kwargs):
+def remap_types(**components):
     def remap_api(api):
         api["type"]="function"
         api["api"]={"method": api.pop("method")}
     def remap_action(action):        
         action["type"]="function"
-    def remap_trigger(trigger):
-        pass
-    for attr in kwargs:
-        for component in kwargs[attr]:
-            fn=eval("remap_%s" % (attr[:-1]))
-            fn(component)
+    for attr in components:
+        for component in components[attr]:
+            if attr[:-1] not in TriggerConfig:
+                fn=eval("remap_%s" % (attr[:-1]))
+                fn(component)
 
-def cleanup(actions, **kwargs):
+def cleanup(actions, **components):
     for action in actions:
         for attr in ["trigger",
                      "target"]:

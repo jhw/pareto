@@ -9,18 +9,17 @@ components:
     method: GET
   - name: hello-post-api
     method: POST
-  triggers:
-  - type: bucket
-    name: hello-bucket
+  buckets:
+  - name: hello-bucket
     website: true
-  - type: table
-    name: hello-table
+  tables:
+  - name: hello-table
     fields:
     - name: my-hash
       type: string
       primary: true
-  - type: queue
-    name: hello-queue
+  queues:
+  - name: hello-queue
     batch: 1
   actions:
   - name: hello-action-1
