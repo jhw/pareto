@@ -1,6 +1,6 @@
 ### short
 
-- add sample timer to hello.yaml
+- timer circular dependency
 
 - dynamic pythonpath [notes]
 
@@ -138,6 +138,7 @@
   
 ### done
 
+- add sample timer to hello.yaml
 - note regarding specific sqs permissions
 - replace s3 permission with something custom
 - handle empty permissions
