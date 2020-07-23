@@ -47,17 +47,26 @@ def ActionRole(**kwargs):
                     "Principal": {"Service": "lambda.amazonaws.com"}}]
         return {"Statement": statement,
                 "Version": "2012-10-17"}
-    def policy(action):            
+    def default_permissions(fn, defaults=["logs:*"]):
+        def wrapped(permissions):
+            permissions=list(permissions)
+            for default in defaults:
+                if default not in permissions:
+                    permissions.append(default)
+            return fn(permissions)
+        return wrapped
+    @default_permissions
+    def policy(permissions):            
         statement=[{"Action": permission,
                     "Effect": "Allow",
                     "Resource": "*"}
-                   for permission in action["permissions"]]
+                   for permission in permissions]
         return {"PolicyDocument": {"Statement": statement,
                                    "Version": "2012-10-17"},
                 "PolicyName": random_name("inline-policy")} # "conditional"
     props={"AssumeRolePolicyDocument": assume_role_policy_doc()}
     if "permissions" in kwargs["action"]:
-        props["Policies"]=[policy(kwargs["action"])]
+        props["Policies"]=[policy(kwargs["action"]["permissions"])]
     return "AWS::IAM::Role", props
 
 if __name__=="__main__":

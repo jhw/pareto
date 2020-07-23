@@ -12,19 +12,16 @@ components:
     method: GET
     action:
       permissions:
-      - "logs:*"
       - "sqs:*"
   - name: hello-post
     method: POST
     action:
       permissions:
-      - "logs:*"
       - "sqs:*"
   buckets:
   - name: hello-bucket
     action:
       permissions:
-      - "logs:*"
       - "s3:*"
       - "sqs:*"
   websites:  
@@ -37,7 +34,6 @@ components:
       primary: true
     action:
       permissions:
-      - "logs:*"
       - "sqs:*"
       - "dynamodb:*"
   queues:
@@ -45,5 +41,4 @@ components:
     batch: 1
     action:
       permissions:
-      - "logs:*"
       - "sqs:*"

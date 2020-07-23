@@ -1,9 +1,5 @@
 ### short
 
-- reduce amount of permissions
-
-- add default  logs permissions
-
 - test missing permissions
   - sqs dlq
   - ddb event mapping
@@ -145,6 +141,8 @@
   
 ### done
 
+- reduce amount of permissions
+- add default logs permissions
 - add secret module
 - test secret example
 - separate secrets stack
