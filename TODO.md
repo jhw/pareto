@@ -1,6 +1,8 @@
 ### short [nested actions]
 
-- unpack components
+- check use of decorators in table/queue/timer LambdaPermissions
+  - why doesn't bucket use the same ?
+- see if LambdaMapping can be abstracted
 
 - merge ActionRole and IamRole
 - s3 action path should default to /
@@ -139,6 +141,7 @@
   
 ### done
 
+- unpack components
 - rename function as action
 - remove preprocessor add_types.py
   - only required by deploy_stack.py but should be able to lookup from groupname
