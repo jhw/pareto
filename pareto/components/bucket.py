@@ -41,19 +41,18 @@ def LambdaPermission(kwargs, action):
         return "AWS::Lambda::Permission", props
     return LambdaPermission(**kwargs)
 
-def add_action(kwargs, action, template):
+def add_action(kwargs, template):
     template["resources"]+=[Function(**kwargs),
                             FunctionRole(**kwargs),
                             FunctionDeadLetterQueue(**kwargs),
                             FunctionVersion(**kwargs),
                             FunctionEventConfig(**kwargs),
-                            LambdaPermission(kwargs, action)]
+                            LambdaPermission(kwargs, kwargs["action"])]
 
 def synth_bucket(**kwargs):
     template=Template(resources=[Bucket(**kwargs)])
-    if "actions" in kwargs:
-        for action in kwargs["actions"]:
-            add_action(kwargs, action, template)
+    if "action" in kwargs:
+        add_action(kwargs, template)
     return template
 
 def synth_website(**kwargs):
@@ -85,9 +84,8 @@ def synth_website(**kwargs):
     template=Template(resources=[Bucket(**kwargs),
                                  BucketPolicy(**kwargs)],
                       outputs=[BucketUrl(**kwargs)])
-    if "actions" in kwargs:
-        for action in kwargs["actions"]:
-            add_action(kwargs, action, template)
+    if "action" in kwargs:
+        add_action(kwargs, template)
     return template
 
 if __name__=="__main__":

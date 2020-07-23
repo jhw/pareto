@@ -23,14 +23,8 @@ components:
       - "dynamodb:*"
   buckets:
   - name: hello-bucket
-    actions:
-    - path: foo
-      permissions:
-      - "logs:*"
-      - "s3:*"
-      - "sqs:*"
-      - "dynamodb:*"
-    - path: bar
+    action:
+      path: foo
       permissions:
       - "logs:*"
       - "s3:*"

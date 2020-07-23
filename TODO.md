@@ -1,10 +1,10 @@
 ### short [nested actions]
 
-- restrict bucket to single action
-  - else you will have to rename functions!
+- investigate why lambda permission needs a second action arg
+- check arn bindings of all actions
+- remove parameter import/export at master level
 
 - rename function as action
-- remove parameter import/export from master template creation
 - refactor function filtering (dashboards, push_lambdas, deploy_stack)
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 - harmonise permission resource names (LambdaPermission, ApiGwPermission)
