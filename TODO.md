@@ -1,11 +1,13 @@
 ### short
 
-- add secret module
-- test secret example
-- separate secrets stack
+- reduce amount of permissions
 
-- ddb permissions
-- sqs permissions
+- add default  logs permissions
+
+- test missing permissions
+  - sqs dlq
+  - ddb event mapping
+  - sqs event mapping
 
 - add sample timer to hello.yaml
 
@@ -143,6 +145,9 @@
   
 ### done
 
+- add secret module
+- test secret example
+- separate secrets stack
 - check output suffixes
 - remove s3 path support
 - merge ActionRole and IamRole

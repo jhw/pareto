@@ -4,23 +4,22 @@ globals:
   bucket: wol-deployments
   runtime: "3.7"
 components:
+  secrets:
+  - name: foo
+    value: bar
   apis:
   - name: hello-get
     method: GET
     action:
       permissions:
       - "logs:*"
-      - "s3:*"
       - "sqs:*"
-      - "dynamodb:*"
   - name: hello-post
     method: POST
     action:
       permissions:
       - "logs:*"
-      - "s3:*"
       - "sqs:*"
-      - "dynamodb:*"
   buckets:
   - name: hello-bucket
     action:
@@ -28,7 +27,6 @@ components:
       - "logs:*"
       - "s3:*"
       - "sqs:*"
-      - "dynamodb:*"
   websites:  
   - name: hello-website
   tables:
@@ -40,7 +38,6 @@ components:
     action:
       permissions:
       - "logs:*"
-      - "s3:*"
       - "sqs:*"
       - "dynamodb:*"
   queues:
@@ -49,6 +46,4 @@ components:
     action:
       permissions:
       - "logs:*"
-      - "s3:*"
       - "sqs:*"
-      - "dynamodb:*"

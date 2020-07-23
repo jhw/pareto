@@ -4,6 +4,7 @@ from pareto.components.api import synth_api
 from pareto.components.bucket import synth_bucket
 from pareto.components.dashboard import synth_dashboard
 from pareto.components.queue import synth_queue
+from pareto.components.secret import synth_secret
 from pareto.components.stack import synth_stack
 from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
@@ -53,23 +54,12 @@ def add_dashboards(config, templates):
         dashboard=synth_dashboard(**kwargs)
         template.update(dashboard)
     templates["dashboards"]=template.render()
-
-@resource(suffix="secret")
-def Secret(**kwargs):
-    secret=kwargs["value"] if type(kwargs["value"])==str else json.dumps(kwargs["value"])
-    props={"Name": kwargs["name"],
-           "SecretString": secret}
-    return "AWS::SecretsManager::Secret", props        
    
 def add_master(config, templates):
     def init_stack(config, tempname):
         stack={"name": tempname}
         stack.update(config["globals"])
         return stack
-    def add_secrets(config, template):
-        template["resources"]+=[Secret(**secret)
-                                for secret in config["secrets"]]
-
     def init_template(config, templates):
         components=[init_stack(config, tempname)
                     for tempname in templates.keys()]
@@ -77,8 +67,6 @@ def add_master(config, templates):
         for kwargs in components:
             stack=synth_stack(**kwargs)
             template.update(stack)
-        if "secrets" in config:
-            add_secrets(config, template)
         return template.render()
     templates["master"]=init_template(config, templates)
         
