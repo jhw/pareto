@@ -1,7 +1,5 @@
 ### short [nested actions]
 
-- table, timer, queue to add single action
-  - replace imported arn parameter with local arn ref (see api)
 - bucket/website to add multiple actions
   - replace imported arn parameter with local arn ref (see api)
 
@@ -9,8 +7,10 @@
 - remove parameter import/export from master template creation
 - refactor function filtering (dashboards, push_lambdas, deploy_stack)
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
+- harmonise permission resource names (LambdaPermission, ApiGwPermission)
+- refactor handling of multiple s3 actions/roles
 - remove preprocessor
-- add sample timer
+- add sample timer to hello.yaml
 
 ### medium
 
@@ -139,6 +139,8 @@
   
 ### done
 
+- table, timer, queue to add single action
+  - replace imported arn parameter with local arn ref (see api)
 - convert api to work with method, permissions nested under actions key
 - add permissions to all triggers in config
 - remove actions config, component

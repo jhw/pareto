@@ -1,5 +1,7 @@
 from pareto.components import *
 
+from pareto.components.function import *
+
 def synth_table(**kwargs):
     DDBTypes={"string": "S",
               "int": "N",
@@ -60,9 +62,12 @@ def synth_table(**kwargs):
         return LambdaMapping(**kwargs)
     template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:
-        actionarn=parameter("%s-action-arn" % kwargs["action"]["name"])
-        template["parameters"].append(actionarn)
-        template["resources"].append(LambdaMapping(**kwargs))
+        template["resources"]+=[Function(**kwargs),
+                                FunctionRole(**kwargs),
+                                FunctionDeadLetterQueue(**kwargs),
+                                FunctionVersion(**kwargs),
+                                FunctionEventConfig(**kwargs),
+                                LambdaMapping(**kwargs)]
     return template
 
 if __name__=="__main__":
