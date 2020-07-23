@@ -1,8 +1,5 @@
 ### short
 
-- note regarding specific sqs permissions
-- replace s3 permission with something custom
-
 - add sample timer to hello.yaml
 
 - dynamic pythonpath [notes]
@@ -141,6 +138,8 @@
   
 ### done
 
+- note regarding specific sqs permissions
+- replace s3 permission with something custom
 - handle empty permissions
 - reduce amount of permissions
 - add default logs permissions

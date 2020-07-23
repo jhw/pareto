@@ -18,7 +18,7 @@ components:
   - name: hello-bucket
     action:
       permissions:
-      - "s3:*"
+      - "translate:*"
   websites:  
   - name: hello-website
   tables:
@@ -27,7 +27,9 @@ components:
     - name: my-hash
       type: string
       primary: true
-    action: {}
+    action:
+      permissions:
+      - "polly:*"
   queues:
   - name: hello-queue
     batch: 1
