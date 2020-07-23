@@ -1,8 +1,8 @@
 ### short [nested actions]
 
+- lambda permission logical names are messed up
 - bucket names need to include actions
 - dashboards will need to be adjusted for function names
-- lambda permission logical names are messed up
 
 - remove parameter import/export at master level
 
