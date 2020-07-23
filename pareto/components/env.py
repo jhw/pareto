@@ -53,11 +53,11 @@ def add_dashboards(config, templates):
         kwargs["name"]="%s-dashboard" % key
         dashboard=synth_dashboard(**kwargs)
         template.update(dashboard)
-    templates["dashboard"]=template.render()
+    templates["dashboards"]=template.render()
 
 def add_master(config, templates):
     def stack_id(stackname):
-        return logical_id("%s-stack" % stackname)
+        return logical_id(stackname) # NB no -stack suffix
     def get_attr(name, attr):
         return {"Fn::GetAtt": [name, "Outputs.%s" % attr]}
     def filter_outputs(config, templates):

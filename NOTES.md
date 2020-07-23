@@ -1,14 +1,25 @@
-### type hardcoding 23/7/20
-
-- pareto/scripts/__init__.py [filter_functions]
-- pareto/components/env.py [dashboard filtering]
-- pareto/components/dashboard.py
-
 ### nested actions 23/7/20
 
 - all actions to be nested under trigger types ?
 - dedicated action type should disappear
 - similar to how apigw+function works
+- the other thing that this would help a lot with is importing/exporting of function references across templates when creating master template
+- and no more parameter creation when for function arns; instead you could revert back to using locally created arns
+- will clearly require action to be available to all (trigger) components
+- is basically the extension of the api model to all triggers
+- api is now just api gateway bound to a function, just the same way any old trigger can be bound to a function
+- so there's a nice symmetry there
+- essentially function and iam stuff need to be available component root
+- the other thing this fixes is the complexity of the trigger/target model
+- if you bind a trigger and an action together then you can automatically include any lookback permissions you need within that particular component
+- so then any target iam permissions should probably just be specified within the top level dsl
+- which means you can really do away with the whole trigger/target model :)
+
+### type hardcoding 23/7/20
+
+- pareto/scripts/__init__.py [filter_functions]
+- pareto/components/env.py [dashboard filtering]
+- pareto/components/dashboard.py
 
 ### dynamic pythonpath 23/7/20
 

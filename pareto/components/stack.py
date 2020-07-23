@@ -3,7 +3,7 @@ from pareto.components import *
 TemplateUrl="https://s3.%s.amazonaws.com/%s/%s-%s/templates/%s.json"
 
 def synth_stack(**kwargs):
-    @resource(suffix="stack")
+    @resource() # NB no suffix
     def Stack(**kwargs):
         url=TemplateUrl % (kwargs["region"],
                            kwargs["bucket"],

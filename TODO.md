@@ -1,17 +1,15 @@
 ### short 
 
-- remove `stack` suffix from stacks name
-  - requires support for blank suffix
+- remap_types to add function parameter
+  - rationalise handling of function detection
 
-- pluralise dashboards name
+- nested actions [notes]
 
 - common directories for common components
 
 ### medium
 
-- avoid api, action type hardcoding when filtering functions [notes]
-
-- nested actions [notes]
+- separate secrets stack
 - dynamic pythonpath [notes]
 - layers [notes]
 
@@ -135,6 +133,9 @@
   
 ### done
 
+- remove `stack` suffix from stacks name
+  - requires support for blank suffix
+- pluralise dashboards name
 - allow method to be top level api parameter
 - dashboards is empty
 - simplify remap function so just adds types
