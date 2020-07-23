@@ -1,9 +1,11 @@
 ### short [nested actions]
 
-- combine bucket and website into single module
 - move function stuff into root
 - simplyify action and api to use function
 
+- replace arn parameters and refs with local arn refs (see api/api gateway)
+- add -function suffix to function names
+- convert to class based representation
 - add sample timer
 
 ### medium
@@ -132,6 +134,7 @@
   
 ### done
 
+- combine bucket and website into single module
 - replace lookback permissions with custom permissions
 - see if iam stuff can be removed from preprocessor
 - remove target stuff
