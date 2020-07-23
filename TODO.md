@@ -1,11 +1,12 @@
 ### short [nested actions]
 
+- test adding -action suffix to function
+
 - proposal to replace independent actions with trigger- nested actions
 
-- functions should have -function suffix
-  - but may affect arn refs elsewhere
 - replace arn parameters and refs with local arn refs (see api/api gateway)
 - convert to class based representation
+- function should be renamed action once original action removed
 - add sample timer
 
 ### medium
