@@ -10,20 +10,15 @@ components:
   apis:
   - name: hello-get
     method: GET
-    action:
-      permissions:
-      - "sqs:*"
+    action: {}
   - name: hello-post
     method: POST
-    action:
-      permissions:
-      - "sqs:*"
+    action: {}
   buckets:
   - name: hello-bucket
     action:
       permissions:
       - "s3:*"
-      - "sqs:*"
   websites:  
   - name: hello-website
   tables:
@@ -34,11 +29,8 @@ components:
       primary: true
     action:
       permissions:
-      - "sqs:*"
       - "dynamodb:*"
   queues:
   - name: hello-queue
     batch: 1
-    action:
-      permissions:
-      - "sqs:*"
+    action: {}

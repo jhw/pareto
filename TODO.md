@@ -1,9 +1,7 @@
 ### short
 
-- test missing permissions
-  - sqs dlq
-  - ddb event mapping
-  - sqs event mapping
+- ddb event mapping
+- note regarding specific sqs permissions
 
 - add sample timer to hello.yaml
 
@@ -35,6 +33,8 @@
 
 ### thoughts
 
+- avoid having to specify empty action ?
+  - can't think of decent way around it
 - see if LambdaMapping can be abstracted
   - no they are fairly unique
 - see if permissions generation code can be harmonised like iam roles
@@ -141,6 +141,7 @@
   
 ### done
 
+- handle empty permissions
 - reduce amount of permissions
 - add default logs permissions
 - add secret module
