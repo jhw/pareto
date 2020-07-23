@@ -33,8 +33,10 @@ def add_dashboards(config, templates):
         group["components"]=components
         return group
     def has_dashboard(components):
-        return True in [component["functional"]
-                        for component in components]
+        for component in components:
+            if "action" in component:
+                return True
+        return False
     def init_groups(config):
         groups={}
         for key, components in config["components"].items():

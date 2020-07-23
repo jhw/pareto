@@ -1,10 +1,15 @@
 ### short [nested actions]
 
-- refactor filter_functions
-  - how is this going to work if u can't infer functions from components any more ?
+- bucket names need to include actions
+- dashboards will need to be adjusted for function names
+- s3 notification bindings are missing
+- lambda permission logical names are messed up
+- permissions are missing from roles
 
 - remove parameter import/export at master level
 
+- remove preprocessor add_types.py
+  - only required by deploy_stack.py but should be able to lookup from groupname
 - rename function as action
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 - harmonise permission resource names (LambdaPermission, ApiGwPermission)
@@ -139,6 +144,8 @@
   
 ### done
 
+- refactor filter_functions
+  - how is this going to work if u can't infer functions from components any more ?
 - check arn bindings of all actions
 - investigate why lambda permission needs a second action arg
 - bucket/website to add multiple actions

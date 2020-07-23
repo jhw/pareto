@@ -74,7 +74,7 @@ def synth_dashboard(**kwargs):
                              "function/duration.yaml",
                              "function/errors.yaml"]]
                 for component in kwargs["components"]
-                if component["functional"]]
+                if "action" in component]
         layout=grid_layout(charts)
         props={"DashboardName": resource_name(kwargs),
                "DashboardBody": json.dumps(layout)}

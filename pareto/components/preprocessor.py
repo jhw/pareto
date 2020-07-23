@@ -1,10 +1,9 @@
 from pareto.components import *
 
-def add_types(functypes=["apis", "actions"], **components):
+def add_types(**components):
     for attr in components:
         for component in components[attr]:
             component["type"]=attr[:-1]
-            component["functional"]=attr in functypes
 
 def validate(**components):
     def assert_unique(**components):
@@ -19,7 +18,8 @@ def validate(**components):
         fn(**components)
             
 def preprocess(config):
-    for fn in [validate]:
+    for fn in [add_types,
+               validate]:
         fn(**config["components"])
         
 if __name__=="__main__":

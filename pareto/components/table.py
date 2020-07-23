@@ -50,7 +50,7 @@ def synth_table(**kwargs):
             props["StreamSpecification"]={"StreamViewType": stream["type"]}
         return "AWS::DynamoDB::Table", props
     def LambdaMapping(**kwargs):
-        suffix="%s-mapping" % kwargs["action"]["name"]
+        suffix="%s-mapping" % kwargs["name"]
         @resource(suffix)
         def LambdaMapping(**kwargs):
             funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")

@@ -8,7 +8,7 @@ def synth_queue(**kwargs):
         props={"QueueName": resource_name(kwargs)}
         return "AWS::SQS::Queue", props
     def LambdaMapping(**kwargs):
-        suffix="%s-mapping" % kwargs["action"]["name"]
+        suffix="%s-mapping" % kwargs["name"]
         @resource(suffix)
         def LambdaMapping(batch=1, **kwargs):
             funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")

@@ -44,7 +44,7 @@ def synth_api(**kwargs):
         props={"AuthorizationType": "NONE",
                "RestApiId": restapi,
                "ResourceId": parent,
-               "HttpMethod": kwargs["action"]["method"],
+               "HttpMethod": kwargs["method"],
                "Integration": integration}
         return "AWS::ApiGateway::Method", props
     @resource(suffix="api-gw-permission")

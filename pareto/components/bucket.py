@@ -1,5 +1,7 @@
 from pareto.components import *
 
+from pareto.components.function import *
+
 def lambda_notification_config(action, event):
     arn=ref("%s-action-arn" % action["name"])
     rules=[{"Name": "prefix",
@@ -23,7 +25,7 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
     return "AWS::S3::Bucket", props
 
 def LambdaPermission(kwargs):
-    suffix="%s-permission" % kwargs["action"]["name"]
+    suffix="%s-permission" % kwargs["name"]
     @resource(suffix=suffix)
     def LambdaPermission(**kwargs):
         """

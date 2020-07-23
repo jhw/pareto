@@ -25,8 +25,16 @@ def Function(concurrency=None,
 def FunctionArn(**kwargs):
     return fn_getatt("%s-action" % kwargs["name"], "Arn")
 
+"""
+- NB AWS::IAM::Role `RoleName` attribute isn't required
+- however you do need a logical name for the role
+- simplest to just use the parent resource name, which will get suffixed with `-action-arn` (see below)
+- but this is only going to work if you have a single action per trigger
+"""
+
 def FunctionRole(**kwargs):
     rolekwargs={}
+    rolekwargs["name"]=kwargs["name"]
     rolekwargs["permission"]=kwargs["action"]["permissions"]
     rolekwargs["service"]="lambda.amazonaws.com"
     return IamRole(**rolekwargs)

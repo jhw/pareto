@@ -6,16 +6,16 @@ globals:
 components:
   apis:
   - name: hello-get-api
+    method: GET
     action:
-      method: GET
       permissions:
       - "logs:*"
       - "s3:*"
       - "sqs:*"
       - "dynamodb:*"
   - name: hello-post-api
+    method: POST
     action:
-      method: POST
       permissions:
       - "logs:*"
       - "s3:*"
