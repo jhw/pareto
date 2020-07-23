@@ -7,11 +7,8 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
            **kwargs):
     def lambda_config(kwargs, event):
         funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
-        rules=[{"Name": "prefix",
-                "Value": kwargs["path"]}]
         return {"Event": event["type"],
-                "Function": funcarn,
-                "Filter": {"S3Key": {"Rules": rules}}}
+                "Function": funcarn}
     props={"BucketName": resource_name(kwargs)}
     if "action" in kwargs:
         notifications={"LambdaConfigurations": [lambda_config(kwargs, event)]}

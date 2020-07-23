@@ -1,15 +1,15 @@
 ### short [nested actions]
 
-- remove s3 path support
 - check output suffixes
 
 - separate secrets stack
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 - add sample timer to hello.yaml
 
+- dynamic pythonpath [notes]
+
 ### medium
 
-- dynamic pythonpath [notes]
 - layers [notes]
 
 - apigw request validation
@@ -140,6 +140,7 @@
   
 ### done
 
+- remove s3 path support
 - merge ActionRole and IamRole
 - separate out and rename website components
 - separate website module again
