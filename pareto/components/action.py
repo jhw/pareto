@@ -1,11 +1,11 @@
 from pareto.components import *
 
 @resource(suffix="action")
-def Function(concurrency=None,
-             handler="index.handler",
-             memory=512,
-             timeout=30,
-             **kwargs):
+def Action(concurrency=None,
+           handler="index.handler",
+           memory=512,
+           timeout=30,
+           **kwargs):
     dlqarn=fn_getatt("%s-action-dead-letter-queue" % kwargs["name"], "Arn")
     rolearn=fn_getatt("%s-action-role" % kwargs["name"], "Arn")
     props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
@@ -21,10 +21,6 @@ def Function(concurrency=None,
         props["ReservedConcurrentExecutions"]=concurrency
     return "AWS::Lambda::Function", props
 
-@output(suffix="action-arn")
-def FunctionArn(**kwargs):
-    return fn_getatt("%s-action" % kwargs["name"], "Arn")
-
 """
 - NB AWS::IAM::Role `RoleName` attribute isn't required
 - however you do need a logical name for the role
@@ -32,7 +28,7 @@ def FunctionArn(**kwargs):
 - but this is only going to work if you have a single action per trigger
 """
 
-def FunctionRole(**kwargs):
+def ActionRole(**kwargs):
     rolekwargs={}
     rolekwargs["name"]=kwargs["name"]
     rolekwargs["permissions"]=kwargs["action"]["permissions"]
@@ -40,16 +36,16 @@ def FunctionRole(**kwargs):
     return IamRole(**rolekwargs)
 
 @resource(suffix="action-dead-letter-queue")
-def FunctionDeadLetterQueue(**kwargs):
+def ActionDeadLetterQueue(**kwargs):
     return "AWS::SQS::Queue"
 
 @resource(suffix="action-version")
-def FunctionVersion(**kwargs):
+def ActionVersion(**kwargs):
     props={"FunctionName": ref("%s-action" % kwargs["name"])}
     return "AWS::Lambda::Version", props
 
 @resource(suffix="action-event-config")
-def FunctionEventConfig(retries=0,
+def ActionEventConfig(retries=0,
                         **kwargs):
     qualifier=fn_getatt("%s-action-version" % kwargs["name"], "Version")
     props={"FunctionName": ref("%s-action" % kwargs["name"]),

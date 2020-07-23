@@ -1,6 +1,6 @@
 from pareto.components import *
 
-from pareto.components.function import *
+from pareto.components.action import *
 
 def synth_timer(**kwargs):
     @resource()
@@ -24,11 +24,11 @@ def synth_timer(**kwargs):
                    "SourceArn": eventsource}
             return "AWS::Lambda::Permission", props
         return LambdaPermission(**kwargs)
-    return Template(resources=[Function(**kwargs),
-                               FunctionRole(**kwargs),
-                               FunctionDeadLetterQueue(**kwargs),
-                               FunctionVersion(**kwargs),
-                               FunctionEventConfig(**kwargs),
+    return Template(resources=[Action(**kwargs),
+                               ActionRole(**kwargs),
+                               ActionDeadLetterQueue(**kwargs),
+                               ActionVersion(**kwargs),
+                               ActionEventConfig(**kwargs),
                                EventRule(**kwargs),
                                LambdaPermission(**kwargs)])
 

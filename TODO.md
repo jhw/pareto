@@ -1,8 +1,5 @@
 ### short [nested actions]
 
-- see if permissions generation code can be harmonised like iam roles
-- find a better place for function stuff rather than components.functions
-- rename function as action
 - s3 action path should default to /
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 - add sample timer to hello.yaml
@@ -35,6 +32,8 @@
 
 ### thoughts
 
+- see if permissions generation code can be harmonised like iam roles
+  - no; quite specific
 - harmonise permission resource names (LambdaPermission, ApiGwPermission) ?
   - single Permission to which u pass source ?
   - probably not worth it
@@ -137,6 +136,7 @@
   
 ### done
 
+- rename function as action
 - remove preprocessor add_types.py
   - only required by deploy_stack.py but should be able to lookup from groupname
 - remove preprocessor or integrate it elsewhere

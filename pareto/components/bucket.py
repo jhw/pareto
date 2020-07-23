@@ -1,6 +1,6 @@
 from pareto.components import *
 
-from pareto.components.function import *
+from pareto.components.action import *
 
 @resource()
 def Bucket(event={"type":  "s3:ObjectCreated:*"},
@@ -19,7 +19,7 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
     return "AWS::S3::Bucket", props
 
 @resource(suffix="action-permission")
-def LambdaPermission(**kwargs):
+def BucketActionPermission(**kwargs):
     """
         - https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
         - Fn::GetAtt Arn doesn't work for S3 lambda notifications :-(
@@ -35,12 +35,12 @@ def LambdaPermission(**kwargs):
     return "AWS::Lambda::Permission", props
 
 def add_action(kwargs, template):
-    template["resources"]+=[Function(**kwargs),
-                            FunctionRole(**kwargs),
-                            FunctionDeadLetterQueue(**kwargs),
-                            FunctionVersion(**kwargs),
-                            FunctionEventConfig(**kwargs),
-                            LambdaPermission(**kwargs)]
+    template["resources"]+=[Action(**kwargs),
+                            ActionRole(**kwargs),
+                            ActionDeadLetterQueue(**kwargs),
+                            ActionVersion(**kwargs),
+                            ActionEventConfig(**kwargs),
+                            BucketActionPermission(**kwargs)]
 
 def synth_bucket(**kwargs):
     template=Template(resources=[Bucket(**kwargs)])

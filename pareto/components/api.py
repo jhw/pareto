@@ -1,6 +1,6 @@
 from pareto.components import *
 
-from pareto.components.function import *
+from pareto.components.action import *
 
 def synth_api(**kwargs):
     """
@@ -48,7 +48,7 @@ def synth_api(**kwargs):
                "Integration": integration}
         return "AWS::ApiGateway::Method", props
     @resource(suffix="api-gw-permission")
-    def ApiGwPermission(**kwargs):
+    def ApiGwActionPermission(**kwargs):
         arnpattern="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
         restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
         stagename=ref("%s-api-gw-stage" % kwargs["name"])
@@ -72,16 +72,16 @@ def synth_api(**kwargs):
         urlparams={"rest_api": restapi,
                    "stage_name": stagename}
         return fn_sub(url, urlparams)
-    return Template(resources=[Function(**kwargs),
-                               FunctionRole(**kwargs),
-                               FunctionDeadLetterQueue(**kwargs),
-                               FunctionVersion(**kwargs),
-                               FunctionEventConfig(**kwargs),
+    return Template(resources=[Action(**kwargs),
+                               ActionRole(**kwargs),
+                               ActionDeadLetterQueue(**kwargs),
+                               ActionVersion(**kwargs),
+                               ActionEventConfig(**kwargs),
+                               ApiGwActionPermission(**kwargs),
                                ApiGwRestApi(**kwargs),
                                ApiGwDeployment(**kwargs),
                                ApiGwStage(**kwargs),
-                               ApiGwMethod(**kwargs),
-                               ApiGwPermission(**kwargs)],
+                               ApiGwMethod(**kwargs)],
                     outputs=[ApiGwUrl(**kwargs)])
 
 if __name__=="__main__":
