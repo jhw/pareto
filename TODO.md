@@ -4,7 +4,6 @@
 - dashboards will need to be adjusted for function names
 - s3 notification bindings are missing
 - lambda permission logical names are messed up
-- permissions are missing from roles
 
 - remove parameter import/export at master level
 
@@ -145,6 +144,7 @@
   
 ### done
 
+- permissions are missing from roles
 - refactor filter_functions
   - how is this going to work if u can't infer functions from components any more ?
 - check arn bindings of all actions
