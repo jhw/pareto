@@ -15,10 +15,11 @@ queue:
   event_sourced: true
 """, Loader=yaml.FullLoader)
 
-def add_types(**components):
+def add_types(functypes=["apis", "actions"], **components):
     for attr in components:
         for component in components[attr]:
             component["type"]=attr[:-1]
+            component["functional"]=attr in functypes
 
 """
 - this is a temportary function which should wither away over time if actions ceases to be a dedicated class and instead all actions get nested under trigger classes

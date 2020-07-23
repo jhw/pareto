@@ -1,18 +1,13 @@
 ### short 
 
-- remap_types to add function parameter
-  - rationalise handling of function detection
-
 - nested actions [notes]
-
-- common directories for common components
 
 ### medium
 
-- separate secrets stack
 - dynamic pythonpath [notes]
 - layers [notes]
 
+- separate secrets stack
 - apigw request validation
 - cloudwatch alerts
 - scaffold generator
@@ -133,6 +128,8 @@
   
 ### done
 
+- remap_types to add function parameter
+  - rationalise handling of function detection
 - remove `stack` suffix from stacks name
   - requires support for blank suffix
 - pluralise dashboards name
