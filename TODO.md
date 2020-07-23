@@ -2,7 +2,6 @@
 
 - bucket names need to include actions
 - dashboards will need to be adjusted for function names
-- s3 notification bindings are missing
 - lambda permission logical names are messed up
 
 - remove parameter import/export at master level
@@ -144,6 +143,7 @@
   
 ### done
 
+- s3 notification bindings are missing
 - permissions are missing from roles
 - refactor filter_functions
   - how is this going to work if u can't infer functions from components any more ?

@@ -2,26 +2,20 @@ from pareto.components import *
 
 from pareto.components.function import *
 
-def lambda_notification_config(action, event):
-    arn=ref("%s-action-arn" % action["name"])
-    rules=[{"Name": "prefix",
-            "Value": action["path"]}]
-    return {"Event": event["type"],
-            "Function": arn,
-            "Filter": {"S3Key": {"Rules": rules}}}
-
-def notifications_configs(event, kwargs):
-    lambdaconfigs=[lambda_notification_config(action, event)
-                   for action in kwargs["actions"]]
-    notifications={"LambdaConfigurations": lambdaconfigs}
-    return {"NotificationConfiguration": notifications}
-
 @resource()
 def Bucket(event={"type":  "s3:ObjectCreated:*"},
            **kwargs):
+    def lambda_config(kwargs, event):
+        funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+        rules=[{"Name": "prefix",
+                "Value": kwargs["path"]}]
+        return {"Event": event["type"],
+                "Function": funcarn,
+                "Filter": {"S3Key": {"Rules": rules}}}
     props={"BucketName": resource_name(kwargs)}
-    if "actions" in kwargs:
-        props.update(notifications_configs(event, kwargs))
+    if "action" in kwargs:
+        notifications={"LambdaConfigurations": [lambda_config(kwargs, event)]}
+        props["NotificationConfiguration"]=notifications
     return "AWS::S3::Bucket", props
 
 def LambdaPermission(kwargs):
