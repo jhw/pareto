@@ -35,7 +35,7 @@ def filter_functions(groups):
     functions=[]
     for groupname, components in groups.items():
             functions+=[component for component in components
-                        if component["functional"]]
+                        if "action" in component]
     return functions
 
 if __name__=="__main__":
