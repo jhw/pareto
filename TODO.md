@@ -1,8 +1,8 @@
 ### short [nested actions]
 
-- remove target stuff
 - replace lookback permissions with custom permissions
 - see if iam stuff can be removed from preprocessor
+- remove target stuff
 - combine bucket and website into single module
 - move function stuff into root
 - simplyify action and api to use function

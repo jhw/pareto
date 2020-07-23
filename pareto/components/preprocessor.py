@@ -201,7 +201,7 @@ def preprocess(config):
     for fn in [add_types,
                validate,
                remap_triggers,
-               add_permissions,
+               # add_permissions,
                cleanup]:
         fn(**config["components"])
         
