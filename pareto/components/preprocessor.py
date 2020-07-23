@@ -1,20 +1,5 @@
 from pareto.components import *
 
-TriggerConfig=yaml.load("""
-bucket:
-  iam_name: s3
-  event_sourced: false
-website:
-  iam_name: s3
-  event_sourced: false
-table:
-  iam_name: dynamodb
-  event_sourced: true
-queue:
-  iam_name: sqs
-  event_sourced: true
-""", Loader=yaml.FullLoader)
-
 def add_types(functypes=["apis", "actions"], **components):
     for attr in components:
         for component in components[attr]:
