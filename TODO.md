@@ -1,9 +1,9 @@
 ### short [nested actions]
 
+- remove s3 path support
 - check output suffixes
+
 - separate secrets stack
-- merge ActionRole and IamRole
-- s3 action path should default to /
 - replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
 - add sample timer to hello.yaml
 
@@ -140,6 +140,7 @@
   
 ### done
 
+- merge ActionRole and IamRole
 - separate out and rename website components
 - separate website module again
 - website_config not being used
