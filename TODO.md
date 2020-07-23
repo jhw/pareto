@@ -1,6 +1,8 @@
 ### short
 
 - timer circular dependency
+- include region in hardcoded event sources
+  - is region included anywhere else ?
 
 - dynamic pythonpath [notes]
 

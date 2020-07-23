@@ -15,6 +15,7 @@ def EventRule(**kwargs):
 @resource(suffix="action-permission")
 def EventActionPermission(**kwargs):
     eventsource=fn_getatt(kwargs["name"], "Arn")
+    # eventsource="arn:aws:events:::rule/%s" % resource_name(kwargs)        
     funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": funcarn,
