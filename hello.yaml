@@ -11,7 +11,8 @@ components:
     method: POST
   buckets:
   - name: hello-bucket
-    website: true
+  websites:
+  - name: hello-website
   tables:
   - name: hello-table
     fields:

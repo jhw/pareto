@@ -7,6 +7,7 @@ from pareto.components.queue import synth_queue
 from pareto.components.stack import synth_stack
 from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
+from pareto.components.website import synth_website
 
 def add_component_groups(config, templates):
     def init_component(config, component):

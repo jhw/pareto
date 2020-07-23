@@ -1,10 +1,9 @@
 ### short 
 
-- replace bucket with separate bucket, website components
 - replace function with separate action, api components
+  - remove function type remapping
 
 - common directories for common components
-- extend preprocessor name and type checking
 
 ### medium
 
@@ -131,6 +130,7 @@
   
 ### done
 
+- replace bucket with separate bucket, website components
 - filter_triggers function
 - replace trigger group with nested template for each of queue/table/bucket etc
 - ensure iterate over dsl component keys rather than hardcoded list of keys

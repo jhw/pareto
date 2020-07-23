@@ -4,6 +4,9 @@ TriggerConfig=yaml.load("""
 bucket:
   iam_name: s3
   event_sourced: false
+website:
+  iam_name: s3
+  event_sourced: false
 table:
   iam_name: dynamodb
   event_sourced: true
