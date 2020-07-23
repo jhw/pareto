@@ -1,3 +1,9 @@
+### type hardcoding 23/7/20
+
+- pareto/scripts/__init__.py [filter_functions]
+- pareto/components/env.py [dashboard filtering]
+- pareto/components/dashboard.py
+
 ### nested actions 23/7/20
 
 - all actions to be nested under trigger types ?

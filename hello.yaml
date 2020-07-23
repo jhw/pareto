@@ -6,9 +6,11 @@ globals:
 components:
   apis:
   - name: hello-get-api
-    method: GET
+    api:
+      method: GET
   - name: hello-post-api
-    method: POST
+    api: 
+      method: POST
   buckets:
   - name: hello-bucket
   websites:

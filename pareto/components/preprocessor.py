@@ -15,6 +15,11 @@ queue:
   event_sourced: true
 """, Loader=yaml.FullLoader)
 
+def add_types(**components):
+    for attr in components:
+        for component in components[attr]:
+            component["type"]=attr[:-1]
+
 """
 - this is a temportary function which should wither away over time if actions ceases to be a dedicated class and instead all actions get nested under trigger classes
 """
@@ -24,7 +29,6 @@ def filter_triggers(components):
     for groupname, group in components.items():
         if groupname[:-1] in TriggerConfig:
             for component in group:
-                component["type"]=groupname[:-1]
                 triggers.append(component)
     return triggers
 
@@ -186,25 +190,6 @@ def add_permissions(**components):
                 fn=eval("%s_permissions" % (attr[:-1]))
                 fn(component, triggermap)
 
-"""
-- DSL follows zapier model of actions and triggers, and adds apis
-- pareto components follow CF model more closely
-- remap_types maps from former to latter
-- trigger types don't need remapping as they are already defined as underlying pareto component type
-"""
-
-def remap_types(**components):
-    def remap_api(api):
-        api["type"]="api"
-        api["api"]={"method": api.pop("method")}
-    def remap_action(action):        
-        action["type"]="action"
-    for attr in components:
-        for component in components[attr]:
-            if attr[:-1] not in TriggerConfig:
-                fn=eval("remap_%s" % (attr[:-1]))
-                fn(component)
-
 def cleanup(actions, **components):
     for action in actions:
         for attr in ["trigger",
@@ -212,10 +197,10 @@ def cleanup(actions, **components):
             action.pop(attr)
 
 def preprocess(config):
-    for fn in [validate,
+    for fn in [add_types,
+               validate,
                remap_triggers,
                add_permissions,
-               remap_types,
                cleanup]:
         fn(**config["components"])
         

@@ -37,7 +37,8 @@ def add_dashboards(config, templates):
     def has_dashboard(components):
         types=list(set([component["type"]
                         for component in components]))
-        return "function" in types
+        return ("api" in types or
+                "action" in types)
     def init_groups(config):
         groups={}
         for key, components in config["components"].items():

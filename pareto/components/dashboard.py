@@ -68,13 +68,13 @@ def synth_dashboard(**kwargs):
             x=0 # NB reset
         return {"widgets": widgets}
     @resource()
-    def Dashboard(root=Root, **kwargs):
+    def Dashboard(root=Root, types=["api", "action"], **kwargs):
         charts=[[init_chart(component, "%s/%s" % (root, src))
                  for src in ["function/invocations.yaml",
                              "function/duration.yaml",
                              "function/errors.yaml"]]
                 for component in kwargs["components"]
-                if component["type"]=="function"]
+                if component["type"] in types]
         layout=grid_layout(charts)
         props={"DashboardName": resource_name(kwargs),
                "DashboardBody": json.dumps(layout)}

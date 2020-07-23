@@ -1,14 +1,17 @@
 ### short 
 
-- simplify remap function so just adds types
-  - should apply to all components
-- dashboards is empty
+- allow method to be top level api parameter
+
 - remove `stack` suffix from stacks name
   - requires support for blank suffix
+
 - pluralise dashboards name
+
 - common directories for common components
 
 ### medium
+
+- avoid api, action type hardcoding when filtering functions [notes]
 
 - nested actions [notes]
 - dynamic pythonpath [notes]
@@ -134,6 +137,9 @@
   
 ### done
 
+- dashboards is empty
+- simplify remap function so just adds types
+  - should apply to all components
 - apis and actions need type variables
 - replace function with separate action, api components
   - remove function type remapping
