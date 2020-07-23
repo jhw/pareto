@@ -1,9 +1,12 @@
-### short [nested actions]
+### short
 
-- check output suffixes
-
+- add secret module
+- test secret example
 - separate secrets stack
-- replace custom permissions with per- trigger lookback permissions, augmented by custom permissions
+
+- ddb permissions
+- sqs permissions
+
 - add sample timer to hello.yaml
 
 - dynamic pythonpath [notes]
@@ -140,6 +143,7 @@
   
 ### done
 
+- check output suffixes
 - remove s3 path support
 - merge ActionRole and IamRole
 - separate out and rename website components

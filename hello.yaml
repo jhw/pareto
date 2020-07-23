@@ -5,7 +5,7 @@ globals:
   runtime: "3.7"
 components:
   apis:
-  - name: hello-get-api
+  - name: hello-get
     method: GET
     action:
       permissions:
@@ -13,7 +13,7 @@ components:
       - "s3:*"
       - "sqs:*"
       - "dynamodb:*"
-  - name: hello-post-api
+  - name: hello-post
     method: POST
     action:
       permissions:
