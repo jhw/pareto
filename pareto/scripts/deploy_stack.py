@@ -24,37 +24,33 @@ def init_region(config):
 
 def add_lambda_staging(config):
     logging.info("adding lambda staging")
-    def add_staging(components, keys):
-        for component in filter_functions(components):
-            component.setdefault("staging", {})
-            component["staging"]["lambda"]={"bucket": config["globals"]["bucket"],
-                                            "key": keys[component["name"]]}
-    def assign_keys(commits, components):
-        groups, latest = commits.grouped_keys, commits.latest_keys
-        keys, errors = {}, []
+    def assign_commits(components, commits):
+        groups, latest = commits.grouped, commits.latest
+        assigned, errors = {}, []
         for component in filter_functions(components):
             if "commit" in component:
                 if component["commit"] in groups[component["name"]]:
-                    keys[component["name"]]=groups[component["name"]][component["commit"]]
+                    assigned[component["name"]]=groups[component["name"]][component["commit"]]
                 else:
                     errors.append("commit %s not found for %s" % (component["commit"], component["name"]))
             else:
                 if component["name"] in latest:
-                    keys[component["name"]]=latest[component["name"]]
+                    assigned[component["name"]]=latest[component["name"]]
                 else:
                     errors.append("no deployables found for %s" % component["name"])
-        return keys, errors
-    def dump_keys(keys):
-        for k, v in keys.items():
-            logging.info("%s => %s" % (k, v))
-    commits=LambdaCommits(config=config,
-                          s3=S3)
-    keys, errors = assign_keys(commits,
-                               config["components"])
+        return assigned, errors
+    def add_staging(components, commits):
+        for component in filter_functions(components):
+            component.setdefault("staging", {})
+            component["staging"]["lambda"]={"bucket": config["globals"]["bucket"],
+                                            "key": str(commits[component["name"]])}
+    commits=LambdaCommits(config=config, s3=S3)
+    assigned, errors = assign_commits(config["components"], commits)    
     if errors!=[]:
         raise RuntimeError(", ".join(errors))
-    add_staging(config["components"], keys)
-    dump_keys(keys)                    
+    for k, v in assigned.items():
+        logging.info("%s => %s" % (k, v))
+    add_staging(config["components"], assigned)
 
 """
 - cloudformation will check this for you early in deployment process

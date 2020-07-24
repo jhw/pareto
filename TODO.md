@@ -1,5 +1,7 @@
 ### short
 
+- change lambda staging so leaf values are objects not strings
+
 ### medium
 
 - better argsparse file handling

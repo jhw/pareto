@@ -42,19 +42,19 @@ class LambdaCommits(list):
                        for obj in struct["Contents"]]
 
     @property
-    def grouped_keys(self):
+    def grouped(self):
         keys={}
         for commit in self:
             keys.setdefault(commit["name"], {})
-            keys[commit["name"]][commit["hexsha"]]=str(commit)
+            keys[commit["name"]][commit["hexsha"]]=commit
         return keys
                 
     @property
-    def latest_keys(self):
+    def latest(self):
         keys={}
         for commit in sorted(self,
                              key=lambda x: x["timestamp"]):
-            keys[commit["name"]]=str(commit)
+            keys[commit["name"]]=commit
         return keys
 
 class LambdaCommitTest(unittest.TestCase):
@@ -99,16 +99,16 @@ class LambdaCommitsTest(unittest.TestCase):
     def test_latest(self):
         bucketname=self.Config["globals"]["bucket"]
         commits=LambdaCommits(self.Config, self.s3)
-        latest=commits.latest_keys
+        latest=commits.latest
         for k, v in [("hello-world", "1970-12-20-19-31-00-IJKLMNOP.zip"),
                      ("hello-world-2", "1970-12-20-19-30-00-ABCDEFGH.zip")]:
             self.assertTrue(k in latest)
-            self.assertTrue(latest[k].endswith(v))
+            self.assertTrue(str(latest[k]).endswith(v))
 
     def test_groups(self):
         bucketname=self.Config["globals"]["bucket"]
         commits=LambdaCommits(self.Config, self.s3)
-        groups=commits.grouped_keys
+        groups=commits.grouped
         for k, n in [("hello-world", 2),
                      ("hello-world-2", 1)]:
             self.assertTrue(k in groups)
