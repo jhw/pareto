@@ -56,11 +56,9 @@ def ActionRole(**kwargs):
                 "Version": "2012-10-17"}
     def default_permissions(fn, defaults=DefaultPermissions):
         def wrapped(action):
-            permissions=list(action["permissions"]) if "permissions" in action else []
-            for default in defaults:
-                if default not in permissions:
-                    permissions.append(default)
-            return fn(permissions)
+            permissions=set(action["permissions"]) if "permissions" in action else set()
+            permissions.update(defaults)
+            return fn(sorted(list(permissions)))
         return wrapped
     @default_permissions
     def policy(permissions):            

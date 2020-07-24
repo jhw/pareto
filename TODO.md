@@ -1,6 +1,5 @@
 ### short
 
-- permissions aggregator to use sorted(list(set()))
 - add specific translate, polly permissions
 - add wildcard permissions check
 
@@ -143,6 +142,7 @@
   
 ### done
 
+- permissions aggregator to use sorted(list(set()))
 - specific lambda logs permissions
 
 ```
