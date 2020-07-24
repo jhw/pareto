@@ -1,9 +1,10 @@
 ### short
 
-- test passing unknown file to deploy_lambdas.py
+- add `lambda` to staging
 
 ### medium
 
+- better argsparse file handling
 - investigate adding region and account id to hardcoded event sources
 
 - layers [notes]
@@ -144,6 +145,7 @@
   
 ### done
 
+- argsparse isn't checking for unknowing files
 - test changing globals.src
 - push_lambdas to use sys.path.append
 - test what happens to following scripts if you restrict PYTHONPATH to .

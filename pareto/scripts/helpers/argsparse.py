@@ -13,7 +13,7 @@ def match_str(value):
 def match_file(value):
     return (value.endswith(".yaml") and
             os.path.exists(value))
-
+            
 def parse_int(value):
     return int(value)
 def parse_float(value):
@@ -61,7 +61,10 @@ def argsparse(args, config):
         def wrapped(value, item):
             prefn=eval("match_%s" % item["type"])
             if not prefn(value):
-                raise RuntimeError("%s type is invalid" % item["name"])
+                if item["type"]=="file":
+                    raise RuntimeError("%s type is invalid or does not exist" % item["name"])
+                else:
+                    raise RuntimeError("%s type is invalid" % item["name"])
             return fn(value, item)
         return wrapped
     def validate(fn):
