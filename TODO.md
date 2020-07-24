@@ -1,9 +1,5 @@
 ### short
 
-- timer circular dependency
-- include region in hardcoded event sources
-  - is region included anywhere else ?
-
 - dynamic pythonpath [notes]
 
 ### medium
@@ -140,6 +136,9 @@
   
 ### done
 
+- timer circular dependency
+- include region in hardcoded event sources
+  - is region included anywhere else ?
 - add sample timer to hello.yaml
 - note regarding specific sqs permissions
 - replace s3 permission with something custom
