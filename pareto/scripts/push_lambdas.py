@@ -99,7 +99,6 @@ def latest_commits(config,
     commits.reverse()
     roots=["%s/%s" % (config["globals"]["src"], path)
            for path in os.listdir(config["globals"]["src"])]
-    print (roots)
     latest=Latest(roots=roots,
                   ignore=ignore)
     for c0, c1 in zip(commits[:-1], commits[1:]):
@@ -107,9 +106,8 @@ def latest_commits(config,
         latest.update(c1, diffs)
         if latest.complete:
             break
-    print (latest)
     if not latest.complete:
-        raise RuntimeError("latest commit map is incomplete")
+        raise RuntimeError("latest commit map is incomplete (if you've moved lambdas to new directory, has changed been committed ?)")
     return latest
 
 def add_staging(config, commits):

@@ -1,6 +1,6 @@
-### short [dynamic pythonpath]
+### short
 
-- test changing globals.src
+- test passing unknown file to deploy_lambdas.py
 
 ### medium
 
@@ -144,6 +144,7 @@
   
 ### done
 
+- test changing globals.src
 - push_lambdas to use sys.path.append
 - test what happens to following scripts if you restrict PYTHONPATH to .
   - test.py
