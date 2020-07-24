@@ -68,6 +68,16 @@ def output(suffix=None):
         return wrapped
     return decorator
 
+def event_mapping_permissions(permissions):
+    def decorator(fn):
+        def wrapped(**kwargs):
+            if "action" in kwargs:
+                kwargs["action"].setdefault("permissions", [])
+                kwargs["action"]["permissions"]+=permissions
+            return fn(**kwargs)
+        return wrapped
+    return decorator
+
 class Template(dict):
 
     def __init__(self, **kwargs):

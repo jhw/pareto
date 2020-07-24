@@ -20,17 +20,7 @@ def QueueActionMapping(batch=1, **kwargs):
            "BatchSize": batch}
     return "AWS::Lambda::EventSourceMapping", props
 
-def event_mapping_permissions(fn):
-    def wrapped(**kwargs):
-        if "action" in kwargs:
-            kwargs["action"].setdefault("permissions", [])
-            permissions=kwargs["action"]["permissions"]
-            if "sqs:*" not in permissions:
-                permissions+=EventMappingPermissions
-        return fn(**kwargs)
-    return wrapped
-
-@event_mapping_permissions
+@event_mapping_permissions(EventMappingPermissions)
 def synth_queue(**kwargs):
     template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:

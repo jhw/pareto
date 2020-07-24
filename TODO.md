@@ -1,7 +1,7 @@
 ### short
 
-- remove wildcard check from event_mapping_permissions
-- abstract event_mapping_permissions
+- abstract template
+- sort logs
 - add permissions cleaner which removes specific permissions if wildcards exists
 for a specific resource
 
@@ -150,6 +150,8 @@ If you created your log group manually, you'll only need to give the Lambda two 
   
 ### done
 
+- remove wildcard check from event_mapping_permissions
+- abstract event_mapping_permissions
 - restrict dead letter queue permissions to sqs:SendMessage
 - add dedicated permissions for sqs event mapping
 - timer circular dependency

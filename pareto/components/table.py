@@ -68,17 +68,7 @@ def TableActionMapping(**kwargs):
            "StartingPosition": "LATEST"}
     return "AWS::Lambda::EventSourceMapping", props
 
-def event_mapping_permissions(fn):
-    def wrapped(**kwargs):
-        if "action" in kwargs:
-            kwargs["action"].setdefault("permissions", [])
-            permissions=kwargs["action"]["permissions"]
-            if "dynamodb:*" not in permissions:
-                permissions+=EventMappingPermissions
-        return fn(**kwargs)
-    return wrapped
-
-@event_mapping_permissions
+@event_mapping_permissions(EventMappingPermissions)
 def synth_table(**kwargs):
     template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:
