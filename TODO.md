@@ -1,6 +1,5 @@
 ### short
 
-- add specific translate, polly permissions
 - add wildcard permissions check
 
 - replace wildcard resources in iam declarations
@@ -143,6 +142,7 @@
   
 ### done
 
+- add specific translate, polly permissions
 - permissions aggregator to use sorted(list(set()))
 - specific lambda logs permissions
 

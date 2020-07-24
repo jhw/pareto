@@ -24,7 +24,7 @@ components:
   - name: hello-bucket
     action:
       permissions:
-      - "translate:*"
+      - translate:TranslateText
   websites:  
   - name: hello-website
   tables:
@@ -35,7 +35,7 @@ components:
       primary: true
     action:
       permissions:
-      - "polly:*"
+      - polly:SynthesizeSpeech
   queues:
   - name: hello-queue
     batch: 1
