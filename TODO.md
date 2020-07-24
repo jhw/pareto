@@ -1,15 +1,20 @@
-### short
+### short [dynamic pythonpath]
 
-- investigate adding region and account id to hardcoded event sources
+- test what happens to following scripts if you restrict PYTHONPATH to .
+  - test.py
+  - push_lambdas.py
+  - deploy_stack.py
 
-- dynamic pythonpath [notes]
+- uses sys.path.append where necessary
 
-- layers [notes]
 
 ### medium
 
+- investigate adding region and account id to hardcoded event sources
+
+- layers [notes]
+
 - dsl validation
-- targets [notes]
 - apigw request validation
 - cloudwatch alerts
 - scaffold generator
@@ -22,6 +27,7 @@
 - apigateway2
 - eventbridge
 
+- targets [notes]
 - extended cognito
 - ci pipeline
 - github actions
