@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-export PYTHONPATH=.:./lambda
+export PYTHONPATH=.
 export AWS_PROFILE=default
 export AWS_DEFAULT_OUTPUT=table

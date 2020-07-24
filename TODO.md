@@ -1,12 +1,7 @@
 ### short [dynamic pythonpath]
 
-- test what happens to following scripts if you restrict PYTHONPATH to .
-  - test.py
-  - push_lambdas.py
-  - deploy_stack.py
-
-- uses sys.path.append where necessary
-
+- push_lambdas to use sys.path.append
+- test changing globals.src
 
 ### medium
 
@@ -150,6 +145,10 @@
   
 ### done
 
+- test what happens to following scripts if you restrict PYTHONPATH to .
+  - test.py
+  - push_lambdas.py
+  - deploy_stack.py
 - sqs event mapping permissions are insufficient 
 - add wildcard permissions check
 - add specific translate, polly permissions
