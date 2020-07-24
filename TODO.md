@@ -1,9 +1,15 @@
 ### short
 
-- restrict dead letter queue permissions to sqs:SendMessage
-- add dedicated permissions for sqs event mapping
+- remove wildcard check from event_mapping_permissions
+- abstract event_mapping_permissions
 - add permissions cleaner which removes specific permissions if wildcards exists
 for a specific resource
+
+- specific lambda logs permissions
+
+```
+If you created your log group manually, you'll only need to give the Lambda two permissions: logs:createLogStream and the logs:PutLogEvents permission. If you didn't create the log group manually, you'll also need to add the logs:CreateLogGroup permission
+```
 
 - investigate adding region and account id to hardcoded event sources
 
@@ -144,6 +150,8 @@ for a specific resource
   
 ### done
 
+- restrict dead letter queue permissions to sqs:SendMessage
+- add dedicated permissions for sqs event mapping
 - timer circular dependency
 - include region in hardcoded event sources
   - is region included anywhere else ?

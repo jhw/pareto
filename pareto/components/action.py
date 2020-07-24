@@ -48,7 +48,7 @@ def ActionRole(**kwargs):
         return {"Statement": statement,
                 "Version": "2012-10-17"}
     def default_permissions(fn, defaults=["logs:*",
-                                          "sqs:*"]): # dead letter queue
+                                          "sqs:SendMessage"]): # dead letter queue
         def wrapped(action):
             permissions=list(action["permissions"]) if "permissions" in action else []
             for default in defaults:
