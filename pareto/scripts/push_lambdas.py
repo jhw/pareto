@@ -31,6 +31,8 @@ def run_tests(config):
             raise RuntimeError("%s does not exist in %s" % (klassname,
                                                             modname))
         return klass
+    if config["globals"]["src"] not in sys.path:
+        sys.path.append(config["globals"]["src"])
     klasses=[index_test(component)
              for component in filter_functions(config["components"])]
     suite=unittest.TestSuite()
