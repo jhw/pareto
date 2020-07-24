@@ -58,14 +58,24 @@ def ActionRole(**kwargs):
         def wrapped(action):
             permissions=set(action["permissions"]) if "permissions" in action else set()
             permissions.update(defaults)
-            return fn(sorted(list(permissions)))
+            return fn(list(permissions))
         return wrapped
+    def assert_permissions(fn):
+        def wrapped(permissions):
+            wildcards=[permission
+                       for permission in permissions
+                       if permission.endswith(":*")]
+            if wildcards!=[]:
+                raise RuntimeError("IAM wildcards detected - %s" % ", ".join(wildcards))
+            return fn(permissions)
+        return wrapped        
     @default_permissions
+    @assert_permissions
     def policy(permissions):            
         statement=[{"Action": permission,
                     "Effect": "Allow",
                     "Resource": "*"}
-                   for permission in permissions]
+                   for permission in sorted(permissions)]
         return {"PolicyDocument": {"Statement": statement,
                                    "Version": "2012-10-17"},
                 "PolicyName": random_name("inline-policy")} # "conditional"

@@ -1,8 +1,9 @@
 ### short
 
-- add wildcard permissions check
+- targets
+  - exporting of arns
+  - replace IAM wildcard resources
 
-- replace wildcard resources in iam declarations
 - investigate adding region and account id to hardcoded event sources
 
 ### medium
@@ -142,6 +143,8 @@
   
 ### done
 
+- sqs event mapping permissions are insufficient 
+- add wildcard permissions check
 - add specific translate, polly permissions
 - permissions aggregator to use sorted(list(set()))
 - specific lambda logs permissions

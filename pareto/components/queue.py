@@ -4,6 +4,8 @@ from pareto.components.action import *
 
 EventMappingPermissions=yaml.load("""
 - sqs:ReceiveMessage
+- sqs:DeleteMessage
+- sqs:GetQueueAttributes
 """, Loader=yaml.FullLoader)
 
 @resource()
