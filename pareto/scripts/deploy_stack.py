@@ -26,8 +26,9 @@ def add_lambda_staging(config):
     logging.info("adding lambda staging")
     def add_staging(components, keys):
         for component in filter_functions(components):
-            component["staging"]={"bucket": config["globals"]["bucket"],
-                                  "key": keys[component["name"]]}
+            component.setdefault("staging", {})
+            component["staging"]["lambda"]={"bucket": config["globals"]["bucket"],
+                                            "key": keys[component["name"]]}
     def assign_keys(commits, components):
         groups, latest = commits.grouped_keys, commits.latest_keys
         keys, errors = {}, []

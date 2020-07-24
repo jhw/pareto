@@ -1,7 +1,5 @@
 ### short
 
-- add `lambda` to staging
-
 ### medium
 
 - better argsparse file handling
@@ -145,6 +143,7 @@
   
 ### done
 
+- add `lambda` to staging
 - argsparse isn't checking for unknowing files
 - test changing globals.src
 - push_lambdas to use sys.path.append
