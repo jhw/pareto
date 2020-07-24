@@ -1,14 +1,8 @@
 ### short
 
-- sort logs
-- add permissions cleaner which removes specific permissions if wildcards exists
-for a specific resource
-
-- specific lambda logs permissions
-
-```
-If you created your log group manually, you'll only need to give the Lambda two permissions: logs:createLogStream and the logs:PutLogEvents permission. If you didn't create the log group manually, you'll also need to add the logs:CreateLogGroup permission
-```
+- permissions aggregator to use sorted(list(set()))
+- add specific translate, polly permissions
+- add wildcard permissions check
 
 - investigate adding region and account id to hardcoded event sources
 
@@ -148,6 +142,12 @@ If you created your log group manually, you'll only need to give the Lambda two 
   - not really required as this is about deployment not runtime
   
 ### done
+
+- specific lambda logs permissions
+
+```
+If you created your log group manually, you'll only need to give the Lambda two permissions: logs:createLogStream and the logs:PutLogEvents permission. If you didn't create the log group manually, you'll also need to add the logs:CreateLogGroup permission
+```
 
 - abstract template
 - remove wildcard check from event_mapping_permissions

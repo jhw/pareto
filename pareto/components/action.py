@@ -1,5 +1,12 @@
 from pareto.components import *
 
+DefaultPermissions=yaml.load("""
+- logs:CreateLogGroup
+- logs:CreateLogStream
+- logs:PutLogEvents                                          
+- sqs:SendMessage # dead letter queue
+""", Loader=yaml.FullLoader)
+
 @resource(suffix="action")
 def Action(concurrency=None,
            handler="index.handler",
@@ -47,8 +54,7 @@ def ActionRole(**kwargs):
                     "Principal": {"Service": "lambda.amazonaws.com"}}]
         return {"Statement": statement,
                 "Version": "2012-10-17"}
-    def default_permissions(fn, defaults=["logs:*",
-                                          "sqs:SendMessage"]): # dead letter queue
+    def default_permissions(fn, defaults=DefaultPermissions):
         def wrapped(action):
             permissions=list(action["permissions"]) if "permissions" in action else []
             for default in defaults:
