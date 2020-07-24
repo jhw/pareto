@@ -8,6 +8,7 @@ if __name__=="__main__":
         df=pd.DataFrame([{"name": stack["StackName"],
                           "status": stack["StackStatus"]}
                          for stack in stacks])
+        pd.set_option('display.max_rows', df.shape[0]+1)
         print (df)
     except ClientError as error:
         print (error)

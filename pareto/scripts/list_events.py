@@ -34,15 +34,15 @@ if __name__=="__main__":
                       key=lambda x: x["Timestamp"])
         def lookup(event, attr, sz=32):
             return str(event[attr])[:sz] if attr in event else ""
-        table=pd.DataFrame([{"timestamp": lookup(event, "Timestamp"),
-                             "stack": lookup(event, "StackName"),
-                             "logical_id": lookup(event, "LogicalResourceId"),
-                             "physical_id": lookup(event, "PhysicalResourceId"),
-                             "type": lookup(event, "ResourceType"),
-                             "status": lookup(event, "ResourceStatus")}
-                            for event in events])
-        pd.set_option('display.max_rows', table.shape[0]+1)
-        print (table)
+        df=pd.DataFrame([{"timestamp": lookup(event, "Timestamp"),
+                          "stack": lookup(event, "StackName"),
+                          "logical_id": lookup(event, "LogicalResourceId"),
+                          "physical_id": lookup(event, "PhysicalResourceId"),
+                          "type": lookup(event, "ResourceType"),
+                          "status": lookup(event, "ResourceStatus")}
+                         for event in events])
+        pd.set_option('display.max_rows', df.shape[0]+1)
+        print (df)
     except ClientError as error:
         print (error)
     except RuntimeError as error:

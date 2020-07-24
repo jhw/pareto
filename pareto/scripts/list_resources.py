@@ -41,6 +41,7 @@ if __name__=="__main__":
                           "type": lookup(resource, "ResourceType"),
                           "status": lookup(resource, "ResourceStatus")}
                          for resource in resources])
+        pd.set_option('display.max_rows', df.shape[0]+1)
         print (df)
     except ClientError as error:
         print (error)

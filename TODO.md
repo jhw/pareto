@@ -1,8 +1,15 @@
 ### short
 
-- dynamic pythonpath [notes]
+- restrict dead letter queue permissions to sqs:SendMessage
+- add dedicated permissions for sqs event mapping
+- add permissions cleaner which removes specific permissions if wildcards exists
+for a specific resource
+
+- investigate adding region and account id to hardcoded event sources
 
 ### medium
+
+- dynamic pythonpath [notes]
 
 - layers [notes]
 
@@ -18,7 +25,8 @@
 - apigateway2
 - eventbridge
 
-- ses
+- multiple stacks per type
+- extended cognito
 - ci pipeline
 - github actions
 - lambda xray
