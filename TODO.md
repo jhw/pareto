@@ -3,6 +3,7 @@
 - add specific translate, polly permissions
 - add wildcard permissions check
 
+- replace wildcard resources in iam declarations
 - investigate adding region and account id to hardcoded event sources
 
 ### medium
