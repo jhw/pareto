@@ -1,17 +1,15 @@
 ### short
 
-- targets
-  - exporting of arns
-  - replace IAM wildcard resources
-
 - investigate adding region and account id to hardcoded event sources
-
-### medium
 
 - dynamic pythonpath [notes]
 
 - layers [notes]
 
+### medium
+
+- dsl validation
+- targets [notes]
 - apigw request validation
 - cloudwatch alerts
 - scaffold generator
@@ -24,7 +22,6 @@
 - apigateway2
 - eventbridge
 
-- multiple stacks per type
 - extended cognito
 - ci pipeline
 - github actions
@@ -35,6 +32,10 @@
 
 ### thoughts
 
+- export trigger, function arns ?
+  - only if you plan to tie down policy document Resource field, which is currently a wildcard
+- multiple stacks per type ?
+  - don't think it's worth it at this stage
 - avoid having to specify empty action ?
   - can't think of decent way around it
 - see if LambdaMapping can be abstracted

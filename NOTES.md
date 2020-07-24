@@ -1,3 +1,11 @@
+### targets 24/7/20
+
+- right now you have "Resource: *" in aws policy document
+- so this means an action can ping any trigger for which it has resource permissions
+- but if you included target information in dsl then you could lock stuff down to one particular resource
+- but need to consider carefully as will likely mean increased headache of exporting and importing function arns around the place
+- actually it's worse than that as you need to export the trigger arns
+
 ### nested actions 23/7/20
 
 - target is definitely over optimisation and needs to be removed
