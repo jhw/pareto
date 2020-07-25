@@ -1,5 +1,6 @@
 ### short [dashboards]
 
+- add charts with README
 - add parameters, resources, outputs classes to template
 - add dashboard class with merge, render classes
 - ensure that template merging, rendering calls dash merging, rendering
