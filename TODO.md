@@ -1,10 +1,5 @@
 ### short
 
-- move project tests into separate tests directory
-- add pip dependencies
-  - https://python-packaging.readthedocs.io/en/latest/dependencies.html
-  - https://stackoverflow.com/questions/32688688/how-to-write-setup-py-to-include-a-git-repo-as-a-dependency/32689886
-
 ### medium
 
 - dashboards
@@ -148,6 +143,10 @@
   
 ### done
 
+- add pip dependencies
+  - https://python-packaging.readthedocs.io/en/latest/dependencies.html
+  - https://stackoverflow.com/questions/32688688/how-to-write-setup-py-to-include-a-git-repo-as-a-dependency/32689886
+- move project tests into separate tests directory
 - change lambda staging so leaf values are objects not strings
 - add `lambda` to staging
 - argsparse isn't checking for unknowing files

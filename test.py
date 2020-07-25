@@ -4,8 +4,8 @@ import unittest
 
 from pareto.scripts.helpers.profiles import toggle_aws_profile
 
-from pareto.staging.lambdas import LambdaCommitTest, LambdaCommitsTest
-from pareto.staging.layers import LayerPackageTest, LayerPackagesTest
+from tests.staging.lambdas import LambdaCommitTest, LambdaCommitsTest
+from tests.staging.layers import LayerPackageTest, LayerPackagesTest
 
 Tests=[LambdaCommitTest,
        LambdaCommitsTest,

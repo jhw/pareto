@@ -23,6 +23,11 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     setup_requires=['setuptools_scm'],
+    install_requires=["botocore",
+                      "boto3",
+                      "pandas",
+                      "gitpython",
+                      "jinja2"],
     include_package_data=True
 )
 
