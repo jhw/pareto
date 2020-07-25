@@ -1,4 +1,10 @@
-### short
+### short [dashboards]
+
+- move env and template into root
+- remove all dash code and add to /dev
+- add parameters, resources, outputs classes to template
+- add dashboard class with merge, render classes
+- ensure that template merging, rendering calls dash merging, rendering
 
 ### medium
 
