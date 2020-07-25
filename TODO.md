@@ -1,6 +1,5 @@
 ### short [dashboards]
 
-- add charts with README
 - add parameters, resources, outputs classes to template
 - add dashboard class with merge, render classes
 - ensure that template merging, rendering calls dash merging, rendering
@@ -146,6 +145,7 @@
   
 ### done
 
+- add charts with README
 - remove all dash code and add to /dev
 - move env and template into root
 - add pip dependencies
