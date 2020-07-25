@@ -1,8 +1,10 @@
 ### short [dashboards]
 
-- add parameters, resources, outputs classes to template
-- add dashboard class with merge, render classes
-- ensure that template merging, rendering calls dash merging, rendering
+- render dashboard as resource tuple
+- dash to be appended to resources prior to template rendering
+- new charts.actions chart renderers
+- components.action to add charts to template.dashboard
+- dashboard rendering to apply x, y coordinates
 
 ### medium
 
@@ -10,18 +12,17 @@
 - check specifying lambda commit still works
 - investigate adding region and account id to hardcoded event sources
 
-- dsl validation
+- push index.json as part of deployment
 - apigw request validation
 - cloudwatch alerts
 - scaffold generator
 - dsl validation/json schema
+- cognito
+- apigateway2
 
 ### v1.1
 
-- cognito
-- apigateway2
 - eventbridge
-
 - targets [notes]
 - extended cognito
 - ci pipeline
@@ -145,6 +146,9 @@
   
 ### done
 
+- add parameters, resources, outputs classes to template
+- add dashboard class with merge, render classes
+- ensure that template merging, rendering calls dash merging, rendering
 - add charts with README
 - remove all dash code and add to /dev
 - move env and template into root
