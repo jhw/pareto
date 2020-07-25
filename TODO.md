@@ -1,6 +1,5 @@
 ### short [dashboards]
 
-- remove all dash code and add to /dev
 - add parameters, resources, outputs classes to template
 - add dashboard class with merge, render classes
 - ensure that template merging, rendering calls dash merging, rendering
@@ -146,6 +145,7 @@
   
 ### done
 
+- remove all dash code and add to /dev
 - move env and template into root
 - add pip dependencies
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html
