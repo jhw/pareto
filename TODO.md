@@ -1,27 +1,24 @@
 ### short
 
-- check specifying lambda commit still works
-
-- add layer staging to deploy_stack.py
-- create layer component
-- action to include layer references
-- add support for layers as arns
-
-- pip dependencies
-  - pareto probably needs to be public
+- make project public again
+- move project tests into separate tests directory
+- add pip dependencies
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html
   - https://stackoverflow.com/questions/32688688/how-to-write-setup-py-to-include-a-git-repo-as-a-dependency/32689886
 
 ### medium
 
+- dashboards
+
 - better argsparse file handling
+- check specifying lambda commit still works
 - investigate adding region and account id to hardcoded event sources
 
 - dsl validation
 - apigw request validation
 - cloudwatch alerts
 - scaffold generator
-- json schema for dsl
+- dsl validation/json schema
 
 ### v1.1
 

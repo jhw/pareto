@@ -1,3 +1,38 @@
+### layers 26/7/20
+
+- add layer staging to deploy_stack.py
+- create layer component
+- action to include layer references
+- add support for layers as arns
+
+### dashboards 25/7/20
+
+- dashes are being done wrongly
+- If u aggregate if a single template u risk bottleneck, also over complexity
+- Would be much better if each type had its own dashboard 
+- So template class, in addition to Params/resources/outputs, also has an instance of dashboard class
+- In fact you could create classes for Params, resources, outputs and dashboard
+- Each has merge/update and render methods 
+- But first three are just lists 
+- Dash is more complex because must be aggregated under a single dashboard resource 
+- And rendering is probably the stuff which includes all the x and y methods 
+- Means the dashboard class and chart fixtures probably disappear
+- You might have an ActionChart class/function
+- Then instances of that for all the common functions 
+- maybe template, env etc need to live in Pareto root
+- And then you have a new charts directory 
+- Certainly feels like template needs to be beefed up to include dash rendering capabilities 
+- Then feels like it also needs unit tests
+
+### general 25/7/20
+
+- move staging tests into root tests directory so don’t have to include moto in pip dependencies 
+- Add dependencies to setup.py
+- Make project public again
+- Deployment of index.json / ui
+- output arns of actions and triggers
+- list outputs option to ignore all arns 
+
 ### targets 24/7/20
 
 - right now you have "Resource: *" in aws policy document
