@@ -4,7 +4,7 @@ from pareto.scripts import *
 
 from pareto.staging.lambdas import *
 
-from pareto.components.env import synth_env
+from pareto.env import synth_env
 
 """
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html

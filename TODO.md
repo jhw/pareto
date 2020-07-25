@@ -1,14 +1,11 @@
 ### short [dashboards]
 
-- move env and template into root
 - remove all dash code and add to /dev
 - add parameters, resources, outputs classes to template
 - add dashboard class with merge, render classes
 - ensure that template merging, rendering calls dash merging, rendering
 
 ### medium
-
-- dashboards
 
 - better argsparse file handling
 - check specifying lambda commit still works
@@ -149,6 +146,7 @@
   
 ### done
 
+- move env and template into root
 - add pip dependencies
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html
   - https://stackoverflow.com/questions/32688688/how-to-write-setup-py-to-include-a-git-repo-as-a-dependency/32689886
