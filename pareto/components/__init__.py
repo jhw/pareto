@@ -1,6 +1,6 @@
 import json, random, re, yaml
 
-from pareto.template import Template
+from pareto.template import *
 
 def resource_name(kwargs):
     def labelise(text):

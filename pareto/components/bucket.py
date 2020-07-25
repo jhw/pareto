@@ -34,12 +34,12 @@ def BucketActionPermission(**kwargs):
 def synth_bucket(**kwargs):
     template=Template(resources=[Bucket(**kwargs)])
     if "action" in kwargs:
-        template["resources"]+=[Action(**kwargs),
-                                ActionRole(**kwargs),
-                                ActionDeadLetterQueue(**kwargs),
-                                ActionVersion(**kwargs),
-                                ActionEventConfig(**kwargs),
-                                BucketActionPermission(**kwargs)]
+        template.resources+=[Action(**kwargs),
+                             ActionRole(**kwargs),
+                             ActionDeadLetterQueue(**kwargs),
+                             ActionVersion(**kwargs),
+                             ActionEventConfig(**kwargs),
+                             BucketActionPermission(**kwargs)]
     return template
 
 if __name__=="__main__":

@@ -1,24 +1,84 @@
-class Template(dict):
+class Element(list):
 
-    def __init__(self, **kwargs):
-        dict.__init__(self, kwargs)
-        for attr in ["parameters",
-                     "resources",
-                     "outputs"]:
-            self.setdefault(attr, [])
+    def __init__(self, items):
+        list.__init__(self, items)
+
+    def update(self, items):
+        self+=items
+
+    """
+    - dict() because components return tuples
+    """
+        
+    def render(self):
+        return dict(self)
+
+class Parameters(Element):
+
+    def __init__(self, items):
+        Element.__init__(self, items)
+
+class Resources(Element):
+
+    def __init__(self, items):
+        Element.__init__(self, items)
+
+class Outputs(Element):
+
+    def __init__(self, items):
+        Element.__init__(self, items)
+
+"""
+- dashboard does not extend Element as has to be rendered to a resource
+"""
+        
+class Dashboard(list):
+
+    def __init__(self, items):
+        list.__init__(self, items)
+
+    def update(self, items):
+        self+=items
+
+    """
+    - render() needs to return something that looks like the old dash class
+    """
+        
+    def render(self):
+        return dict(self)
+        
+class Template:
+
+    def __init__(self,
+                 parameters=[],
+                 resources=[],
+                 outputs=[],
+                 dashboard=[],
+                 **kwargs):
+        self.parameters=Parameters(parameters)
+        self.resources=Resources(resources)
+        self.outputs=Outputs(outputs)
+        self.dashboard=Dashboard(dashboard)
 
     def update(self, template):
-        for attr in self.keys():
-            if attr in template:
-                self[attr]+=template[attr]
+        for attr in ["parameters",
+                     "resources",
+                     "outputs",
+                     "dashboard"]:
+            parent=getattr(self, attr)
+            parent.update(getattr(template, attr))
 
+    """
+    - dash needs to be appended as to resource rather than rendered as element
+    """
+            
     def render(self):
-        """
-        - dict() required because values are lists of tuples
-        """
-        return {k.capitalize():dict(v)
-                for k, v in self.items()
-                if len(v) > 0}
-
+        return {attr.capitalize():getattr(self, attr).render()
+                for attr in ["parameters",
+                             "resources",
+                             "outputs",
+                             "dashboard"]
+                if len(getattr(self, attr)) > 0}
+            
 if __name__=="__main__":
     pass
