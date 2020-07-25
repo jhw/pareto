@@ -1,6 +1,5 @@
 ### short
 
-- make project public again
 - move project tests into separate tests directory
 - add pip dependencies
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html
