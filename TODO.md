@@ -1,7 +1,6 @@
 ### short [dashboards]
 
-- remove /dev
-- test deployment
+- dashboard name
 
 ### medium
 
@@ -147,6 +146,8 @@
   
 ### done
 
+- remove /dev
+- test deployment
 - dashboard grid layout
 - check rendering of dash
 - render dash as resource tuple
