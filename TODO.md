@@ -1,9 +1,7 @@
 ### short
 
-- move deploy_stack assign_commits to LamdaCommits
-- ditto for push_lambdas git filtering
-- better argsparse file handling
 - check specifying lambda commit still works
+- better argsparse file handling
 - investigate adding region and account id to hardcoded event sources
 
 ### medium
@@ -144,6 +142,8 @@
   
 ### done
 
+- move deploy_stack assign_commits to LamdaCommits ?
+  - no is fine as it is
 - simplify template creation in env
   - don't think u need all that grouping stuff
 - create name from app, dashname and stagename
