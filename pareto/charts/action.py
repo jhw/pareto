@@ -88,7 +88,7 @@ def ActionCharts(charts=Charts, **kwargs):
     def init_chart(key, chart, kwargs):
         chartkwargs={"name": resource_name(kwargs),
                      "region": kwargs["region"],
-                     "title": titleise("%s-%s" % (kwargs["name"], key))}        
+                     "title": titleise("%s-action-%s" % (kwargs["name"], key))}
         return yaml.safe_load(chart.format(**chartkwargs))
     return [init_chart(key, chart, kwargs)
             for key, chart in charts.items()]

@@ -147,6 +147,7 @@
   
 ### done
 
+- add 'Action' to chart titles
 - check specifying lambda commit still works
 - move deploy_stack assign_commits to LamdaCommits ?
   - no is fine as it is
