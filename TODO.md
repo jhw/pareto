@@ -1,14 +1,14 @@
-### short [dashboards]
+### short
 
-- dashboard name
-
-### medium
-
+- pass kwargs to template and dashboard
+- render dashboard name using kwargs
 - move deploy_stack assign_commits to LamdaCommits
 - ditto for push_lambdas git filtering
 - better argsparse file handling
 - check specifying lambda commit still works
 - investigate adding region and account id to hardcoded event sources
+
+### medium
 
 - layers
 
