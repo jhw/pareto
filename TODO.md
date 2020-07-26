@@ -1,6 +1,5 @@
 ### short [dashboards]
 
-- comment out dash rendering
 - import action charts into action
 - anything that creates an action to create action charts
 
@@ -153,6 +152,7 @@
   
 ### done
 
+- comment out dash rendering
 - new charts.actions chart renderers
 - add parameters, resources, outputs classes to template
 - add dashboard class with merge, render classes
