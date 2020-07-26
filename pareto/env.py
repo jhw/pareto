@@ -44,10 +44,8 @@ def add_master(config, templates):
         
 def synth_env(config):
     templates={}
-    for attr in ["component_groups",
-                 "master"]:
-        fn=eval("add_%s" % attr)
-        fn(config, templates)
+    add_component_groups(config, templates)
+    add_master(config, templates)
     return templates
 
 if __name__=="__main__":
