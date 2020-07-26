@@ -17,16 +17,21 @@ def add_component_groups(config, templates):
         return {key: [init_component(config, component)
                       for component in components]
                 for key, components in config["components"].items()}
-    def init_template(key, components):
-        template=Template(name="foobar")
+    def init_template(name, key, components):
+        template=Template(name=name)
         for kwargs in components:
             fn=eval("synth_%s" % key[:-1])                
             component=fn(**kwargs)
             template.update(component)
         return template.render()
+    def template_name(config, key):
+        return "%s-%s-%s" % (config["globals"]["app"],
+                             key,
+                             config["globals"]["stage"])
     groups=group_components(config)
     for key, group in groups.items():
-        templates[key]=init_template(key, group)
+        name=template_name(config, key)
+        templates[key]=init_template(name, key, group)
 
 def add_master(config, templates):
     def init_stack(config, tempname):

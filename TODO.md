@@ -1,7 +1,5 @@
 ### short
 
-- create name from app, dashname and stagename
-
 - simplify template creation in env
   - don't think u need all that grouping stuff
 
@@ -149,6 +147,7 @@
   
 ### done
 
+- create name from app, dashname and stagename
 - pass name arg to template and dash
 - dash to use name as dashboard name
 - remove /dev
