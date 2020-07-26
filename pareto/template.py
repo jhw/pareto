@@ -6,27 +6,8 @@ class Element(list):
     def update(self, items):
         self+=items
 
-    """
-    - dict() because components return tuples
-    """
-        
     def render(self):
-        return dict(self)
-
-class Parameters(Element):
-
-    def __init__(self, items):
-        Element.__init__(self, items)
-
-class Resources(Element):
-
-    def __init__(self, items):
-        Element.__init__(self, items)
-
-class Outputs(Element):
-
-    def __init__(self, items):
-        Element.__init__(self, items)
+        return dict(self) # because component returns tuples
 
 """
 - dashboard does not extend Element as has to be rendered to a resource
@@ -55,12 +36,8 @@ class Dashboard(list):
     def update(self, items):
         self+=items
 
-    """
-    - render() needs to return something that looks like the old dash class
-    """
-        
     def render(self):
-        return dict(self)
+        return self
         
 class Template:
 
@@ -70,9 +47,9 @@ class Template:
                  outputs=[],
                  dashboard=[],
                  **kwargs):
-        self.parameters=Parameters(parameters)
-        self.resources=Resources(resources)
-        self.outputs=Outputs(outputs)
+        self.parameters=Element(parameters)
+        self.resources=Element(resources)
+        self.outputs=Element(outputs)
         self.dashboard=Dashboard(dashboard)
 
     def update(self, template):
@@ -88,8 +65,9 @@ class Template:
                 for attr in ["parameters",
                              "resources",
                              "outputs"]
-                if len(getattr(self, attr)) > 0}
-        # add dash stuff
+                if getattr(self, attr)!=[]}
+        if self.dashboard!=[]:
+            print (self.dashboard.render())
         return {k.capitalize():v
                 for k, v in struct.items()}
             

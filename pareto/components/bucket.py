@@ -40,6 +40,7 @@ def synth_bucket(**kwargs):
                              ActionVersion(**kwargs),
                              ActionEventConfig(**kwargs),
                              BucketActionPermission(**kwargs)]
+        template.dashboard+=[ActionCharts(**kwargs)]
     return template
 
 if __name__=="__main__":

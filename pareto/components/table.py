@@ -78,6 +78,7 @@ def synth_table(**kwargs):
                              ActionVersion(**kwargs),
                              ActionEventConfig(**kwargs),
                              TableActionMapping(**kwargs)]
+        template.dashboard+=[ActionCharts(**kwargs)]
     return template
 
 if __name__=="__main__":

@@ -89,6 +89,7 @@ def synth_api(**kwargs):
                                ApiGwDeployment(**kwargs),
                                ApiGwStage(**kwargs),
                                ApiGwMethod(**kwargs)],
+                    dashboard=[ActionCharts(**kwargs)],
                     outputs=[ApiGwUrl(**kwargs)])
 
 if __name__=="__main__":

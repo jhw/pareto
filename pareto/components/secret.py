@@ -10,6 +10,5 @@ def Secret(**kwargs):
 def synth_secret(**kwargs):
     return Template(resources=[Secret(**kwargs)])
 
-
 if __name__=="__main__":
     pass

@@ -29,7 +29,8 @@ def synth_timer(**kwargs):
                                ActionVersion(**kwargs),
                                ActionEventConfig(**kwargs),
                                EventRule(**kwargs),
-                               EventActionPermission(**kwargs)])
+                               EventActionPermission(**kwargs)],
+                    dashboard=[ActionCharts(**kwargs)])
 
 if __name__=="__main__":
     pass

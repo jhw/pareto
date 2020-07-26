@@ -1,5 +1,7 @@
 from pareto.components import *
 
+from pareto.charts.action import ActionCharts
+
 DefaultPermissions=yaml.load("""
 - logs:CreateLogGroup
 - logs:CreateLogStream

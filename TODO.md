@@ -1,12 +1,9 @@
 ### short [dashboards]
 
-- import action charts into action
-- anything that creates an action to create action charts
-
-- render dashboard as resource tuple
-- dash to be appended to resources prior to template rendering
-- components.action to add charts to template.dashboard
-- dashboard rendering to apply x, y coordinates
+- render dash as resource tuple
+- comment out printing and append dash as resource
+- check rendering of dash
+- add dash x, y attributes at rendering
 
 ### medium
 
@@ -152,6 +149,8 @@
   
 ### done
 
+- import action charts into action
+- anything that creates an action to create action charts
 - comment out dash rendering
 - new charts.actions chart renderers
 - add parameters, resources, outputs classes to template

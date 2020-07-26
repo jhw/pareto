@@ -32,6 +32,7 @@ def synth_queue(**kwargs):
                              ActionVersion(**kwargs),
                              ActionEventConfig(**kwargs),
                              QueueActionMapping(**kwargs)]
+        template.dashboard+=[ActionCharts(**kwargs)]
     return template
 
 if __name__=="__main__":
