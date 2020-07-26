@@ -1,8 +1,5 @@
 ### short
 
-- simplify template creation in env
-  - don't think u need all that grouping stuff
-
 - move deploy_stack assign_commits to LamdaCommits
 - ditto for push_lambdas git filtering
 - better argsparse file handling
@@ -147,6 +144,8 @@
   
 ### done
 
+- simplify template creation in env
+  - don't think u need all that grouping stuff
 - create name from app, dashname and stagename
 - pass name arg to template and dash
 - dash to use name as dashboard name

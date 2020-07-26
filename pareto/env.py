@@ -10,28 +10,22 @@ from pareto.components.timer import synth_timer
 from pareto.components.website import synth_website
 
 def add_component_groups(config, templates):
-    def init_component(config, component):
-        component.update(config["globals"])
-        return component
-    def group_components(config):
-        return {key: [init_component(config, component)
-                      for component in components]
-                for key, components in config["components"].items()}
-    def init_template(name, key, components):
-        template=Template(name=name)
-        for kwargs in components:
-            fn=eval("synth_%s" % key[:-1])                
-            component=fn(**kwargs)
-            template.update(component)
-        return template.render()
     def template_name(config, key):
         return "%s-%s-%s" % (config["globals"]["app"],
                              key,
                              config["globals"]["stage"])
-    groups=group_components(config)
-    for key, group in groups.items():
+    def init_template(config, key, components):
         name=template_name(config, key)
-        templates[key]=init_template(name, key, group)
+        template=Template(name=name)
+        for kwargs in components:
+            kwargs.update(config["globals"]) # NB
+            fn=eval("synth_%s" % key[:-1])                
+            component=fn(**kwargs)
+            template.update(component)
+        return template.render()
+    for key, group in config["components"].items():
+        name=template_name(config, key)
+        templates[key]=init_template(config, key, group)
 
 def add_master(config, templates):
     def init_stack(config, tempname):
