@@ -1,6 +1,7 @@
 ### short [dashboards]
 
-- dashboard grid layout
+- remove /dev
+- test deployment
 
 ### medium
 
@@ -146,6 +147,7 @@
   
 ### done
 
+- dashboard grid layout
 - check rendering of dash
 - render dash as resource tuple
 - comment out printing and append dash as resource
