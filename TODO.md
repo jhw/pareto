@@ -1,11 +1,17 @@
 ### short
 
 - better argsparse file handling
-- investigate adding region and account id to hardcoded event sources
+
+### layers
+
+- add layer staging to deploy_stack.py
+- create layer component
+- action to include layer references
+- add support for layers as arns
 
 ### medium
 
-- layers
+- investigate adding region and account id to hardcoded event sources
 
 - push index.json as part of deployment
 - apigw request validation
