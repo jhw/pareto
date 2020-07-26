@@ -18,7 +18,7 @@ def add_component_groups(config, templates):
                       for component in components]
                 for key, components in config["components"].items()}
     def init_template(key, components):
-        template=Template()
+        template=Template(name="foobar")
         for kwargs in components:
             fn=eval("synth_%s" % key[:-1])                
             component=fn(**kwargs)

@@ -33,15 +33,17 @@ def grid_layout(charts,
     
 class Dashboard(list):
 
-    def __init__(self, items):
+    def __init__(self, name, items):
         list.__init__(self, items)
-
+        self.name=name
+        
     def update(self, items):
         self+=items
 
     def render(self):
         layout=grid_layout(self)
-        props={"DashboardBody": json.dumps(layout)}
+        props={"DashboardName": self.name,
+               "DashboardBody": json.dumps(layout)}
         attrs={"Type": "AWS::CloudWatch::Dashboard",
                "Properties": props}
         return {"Dashboard": attrs} # to match Element.render output
@@ -49,15 +51,18 @@ class Dashboard(list):
 class Template:
 
     def __init__(self,
+                 name=None,
                  parameters=[],
                  resources=[],
                  outputs=[],
                  dashboard=[],
                  **kwargs):
+        self.name=name
         self.parameters=Element(parameters)
         self.resources=Element(resources)
         self.outputs=Element(outputs)
-        self.dashboard=Dashboard(dashboard)
+        self.dashboard=Dashboard(name=name,
+                                 items=dashboard)
 
     def update(self, template):
         for attr in ["parameters",

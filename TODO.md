@@ -1,8 +1,9 @@
 ### short
 
-- pass name arg to template and dash
 - create name from app, dashname and stagename
-- dash to use name as dashboard name
+
+- simplify template creation in env
+  - don't think u need all that grouping stuff
 
 - move deploy_stack assign_commits to LamdaCommits
 - ditto for push_lambdas git filtering
@@ -148,6 +149,8 @@
   
 ### done
 
+- pass name arg to template and dash
+- dash to use name as dashboard name
 - remove /dev
 - test deployment
 - dashboard grid layout
