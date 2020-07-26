@@ -83,17 +83,15 @@ class Template:
             parent=getattr(self, attr)
             parent.update(getattr(template, attr))
 
-    """
-    - dash needs to be appended as to resource rather than rendered as element
-    """
-            
     def render(self):
-        return {attr.capitalize():getattr(self, attr).render()
+        struct={attr:getattr(self, attr).render()
                 for attr in ["parameters",
                              "resources",
-                             "outputs",
-                             "dashboard"]
+                             "outputs"]
                 if len(getattr(self, attr)) > 0}
+        # add dash stuff
+        return {k.capitalize():v
+                for k, v in struct.items()}
             
 if __name__=="__main__":
     pass
