@@ -1,7 +1,9 @@
 ### short
 
-- pass kwargs to template and dashboard
-- render dashboard name using kwargs
+- pass name arg to template and dash
+- create name from app, dashname and stagename
+- dash to use name as dashboard name
+
 - move deploy_stack assign_commits to LamdaCommits
 - ditto for push_lambdas git filtering
 - better argsparse file handling
