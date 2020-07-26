@@ -2,10 +2,19 @@ import json, random, re, yaml
 
 from pareto.template import *
 
+def titleise(text):
+    return " ".join([tok.capitalize()
+                     for tok in re.split("\\-|\\_", text)])
+
+def labelise(text):
+    return "-".join([tok.lower()
+                     for tok in re.split("\\s|\\_", text)])
+
+def hungarorise(text):
+    return "".join([tok.capitalize()
+                    for tok in re.split("\\-|\\_", text)])    
+
 def resource_name(kwargs):
-    def labelise(text):
-        return "-".join([tok.lower()
-                         for tok in re.split("\\s|\\_", text)])
     return "-".join([labelise(kwargs[attr])
                      for attr in ["app", "name", "stage"]])
 
@@ -15,9 +24,6 @@ def random_name(prefix, n=32):
     return "%s-%s" % (prefix, salt)
 
 def logical_id(name):
-    def hungarorise(text):
-        return "".join([tok.capitalize()
-                        for tok in re.split("\\-|\\_", text)])    
     return hungarorise(name)
 
 def ref(name):

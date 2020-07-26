@@ -1,6 +1,9 @@
 ### short [dashboards]
 
-- new charts.actions chart renderers
+- comment out dash rendering
+- import action charts into action
+- anything that creates an action to create action charts
+
 - render dashboard as resource tuple
 - dash to be appended to resources prior to template rendering
 - components.action to add charts to template.dashboard
@@ -150,6 +153,7 @@
   
 ### done
 
+- new charts.actions chart renderers
 - add parameters, resources, outputs classes to template
 - add dashboard class with merge, render classes
 - ensure that template merging, rendering calls dash merging, rendering
