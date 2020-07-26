@@ -1,9 +1,6 @@
 ### short [dashboards]
 
-- render dash as resource tuple
-- comment out printing and append dash as resource
-- check rendering of dash
-- add dash x, y attributes at rendering
+- dashboard grid layout
 
 ### medium
 
@@ -149,6 +146,9 @@
   
 ### done
 
+- check rendering of dash
+- render dash as resource tuple
+- comment out printing and append dash as resource
 - import action charts into action
 - anything that creates an action to create action charts
 - comment out dash rendering
