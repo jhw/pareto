@@ -1,6 +1,5 @@
 ### short
 
-- check specifying lambda commit still works
 - better argsparse file handling
 - investigate adding region and account id to hardcoded event sources
 
@@ -142,6 +141,7 @@
   
 ### done
 
+- check specifying lambda commit still works
 - move deploy_stack assign_commits to LamdaCommits ?
   - no is fine as it is
 - simplify template creation in env
