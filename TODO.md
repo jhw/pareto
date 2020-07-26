@@ -1,16 +1,20 @@
 ### short [dashboards]
 
+- new charts.actions chart renderers
 - render dashboard as resource tuple
 - dash to be appended to resources prior to template rendering
-- new charts.actions chart renderers
 - components.action to add charts to template.dashboard
 - dashboard rendering to apply x, y coordinates
 
 ### medium
 
+- move deploy_stack assign_commits to LamdaCommits
+- ditto for push_lambdas git filtering
 - better argsparse file handling
 - check specifying lambda commit still works
 - investigate adding region and account id to hardcoded event sources
+
+- layers
 
 - push index.json as part of deployment
 - apigw request validation
