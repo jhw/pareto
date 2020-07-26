@@ -11,8 +11,7 @@ def match_enum(value):
 def match_str(value):
     return True
 def match_file(value):
-    return (value.endswith(".yaml") and
-            os.path.exists(value))
+    return value.endswith(".yaml")
             
 def parse_int(value):
     return int(value)
@@ -30,6 +29,8 @@ def parse_enum(value):
 def parse_str(value):
     return value
 def parse_file(value):
+    if not os.path.exists(value):
+        raise RuntimeError("file does not exist")
     return yaml.load(open(value, 'r'),
                      Loader=yaml.FullLoader)
 
@@ -61,10 +62,7 @@ def argsparse(args, config):
         def wrapped(value, item):
             prefn=eval("match_%s" % item["type"])
             if not prefn(value):
-                if item["type"]=="file":
-                    raise RuntimeError("%s type is invalid or does not exist" % item["name"])
-                else:
-                    raise RuntimeError("%s type is invalid" % item["name"])
+                raise RuntimeError("%s type is invalid" % item["name"])
             return fn(value, item)
         return wrapped
     def validate(fn):

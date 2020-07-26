@@ -28,7 +28,6 @@ def add_lambda_staging(config):
         groups, latest = commits.grouped, commits.latest
         assigned, errors = {}, []
         for component in filter_functions(components):
-            print (component)
             if "commit" in component["action"]:
                 if component["action"]["commit"] in groups[component["name"]]:
                     assigned[component["name"]]=groups[component["name"]][component["action"]["commit"]]

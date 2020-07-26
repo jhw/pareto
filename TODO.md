@@ -1,8 +1,4 @@
-### short
-
-- better argsparse file handling
-
-### layers
+### short [layers]
 
 - add layer staging to deploy_stack.py
 - create layer component
