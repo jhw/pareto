@@ -1,6 +1,5 @@
 ### short [layers]
 
-- iterate through layers
 - create layer component
 - action to include layer references
 - add support for layers as arns
@@ -147,6 +146,7 @@
   
 ### done
 
+- iterate through layers
 - website will fail on bucket action permission
 - synth_action function
 - simplify commits assignment

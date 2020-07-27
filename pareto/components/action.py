@@ -91,6 +91,10 @@ def synth_action(template, **kwargs):
                          ActionDeadLetterQueue(**kwargs),
                          ActionVersion(**kwargs),
                          ActionEventConfig(**kwargs)]
+    if ("action" in kwargs and
+        "layer" in kwargs["staging"]):
+        for package in kwargs["staging"]["layer"]:
+            print (package)
     template.dashboard+=[ActionCharts(**kwargs)]
 
 if __name__=="__main__":
