@@ -9,6 +9,21 @@ class LayerPackage(dict):
     CLIDelimiter="="
 
     LatestZip="LATEST.zip"
+
+    @classmethod
+    def create(self, config, name, version=None):
+        pkg=LayerPackage()
+        pkg["app"]=config["globals"]["app"]
+        pkg["name"]=name
+        if version:
+            pkg["version"]=version
+            pkg["pip_source"]="%s==%s" % (name, version)
+            pkg["artifacts_name"]="%s.zip" % version.replace(".", "-")
+        else:
+            pkg["version"]=None
+            pkg["pip_source"]=name
+            pkg["artifacts_name"]=self.LatestZip
+        return pkg
     
     def validate_cli(fn):
         def wrapped(self, config, pkgstr):

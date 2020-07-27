@@ -1,6 +1,5 @@
 ### short [layers]
 
-- new method to create layer key given name, version args
 - add layer staging to deploy_stack.py
 - create layer component
 - action to include layer references
@@ -8,6 +7,8 @@
 
 ### medium
 
+- simplify layer key constructors ?
+- specific iam permissions for layer build
 - investigate adding region and account id to hardcoded event sources
 
 - push index.json as part of deployment
@@ -144,6 +145,7 @@
   
 ### done
 
+- new method to create layer key given name, version args
 - add 'Action' to chart titles
 - check specifying lambda commit still works
 - move deploy_stack assign_commits to LamdaCommits ?

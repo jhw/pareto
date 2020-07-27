@@ -7,6 +7,23 @@ from moto import mock_s3
 class LayerPackageTest(unittest.TestCase):
 
     Config={"globals": {"app": "foobar"}}
+
+    def test_create_latest(self):        
+        pkg=LayerPackage.create(self.Config,
+                                name="pymorphy2")
+        self.assertEqual(pkg["name"], "pymorphy2")
+        self.assertEqual(pkg["version"], None)
+        self.assertEqual(pkg["pip_source"], "pymorphy2")
+        self.assertEqual(pkg["artifacts_name"], "LATEST.zip")
+
+    def test_create_versioned(self):        
+        pkg=LayerPackage.create(self.Config,
+                                name="pymorphy2",
+                                version="0.8")
+        self.assertEqual(pkg["name"], "pymorphy2")
+        self.assertEqual(pkg["version"], "0.8")
+        self.assertEqual(pkg["pip_source"], "pymorphy2==0.8")
+        self.assertEqual(pkg["artifacts_name"], "0-8.zip")
     
     def test_create_cli_latest(self):        
         pkg=LayerPackage.create_cli(self.Config,
