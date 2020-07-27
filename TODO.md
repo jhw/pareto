@@ -1,7 +1,7 @@
 ### short [layers]
 
-- action to include layer references
 - test deployment
+
 - support for layer arns
 
 - see if jinja2 can be replaced by template.format
@@ -150,6 +150,7 @@
   
 ### done
 
+- action to include layer references
 - separate permission, mapping args in synth action
 - pass permission ref to synth_action
 - check an action can't have two versions of the same package

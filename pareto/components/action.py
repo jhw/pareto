@@ -26,6 +26,10 @@ def ActionFunction(concurrency=None,
            "Role": rolearn,
            "Runtime": "python%s" % kwargs["runtime"],
            "Timeout": timeout}
+    if "layer" in kwargs["staging"]:
+        props["Layers"]=[ref("%s-%s-layer" % (kwargs["name"],
+                                              package["name"]))
+                         for package in kwargs["staging"]["layer"]]
     if concurrency:
         props["ReservedConcurrentExecutions"]=concurrency
     return "AWS::Lambda::Function", props
