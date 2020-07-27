@@ -48,10 +48,8 @@ def add_lambda_staging(config):
     assigned, errors = assign_commits(config["components"], commits)    
     if errors!=[]:
         raise RuntimeError(", ".join(errors))
-    for k, v in assigned.items():
-        logging.info("%s => %s" % (k, v))
     add_staging(config["components"], assigned)
-
+    
 """
 - cloudformation will check this for you early in deployment process
 - but still better to have local version to get early warning I think
