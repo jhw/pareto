@@ -1,11 +1,10 @@
 ### short [layers]
 
-- add awscore to pip imports
-
 - action to include layer references
 - test deployment
 - support for layer arns
 
+- see if jinja2 can be replaced by template.format
 - could synth_action be better implemented?
 - tests for components
   - just to ensure there are no compilation errors
@@ -37,6 +36,8 @@
 
 ### thoughts
 
+- add awscore to pip imports ?
+  - think is fine as it is ?
 - export trigger, function arns ?
   - only if you plan to tie down policy document Resource field, which is currently a wildcard
 - multiple stacks per type ?
