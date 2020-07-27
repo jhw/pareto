@@ -1,7 +1,6 @@
 ### short [layers]
 
 - build_layer.py to replace jinja2 with string.format
-- support for layer arns
 - specific iam permissions for layer build
 
 - tests for components
@@ -32,6 +31,8 @@
 
 ### thoughts
 
+- support for layer arns ?
+  - not worth it; build_layer.py works fine for numpy/scipy
 - simplify layer key constructors ?
 - add awscore to pip imports ?
   - think is fine as it is ?
