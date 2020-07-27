@@ -25,36 +25,28 @@ def init_region(config):
 
 def add_lambda_staging(config):
     logging.info("adding lambda staging")
-    def assign_commits(components, commits):
+    def add_staging(component, commits):
         groups, latest = commits.grouped, commits.latest
-        assigned, errors = {}, []
-        for component in filter_functions(components):
-            if "commit" in component["action"]:
-                if component["action"]["commit"] in groups[component["name"]]:
-                    assigned[component["name"]]=groups[component["name"]][component["action"]["commit"]]
-                else:
-                    errors.append("commit %s not found for %s" % (component["action"]["commit"], component["name"]))
-            else:
-                if component["name"] in latest:
-                    assigned[component["name"]]=latest[component["name"]]
-                else:
-                    errors.append("no deployables found for %s" % component["name"])
-        return assigned, errors
-    def add_staging(components, commits):
-        for component in filter_functions(components):
-            component.setdefault("staging", {})
-            component["staging"]["lambda"]={"bucket": config["globals"]["bucket"],
-                                            "key": str(commits[component["name"]])}
+        staging={"bucket": config["globals"]["bucket"]}
+        if "commit" in component["action"]: 
+            if component["action"]["commit"] not in groups[component["name"]]:
+                raise RuntimeError("commit %s not found for %s" % (component["action"]["commit"], component["name"]))
+            staging["key"]=str(groups[component["name"]][component["action"]["commit"]])
+        else:
+            if component["name"] not in latest:
+                raise RuntimeError("no deployables found for %s" % component["name"])
+            staging["key"]=str(latest[component["name"]])
+        component.setdefault("staging", {})
+        component["staging"]["lambda"]=staging    
     commits=LambdaCommits(config=config, s3=S3)
-    assigned, errors = assign_commits(config["components"], commits)    
-    if errors!=[]:
-        raise RuntimeError(", ".join(errors))
-    add_staging(config["components"], assigned)
+    for component in filter_functions(config["components"]):
+       add_staging(component, commits)
 
 def add_layer_staging(config):
     logging.info("adding lambda staging")
     packages=LayerPackages(config=config, s3=S3)
-    print (packages)
+    # print (packages)
+
     
 """
 - cloudformation will check this for you early in deployment process

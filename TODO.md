@@ -1,5 +1,7 @@
 ### short [layers]
 
+- simplify commits assignment
+
 - add layer staging to deploy_stack.py
 - create layer component
 - action to include layer references
