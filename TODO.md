@@ -1,6 +1,6 @@
 ### short [layers]
 
-- synth_action function
+- website will fail on bucket action permission
 
 - iterate through layers
 - create layer component
@@ -9,6 +9,8 @@
 
 ### medium
 
+- tests for components
+  - just to ensure there are no compilation errors
 - simplify layer key constructors ?
 - specific iam permissions for layer build
 - investigate adding region and account id to hardcoded event sources
@@ -147,6 +149,7 @@
   
 ### done
 
+- synth_action function
 - simplify commits assignment
 - add layer staging to deploy_stack.py
 - new method to create layer key given name, version args

@@ -32,15 +32,10 @@ def BucketActionPermission(**kwargs):
     return "AWS::Lambda::Permission", props
 
 def synth_bucket(**kwargs):
-    template=Template(resources=[Bucket(**kwargs)])
+    template=Template(resources=[Bucket(**kwargs)])    
     if "action" in kwargs:
-        template.resources+=[Action(**kwargs),
-                             ActionRole(**kwargs),
-                             ActionDeadLetterQueue(**kwargs),
-                             ActionVersion(**kwargs),
-                             ActionEventConfig(**kwargs),
-                             BucketActionPermission(**kwargs)]
-        template.dashboard+=[ActionCharts(**kwargs)]
+        synth_action(template, **kwargs)
+        template.resources.append(BucketActionPermission(**kwargs))
     return template
 
 if __name__=="__main__":

@@ -85,5 +85,13 @@ def ActionRole(**kwargs):
     props["Policies"]=[policy(kwargs["action"])]
     return "AWS::IAM::Role", props
 
+def synth_action(template, **kwargs):
+    template.resources+=[Action(**kwargs),
+                         ActionRole(**kwargs),
+                         ActionDeadLetterQueue(**kwargs),
+                         ActionVersion(**kwargs),
+                         ActionEventConfig(**kwargs)]
+    template.dashboard+=[ActionCharts(**kwargs)]
+
 if __name__=="__main__":
     pass
