@@ -1,7 +1,5 @@
 ### short [layers]
 
-- website will fail on bucket action permission
-
 - iterate through layers
 - create layer component
 - action to include layer references
@@ -149,6 +147,7 @@
   
 ### done
 
+- website will fail on bucket action permission
 - synth_action function
 - simplify commits assignment
 - add layer staging to deploy_stack.py

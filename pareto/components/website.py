@@ -2,6 +2,8 @@ from pareto.components import *
 
 from pareto.components.action import *
 
+from pareto.components.bucket import BucketActionPermission
+
 @resource()
 def Website(event={"type":  "s3:ObjectCreated:*"},
             **kwargs):
