@@ -10,11 +10,11 @@ DefaultPermissions=yaml.load("""
 """, Loader=yaml.FullLoader)
 
 @resource(suffix="action")
-def Action(concurrency=None,
-           handler="index.handler",
-           memory=512,
-           timeout=30,
-           **kwargs):
+def ActionFunction(concurrency=None,
+                   handler="index.handler",
+                   memory=512,
+                   timeout=30,
+                   **kwargs):
     dlqarn=fn_getatt("%s-action-dead-letter-queue" % kwargs["name"], "Arn")
     rolearn=fn_getatt("%s-action-role" % kwargs["name"], "Arn")
     props={"Code": {"S3Bucket": kwargs["staging"]["lambda"]["bucket"],
@@ -100,7 +100,7 @@ def synth_action(template,
                  permission=None,
                  mapping=None,
                  **kwargs):
-    template.resources+=[Action(**kwargs),
+    template.resources+=[ActionFunction(**kwargs),
                          ActionRole(**kwargs),
                          ActionDeadLetterQueue(**kwargs),
                          ActionVersion(**kwargs),
