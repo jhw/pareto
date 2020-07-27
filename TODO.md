@@ -1,6 +1,7 @@
 ### short [layers]
 
-- test deployment
+- add layers to apis
+- test pinging apis with layer imports
 
 - support for layer arns
 
@@ -150,6 +151,7 @@
   
 ### done
 
+- test deployment
 - action to include layer references
 - separate permission, mapping args in synth action
 - pass permission ref to synth_action
