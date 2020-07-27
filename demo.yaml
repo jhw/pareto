@@ -12,7 +12,11 @@ components:
     rate: "1 hour"
     payload:
       hello: world
-    action: {}
+    action:
+      layers:
+      - name: lxml
+      - name: pymorphy2
+        version: "0.8"
   apis:
   - name: hello-get
     method: GET

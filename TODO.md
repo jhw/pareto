@@ -1,8 +1,8 @@
 ### short [layers]
 
-- simplify commits assignment
+- synth_action function
 
-- add layer staging to deploy_stack.py
+- iterate through layers
 - create layer component
 - action to include layer references
 - add support for layers as arns
@@ -147,6 +147,8 @@
   
 ### done
 
+- simplify commits assignment
+- add layer staging to deploy_stack.py
 - new method to create layer key given name, version args
 - add 'Action' to chart titles
 - check specifying lambda commit still works

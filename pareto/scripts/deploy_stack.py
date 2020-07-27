@@ -11,11 +11,9 @@ from pareto.env import synth_env
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
 """
 
-Metrics={
-    "resources": (lambda x: (len(x["Resources"]) if "Resources" in x else 0)/200),
-    "outputs": (lambda x: (len(x["Outputs"]) if "Outputs" in x else 0)/60),
-    "template_size": (lambda x: (len(json.dumps(x))/51200))
-    }
+Metrics={"resources": (lambda x: (len(x["Resources"]) if "Resources" in x else 0)/200),
+         "outputs": (lambda x: (len(x["Outputs"]) if "Outputs" in x else 0)/60),
+         "template_size": (lambda x: (len(json.dumps(x))/51200))}
 
 def init_region(config):
     region=boto3.session.Session().region_name
@@ -43,9 +41,21 @@ def add_lambda_staging(config):
        add_staging(component, commits)
 
 def add_layer_staging(config):
-    logging.info("adding lambda staging")
+    logging.info("adding layer staging")
+    def add_staging(config, component, packages):
+        staged=[]
+        for layerkwargs in component["action"]["layers"]:
+            package=LayerPackage.create(config, **layerkwargs)
+            if not packages.exists(package):
+                raise RuntimeError("%s does not exist" % package)
+            staged.append(package)
+        component.setdefault("staging", {})
+        component["staging"]["layer"]=staged
     packages=LayerPackages(config=config, s3=S3)
-    # print (packages)
+    for component in filter_functions(config["components"]):
+        if "layers" in component["action"]:
+            add_staging(config, component, packages)
+    
 
     
 """
