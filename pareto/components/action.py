@@ -48,6 +48,17 @@ def ActionEventConfig(retries=0,
            "MaximumRetryAttempts": retries}
     return "AWS::Lambda::EventInvokeConfig", props
 
+def ActionLayer(package, **kwargs):
+    suffix="%s-layer" % (package["name"])
+    @resource(suffix=suffix)
+    def ActionLayer(package, **kwargs):
+        content={"S3Key": str(package),
+                 "S3Bucket": kwargs["bucket"]}
+        props={"Content": content,
+               "CompatibleRuntimes": ["python%s" % kwargs["runtime"]]}
+        return "AWS::Lambda::LayerVersion", props
+    return ActionLayer(package, **kwargs)
+    
 @resource(suffix="action-role")
 def ActionRole(**kwargs):
     def assume_role_policy_doc():
@@ -93,8 +104,8 @@ def synth_action(template, **kwargs):
                          ActionEventConfig(**kwargs)]
     if ("action" in kwargs and
         "layer" in kwargs["staging"]):
-        for package in kwargs["staging"]["layer"]:
-            print (package)
+        template.resources+=[ActionLayer(package, **kwargs)
+                             for package in kwargs["staging"]["layer"]]
     template.dashboard+=[ActionCharts(**kwargs)]
 
 if __name__=="__main__":

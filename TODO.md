@@ -1,18 +1,19 @@
 ### short [layers]
 
-- create layer component
+- check an action can't have two versions of the same package
 - action to include layer references
-- add support for layers as arns
+- test deployment
 
-### medium
-
+- support for layer arns
 - tests for components
   - just to ensure there are no compilation errors
 - simplify layer key constructors ?
 - specific iam permissions for layer build
 - investigate adding region and account id to hardcoded event sources
-
 - push index.json as part of deployment
+
+### medium
+
 - apigw request validation
 - cloudwatch alerts
 - scaffold generator
@@ -146,6 +147,8 @@
   
 ### done
 
+- layer runtime
+- create layer component
 - iterate through layers
 - website will fail on bucket action permission
 - synth_action function
