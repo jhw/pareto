@@ -3,6 +3,7 @@
 from pareto.scripts import *
 
 from pareto.staging.lambdas import *
+from pareto.staging.layers import *
 
 from pareto.env import synth_env
 
@@ -49,6 +50,11 @@ def add_lambda_staging(config):
     if errors!=[]:
         raise RuntimeError(", ".join(errors))
     add_staging(config["components"], assigned)
+
+def add_layer_staging(config):
+    logging.info("adding lambda staging")
+    packages=LayerPackages(config=config, s3=S3)
+    print (packages)
     
 """
 - cloudformation will check this for you early in deployment process
@@ -183,6 +189,7 @@ if __name__=="__main__":
         init_region(config)    
         validate_bucket(config)
         add_lambda_staging(config)
+        add_layer_staging(config)
         env=synth_env(config)
         check_refs(env)
         check_metrics(env)
