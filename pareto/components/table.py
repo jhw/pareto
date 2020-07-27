@@ -72,8 +72,9 @@ def TableActionMapping(**kwargs):
 def synth_table(**kwargs):
     template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:
-        synth_action(template, **kwargs)
-        template.resources.append(TableActionMapping(**kwargs))
+        synth_action(template=template,
+                     permission=TableActionMapping,
+                     **kwargs)
     return template
 
 if __name__=="__main__":

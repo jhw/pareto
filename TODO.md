@@ -1,5 +1,6 @@
 ### short [layers]
 
+- separate permission, mapping args in synth action
 - action to include layer references
 - test deployment
 - support for layer arns
@@ -150,6 +151,7 @@
   
 ### done
 
+- pass permission ref to synth_action
 - check an action can't have two versions of the same package
 - layer runtime
 - create layer component

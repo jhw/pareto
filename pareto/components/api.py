@@ -79,18 +79,15 @@ def ApiGwUrl(**kwargs):
     return fn_sub(url, urlparams)
 
 def synth_api(**kwargs):
-    return Template(resources=[Action(**kwargs),
-                               ActionRole(**kwargs),
-                               ActionDeadLetterQueue(**kwargs),
-                               ActionVersion(**kwargs),
-                               ActionEventConfig(**kwargs),
-                               ApiGwActionPermission(**kwargs),
-                               ApiGwRestApi(**kwargs),
-                               ApiGwDeployment(**kwargs),
-                               ApiGwStage(**kwargs),
-                               ApiGwMethod(**kwargs)],
-                    dashboard=[ActionCharts(**kwargs)],
-                    outputs=[ApiGwUrl(**kwargs)])
+    template=Template(resources=[ApiGwRestApi(**kwargs),
+                                 ApiGwDeployment(**kwargs),
+                                 ApiGwStage(**kwargs),
+                                 ApiGwMethod(**kwargs)],
+                      outputs=[ApiGwUrl(**kwargs)])
+    synth_action(template=template,
+                 permission=ApiGwActionPermission,
+                 **kwargs)
+    return template
 
 if __name__=="__main__":
     pass

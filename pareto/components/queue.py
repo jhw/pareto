@@ -26,8 +26,9 @@ def QueueActionMapping(batch=1, **kwargs):
 def synth_queue(**kwargs):
     template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:
-        synth_action(template, **kwargs)
-        template.resources.append(QueueActionMapping(**kwargs))
+        synth_action(template=template,
+                     permission=QueueActionMapping,
+                     **kwargs)
     return template
 
 if __name__=="__main__":
