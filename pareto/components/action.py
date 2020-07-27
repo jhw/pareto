@@ -12,7 +12,7 @@ DefaultPermissions=yaml.load("""
 @resource(suffix="action")
 def ActionFunction(concurrency=None,
                    handler="index.handler",
-                   memory=512,
+                   memory=128,
                    timeout=30,
                    **kwargs):
     dlqarn=fn_getatt("%s-action-dead-letter-queue" % kwargs["name"], "Arn")

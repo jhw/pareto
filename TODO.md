@@ -1,6 +1,5 @@
 ### short
 
-- reduce default lambda size
 - investigate adding region and account id to hardcoded event sources
 - tests for components
   - just to ensure there are no compilation errors
@@ -148,6 +147,7 @@
   
 ### done
 
+- reduce default lambda size
 - build_layer.py to replace jinja2 with string.format
 - could synth_action be better implemented?
 - add layers to apis
