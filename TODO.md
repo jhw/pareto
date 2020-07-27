@@ -1,7 +1,6 @@
 ### short [layers]
 
 - build_layer.py to replace jinja2 with string.format
-- specific iam permissions for layer build
 
 - tests for components
   - just to ensure there are no compilation errors
@@ -31,6 +30,8 @@
 
 ### thoughts
 
+- specific iam permissions for layer build ?
+  - simply not worth it
 - support for layer arns ?
   - not worth it; build_layer.py works fine for numpy/scipy
 - simplify layer key constructors ?
