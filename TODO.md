@@ -1,5 +1,6 @@
 ### short [layers]
 
+- new method to create layer key given name, version args
 - add layer staging to deploy_stack.py
 - create layer component
 - action to include layer references
