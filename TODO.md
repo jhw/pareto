@@ -1,10 +1,12 @@
 ### short [layers]
 
-- check an action can't have two versions of the same package
+- add awscore to pip imports
+
 - action to include layer references
 - test deployment
-
 - support for layer arns
+
+- could synth_action be better implemented?
 - tests for components
   - just to ensure there are no compilation errors
 - simplify layer key constructors ?
@@ -147,6 +149,7 @@
   
 ### done
 
+- check an action can't have two versions of the same package
 - layer runtime
 - create layer component
 - iterate through layers

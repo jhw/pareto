@@ -42,22 +42,29 @@ def add_lambda_staging(config):
 
 def add_layer_staging(config):
     logging.info("adding layer staging")
-    def add_staging(config, component, packages):
+    def filter_staged(config, component, packages):
         staged=[]
         for layerkwargs in component["action"]["layers"]:
             package=LayerPackage.create(config, **layerkwargs)
             if not packages.exists(package):
                 raise RuntimeError("%s does not exist" % package)
             staged.append(package)
-        component.setdefault("staging", {})
-        component["staging"]["layer"]=staged
+        return staged
+    def assert_unique_versions(component, packages):        
+        names=[package["name"]
+               for package in packages]
+        unames=list(set(names))
+        if len(names)!=len(unames):
+            raise RuntimeError("%s has multiple versions of the same package" % component["name"])
     packages=LayerPackages(config=config, s3=S3)
     for component in filter_functions(config["components"]):
-        if "layers" in component["action"]:
-            add_staging(config, component, packages)
-    
-
-    
+        if "layers" not in component["action"]:
+            continue
+        staged=filter_staged(config, component, packages)
+        assert_unique_versions(component, staged)
+        component.setdefault("staging", {})
+        component["staging"]["layer"]=staged
+        
 """
 - cloudformation will check this for you early in deployment process
 - but still better to have local version to get early warning I think
