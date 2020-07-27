@@ -1,6 +1,6 @@
 ### short [layers]
 
-- see if jinja2 can be replaced by template.format
+- build_layer.py to replace jinja2 with string.format
 - support for layer arns
 - specific iam permissions for layer build
 
