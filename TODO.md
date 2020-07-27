@@ -1,10 +1,9 @@
-### short [layers]
+### short
 
-- build_layer.py to replace jinja2 with string.format
-
+- reduce default lambda size
+- investigate adding region and account id to hardcoded event sources
 - tests for components
   - just to ensure there are no compilation errors
-- investigate adding region and account id to hardcoded event sources
 - push index.json as part of deployment
 
 ### medium
@@ -149,6 +148,7 @@
   
 ### done
 
+- build_layer.py to replace jinja2 with string.format
 - could synth_action be better implemented?
 - add layers to apis
 - test pinging apis with layer imports

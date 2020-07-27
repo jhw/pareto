@@ -3,7 +3,6 @@ botocore
 boto3
 pandas
 gitpython
-jinja2
 ### buildtime
 awscli
 git+https://github.com/spulec/moto

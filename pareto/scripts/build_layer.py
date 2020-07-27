@@ -23,15 +23,15 @@ Version: '2012-10-17'
 """
 
 BuildSpec="""
-version: {{ version }}
+version: {version}
 phases:
   install:
     runtime-versions:
-      python: {{ runtime }}
+      python: {runtime}
     commands:
       - mkdir -p build/python
       - pip install --upgrade pip
-      - pip install --upgrade --target build/python {{ package.pip_source }}
+      - pip install --upgrade --target build/python {pip_source}
   post_build:
     commands:
       - bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"
@@ -39,7 +39,7 @@ artifacts:
   files:
     - '**/*'
   base-directory: build
-  name: {{ package.artifacts_name }}
+  name: {artifacts_name}
 """
 
 """
@@ -123,11 +123,10 @@ def init_project(config, package, rolearn,
     env={"type": "LINUX_CONTAINER",
          "image": "aws/codebuild/standard:2.0",
          "computeType": "BUILD_GENERAL1_SMALL"}
-    args={"version": "0.2",
-          "package": package,
-          "runtime": config["globals"]["runtime"]}
-    projectname=layer_project_name(config, package)
-    template=Template(buildspec).render(args)
+    args=dict(package)
+    args.update({"version": "0.2",
+                 "runtime": config["globals"]["runtime"]})
+    template=buildspec.format(**args)
     print (template)
     print ()
     source={"type": "NO_SOURCE",
@@ -143,6 +142,7 @@ def init_project(config, package, rolearn,
     - and the waiters don't catch it
     - ERROR - An error occurred (InvalidInputException) when calling the CreateProject operation: CodeBuild is not authorized to perform: sts:AssumeRole on arn:aws:iam::119552584133:role/pareto-demo-admin-role
     """
+    projectname=layer_project_name(config, package)
     for i in range(maxtries):
         try:
             logging.info("trying to create project [%i/%i]" % (i+1, maxtries))

@@ -26,8 +26,7 @@ setuptools.setup(
     install_requires=["botocore",
                       "boto3",
                       "pandas",
-                      "gitpython",
-                      "jinja2"],
+                      "gitpython"],
     include_package_data=True
 )
 
