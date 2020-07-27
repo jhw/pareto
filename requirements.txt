@@ -7,3 +7,6 @@ jinja2
 ### buildtime
 awscli
 git+https://github.com/spulec/moto
+### layer tests
+lxml
+pymorphy2

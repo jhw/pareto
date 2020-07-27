@@ -1,5 +1,7 @@
 import boto3, json, logging
 
+import lxml # layer test
+
 logger=logging.getLogger()
 logger.setLevel(logging.INFO)    
 

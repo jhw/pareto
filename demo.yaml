@@ -12,18 +12,19 @@ components:
     rate: "1 hour"
     payload:
       hello: world
-    action:
-      layers:
-      - name: lxml
-      - name: pymorphy2
-        version: "0.8"
+    action: {}
   apis:
   - name: hello-get
     method: GET
-    action: {}
+    action:
+      layers:
+      - name: lxml
   - name: hello-post
     method: POST
-    action: {}
+    action:
+      layers:
+      - name: pymorphy2
+        version: "0.8"
   buckets:
   - name: hello-bucket
     action:
