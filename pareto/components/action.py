@@ -96,13 +96,19 @@ def ActionRole(**kwargs):
     props["Policies"]=[policy(kwargs["action"])]
     return "AWS::IAM::Role", props
 
-def synth_action(template, permission, **kwargs):
+def synth_action(template,
+                 permission=None,
+                 mapping=None,
+                 **kwargs):
     template.resources+=[Action(**kwargs),
                          ActionRole(**kwargs),
                          ActionDeadLetterQueue(**kwargs),
                          ActionVersion(**kwargs),
-                         ActionEventConfig(**kwargs),
-                         permission(**kwargs)]
+                         ActionEventConfig(**kwargs)]
+    if permission:
+        template.resources.append(permission(**kwargs))
+    if mapping:
+        template.resources.append(mapping(**kwargs))
     if ("action" in kwargs and
         "layer" in kwargs["staging"]):
         template.resources+=[ActionLayer(package, **kwargs)

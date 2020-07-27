@@ -27,7 +27,7 @@ def synth_queue(**kwargs):
     template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:
         synth_action(template=template,
-                     permission=QueueActionMapping,
+                     mapping=QueueActionMapping,
                      **kwargs)
     return template
 
