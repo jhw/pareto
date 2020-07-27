@@ -1,16 +1,11 @@
 ### short [layers]
 
-- add layers to apis
-- test pinging apis with layer imports
-
-- support for layer arns
-
 - see if jinja2 can be replaced by template.format
-- could synth_action be better implemented?
+- support for layer arns
+- specific iam permissions for layer build
+
 - tests for components
   - just to ensure there are no compilation errors
-- simplify layer key constructors ?
-- specific iam permissions for layer build
 - investigate adding region and account id to hardcoded event sources
 - push index.json as part of deployment
 
@@ -37,6 +32,7 @@
 
 ### thoughts
 
+- simplify layer key constructors ?
 - add awscore to pip imports ?
   - think is fine as it is ?
 - export trigger, function arns ?
@@ -151,6 +147,9 @@
   
 ### done
 
+- could synth_action be better implemented?
+- add layers to apis
+- test pinging apis with layer imports
 - test deployment
 - action to include layer references
 - separate permission, mapping args in synth action
