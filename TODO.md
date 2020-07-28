@@ -1,21 +1,24 @@
 ### short
 
+- ensure all components have action (=> website)
 - investigate adding region and account id to hardcoded event sources
-- tests for components
-  - just to ensure there are no compilation errors
-- push index.json as part of deployment
 
 ### medium
 
-- apigw request validation
+- push index.json as part of deployment
+
+- dsl json schema
 - cloudwatch alerts
+- apigw request validation
 - scaffold generator
-- dsl validation/json schema
+
+### pending
+
 - cognito
-- apigateway2
 
 ### v1.1
 
+- apigateway2
 - eventbridge
 - targets [notes]
 - extended cognito
