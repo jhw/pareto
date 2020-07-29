@@ -1,5 +1,6 @@
 ### short
 
+- replace api gateway stage name (currently == stage name) with action name
 - ensure all components have action (=> website)
 - investigate adding region and account id to hardcoded event sources
 
