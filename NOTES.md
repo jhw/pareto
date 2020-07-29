@@ -1,3 +1,14 @@
+### cognito 29/7/20
+
+- see latest gists
+- really only relates to apis
+- so include as part of api
+- initially just create a very basic pool
+- actually no this isn't going to work
+- really need to create a singleton pool
+- but then refs to that pool need to be exported from auth stack and imported into apis stack
+- so how is that going to work without complexity overkill ?
+
 ### layers 26/7/20
 
 - add layer staging to deploy_stack.py

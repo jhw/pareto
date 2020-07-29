@@ -1,8 +1,11 @@
 ### short
 
 - replace api gateway stage name (currently == stage name) with action name
+- add back api gateway resources, logging
 - ensure all components have action (=> website)
 - investigate adding region and account id to hardcoded event sources
+
+- cognito [notes]
 
 ### medium
 
@@ -12,10 +15,6 @@
 - cloudwatch alerts
 - apigw request validation
 - scaffold generator
-
-### pending
-
-- cognito
 
 ### v1.1
 
