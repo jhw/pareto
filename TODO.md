@@ -1,5 +1,7 @@
 ### short
 
+- layout refactoring [notes]
+
 - replace api gateway stage name (currently == stage name) with action name
 - add back api gateway resources, logging
 - ensure all components have action (=> website)

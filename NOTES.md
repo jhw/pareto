@@ -1,3 +1,18 @@
+### layout 31/7/20
+
+- think have over- optimised the layout
+- that is, nesting actions and dashes within triggers layouts and having no template parameters
+- a decent layout manager would manage the template parameters for you
+- so think thus far have over- optimised and am missing the layout management layer
+- can feel this in the code smell around synth_action and the difficulty of seeing how the auth template will fit it (requires parameter exports)
+- so roll back to a system in which you have a separate actions template and also a separate dashes template
+- as you iterate through dsl groups, add action to actions template if exists
+- actions always export arns
+- triggers need to use references to arn action parameters rather than internally generated arns
+- key is to understand that dsl structure doesn't have to be the same as layout
+- and in particular layout should probably be flatter to give you more options
+- all the dashboard class stuff is over- optimisation
+
 ### cognito 29/7/20
 
 - see latest gists
