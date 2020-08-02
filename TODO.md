@@ -1,18 +1,25 @@
-### short
+### short [layout]
 
-- layout refactoring [notes]
+- remove dashboard stuff
+- Prevent triggers from adding actions to same template
+- Create new actions template 
+- actions to be added to new actions template 
+- Export arns from actions template
+- Change triggers so they reference action arns defined as parameters rather than internal action arns
+- New layer at env level which passes Params to nested templates 
+- Add back dashboards in separate template 
+- Consider other layouts 
+- Auth template 
+- Authorised apis 
+
+### medium
 
 - replace api gateway stage name (currently == stage name) with action name
 - add back api gateway resources, logging
 - ensure all components have action (=> website)
 - investigate adding region and account id to hardcoded event sources
-
 - cognito [notes]
-
-### medium
-
 - push index.json as part of deployment
-
 - dsl json schema
 - cloudwatch alerts
 - apigw request validation
