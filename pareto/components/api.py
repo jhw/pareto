@@ -8,8 +8,6 @@
 
 from pareto.components import *
 
-from pareto.components.action import *
-
 @resource(suffix="api-gw-rest-api")
 def ApiGwRestApi(**kwargs):
     props={"Name": random_name("rest-api")} # not 
@@ -79,15 +77,12 @@ def ApiGwUrl(**kwargs):
     return fn_sub(url, urlparams)
 
 def synth_api(**kwargs):
-    template=Template(resources=[ApiGwRestApi(**kwargs),
-                                 ApiGwDeployment(**kwargs),
-                                 ApiGwStage(**kwargs),
-                                 ApiGwMethod(**kwargs)],
-                      outputs=[ApiGwUrl(**kwargs)])
-    synth_action(template=template,
-                 permission=ApiGwActionPermission,
-                 **kwargs)
-    return template
+    return Template(resources=[ApiGwRestApi(**kwargs),
+                               ApiGwDeployment(**kwargs),
+                               ApiGwStage(**kwargs),
+                               ApiGwMethod(**kwargs),
+                               ApiGwActionPermission(**kwargs)],
+                    outputs=[ApiGwUrl(**kwargs)])
 
 if __name__=="__main__":
     pass

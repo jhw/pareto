@@ -1,16 +1,13 @@
 ### short [layout]
 
-- remove dashboard stuff
-- Prevent triggers from adding actions to same template
-- Create new actions template 
-- actions to be added to new actions template 
+- refactor synth_action so creates a template
+- env to synth actions where they exist
+
 - Export arns from actions template
 - Change triggers so they reference action arns defined as parameters rather than internal action arns
 - New layer at env level which passes Params to nested templates 
-- Add back dashboards in separate template 
-- Consider other layouts 
-- Auth template 
-- Authorised apis 
+- Add back dashboards in separate template
+- add back ref checking
 
 ### medium
 
@@ -159,6 +156,8 @@
   
 ### done
 
+- restrict triggers to adding non- action related components
+- remove dashboard stuff
 - reduce default lambda size
 - build_layer.py to replace jinja2 with string.format
 - could synth_action be better implemented?

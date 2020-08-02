@@ -1,7 +1,5 @@
 from pareto.components import *
 
-from pareto.components.action import *
-
 @resource()
 def EventRule(**kwargs):
     action={"Id": resource_name(kwargs),
@@ -23,11 +21,8 @@ def EventActionPermission(**kwargs):
     return "AWS::Lambda::Permission", props
 
 def synth_timer(**kwargs):
-    template=Template(resources=[EventRule(**kwargs)])
-    synth_action(template=template,
-                 permission=EventActionPermission,
-                 **kwargs)
-    return template
+    return Template(resources=[EventRule(**kwargs),
+                               EventActionPermission(**kwargs)])
 
 if __name__=="__main__":
     pass

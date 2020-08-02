@@ -1,7 +1,5 @@
 from pareto.components import *
 
-from pareto.components.action import *
-
 @resource()
 def Bucket(event={"type":  "s3:ObjectCreated:*"},
            **kwargs):
@@ -34,9 +32,7 @@ def BucketActionPermission(**kwargs):
 def synth_bucket(**kwargs):
     template=Template(resources=[Bucket(**kwargs)])    
     if "action" in kwargs:
-        synth_action(template=template,
-                     permission=BucketActionPermission,
-                     **kwargs)
+        template.resources.append(BucketActionPermission(**kwargs))
     return template
 
 if __name__=="__main__":

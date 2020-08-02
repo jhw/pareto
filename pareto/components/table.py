@@ -1,7 +1,5 @@
 from pareto.components import *
 
-from pareto.components.action import *
-
 DDBTypes=yaml.load("""
 string: S
 int: N
@@ -72,9 +70,7 @@ def TableActionMapping(**kwargs):
 def synth_table(**kwargs):
     template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:
-        synth_action(template=template,
-                     mapping=TableActionMapping,
-                     **kwargs)
+        template.resources.append(TableActionMapping(**kwargs))
     return template
 
 if __name__=="__main__":

@@ -1,7 +1,5 @@
 from pareto.components import *
 
-from pareto.components.action import *
-
 from pareto.components.bucket import BucketActionPermission
 
 @resource()
@@ -53,9 +51,7 @@ def synth_website(**kwargs):
                                  WebsitePolicy(**kwargs)],
                       outputs=[WebsiteUrl(**kwargs)])
     if "action" in kwargs:
-        synth_action(template=template,
-                     permission=BucketActionPermission,
-                     **kwargs)
+        template.resources.append(BucketActionPermission(**kwargs))
     return template
 
 if __name__=="__main__":

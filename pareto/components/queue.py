@@ -1,6 +1,5 @@
 from pareto.components import *
 
-from pareto.components.action import *
 
 EventMappingPermissions=yaml.load("""
 - sqs:ReceiveMessage
@@ -26,9 +25,7 @@ def QueueActionMapping(batch=1, **kwargs):
 def synth_queue(**kwargs):
     template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:
-        synth_action(template=template,
-                     mapping=QueueActionMapping,
-                     **kwargs)
+        template.resources.append(QueueActionMapping(**kwargs))
     return template
 
 if __name__=="__main__":
