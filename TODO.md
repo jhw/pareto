@@ -1,12 +1,10 @@
 ### short [layout]
 
-- env to synth actions where they exist
-
-- Export arns from actions template
-- Change triggers so they reference action arns defined as parameters rather than internal action arns
-- New layer at env level which passes Params to nested templates 
-- Add back dashboards in separate template
-- add back ref checking
+- add back dashboards
+- all actions to export function arn
+- all trigger to have option of using parameter- based action arns
+- env layer to wire up parameters across nested templates
+- env to experiment with different layouts
 
 ### medium
 
@@ -14,18 +12,17 @@
 - add back api gateway resources, logging
 - ensure all components have action (=> website)
 - investigate adding region and account id to hardcoded event sources
-- cognito [notes]
-- push index.json as part of deployment
+- amplify / auth / cognito
 - dsl json schema
-- cloudwatch alerts
 - apigw request validation
 - scaffold generator
+- targets [notes]
 
 ### v1.1
 
+- cloudwatch alerts
 - apigateway2
 - eventbridge
-- targets [notes]
 - extended cognito
 - ci pipeline
 - github actions
@@ -36,6 +33,8 @@
 
 ### thoughts
 
+- push index.json as part of deployment ?
+  - no; remember amplify has separate push, publish actions
 - specific iam permissions for layer build ?
   - simply not worth it
 - support for layer arns ?
@@ -155,6 +154,7 @@
   
 ### done
 
+- env to synth actions where they exist
 - refactor synth_action so creates a template
 - restrict triggers to adding non- action related components
 - remove dashboard stuff

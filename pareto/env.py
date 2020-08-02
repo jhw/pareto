@@ -1,5 +1,6 @@
 from pareto.components import *
 
+from pareto.components.action import synth_action
 from pareto.components.api import synth_api
 from pareto.components.bucket import synth_bucket
 from pareto.components.queue import synth_queue
@@ -9,7 +10,17 @@ from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
 from pareto.components.website import synth_website
 
-def add_component_groups(config, templates):
+"""
+- `add_nested_templates` is super- opinionated about layouts
+- bundles triggers, actions and related permissions/mappings under same nested templates so each can be indepedent / minimal parameter requiring required
+- also makes use of template.dashboard which may be an over- optimisation
+- but is not the only way to do it - could have triggers, actions and dashes in different stacks
+- really all actions should export arns, just in case
+- and triggers should be created with option of using parameter- based arns, in case you want to mess with the layout
+- then could maybe experiment with different layouts at env level
+"""
+
+def add_nested_templates(config, templates):
     def template_name(config, key):
         return "%s-%s-%s" % (config["globals"]["app"],
                              key,
@@ -22,6 +33,8 @@ def add_component_groups(config, templates):
             fn=eval("synth_%s" % key[:-1])                
             component=fn(**kwargs)
             template.update(component)
+            if "action" in kwargs:
+                template.update(synth_action(**kwargs))
         return template.render()
     for key, group in config["components"].items():
         name=template_name(config, key)
@@ -44,7 +57,7 @@ def add_master(config, templates):
         
 def synth_env(config):
     templates={}
-    add_component_groups(config, templates)
+    add_nested_templates(config, templates)
     add_master(config, templates)
     return templates
 
