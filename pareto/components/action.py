@@ -100,13 +100,18 @@ def ActionRole(**kwargs):
     props["Policies"]=[policy(kwargs["action"])]
     return "AWS::IAM::Role", props
 
+@output(suffix="action-arn")
+def ActionArn(**kwargs):
+    return fn_getatt("%s-action" % kwargs["name"], "Arn")
+
 def synth_action(**kwargs):
     template=Template(resources=[ActionFunction(**kwargs),
                                  ActionRole(**kwargs),
                                  ActionDeadLetterQueue(**kwargs),
                                  ActionVersion(**kwargs),
                                  ActionEventConfig(**kwargs)],
-                      dashboard=[ActionCharts(**kwargs)])
+                      dashboard=[ActionCharts(**kwargs)],
+                      outputs=[ActionArn(**kwargs)])
     if "layer" in kwargs["staging"]:
         template.resources+=[ActionLayer(package, **kwargs)
                              for package in kwargs["staging"]["layer"]]

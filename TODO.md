@@ -1,6 +1,8 @@
 ### short [layout]
 
-- all actions to export function arn
+- all triggers to export arn
+- try replacing direct arns with string references
+
 - all trigger to have option of using parameter- based action arns
 - env layer to wire up parameters across nested templates
 - env to experiment with different layouts
@@ -153,6 +155,7 @@
   
 ### done
 
+- all actions to export function arn
 - add back dashboards
 - env to synth actions where they exist
 - refactor synth_action so creates a template
