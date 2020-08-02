@@ -105,12 +105,11 @@ def synth_action(**kwargs):
                                  ActionRole(**kwargs),
                                  ActionDeadLetterQueue(**kwargs),
                                  ActionVersion(**kwargs),
-                                 ActionEventConfig(**kwargs)])
-    if ("action" in kwargs and
-        "layer" in kwargs["staging"]):
+                                 ActionEventConfig(**kwargs)],
+                      dashboard=[ActionCharts(**kwargs)])
+    if "layer" in kwargs["staging"]:
         template.resources+=[ActionLayer(package, **kwargs)
                              for package in kwargs["staging"]["layer"]]
-    # template.dashboard+=[ActionCharts(**kwargs)]
     return template
 
 if __name__=="__main__":

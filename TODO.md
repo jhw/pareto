@@ -1,6 +1,5 @@
 ### short [layout]
 
-- add back dashboards
 - all actions to export function arn
 - all trigger to have option of using parameter- based action arns
 - env layer to wire up parameters across nested templates
@@ -154,6 +153,7 @@
   
 ### done
 
+- add back dashboards
 - env to synth actions where they exist
 - refactor synth_action so creates a template
 - restrict triggers to adding non- action related components
