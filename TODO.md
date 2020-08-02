@@ -1,6 +1,5 @@
 ### short [layout]
 
-- refactor synth_action so creates a template
 - env to synth actions where they exist
 
 - Export arns from actions template
@@ -156,6 +155,7 @@
   
 ### done
 
+- refactor synth_action so creates a template
 - restrict triggers to adding non- action related components
 - remove dashboard stuff
 - reduce default lambda size
