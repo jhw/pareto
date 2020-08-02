@@ -20,9 +20,14 @@ def EventActionPermission(**kwargs):
            "SourceArn": eventsource}
     return "AWS::Lambda::Permission", props
 
+@output(suffix="arn")
+def EventArn(**kwargs):
+    return fn_getatt(kwargs["name"], "Arn")
+    
 def synth_timer(**kwargs):
     return Template(resources=[EventRule(**kwargs),
-                               EventActionPermission(**kwargs)])
+                               EventActionPermission(**kwargs)],
+                    outputs=[EventArn(**kwargs)])
 
 if __name__=="__main__":
     pass

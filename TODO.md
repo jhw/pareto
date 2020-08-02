@@ -1,14 +1,17 @@
 ### short [layout]
 
-- all triggers to export arn
+- bucket/website arns
+- api arns
 - try replacing direct arns with string references
-
-- all trigger to have option of using parameter- based action arns
-- env layer to wire up parameters across nested templates
-- env to experiment with different layouts
+  - or do u need parameters
 
 ### medium
 
+- auth layout
+- referencing cognito pool from api gateway
+  - string reference or parameter ?
+
+- arn string validator
 - replace api gateway stage name (currently == stage name) with action name
 - add back api gateway resources, logging
 - ensure all components have action (=> website)
@@ -34,6 +37,11 @@
 
 ### thoughts
 
+- all triggers to have option of using parameter- based action arns ?
+  - not if string based arns work fine 
+- cloudwatch alerts in v1.1 ?
+  - no because probably sufficient to connect dead letter queue to lambda which then pushes to slack or discord webhook
+  - alerts are really for when you want to look at aggregate performance of cloudwatch logs rather than one particular individual error
 - push index.json as part of deployment ?
   - no; remember amplify has separate push, publish actions
 - specific iam permissions for layer build ?
@@ -155,6 +163,7 @@
   
 ### done
 
+- all triggers to export arn
 - all actions to export function arn
 - add back dashboards
 - env to synth actions where they exist
