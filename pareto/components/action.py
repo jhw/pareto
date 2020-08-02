@@ -117,7 +117,7 @@ def synth_action(template,
         "layer" in kwargs["staging"]):
         template.resources+=[ActionLayer(package, **kwargs)
                              for package in kwargs["staging"]["layer"]]
-    template.dashboard+=[ActionCharts(**kwargs)]
+    # template.dashboard+=[ActionCharts(**kwargs)]
 
 if __name__=="__main__":
     pass
