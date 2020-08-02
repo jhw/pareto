@@ -29,8 +29,13 @@ def BucketActionPermission(**kwargs):
            "Principal": "s3.amazonaws.com"}
     return "AWS::Lambda::Permission", props
 
+@output(suffix="arn")
+def BucketArn(**kwargs):
+    return fn_getatt(kwargs["name"], "Arn")
+
 def synth_bucket(**kwargs):
-    template=Template(resources=[Bucket(**kwargs)])    
+    template=Template(resources=[Bucket(**kwargs)],
+                      outputs=[BucketArn(**kwargs)])
     if "action" in kwargs:
         template.resources.append(BucketActionPermission(**kwargs))
     return template

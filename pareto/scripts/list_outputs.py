@@ -31,9 +31,12 @@ if __name__=="__main__":
         """
         outputs=sorted(fetch_outputs(stackname),
                        key=lambda x: x["OutputKey"])
+        def format_string(text, n=32):
+            return text+"".join([' '
+                                 for i in range(n-len(text))]) if len(text) < n else text[:n]            
         for output in outputs:
-            print ("%s\t\t%s" % (output["OutputKey"],
-                                 output["OutputValue"]))
+            print ("%s\t%s" % (format_string(output["OutputKey"]),
+                              output["OutputValue"]))
     except ClientError as error:
         print (error)
     except RuntimeError as error:

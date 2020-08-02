@@ -1,9 +1,9 @@
 ### short [layout]
 
-- bucket/website arns
-- api arns
+- simpify creation of api, bucket string arns
 - try replacing direct arns with string references
-  - or do u need parameters
+  - or do u need parameters ?
+- investigate adding region and account id to hardcoded event sources
 
 ### medium
 
@@ -15,8 +15,6 @@
 - replace api gateway stage name (currently == stage name) with action name
 - add back api gateway resources, logging
 - ensure all components have action (=> website)
-- investigate adding region and account id to hardcoded event sources
-- amplify / auth / cognito
 - dsl json schema
 - apigw request validation
 - scaffold generator
@@ -163,6 +161,8 @@
   
 ### done
 
+- api arns
+- bucket/website arns
 - all triggers to export arn
 - all actions to export function arn
 - add back dashboards
