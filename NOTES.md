@@ -1,3 +1,16 @@
+### first class actions 2/8/20
+
+- actions should be first class components
+- then trigger can use reference to them
+- in fact two triggers could then reference the same action
+- means dashboards should probably be separate template, so remove them for the time being
+- don't need to export non-action arns
+- but triggers will need action arn parameters
+- if a trigger has an action then it adds the permission/mapping to go with that arn
+- as temporary measure, import any function arns defined as parameters from the actions template
+- as a more complex step could have a template factory which produces templates sized within the constraints
+- then need a more complex parameter assignment layer
+
 ### layout 31/7/20
 
 - think have over- optimised the layout

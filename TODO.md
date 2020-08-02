@@ -1,17 +1,11 @@
-### short [layout]
+### short
 
-- simpify creation of api, bucket string arns
-- try replacing direct arns with string references
-  - or do u need parameters ?
-- investigate adding region and account id to hardcoded event sources
+- first class actions [notes]
 
 ### medium
 
-- auth layout
-- referencing cognito pool from api gateway
-  - string reference or parameter ?
-
-- arn string validator
+- investigate adding region and account id to hardcoded event sources
+- auth
 - replace api gateway stage name (currently == stage name) with action name
 - add back api gateway resources, logging
 - ensure all components have action (=> website)
