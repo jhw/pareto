@@ -9,14 +9,14 @@ DefaultPermissions=yaml.load("""
 - sqs:SendMessage # dead letter queue
 """, Loader=yaml.FullLoader)
 
-@resource(suffix="action")
+@resource()
 def ActionFunction(concurrency=None,
                    handler="index.handler",
                    memory=128,
                    timeout=30,
                    **kwargs):
-    dlqarn=fn_getatt("%s-action-dead-letter-queue" % kwargs["name"], "Arn")
-    rolearn=fn_getatt("%s-action-role" % kwargs["name"], "Arn")
+    dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
+    rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
     props={"Code": {"S3Bucket": kwargs["staging"]["lambda"]["bucket"],
                     "S3Key": kwargs["staging"]["lambda"]["key"]},
            "FunctionName": resource_name(kwargs),
@@ -40,14 +40,14 @@ def ActionDeadLetterQueue(**kwargs):
 
 @resource(suffix="action-version")
 def ActionVersion(**kwargs):
-    props={"FunctionName": ref("%s-action" % kwargs["name"])}
+    props={"FunctionName": ref(kwargs["name"])}
     return "AWS::Lambda::Version", props
 
 @resource(suffix="action-event-config")
 def ActionEventConfig(retries=0,
                         **kwargs):
-    qualifier=fn_getatt("%s-action-version" % kwargs["name"], "Version")
-    props={"FunctionName": ref("%s-action" % kwargs["name"]),
+    qualifier=fn_getatt("%s-version" % kwargs["name"], "Version")
+    props={"FunctionName": ref(kwargs["name"]),
            "Qualifier": qualifier,
            "MaximumRetryAttempts": retries}
     return "AWS::Lambda::EventInvokeConfig", props
@@ -102,7 +102,7 @@ def ActionRole(**kwargs):
 
 @output(suffix="action-arn")
 def ActionArn(**kwargs):
-    return fn_getatt("%s-action" % kwargs["name"], "Arn")
+    return fn_getatt(kwargs["name"], "Arn")
 
 def synth_action(**kwargs):
     template=Template(resources=[ActionFunction(**kwargs),

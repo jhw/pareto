@@ -1,7 +1,14 @@
 ### short
 
-- remove -action suffix
-- extend action names in dsl
+- remove api arn exports
+
+- check below [api]
+
+```
+fn_getatt(kwargs["action"], "Arn")
+```
+
+- should actions have a dedicated suffix to make things easier ? harder ?
 
 - investigate why funcarn defined twice in bucket but only once in website
 - add back ref checking
@@ -169,6 +176,8 @@
   
 ### done
 
+- remove -action suffix
+- extend action names in dsl
 - fix -action-arn 
 - parameter to be conditional and created of kwargs["action"] not kwargs["name"]
 - replace trigger action arns with parameter refs

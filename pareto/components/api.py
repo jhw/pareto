@@ -32,7 +32,7 @@ def ApiGwStage(**kwargs):
 @resource(suffix="api-gw-method")
 def ApiGwMethod(**kwargs):
     arnpattern="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
-    lambdaarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    lambdaarn=fn_getatt(kwargs["action"], "Arn")
     uriparams={"lambda_arn": lambdaarn}
     uri=fn_sub(arnpattern % kwargs["region"],
                uriparams)
@@ -59,7 +59,7 @@ def ApiGwActionPermission(**kwargs):
     eventsource=fn_sub(arnpattern % (kwargs["region"],
                                      kwargs["method"]),
                        eventparams)
-    funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    funcarn=fn_getatt(kwargs["action"], "Arn")
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": funcarn,
            "Principal": "apigateway.amazonaws.com",

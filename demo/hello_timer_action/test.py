@@ -3,7 +3,7 @@ import unittest
 class IndexTest(unittest.TestCase):
 
     def test_handler(self):
-        from hello_timer.index import handler
+        from hello_timer_action.index import handler
         resp=handler({"hello": "world"}, None)
         self.assertTrue("hello" in resp)
 

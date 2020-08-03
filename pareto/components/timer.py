@@ -4,7 +4,7 @@ from pareto.components import *
 def EventRule(**kwargs):
     action={"Id": resource_name(kwargs),
             "Input": json.dumps(kwargs["payload"]),
-            "Arn": fn_getatt("%s-action" % kwargs["name"], "Arn")}
+            "Arn": fn_getatt(kwargs["action"], "Arn")}
     expr="rate(%s)" % kwargs["rate"]
     props={"ScheduleExpression": expr,
            "Targets": [action]}

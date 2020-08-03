@@ -9,46 +9,46 @@ components:
     - name: foo
       value: bar
   actions:
-    - name: hello-get
+    - name: hello-get-action
       layers:
         - name: lxml
-    - name: hello-post
+    - name: hello-post-action
       layers:
         - name: pymorphy2
           version: "0.8"
-    - name: hello-bucket
+    - name: hello-bucket-action
       permissions:
         - translate:TranslateText
-    - name: hello-table
+    - name: hello-table-action
       permissions:
         - polly:SynthesizeSpeech
-    - name: hello-timer
+    - name: hello-timer-action
   apis:
     - name: hello-get
       method: GET
-      action: hello-get
+      action: hello-get-action
     - name: hello-post
       method: POST
-      action: hello-post
+      action: hello-post-action
   buckets:
     - name: hello-bucket
-      action: hello-bucket
+      action: hello-bucket-action
   websites:
     - name: hello-website
   queues:
     - name: hello-queue
       batch: 1
-      action: hello-queue
+      action: hello-queue-action
   tables:
     - name: hello-table
       fields:
         - name: my-hash
           type: string
           primary: true
-      action: hello-table
+      action: hello-table-action
   timers:
     - name: hello-timer
       rate: "1 hour"
       payload:
         hello: world
-      action: hello-timer
+      action: hello-timer-action
