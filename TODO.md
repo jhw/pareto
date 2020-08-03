@@ -1,6 +1,5 @@
 ### short
 
-- remove env addition of actions
 - move actions as first class citizen in dsl and add trigger refs to actions
 - check parameter support
 - replace trigger action arns with parameter refs
@@ -166,6 +165,7 @@
   
 ### done
 
+- remove env addition of actions
 - comment out dash, ref checking
 - remove trigger arn outputs
 - api arns

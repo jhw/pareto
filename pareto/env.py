@@ -33,8 +33,6 @@ def add_nested_templates(config, templates):
             fn=eval("synth_%s" % key[:-1])                
             component=fn(**kwargs)
             template.update(component)
-            if "action" in kwargs:
-                template.update(synth_action(**kwargs))
         return template.render()
     for key, group in config["components"].items():
         name=template_name(config, key)
