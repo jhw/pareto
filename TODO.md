@@ -1,6 +1,6 @@
 ### short
 
-- parameter to be conditional and created of kwargs["action"] not kwargs["name"]
+- fix -action-arn refs
 - investigate why funcarn defined twice in bucket but only once in website
 - add back ref checking
 
@@ -167,6 +167,7 @@
   
 ### done
 
+- parameter to be conditional and created of kwargs["action"] not kwargs["name"]
 - replace trigger action arns with parameter refs
 - check parameter support
 - test generation

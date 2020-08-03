@@ -69,9 +69,9 @@ def TableActionMapping(**kwargs):
 
 @event_mapping_permissions(EventMappingPermissions)
 def synth_table(**kwargs):
-    template=Template(parameters=[parameter("%s-action-arn" % kwargs["name"])],
-                      resources=[Table(**kwargs)])
+    template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:
+        template.parameters.append(parameter("%s-arn" % kwargs["action"]))
         template.resources.append(TableActionMapping(**kwargs))
     return template
 

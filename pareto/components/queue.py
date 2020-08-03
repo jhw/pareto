@@ -23,9 +23,9 @@ def QueueActionMapping(batch=1, **kwargs):
 
 @event_mapping_permissions(EventMappingPermissions)
 def synth_queue(**kwargs):
-    template=Template(parameters=[parameter("%s-action-arn" % kwargs["name"])],
-                      resources=[Queue(**kwargs)])
+    template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:
+        template.parameters.append(parameter("%s-arn" % kwargs["action"]))
         template.resources.append(QueueActionMapping(**kwargs))
     return template
 
