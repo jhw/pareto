@@ -13,7 +13,8 @@ def Queue(**kwargs):
 
 @resource(suffix="action-mapping")
 def QueueActionMapping(batch=1, **kwargs):
-    funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    # funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    funcarn=ref("%s-action-arn" % kwargs["name"])
     eventsource=fn_getatt(kwargs["name"], "Arn")
     props={"FunctionName": funcarn,
            "EventSourceArn": eventsource,
@@ -22,7 +23,8 @@ def QueueActionMapping(batch=1, **kwargs):
 
 @event_mapping_permissions(EventMappingPermissions)
 def synth_queue(**kwargs):
-    template=Template(resources=[Queue(**kwargs)])
+    template=Template(parameters=[parameter("%s-action-arn" % kwargs["name"])],
+                      resources=[Queue(**kwargs)])
     if "action" in kwargs:
         template.resources.append(QueueActionMapping(**kwargs))
     return template

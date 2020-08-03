@@ -1,10 +1,12 @@
 ### short
 
-- check parameter support
-- replace trigger action arns with parameter refs
+- parameter to be conditional and created of kwargs["action"] not kwargs["name"]
+- investigate why funcarn defined twice in bucket but only once in website
+- add back ref checking
+
 - env to add nested params to template if params exist
 - remove -action suffix from params / rename demo.yaml action names
-- add back dash (new template), ref checking
+- add back dash (new template)
 - validate action refs
 
 ### medium
@@ -165,6 +167,8 @@
   
 ### done
 
+- replace trigger action arns with parameter refs
+- check parameter support
 - test generation
 - move actions as first class citizen in dsl and add trigger refs to actions
 - remove env addition of actions

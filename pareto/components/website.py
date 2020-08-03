@@ -14,7 +14,8 @@ def Website(event={"type":  "s3:ObjectCreated:*"},
                 "CorsConfiguration": corsconfig,
                 "WebsiteConfiguration": websiteconfig}
     def lambda_config(kwargs, event):
-        funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+        # funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+        funcarn=ref("%s-action-arn" % kwargs["name"])
         rules=[{"Name": "prefix",
                 "Value": kwargs["path"]}]
         return {"Event": event["type"],
@@ -47,7 +48,8 @@ def WebsitePolicy(**kwargs):
     return "AWS::S3::BucketPolicy", props
 
 def synth_website(**kwargs):
-    template=Template(resources=[Website(**kwargs),
+    template=Template(parameters=[parameter("%s-action-arn" % kwargs["name"])],
+                      resources=[Website(**kwargs),
                                  WebsitePolicy(**kwargs)],
                       outputs=[WebsiteUrl(**kwargs)])
     if "action" in kwargs:

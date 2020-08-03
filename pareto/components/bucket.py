@@ -4,7 +4,8 @@ from pareto.components import *
 def Bucket(event={"type":  "s3:ObjectCreated:*"},
            **kwargs):
     def lambda_config(kwargs, event):
-        funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+        # funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+        funcarn=ref("%s-action-arn" % kwargs["name"])
         return {"Event": event["type"],
                 "Function": funcarn}
     props={"BucketName": resource_name(kwargs)}
@@ -21,7 +22,8 @@ def BucketActionPermission(**kwargs):
         - NB also recommends using SourceAccount as account not included in S3 arn format
         """
     eventsource="arn:aws:s3:::%s" % resource_name(kwargs)
-    funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    # funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
+    funcarn=ref("%s-action-arn" % kwargs["name"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": funcarn,
            "SourceAccount": fn_sub("${AWS::AccountId}"),
@@ -30,7 +32,8 @@ def BucketActionPermission(**kwargs):
     return "AWS::Lambda::Permission", props
 
 def synth_bucket(**kwargs):
-    template=Template(resources=[Bucket(**kwargs)])
+    template=Template(parameters=[parameter("%s-action-arn" % kwargs["name"])],
+                      resources=[Bucket(**kwargs)])
     if "action" in kwargs:
         template.resources.append(BucketActionPermission(**kwargs))
     return template
