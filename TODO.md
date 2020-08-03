@@ -1,22 +1,17 @@
 ### short
 
-- check below [api]
-
-```
-fn_getatt(kwargs["action"], "Arn")
-```
-
+- api still using internal function arns
 
 - investigate why funcarn defined twice in bucket but only once in website
 - add back ref checking
 
 - env to add nested params to template if params exist
-- remove -action suffix from params / rename demo.yaml action names
 - add back dash (new template)
-- validate action refs
+
 
 ### medium
 
+- validate action references in dsl
 - check "actions" before iterating over config["components"]["actions"]
 - extend parameter management to lookup exports from each template
 - action to have permission to call another action
