@@ -20,14 +20,9 @@ def QueueActionMapping(batch=1, **kwargs):
            "BatchSize": batch}
     return "AWS::Lambda::EventSourceMapping", props
 
-@output(suffix="arn")
-def QueueArn(**kwargs):
-    return fn_getatt(kwargs["name"], "Arn")
-
 @event_mapping_permissions(EventMappingPermissions)
 def synth_queue(**kwargs):
-    template=Template(resources=[Queue(**kwargs)],
-                      outputs=[QueueArn(**kwargs)])
+    template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:
         template.resources.append(QueueActionMapping(**kwargs))
     return template

@@ -1,6 +1,6 @@
 from pareto.components import *
 
-from pareto.components.bucket import BucketArn, BucketActionPermission
+from pareto.components.bucket import BucketActionPermission
 
 @resource()
 def Website(event={"type":  "s3:ObjectCreated:*"},
@@ -49,8 +49,7 @@ def WebsitePolicy(**kwargs):
 def synth_website(**kwargs):
     template=Template(resources=[Website(**kwargs),
                                  WebsitePolicy(**kwargs)],
-                      outputs=[WebsiteUrl(**kwargs),
-                               BucketArn(**kwargs)])
+                      outputs=[WebsiteUrl(**kwargs)])
     if "action" in kwargs:
         template.resources.append(BucketActionPermission(**kwargs))
     return template

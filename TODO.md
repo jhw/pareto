@@ -1,7 +1,5 @@
 ### short
 
-- comment out dash, ref checking
-- remove trigger arn outputs
 - remove env addition of actions
 - move actions as first class citizen in dsl and add trigger refs to actions
 - check parameter support
@@ -168,6 +166,8 @@
   
 ### done
 
+- comment out dash, ref checking
+- remove trigger arn outputs
 - api arns
 - bucket/website arns
 - all triggers to export arn

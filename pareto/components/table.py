@@ -66,16 +66,11 @@ def TableActionMapping(**kwargs):
            "StartingPosition": "LATEST"}
     return "AWS::Lambda::EventSourceMapping", props
 
-@output(suffix="stream-arn")
-def TableStreamArn(**kwargs):
-    return fn_getatt(kwargs["name"], "StreamArn")
-
 @event_mapping_permissions(EventMappingPermissions)
 def synth_table(**kwargs):
     template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:
         template.resources.append(TableActionMapping(**kwargs))
-        template.outputs.append(TableStreamArn(**kwargs))
     return template
 
 if __name__=="__main__":
