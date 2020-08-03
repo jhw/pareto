@@ -1,14 +1,27 @@
 ### short
 
-- first class actions [notes]
+- comment out dash, ref checking
+- remove trigger arn outputs
+- remove env addition of actions
+- move actions as first class citizen in dsl and add trigger refs to actions
+- check parameter support
+- replace trigger action arns with parameter refs
+- env to add nested params to template if params exist
+- add back dash (new template), ref checking
+- validate action refs
 
 ### medium
 
+- extend parameter management to lookup exports from each template
+- action to have permission to call another action
+- simplify api gateway arn construction
 - investigate adding region and account id to hardcoded event sources
-- auth
 - replace api gateway stage name (currently == stage name) with action name
 - add back api gateway resources, logging
 - ensure all components have action (=> website)
+
+- auth
+- template factory
 - dsl json schema
 - apigw request validation
 - scaffold generator
