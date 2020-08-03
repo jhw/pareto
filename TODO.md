@@ -8,7 +8,6 @@
 - env to add nested params to template if params exist
 - add back dash (new template)
 
-
 ### medium
 
 - validate action references in dsl
@@ -171,6 +170,7 @@
   
 ### done
 
+- timer has bad internal refs
 - remove api-gw suffix
 - action arn outputs are mis- specified
 - remove api arn exports

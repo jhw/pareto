@@ -4,7 +4,7 @@ from pareto.components import *
 def EventRule(**kwargs):
     action={"Id": resource_name(kwargs),
             "Input": json.dumps(kwargs["payload"]),
-            "Arn": fn_getatt(kwargs["action"], "Arn")}
+            "Arn": ref("%s-arn" % kwargs["action"])}
     expr="rate(%s)" % kwargs["rate"]
     props={"ScheduleExpression": expr,
            "Targets": [action]}
@@ -12,12 +12,12 @@ def EventRule(**kwargs):
 
 @resource(suffix="permission")
 def EventPermission(**kwargs):
-    eventsource=fn_getatt(kwargs["name"], "Arn")
+    source=fn_getatt(kwargs["name"], "Arn")
     funcarn=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": funcarn,
            "Principal": "events.amazonaws.com",
-           "SourceArn": eventsource}
+           "SourceArn": source}
     return "AWS::Lambda::Permission", props
 
 def synth_timer(**kwargs):
