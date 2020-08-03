@@ -1,9 +1,9 @@
 ### short
 
-- move actions as first class citizen in dsl and add trigger refs to actions
 - check parameter support
 - replace trigger action arns with parameter refs
 - env to add nested params to template if params exist
+- remove -action suffix from params / rename demo.yaml action names
 - add back dash (new template), ref checking
 - validate action refs
 
@@ -165,6 +165,8 @@
   
 ### done
 
+- test generation
+- move actions as first class citizen in dsl and add trigger refs to actions
 - remove env addition of actions
 - comment out dash, ref checking
 - remove trigger arn outputs

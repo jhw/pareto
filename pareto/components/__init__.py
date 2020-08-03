@@ -79,9 +79,8 @@ def output(suffix=None):
 def event_mapping_permissions(permissions):
     def decorator(fn):
         def wrapped(**kwargs):
-            if "action" in kwargs:
-                kwargs["action"].setdefault("permissions", [])
-                kwargs["action"]["permissions"]+=permissions
+            kwargs.setdefault("permissions", [])
+            kwargs["permissions"]+=permissions
             return fn(**kwargs)
         return wrapped
     return decorator

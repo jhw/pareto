@@ -1,3 +1,4 @@
+---
 globals:
   app: pareto-demo
   src: demo
@@ -5,43 +6,49 @@ globals:
   runtime: "3.7"
 components:
   secrets:
-  - name: foo
-    value: bar
-  timers:
-  - name: hello-timer
-    rate: "1 hour"
-    payload:
-      hello: world
-    action: {}
+    - name: foo
+      value: bar
+  actions:
+    - name: hello-get
+      layers:
+        - name: lxml
+    - name: hello-post
+      layers:
+        - name: pymorphy2
+          version: "0.8"
+    - name: hello-bucket
+      permissions:
+        - translate:TranslateText
+    - name: hello-table
+      permissions:
+        - polly:SynthesizeSpeech
+    - name: hello-timer
   apis:
-  - name: hello-get
-    method: GET
-    action:
-      layers:
-      - name: lxml
-  - name: hello-post
-    method: POST
-    action:
-      layers:
-      - name: pymorphy2
-        version: "0.8"
+    - name: hello-get
+      method: GET
+      action: hello-get
+    - name: hello-post
+      method: POST
+      action: hello-post
   buckets:
-  - name: hello-bucket
-    action:
-      permissions:
-      - translate:TranslateText
-  websites:  
-  - name: hello-website
-  tables:
-  - name: hello-table
-    fields:
-    - name: my-hash
-      type: string
-      primary: true
-    action:
-      permissions:
-      - polly:SynthesizeSpeech
+    - name: hello-bucket
+      action: hello-bucket
+  websites:
+    - name: hello-website
   queues:
-  - name: hello-queue
-    batch: 1
-    action: {}
+    - name: hello-queue
+      batch: 1
+      action: hello-queue
+  tables:
+    - name: hello-table
+      fields:
+        - name: my-hash
+          type: string
+          primary: true
+      action: hello-table
+  timers:
+    - name: hello-timer
+      rate: "1 hour"
+      payload:
+        hello: world
+      action: hello-timer

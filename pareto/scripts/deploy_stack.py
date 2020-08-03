@@ -26,10 +26,10 @@ def add_lambda_staging(config):
     def add_staging(component, commits):
         groups, latest = commits.grouped, commits.latest
         staging={"bucket": config["globals"]["bucket"]}
-        if "commit" in component["action"]: 
-            if component["action"]["commit"] not in groups[component["name"]]:
-                raise RuntimeError("commit %s not found for %s" % (component["action"]["commit"], component["name"]))
-            staging["key"]=str(groups[component["name"]][component["action"]["commit"]])
+        if "commit" in component: 
+            if component["commit"] not in groups[component["name"]]:
+                raise RuntimeError("commit %s not found for %s" % (component["commit"], component["name"]))
+            staging["key"]=str(groups[component["name"]][component["commit"]])
         else:
             if component["name"] not in latest:
                 raise RuntimeError("no deployables found for %s" % component["name"])
@@ -37,14 +37,14 @@ def add_lambda_staging(config):
         component.setdefault("staging", {})
         component["staging"]["lambda"]=staging    
     commits=LambdaCommits(config=config, s3=S3)
-    for component in filter_functions(config["components"]):
+    for component in config["components"]["actions"]:
        add_staging(component, commits)
 
 def add_layer_staging(config):
     logging.info("adding layer staging")
     def filter_staged(config, component, packages):
         staged=[]
-        for layerkwargs in component["action"]["layers"]:
+        for layerkwargs in component["layers"]:
             package=LayerPackage.create(config, **layerkwargs)
             if not packages.exists(package):
                 raise RuntimeError("%s does not exist" % package)
@@ -57,8 +57,8 @@ def add_layer_staging(config):
         if len(names)!=len(unames):
             raise RuntimeError("%s has multiple versions of the same package" % component["name"])
     packages=LayerPackages(config=config, s3=S3)
-    for component in filter_functions(config["components"]):
-        if "layers" not in component["action"]:
+    for component in config["components"]["actions"]:
+        if "layers" not in component:
             continue
         staged=filter_staged(config, component, packages)
         assert_unique_versions(component, staged)
