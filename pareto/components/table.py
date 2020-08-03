@@ -57,8 +57,8 @@ def Table(stream={"type": "NEW_IMAGE"},
         props["StreamSpecification"]={"StreamViewType": stream["type"]}
     return "AWS::DynamoDB::Table", props
 
-@resource(suffix="action-mapping")
-def TableActionMapping(**kwargs):
+@resource(suffix="mapping")
+def TableMapping(**kwargs):
     funcarn=ref("%s-arn" % kwargs["action"])
     eventsource=fn_getatt(kwargs["name"], "StreamArn")
     props={"FunctionName": funcarn,
@@ -71,7 +71,7 @@ def synth_table(**kwargs):
     template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:
         template.parameters.append(parameter("%s-arn" % kwargs["action"]))
-        template.resources.append(TableActionMapping(**kwargs))
+        template.resources.append(TableMapping(**kwargs))
     return template
 
 if __name__=="__main__":

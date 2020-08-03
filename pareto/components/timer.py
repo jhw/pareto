@@ -10,8 +10,8 @@ def EventRule(**kwargs):
            "Targets": [action]}
     return "AWS::Events::Rule", props
 
-@resource(suffix="action-permission")
-def EventActionPermission(**kwargs):
+@resource(suffix="permission")
+def EventPermission(**kwargs):
     eventsource=fn_getatt(kwargs["name"], "Arn")
     funcarn=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
@@ -23,7 +23,7 @@ def EventActionPermission(**kwargs):
 def synth_timer(**kwargs):
     return Template(parameters=[parameter("%s-arn" % kwargs["action"])],
                     resources=[EventRule(**kwargs),
-                               EventActionPermission(**kwargs)])
+                               EventPermission(**kwargs)])
 
 if __name__=="__main__":
     pass

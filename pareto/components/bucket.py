@@ -13,8 +13,8 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
         props["NotificationConfiguration"]=notifications
     return "AWS::S3::Bucket", props
 
-@resource(suffix="action-permission")
-def BucketActionPermission(**kwargs):
+@resource(suffix="permission")
+def BucketPermission(**kwargs):
     """
         - https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
         - Fn::GetAtt Arn doesn't work for S3 lambda notifications :-(
@@ -33,7 +33,7 @@ def synth_bucket(**kwargs):
     template=Template(resources=[Bucket(**kwargs)])
     if "action" in kwargs:
         template.parameters.append(parameter("%s-arn" % kwargs["action"]))
-        template.resources.append(BucketActionPermission(**kwargs))
+        template.resources.append(BucketPermission(**kwargs))
     return template
 
 if __name__=="__main__":

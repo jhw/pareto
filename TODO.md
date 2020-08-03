@@ -1,6 +1,6 @@
 ### short
 
-- action arn outputs are mis- specified
+- remove api-gw suffix
 
 - check below [api]
 
@@ -178,6 +178,7 @@ fn_getatt(kwargs["action"], "Arn")
   
 ### done
 
+- action arn outputs are mis- specified
 - remove api arn exports
 - remove -action suffix
 - extend action names in dsl

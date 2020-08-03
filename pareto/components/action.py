@@ -34,16 +34,16 @@ def ActionFunction(concurrency=None,
         props["ReservedConcurrentExecutions"]=concurrency
     return "AWS::Lambda::Function", props
 
-@resource(suffix="action-dead-letter-queue")
+@resource(suffix="dead-letter-queue")
 def ActionDeadLetterQueue(**kwargs):
     return "AWS::SQS::Queue"
 
-@resource(suffix="action-version")
+@resource(suffix="version")
 def ActionVersion(**kwargs):
     props={"FunctionName": ref(kwargs["name"])}
     return "AWS::Lambda::Version", props
 
-@resource(suffix="action-event-config")
+@resource(suffix="event-config")
 def ActionEventConfig(retries=0,
                         **kwargs):
     qualifier=fn_getatt("%s-version" % kwargs["name"], "Version")
@@ -63,7 +63,7 @@ def ActionLayer(package, **kwargs):
         return "AWS::Lambda::LayerVersion", props
     return ActionLayer(package, **kwargs)
     
-@resource(suffix="action-role")
+@resource(suffix="role")
 def ActionRole(**kwargs):
     def assume_role_policy_doc():
         statement=[{"Action": "sts:AssumeRole",
@@ -100,7 +100,7 @@ def ActionRole(**kwargs):
     props["Policies"]=[policy(kwargs)]
     return "AWS::IAM::Role", props
 
-@output(suffix="action-arn")
+@output(suffix="arn")
 def ActionArn(**kwargs):
     return fn_getatt(kwargs["name"], "Arn")
 

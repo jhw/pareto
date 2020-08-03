@@ -50,7 +50,7 @@ def ApiGwMethod(**kwargs):
     return "AWS::ApiGateway::Method", props
 
 @resource(suffix="api-gw-permission")
-def ApiGwActionPermission(**kwargs):
+def ApiGwPermission(**kwargs):
     arnpattern="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
     restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
     stagename=ref("%s-api-gw-stage" % kwargs["name"])
@@ -81,7 +81,7 @@ def synth_api(**kwargs):
                                ApiGwDeployment(**kwargs),
                                ApiGwStage(**kwargs),
                                ApiGwMethod(**kwargs),
-                               ApiGwActionPermission(**kwargs)],
+                               ApiGwPermission(**kwargs)],
                     outputs=[ApiGwUrl(**kwargs)])
 
 if __name__=="__main__":

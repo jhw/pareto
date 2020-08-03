@@ -11,8 +11,8 @@ def Queue(**kwargs):
     props={"QueueName": resource_name(kwargs)}
     return "AWS::SQS::Queue", props
 
-@resource(suffix="action-mapping")
-def QueueActionMapping(batch=1, **kwargs):
+@resource(suffix="mapping")
+def QueueMapping(batch=1, **kwargs):
     funcarn=ref("%s-arn" % kwargs["action"])
     eventsource=fn_getatt(kwargs["name"], "Arn")
     props={"FunctionName": funcarn,
@@ -25,7 +25,7 @@ def synth_queue(**kwargs):
     template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:
         template.parameters.append(parameter("%s-arn" % kwargs["action"]))
-        template.resources.append(QueueActionMapping(**kwargs))
+        template.resources.append(QueueMapping(**kwargs))
     return template
 
 if __name__=="__main__":
