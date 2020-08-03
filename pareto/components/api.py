@@ -1,16 +1,8 @@
-"""
-- api-gw currently very bare bones and missing
-  - resource
-  - account + cw role
-- in order not to have too many api-gw resources and breach CF limit
-- see https://gist.github.com/jhw/fba6bed6637e784b735c57505d62bba8 for options
-"""
-
 from pareto.components import *
 
 @resource(suffix="api")
 def ApiGwApi(**kwargs):
-    props={"Name": random_name("api")} # note
+    props={"Name": random_name("api")} # NB
     return "AWS::ApiGateway::RestApi", props
 
 @resource(suffix="deployment")
@@ -32,7 +24,6 @@ def ApiGwStage(**kwargs):
 @resource(suffix="method")
 def ApiGwMethod(**kwargs):
     arnpattern="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
-    # funcarn=fn_getatt(kwargs["action"], "Arn")
     funcarn=ref("%s-arn" % kwargs["action"])
     uriparams={"lambda_arn": funcarn}
     uri=fn_sub(arnpattern % kwargs["region"],
@@ -60,7 +51,6 @@ def ApiGwPermission(**kwargs):
     source=fn_sub(arnpattern % (kwargs["region"],
                                      kwargs["method"]),
                        eventparams)
-    # funcarn=fn_getatt(kwargs["action"], "Arn")
     funcarn=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": funcarn,

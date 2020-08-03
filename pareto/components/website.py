@@ -15,11 +15,8 @@ def Website(event={"type":  "s3:ObjectCreated:*"},
                 "WebsiteConfiguration": websiteconfig}
     def lambda_config(kwargs, event):
         funcarn=ref("%s-arn" % kwargs["action"])
-        rules=[{"Name": "prefix",
-                "Value": kwargs["path"]}]
         return {"Event": event["type"],
-                "Function": funcarn,
-                "Filter": {"S3Key": {"Rules": rules}}}
+                "Function": funcarn}
     props={"BucketName": resource_name(kwargs)}
     props.update(website_config())
     if "action" in kwargs:

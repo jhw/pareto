@@ -1,7 +1,5 @@
 ### short
 
-- investigate why funcarn defined twice in bucket but only once in website
-
 - add back ref checking
 
 - env to add nested params to template if params exist
@@ -9,7 +7,8 @@
 
 ### medium
 
-- validate action references in dsl
+- consider adding back s3 event mapping prefixes
+- cross- validate action references in dsl
 - check "actions" before iterating over config["components"]["actions"]
 - extend parameter management to lookup exports from each template
 - action to have permission to call another action
@@ -41,6 +40,8 @@
 
 ### thoughts
 
+- investigate why funcarn defined twice in bucket but only once in website
+  - because website inherits BucketPermission
 - should actions have a dedicated suffix to make things easier ? harder ?
   - no
 - all triggers to have option of using parameter- based action arns ?
@@ -169,6 +170,7 @@
   
 ### done
 
+- simplify website lambda config
 - api still using internal function arns
 - timer has bad internal refs
 - remove api-gw suffix
