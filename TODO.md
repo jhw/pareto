@@ -1,12 +1,11 @@
 ### short
 
-- add back ref checking
-
 - env to add nested params to template if params exist
 - add back dash (new template)
 
 ### medium
 
+- confirm check_refs covers parameters, outputs etc
 - consider adding back s3 event mapping prefixes
 - cross- validate action references in dsl
 - check "actions" before iterating over config["components"]["actions"]
@@ -170,6 +169,7 @@
   
 ### done
 
+- add back ref checking
 - simplify website lambda config
 - api still using internal function arns
 - timer has bad internal refs
