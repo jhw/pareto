@@ -14,8 +14,7 @@ def Website(event={"type":  "s3:ObjectCreated:*"},
                 "CorsConfiguration": corsconfig,
                 "WebsiteConfiguration": websiteconfig}
     def lambda_config(kwargs, event):
-        # funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
-        funcarn=ref("%s-action-arn" % kwargs["name"])
+        funcarn=ref("%s-arn" % kwargs["action"])
         rules=[{"Name": "prefix",
                 "Value": kwargs["path"]}]
         return {"Event": event["type"],

@@ -59,8 +59,7 @@ def Table(stream={"type": "NEW_IMAGE"},
 
 @resource(suffix="action-mapping")
 def TableActionMapping(**kwargs):
-    # funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
-    funcarn=ref("%s-action-arn" % kwargs["name"])
+    funcarn=ref("%s-arn" % kwargs["action"])
     eventsource=fn_getatt(kwargs["name"], "StreamArn")
     props={"FunctionName": funcarn,
            "EventSourceArn": eventsource,

@@ -1,6 +1,8 @@
 ### short
 
-- fix -action-arn refs
+- remove -action suffix
+- extend action names in dsl
+
 - investigate why funcarn defined twice in bucket but only once in website
 - add back ref checking
 
@@ -167,6 +169,7 @@
   
 ### done
 
+- fix -action-arn 
 - parameter to be conditional and created of kwargs["action"] not kwargs["name"]
 - replace trigger action arns with parameter refs
 - check parameter support

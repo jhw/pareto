@@ -13,8 +13,7 @@ def Queue(**kwargs):
 
 @resource(suffix="action-mapping")
 def QueueActionMapping(batch=1, **kwargs):
-    # funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
-    funcarn=ref("%s-action-arn" % kwargs["name"])
+    funcarn=ref("%s-arn" % kwargs["action"])
     eventsource=fn_getatt(kwargs["name"], "Arn")
     props={"FunctionName": funcarn,
            "EventSourceArn": eventsource,

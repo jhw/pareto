@@ -4,8 +4,7 @@ from pareto.components import *
 def Bucket(event={"type":  "s3:ObjectCreated:*"},
            **kwargs):
     def lambda_config(kwargs, event):
-        # funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
-        funcarn=ref("%s-action-arn" % kwargs["name"])
+        funcarn=ref("%s-arn" % kwargs["action"])
         return {"Event": event["type"],
                 "Function": funcarn}
     props={"BucketName": resource_name(kwargs)}
@@ -22,8 +21,7 @@ def BucketActionPermission(**kwargs):
         - NB also recommends using SourceAccount as account not included in S3 arn format
         """
     eventsource="arn:aws:s3:::%s" % resource_name(kwargs)
-    # funcarn=fn_getatt("%s-action" % kwargs["name"], "Arn")
-    funcarn=ref("%s-action-arn" % kwargs["name"])
+    funcarn=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": funcarn,
            "SourceAccount": fn_sub("${AWS::AccountId}"),
