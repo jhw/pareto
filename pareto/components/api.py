@@ -9,7 +9,7 @@
 from pareto.components import *
 
 @resource(suffix="api")
-def ApiGwRestApi(**kwargs):
+def ApiGwApi(**kwargs):
     props={"Name": random_name("api")} # note
     return "AWS::ApiGateway::RestApi", props
 
@@ -32,7 +32,8 @@ def ApiGwStage(**kwargs):
 @resource(suffix="method")
 def ApiGwMethod(**kwargs):
     arnpattern="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
-    funcarn=fn_getatt(kwargs["action"], "Arn")
+    # funcarn=fn_getatt(kwargs["action"], "Arn")
+    funcarn=ref("%s-arn" % kwargs["action"])
     uriparams={"lambda_arn": funcarn}
     uri=fn_sub(arnpattern % kwargs["region"],
                uriparams)
@@ -59,7 +60,8 @@ def ApiGwPermission(**kwargs):
     source=fn_sub(arnpattern % (kwargs["region"],
                                      kwargs["method"]),
                        eventparams)
-    funcarn=fn_getatt(kwargs["action"], "Arn")
+    # funcarn=fn_getatt(kwargs["action"], "Arn")
+    funcarn=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": funcarn,
            "Principal": "apigateway.amazonaws.com",
@@ -77,12 +79,15 @@ def ApiGwUrl(**kwargs):
     return fn_sub(url, urlparams)
 
 def synth_api(**kwargs):
-    return Template(resources=[ApiGwRestApi(**kwargs),
-                               ApiGwDeployment(**kwargs),
-                               ApiGwStage(**kwargs),
-                               ApiGwMethod(**kwargs),
-                               ApiGwPermission(**kwargs)],
-                    outputs=[ApiGwUrl(**kwargs)])
+    template=Template(resources=[ApiGwApi(**kwargs),
+                                 ApiGwDeployment(**kwargs),
+                                 ApiGwStage(**kwargs),
+                                 ApiGwMethod(**kwargs)],
+                      outputs=[ApiGwUrl(**kwargs)])
+    if "action" in kwargs:
+        template.parameters.append(parameter("%s-arn" % kwargs["action"]))
+        template.resources.append(ApiGwPermission(**kwargs))
+    return template
 
 if __name__=="__main__":
     pass

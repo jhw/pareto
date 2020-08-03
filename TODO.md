@@ -1,8 +1,7 @@
 ### short
 
-- api still using internal function arns
-
 - investigate why funcarn defined twice in bucket but only once in website
+
 - add back ref checking
 
 - env to add nested params to template if params exist
@@ -170,6 +169,7 @@
   
 ### done
 
+- api still using internal function arns
 - timer has bad internal refs
 - remove api-gw suffix
 - action arn outputs are mis- specified
