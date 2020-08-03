@@ -200,7 +200,7 @@ if __name__=="__main__":
         add_lambda_staging(config)
         add_layer_staging(config)
         env=synth_env(config)
-        check_refs(env)
+        # check_refs(env)
         check_metrics(env)
         dump_env(env)
         push_templates(config, env)
