@@ -34,7 +34,7 @@ def run_tests(config):
     if config["globals"]["src"] not in sys.path:
         sys.path.append(config["globals"]["src"])
     klasses=[index_test(component)
-             for component in filter_functions(config["components"])]
+             for component in config["components"]["actions"]]
     suite=unittest.TestSuite()
     for klass in klasses:
         suite.addTest(unittest.makeSuite(klass))
@@ -117,7 +117,7 @@ def add_staging(config, commits):
                                 name=name,
                                 hexsha=commits[name][0],
                                 timestamp=commits[name][1]))
-    for component in filter_functions(config["components"]):
+    for component in config["components"]["actions"]:
         key=lambda_key(component["name"], commits)
         component["staging"]={"bucket": config["globals"]["bucket"],
                               "key": key}
@@ -172,7 +172,7 @@ def push_lambdas(config):
                        component["staging"]["bucket"],
                        component["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
-    for component in filter_functions(config["components"]):
+    for component in config["components"]["actions"]:
         validate_lambda(config, component)
         zfname=init_zipfile(config, component)
         push_lambda(component, zfname)

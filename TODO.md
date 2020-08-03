@@ -8,6 +8,8 @@
 fn_getatt(kwargs["action"], "Arn")
 ```
 
+- check existence of "actions" before iterating over config["components"]["actions"]
+
 - should actions have a dedicated suffix to make things easier ? harder ?
 
 - investigate why funcarn defined twice in bucket but only once in website
