@@ -76,25 +76,13 @@ def ApiGwUrl(**kwargs):
                "stage_name": stagename}
     return fn_sub(url, urlparams)
 
-@output(suffix="arn")
-def ApiGwArn(**kwargs):
-    arnpattern="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
-    restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
-    stagename=ref("%s-api-gw-stage" % kwargs["name"])
-    eventparams={"rest_api": restapi,
-                 "stage_name": stagename}
-    return fn_sub(arnpattern % (kwargs["region"],
-                                kwargs["method"]),
-                  eventparams)
-
 def synth_api(**kwargs):
     return Template(resources=[ApiGwRestApi(**kwargs),
                                ApiGwDeployment(**kwargs),
                                ApiGwStage(**kwargs),
                                ApiGwMethod(**kwargs),
                                ApiGwActionPermission(**kwargs)],
-                    outputs=[ApiGwUrl(**kwargs),
-                             ApiGwArn(**kwargs)])
+                    outputs=[ApiGwUrl(**kwargs)])
 
 if __name__=="__main__":
     pass
