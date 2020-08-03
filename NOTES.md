@@ -1,3 +1,11 @@
+### nested stack parameterds 3/8/20
+
+- trigger stacks may require action arns output from actions template
+- should be able to hack via naming convention
+- iterate across trigger templates
+- if template defines arn parameter, create nested template parameter for that parameter, pointed at the actions template
+- then extend to do proper lookup of all sources and destinations of different params
+
 ### first class actions 2/8/20
 
 - actions should be first class components

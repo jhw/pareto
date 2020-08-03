@@ -1,12 +1,15 @@
 ### short
 
-- env to add nested params to template if params exist
-- add back dash (new template)
+- env to include action arns as nested template parameters
+
+- add back dash as new template
 
 ### medium
 
+- rename `ApiGw` as simply `Api`
+  - rename `ApiApi` as `ApiRestApi` or `ApiRoot`
+- add back multiple action support to buckets, websites
 - confirm check_refs covers parameters, outputs etc
-- consider adding back s3 event mapping prefixes
 - cross- validate action references in dsl
 - check "actions" before iterating over config["components"]["actions"]
 - extend parameter management to lookup exports from each template
