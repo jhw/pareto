@@ -60,9 +60,9 @@ def Table(stream={"type": "NEW_IMAGE"},
 @resource(suffix="mapping")
 def TableMapping(**kwargs):
     funcarn=ref("%s-arn" % kwargs["action"])
-    eventsource=fn_getatt(kwargs["name"], "StreamArn")
+    source=fn_getatt(kwargs["name"], "StreamArn")
     props={"FunctionName": funcarn,
-           "EventSourceArn": eventsource,
+           "EventSourceArn": source,
            "StartingPosition": "LATEST"}
     return "AWS::Lambda::EventSourceMapping", props
 

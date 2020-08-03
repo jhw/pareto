@@ -20,12 +20,12 @@ def BucketPermission(**kwargs):
         - Fn::GetAtt Arn doesn't work for S3 lambda notifications :-(
         - NB also recommends using SourceAccount as account not included in S3 arn format
         """
-    eventsource="arn:aws:s3:::%s" % resource_name(kwargs)
+    source="arn:aws:s3:::%s" % resource_name(kwargs)
     funcarn=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": funcarn,
            "SourceAccount": fn_sub("${AWS::AccountId}"),
-           "SourceArn": eventsource,
+           "SourceArn": source,
            "Principal": "s3.amazonaws.com"}
     return "AWS::Lambda::Permission", props
 

@@ -56,14 +56,14 @@ def ApiGwPermission(**kwargs):
     stagename=ref("%s-stage" % kwargs["name"])
     eventparams={"rest_api": restapi,
                  "stage_name": stagename}
-    eventsource=fn_sub(arnpattern % (kwargs["region"],
+    source=fn_sub(arnpattern % (kwargs["region"],
                                      kwargs["method"]),
                        eventparams)
     funcarn=fn_getatt(kwargs["action"], "Arn")
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": funcarn,
            "Principal": "apigateway.amazonaws.com",
-           "SourceArn": eventsource}
+           "SourceArn": source}
     return "AWS::Lambda::Permission", props
 
 @output(suffix="url")

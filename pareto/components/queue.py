@@ -14,9 +14,9 @@ def Queue(**kwargs):
 @resource(suffix="mapping")
 def QueueMapping(batch=1, **kwargs):
     funcarn=ref("%s-arn" % kwargs["action"])
-    eventsource=fn_getatt(kwargs["name"], "Arn")
+    source=fn_getatt(kwargs["name"], "Arn")
     props={"FunctionName": funcarn,
-           "EventSourceArn": eventsource,
+           "EventSourceArn": source,
            "BatchSize": batch}
     return "AWS::Lambda::EventSourceMapping", props
 
