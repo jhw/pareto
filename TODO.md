@@ -1,16 +1,11 @@
 ### short
 
-- remove api-gw suffix
-
 - check below [api]
 
 ```
 fn_getatt(kwargs["action"], "Arn")
 ```
 
-- check existence of "actions" before iterating over config["components"]["actions"]
-
-- should actions have a dedicated suffix to make things easier ? harder ?
 
 - investigate why funcarn defined twice in bucket but only once in website
 - add back ref checking
@@ -22,6 +17,7 @@ fn_getatt(kwargs["action"], "Arn")
 
 ### medium
 
+- check "actions" before iterating over config["components"]["actions"]
 - extend parameter management to lookup exports from each template
 - action to have permission to call another action
 - simplify api gateway arn construction
@@ -52,6 +48,8 @@ fn_getatt(kwargs["action"], "Arn")
 
 ### thoughts
 
+- should actions have a dedicated suffix to make things easier ? harder ?
+  - no
 - all triggers to have option of using parameter- based action arns ?
   - not if string based arns work fine 
 - cloudwatch alerts in v1.1 ?
@@ -178,6 +176,7 @@ fn_getatt(kwargs["action"], "Arn")
   
 ### done
 
+- remove api-gw suffix
 - action arn outputs are mis- specified
 - remove api arn exports
 - remove -action suffix

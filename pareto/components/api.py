@@ -8,28 +8,28 @@
 
 from pareto.components import *
 
-@resource(suffix="api-gw-rest-api")
+@resource(suffix="rest-api")
 def ApiGwRestApi(**kwargs):
-    props={"Name": random_name("rest-api")} # not 
+    props={"Name": random_name("rest-api")} # note
     return "AWS::ApiGateway::RestApi", props
 
-@resource(suffix="api-gw-deployment")
+@resource(suffix="deployment")
 def ApiGwDeployment(**kwargs):
-    restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
+    restapi=ref("%s-rest-api" % kwargs["name"])
     props={"RestApiId": restapi}
-    method="%s-api-gw-method" % kwargs["name"]
+    method="%s-method" % kwargs["name"]
     return "AWS::ApiGateway::Deployment", props, [method]
 
-@resource(suffix="api-gw-stage")
+@resource(suffix="stage")
 def ApiGwStage(**kwargs):
-    restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
-    deployment=ref("%s-api-gw-deployment" % kwargs["name"])
+    restapi=ref("%s-rest-api" % kwargs["name"])
+    deployment=ref("%s-deployment" % kwargs["name"])
     props={"RestApiId": restapi,
            "DeploymentId": deployment,
            "StageName": kwargs["stage"]}
     return "AWS::ApiGateway::Stage", props
 
-@resource(suffix="api-gw-method")
+@resource(suffix="method")
 def ApiGwMethod(**kwargs):
     arnpattern="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
     lambdaarn=fn_getatt(kwargs["action"], "Arn")
@@ -39,8 +39,8 @@ def ApiGwMethod(**kwargs):
     integration={"Uri": uri,
                  "IntegrationHttpMethod": "POST",
                  "Type": "AWS_PROXY"}
-    restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
-    parent=fn_getatt("%s-api-gw-rest-api" % kwargs["name"],
+    restapi=ref("%s-rest-api" % kwargs["name"])
+    parent=fn_getatt("%s-rest-api" % kwargs["name"],
                      "RootResourceId")
     props={"AuthorizationType": "NONE",
            "RestApiId": restapi,
@@ -49,11 +49,11 @@ def ApiGwMethod(**kwargs):
            "Integration": integration}
     return "AWS::ApiGateway::Method", props
 
-@resource(suffix="api-gw-permission")
+@resource(suffix="permission")
 def ApiGwPermission(**kwargs):
     arnpattern="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
-    restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
-    stagename=ref("%s-api-gw-stage" % kwargs["name"])
+    restapi=ref("%s-rest-api" % kwargs["name"])
+    stagename=ref("%s-stage" % kwargs["name"])
     eventparams={"rest_api": restapi,
                  "stage_name": stagename}
     eventsource=fn_sub(arnpattern % (kwargs["region"],
@@ -70,8 +70,8 @@ def ApiGwPermission(**kwargs):
 def ApiGwUrl(**kwargs):
     urlpattern="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
     url=urlpattern % kwargs["region"]
-    restapi=ref("%s-api-gw-rest-api" % kwargs["name"])
-    stagename=ref("%s-api-gw-stage" % kwargs["name"])
+    restapi=ref("%s-rest-api" % kwargs["name"])
+    stagename=ref("%s-stage" % kwargs["name"])
     urlparams={"rest_api": restapi,
                "stage_name": stagename}
     return fn_sub(url, urlparams)
