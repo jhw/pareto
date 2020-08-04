@@ -19,6 +19,7 @@ components:
     - name: hello-bucket-action
       permissions:
         - translate:TranslateText
+    - name: hello-timer-action
   apis:
     - name: hello-get
       method: GET
@@ -31,3 +32,9 @@ components:
       action: hello-bucket-action
   websites:
     - name: hello-website
+  timers:
+    - name: hello-timer
+      rate: "1 hour"
+      payload:
+        hello: world
+      action: hello-timer-action

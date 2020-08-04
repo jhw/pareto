@@ -1,8 +1,7 @@
 ### short
 
-- add back queues
-- add back tables
-- add back timers
+- dynamodb, sqs missing lookback permissions
+- ping apis
 
 - add back dash as new template
 - pre- validate action references in dsl
@@ -171,6 +170,7 @@
   
 ### done
 
+- add back timers
 - add back buckets, websites
 - fix RestApiId
 - fix rest api type
