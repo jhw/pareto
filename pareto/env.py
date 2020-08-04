@@ -38,14 +38,14 @@ def init_templates(config, templates, outputs):
         name=template_name(config, groupkey)
         template=init_template(config, groupkey, components)
         if "Outputs" in template:
-            outputs.update({outputkey: groupkey.capitalize() 
+            outputs.update({outputkey: groupkey
                             for outputkey in template["Outputs"]})
         templates[groupkey]=template
 
 def init_master(config, templates, outputs):
     def nested_param(outputs, paramname):
-        return {"Fn::GetAtt": [".".join([outputs[paramname],
-                                         "Outputs"]), paramname]}
+        return {"Fn::GetAtt": [outputs[paramname].capitalize(),
+                               "Outputs.%s" %  paramname]}
     def init_stack(config, tempname, template, outputs):
         stack={"name": tempname}
         stack.update(config["globals"])
