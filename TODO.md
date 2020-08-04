@@ -1,5 +1,8 @@
 ### short
 
+- avoid passing rendered template to master
+- render at end
+
 - template mapping function
 - test everything under triggers
 
