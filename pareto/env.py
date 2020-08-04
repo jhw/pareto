@@ -36,9 +36,8 @@ def init_master(config, templates, outputs):
     def init_stack(config, tempname, template, outputs):
         stack={"name": tempname}
         stack.update(config["globals"])
-        if "Parameters" in template:
-            stack["params"]={paramname: nested_param(outputs, paramname)
-                             for paramname in template["Parameters"]}
+        stack["params"]={paramname: nested_param(outputs, paramname)
+                         for paramname, _ in template.parameters}
         return stack
     master=Template()
     for tempname, template in templates.items():
@@ -46,13 +45,18 @@ def init_master(config, templates, outputs):
         stack=synth_stack(**kwargs)
         master.update(stack)
     return master
-        
+
+def render(fn):
+    def wrapped(config):
+        return {k:v.render()
+                for k, v in fn(config).items()}
+    return wrapped
+
+@render
 def synth_env(config):
     templates=init_templates(config)
     outputs=filter_outputs(templates)
-    for tempkey, template in templates.items():
-        templates[tempkey]=template.render()
-    templates["master"]=init_master(config, templates, outputs).render()
+    templates["master"]=init_master(config, templates, outputs)
     return templates
 
 if __name__=="__main__":
