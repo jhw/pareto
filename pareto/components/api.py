@@ -1,7 +1,7 @@
 from pareto.components import *
 
 @resource(suffix="api")
-def ApiApi(**kwargs):
+def ApiRoot(**kwargs):
     props={"Name": random_name("api")} # NB
     return "AWS::ApiGateway::RestApi", props
 
@@ -69,7 +69,7 @@ def ApiUrl(**kwargs):
     return fn_sub(url, urlparams)
 
 def synth_api(**kwargs):
-    template=Template(resources=[ApiApi(**kwargs),
+    template=Template(resources=[ApiRoot(**kwargs),
                                  ApiDeployment(**kwargs),
                                  ApiStage(**kwargs),
                                  ApiMethod(**kwargs)],
