@@ -95,7 +95,7 @@ def ActionRole(**kwargs):
                    for permission in sorted(permissions)]
         return {"PolicyDocument": {"Statement": statement,
                                    "Version": "2012-10-17"},
-                "PolicyName": random_name("inline-policy")} # "conditional"
+                "PolicyName": random_id("inline-policy")} # "conditional"
     props={"AssumeRolePolicyDocument": assume_role_policy_doc()}
     props["Policies"]=[policy(kwargs)]
     return "AWS::IAM::Role", props

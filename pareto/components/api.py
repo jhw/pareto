@@ -8,7 +8,7 @@ Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
 
 @resource(suffix="api")
 def ApiRoot(**kwargs):
-    props={"Name": random_name("api")} # NB
+    props={"Name": random_id("api")} # NB
     return "AWS::ApiGateway::RestApi", props
 
 @resource(suffix="deployment")

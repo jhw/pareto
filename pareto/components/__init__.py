@@ -18,7 +18,7 @@ def resource_name(kwargs):
     return "-".join([labelise(kwargs[attr])
                      for attr in ["app", "name", "stage"]])
 
-def random_name(prefix, n=32):
+def random_id(prefix, n=32):
     salt="".join([chr(65+int(26*random.random()))
                   for i in range(n)])
     return "%s-%s" % (prefix, salt)
