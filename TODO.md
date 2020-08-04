@@ -1,7 +1,10 @@
 ### short
 
-- better mechanism for marshalling stack parameters
 - add nested parameters
+
+- how come there is no HelloQueueActionArn
+- check_refs needs to handle output arns
+
 - test deployment
 
 - add back dash as new template

@@ -43,18 +43,18 @@ def init_templates(config, templates, outputs):
         templates[groupkey]=template
 
 def init_master(config, templates, outputs):
-    def init_stack(config, tempname):
+    def init_stack(config, tempname, template, outputs):
         stack={"name": tempname}
         stack.update(config["globals"])
+        if "Parameters" in template:
+            stack["params"]={paramname: fn_getatt("foobar", # outputs[paramname]
+                                                  paramname)
+                             for paramname in template["Parameters"]}
         return stack
     def init_master(config, templates):
         master=Template()
         for tempname, template in templates.items():
-            """
-            if "Parameters" in template:
-                print (template["Parameters"])
-            """
-            kwargs=init_stack(config, tempname)
+            kwargs=init_stack(config, tempname, template, outputs)
             stack=synth_stack(**kwargs)
             master.update(stack)
         return master.render()
