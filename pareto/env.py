@@ -15,11 +15,15 @@ Actions, Triggers = "actions", "triggers"
 def TemplateMapper(groupkey):
     return Actions if groupkey==Actions else Triggers
 
+def stack_param(paramname, outputs):
+    return {"Fn::GetAtt": [outputs[paramname].capitalize(),
+                           "Outputs.%s" %  paramname]}
+
 class Env(dict):
 
     @classmethod
     def create(self, config, templatefn=TemplateMapper):
-        env=Env()
+        env=Env(config)
         for groupkey, components in config["components"].items():
             tempkey=templatefn(groupkey)
             env.setdefault(tempkey, Template())
@@ -30,8 +34,9 @@ class Env(dict):
                 env[tempkey].update(component)         
         return env
     
-    def __init__(self, items={}):
+    def __init__(self, config, items={}):
         dict.__init__(self, items)
+        self.config=config
 
     @property
     def outputs(self):
@@ -41,19 +46,17 @@ class Env(dict):
                             for outputkey, _ in template.outputs})
         return outputs
 
-def init_master(config, env):
-    def nested_param(outputs, paramname):
-        return {"Fn::GetAtt": [outputs[paramname].capitalize(),
-                               "Outputs.%s" %  paramname]}
-    def init_stack(config, tempname, template, outputs):
+    def init_stack(self, tempname, template, outputs):
         stack={"name": tempname}
-        stack.update(config["globals"])
-        stack["params"]={paramname: nested_param(outputs, paramname)
+        stack.update(self.config["globals"])
+        stack["params"]={paramname: stack_param(paramname, outputs)
                          for paramname, _ in template.parameters}
         return stack
+
+def init_master(env):
     master=Template()
     for tempname, template in env.items():
-        kwargs=init_stack(config, tempname, template, env.outputs)
+        kwargs=env.init_stack(tempname, template, env.outputs)
         stack=synth_stack(**kwargs)
         master.update(stack)
     return master
@@ -67,7 +70,7 @@ def render(fn):
 @render
 def synth_env(config):
     env=Env.create(config)
-    env["master"]=init_master(config, env)
+    env["master"]=init_master(env)
     return env
 
 if __name__=="__main__":

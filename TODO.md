@@ -1,5 +1,7 @@
 ### short
 
+- merge init_master() into Env class
+
 - use logical_id for stack name so `non-actions` will resolve to `NonActions`
 
 - new preprocessor validation step
@@ -12,7 +14,6 @@
 ### medium
 
 - move nested stack param munging into stack component
-- remove template naming facility
 - output refs not being checked
 - add back multiple action support to buckets, websites
 - check "actions" before iterating over config["components"]["actions"]
@@ -47,6 +48,8 @@
 
 ### thoughts
 
+- remove template naming facility ?
+  - no because dashes need names
 - dsl json schema ?
   - probably not worth it
 - investigate why funcarn defined twice in bucket but only once in website
@@ -178,6 +181,7 @@
   - not really required as this is about deployment not runtime
   
 ### done
+
 
 - init_master into env as finalise
 - rename templates as env
