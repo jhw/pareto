@@ -1,8 +1,10 @@
 ### short
 
-- fix RestApiId
-- sqs, ddb permission issues ?
-- re- test deployment
+- add back buckets, websites
+- add back queues
+- add back tables
+- add back timers
+
 - add back dash as new template
 - pre- validate action references in dsl
 
@@ -170,6 +172,7 @@
   
 ### done
 
+- fix RestApiId
 - fix rest api type
 - stack params are badly defined
   - first arg is stack ref

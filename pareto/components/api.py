@@ -14,7 +14,7 @@ def ApiRoot(**kwargs):
 @resource(suffix="deployment")
 def ApiDeployment(**kwargs):
     api=ref("%s-api" % kwargs["name"])
-    props={"ApiId": api}
+    props={"RestApiId": api}
     method="%s-method" % kwargs["name"]
     return "AWS::ApiGateway::Deployment", props, [method]
 
@@ -22,7 +22,7 @@ def ApiDeployment(**kwargs):
 def ApiStage(**kwargs):
     api=ref("%s-api" % kwargs["name"])
     deployment=ref("%s-deployment" % kwargs["name"])
-    props={"ApiId": api,
+    props={"RestApiId": api,
            "DeploymentId": deployment,
            "StageName": kwargs["stage"]}
     return "AWS::ApiGateway::Stage", props
@@ -39,7 +39,7 @@ def ApiMethod(**kwargs):
     parent=fn_getatt("%s-api" % kwargs["name"],
                      "RootResourceId")
     props={"AuthorizationType": "NONE",
-           "ApiId": api,
+           "RestApiId": api,
            "ResourceId": parent,
            "HttpMethod": kwargs["method"],
            "Integration": integration}
