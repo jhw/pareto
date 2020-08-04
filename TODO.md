@@ -1,5 +1,9 @@
 ### short
 
+- init_master into env as finalise
+
+- use logical_id for stack name so `non-actions` will resolve to `NonActions`
+
 - new preprocessor validation step
 - validate action refs
 - insert dynamodb sqs lookback permissions
@@ -22,7 +26,6 @@
 
 - auth
 - template factory
-- dsl json schema
 - apigw request validation
 - scaffold generator
 - targets [notes]
@@ -46,6 +49,8 @@
 
 ### thoughts
 
+- dsl json schema ?
+  - probably not worth it
 - investigate why funcarn defined twice in bucket but only once in website
   - because website inherits BucketPermission
 - should actions have a dedicated suffix to make things easier ? harder ?
@@ -176,6 +181,8 @@
   
 ### done
 
+- rename templates as env
+- move init_templates into env
 - templates for each group need to be pre- created / appended
   - as they are currently overriding one another
 - template mapping function
