@@ -1,9 +1,7 @@
 ### short
 
-- add dynamodb, sqs lookback permissions to config
-- remove event_mapping_permissions
-- check wildcard permissions handling
-- deploy/test
+- template mapping function
+- test everything under triggers
 
 - new preprocessor validation step
 - validate action refs
@@ -14,6 +12,7 @@
 
 ### medium
 
+- output refs not being checked
 - add back multiple action support to buckets, websites
 - check "actions" before iterating over config["components"]["actions"]
 - action to have permission to call another action
@@ -34,6 +33,8 @@
 - self sign- up
 - forgot password
 - federated login
+- unauthenticated access
+
 - cloudwatch alerts
 - apigateway2
 - eventbridge
@@ -176,6 +177,10 @@
   
 ### done
 
+- add dynamodb, sqs lookback permissions to config
+- remove event_mapping_permissions
+- check wildcard permissions handling
+- deploy/test
 - ping apis
 - add back timers
 - add back buckets, websites

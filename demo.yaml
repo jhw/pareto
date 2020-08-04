@@ -22,8 +22,16 @@ components:
     - name: hello-table-action
       permissions:
         - polly:SynthesizeSpeech
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:DescribeStream
+        - dynamodb:ListStreams
     - name: hello-timer-action
     - name: hello-queue-action
+      permissions:
+        - sqs:ReceiveMessage
+        - sqs:DeleteMessage
+        - sqs:GetQueueAttributes
   apis:
     - name: hello-get
       method: GET

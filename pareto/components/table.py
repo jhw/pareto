@@ -6,13 +6,6 @@ int: N
 float: N
 """, Loader=yaml.FullLoader)
 
-EventMappingPermissions=yaml.load("""
-- dynamodb:GetRecords
-- dynamodb:GetShardIterator
-- dynamodb:DescribeStream
-- dynamodb:ListStreams 
-""", Loader=yaml.FullLoader)
-
 @resource()
 def Table(stream={"type": "NEW_IMAGE"},
           **kwargs):        
@@ -66,7 +59,6 @@ def TableMapping(**kwargs):
            "StartingPosition": "LATEST"}
     return "AWS::Lambda::EventSourceMapping", props
 
-@event_mapping_permissions(EventMappingPermissions)
 def synth_table(**kwargs):
     template=Template(resources=[Table(**kwargs)])
     if "action" in kwargs:

@@ -1,11 +1,5 @@
 from pareto.components import *
 
-EventMappingPermissions=yaml.load("""
-- sqs:ReceiveMessage
-- sqs:DeleteMessage
-- sqs:GetQueueAttributes
-""", Loader=yaml.FullLoader)
-
 @resource()
 def Queue(**kwargs):        
     props={"QueueName": resource_name(kwargs)}
@@ -20,7 +14,6 @@ def QueueMapping(batch=1, **kwargs):
            "BatchSize": batch}
     return "AWS::Lambda::EventSourceMapping", props
 
-@event_mapping_permissions(EventMappingPermissions)
 def synth_queue(**kwargs):
     template=Template(resources=[Queue(**kwargs)])
     if "action" in kwargs:

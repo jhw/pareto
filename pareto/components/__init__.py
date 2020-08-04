@@ -76,14 +76,5 @@ def output(suffix=None):
         return wrapped
     return decorator
 
-def event_mapping_permissions(permissions):
-    def decorator(fn):
-        def wrapped(**kwargs):
-            kwargs.setdefault("permissions", [])
-            kwargs["permissions"]+=permissions
-            return fn(**kwargs)
-        return wrapped
-    return decorator
-                
 if __name__=="__main__":
     pass
