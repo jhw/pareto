@@ -1,6 +1,5 @@
 ### short
 
-- refactor component local variable names
 - look for example of nested parameters
 - filter outputs from all templates
 - add nested parameters
