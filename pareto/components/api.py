@@ -1,5 +1,11 @@
 from pareto.components import *
 
+MethodArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
+
+PermissionArn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
+
+Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
+
 @resource(suffix="api")
 def ApiRoot(**kwargs):
     props={"Name": random_name("api")} # NB
@@ -23,10 +29,9 @@ def ApiStage(**kwargs):
 
 @resource(suffix="method")
 def ApiMethod(**kwargs):
-    arnpattern="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
     target=ref("%s-arn" % kwargs["action"])
     uriparams={"lambda_arn": target}
-    uri=fn_sub(arnpattern % kwargs["region"],
+    uri=fn_sub(MethodArn % kwargs["region"],
                uriparams)
     integration={"Uri": uri,
                  "IntegrationHttpMethod": "POST",
@@ -43,14 +48,13 @@ def ApiMethod(**kwargs):
 
 @resource(suffix="permission")
 def ApiPermission(**kwargs):
-    arnpattern="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
     restapi=ref("%s-api" % kwargs["name"])
     stagename=ref("%s-stage" % kwargs["name"])
     eventparams={"rest_api": restapi,
                  "stage_name": stagename}
-    source=fn_sub(arnpattern % (kwargs["region"],
-                                     kwargs["method"]),
-                       eventparams)
+    source=fn_sub(PermissionArn % (kwargs["region"],
+                                   kwargs["method"]),
+                  eventparams)
     target=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": target,
@@ -60,8 +64,7 @@ def ApiPermission(**kwargs):
 
 @output(suffix="url")
 def ApiUrl(**kwargs):
-    urlpattern="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
-    url=urlpattern % kwargs["region"]
+    url=Url % kwargs["region"]
     restapi=ref("%s-api" % kwargs["name"])
     stagename=ref("%s-stage" % kwargs["name"])
     urlparams={"rest_api": restapi,
