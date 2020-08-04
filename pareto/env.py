@@ -33,14 +33,12 @@ def init_templates(config, templates, outputs):
             fn=eval("synth_%s" % groupkey[:-1])                
             component=fn(**kwargs)
             template.update(component)            
-        return template.render()
+        return template
     for groupkey, components in config["components"].items():
-        name=template_name(config, groupkey)
         template=init_template(config, groupkey, components)
-        if "Outputs" in template:
-            outputs.update({outputkey: groupkey
-                            for outputkey in template["Outputs"]})
-        templates[groupkey]=template
+        outputs.update({outputkey: groupkey
+                        for outputkey, _ in template.outputs})
+        templates[groupkey]=template.render()
 
 def init_master(config, templates, outputs):
     def nested_param(outputs, paramname):
