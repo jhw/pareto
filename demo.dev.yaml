@@ -16,6 +16,9 @@ components:
       layers:
         - name: pymorphy2
           version: "0.8"
+    - name: hello-bucket-action
+      permissions:
+        - translate:TranslateText
   apis:
     - name: hello-get
       method: GET
@@ -23,3 +26,8 @@ components:
     - name: hello-post
       method: POST
       action: hello-post-action
+  buckets:
+    - name: hello-bucket
+      action: hello-bucket-action
+  websites:
+    - name: hello-website
