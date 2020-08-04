@@ -1,6 +1,7 @@
 ### short
 
-- fix rest api type
+- fix RestApiId
+- sqs, ddb permission issues ?
 - re- test deployment
 - add back dash as new template
 - pre- validate action references in dsl
@@ -169,6 +170,7 @@
   
 ### done
 
+- fix rest api type
 - stack params are badly defined
   - first arg is stack ref
   - second is string containing outputs
