@@ -1,15 +1,12 @@
 ### short
 
-- check_refs needs to handle output arns
-
 - test deployment
-
 - add back dash as new template
+- pre- validate action references in dsl
 
 ### medium
 
 - add back multiple action support to buckets, websites
-- cross- validate action references in dsl
 - check "actions" before iterating over config["components"]["actions"]
 - action to have permission to call another action
 - investigate adding region and account id to hardcoded event sources

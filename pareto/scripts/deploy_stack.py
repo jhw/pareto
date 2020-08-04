@@ -73,6 +73,11 @@ def add_layer_staging(config):
         
 def check_refs(templates):
     logging.info("checking template refs")
+    class Refs(list):
+        def __init__(self, items=[]):
+            list.__init__(self, items)
+        def add(self, value):
+            self.append(value.split(".")[0]) # remove `.Outputs`
     def filter_resource_ids(template):
         ids=[]
         for attr in ["Resources", "Parameters"]:
@@ -96,17 +101,17 @@ def check_refs(templates):
             for key, subelement in element.items():
                 if is_new_ref(key, subelement, refs):
                     # print ("ref: %s" % subelement)
-                    refs.append(subelement)
+                    refs.add(subelement)
                 elif is_new_getatt(key, subelement, refs):
                     # print ("getatt: %s" % subelement[0])
-                    refs.append(subelement[0])
+                    refs.add(subelement[0])
                 else:
                     filter_refs(subelement, refs)
         else:
             pass
     def check_refs(tempname, template):
         resourceids=filter_resource_ids(template)
-        refs=[]
+        refs=Refs()
         filter_refs(template, refs)
         for ref in refs:
             if ref not in resourceids:
@@ -200,7 +205,7 @@ if __name__=="__main__":
         add_lambda_staging(config)
         add_layer_staging(config)
         env=synth_env(config)
-        # check_refs(env)
+        check_refs(env)
         check_metrics(env)
         dump_env(env)
         push_templates(config, env)
