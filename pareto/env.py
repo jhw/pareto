@@ -43,12 +43,14 @@ def init_templates(config, templates, outputs):
         templates[groupkey]=template
 
 def init_master(config, templates, outputs):
+    def nested_param(outputs, paramname):
+        return {"Fn::GetAtt": [".".join([outputs[paramname],
+                                         "Outputs"]), paramname]}
     def init_stack(config, tempname, template, outputs):
         stack={"name": tempname}
         stack.update(config["globals"])
         if "Parameters" in template:
-            stack["params"]={paramname: fn_getatt("foobar", # outputs[paramname]
-                                                  paramname)
+            stack["params"]={paramname: nested_param(outputs, paramname)
                              for paramname in template["Parameters"]}
         return stack
     def init_master(config, templates):

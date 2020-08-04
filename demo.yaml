@@ -23,6 +23,7 @@ components:
       permissions:
         - polly:SynthesizeSpeech
     - name: hello-timer-action
+    - name: hello-queue-action
   apis:
     - name: hello-get
       method: GET

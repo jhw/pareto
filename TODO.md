@@ -1,8 +1,5 @@
 ### short
 
-- add nested parameters
-
-- how come there is no HelloQueueActionArn
 - check_refs needs to handle output arns
 
 - test deployment
@@ -12,7 +9,6 @@
 ### medium
 
 - add back multiple action support to buckets, websites
-- confirm check_refs covers parameters, outputs etc
 - cross- validate action references in dsl
 - check "actions" before iterating over config["components"]["actions"]
 - action to have permission to call another action
@@ -175,6 +171,8 @@
   
 ### done
 
+- add nested parameters
+- how come there is no 
 - look for example of nested parameters
 - filter outputs from all templates
 - simplify api gateway arn construction
