@@ -1,9 +1,16 @@
 ### short
 
-- dynamodb, sqs missing lookback permissions
+- add dynamodb, sqs lookback permissions to config
+- remove event_mapping_permissions
+- check wildcard permissions handling
+- deploy/test
+
+- new preprocessor validation step
+- validate action refs
+- insert dynamodb sqs lookback permissions
+- validate uniqueness
 
 - add back dash as new template
-- pre- validate action references in dsl
 
 ### medium
 
