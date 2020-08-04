@@ -2,7 +2,11 @@
 
 - rename `ApiGw` as simply `Api`
   - rename `ApiApi` as `ApiRestApi` or `ApiRoot`
-- env to include action arns as nested template parameters
+- look for example of nested parameters
+- filter outputs from all templates
+- add nested parameters
+- test deployment
+
 - add back dash as new template
 
 ### medium
