@@ -1,6 +1,10 @@
 ### short
 
-- test deployment
+- stack params are badly defined
+  - first arg is stack ref
+  - second is string containing outputs
+  - re- test check refs
+
 - add back dash as new template
 - pre- validate action references in dsl
 
