@@ -1,19 +1,19 @@
 from pareto.components import *
 
 @resource(suffix="api")
-def ApiGwApi(**kwargs):
+def ApiApi(**kwargs):
     props={"Name": random_name("api")} # NB
     return "AWS::ApiGateway::RestApi", props
 
 @resource(suffix="deployment")
-def ApiGwDeployment(**kwargs):
+def ApiDeployment(**kwargs):
     restapi=ref("%s-api" % kwargs["name"])
     props={"RestApiId": restapi}
     method="%s-method" % kwargs["name"]
     return "AWS::ApiGateway::Deployment", props, [method]
 
 @resource(suffix="stage")
-def ApiGwStage(**kwargs):
+def ApiStage(**kwargs):
     restapi=ref("%s-api" % kwargs["name"])
     deployment=ref("%s-deployment" % kwargs["name"])
     props={"RestApiId": restapi,
@@ -22,7 +22,7 @@ def ApiGwStage(**kwargs):
     return "AWS::ApiGateway::Stage", props
 
 @resource(suffix="method")
-def ApiGwMethod(**kwargs):
+def ApiMethod(**kwargs):
     arnpattern="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
     funcarn=ref("%s-arn" % kwargs["action"])
     uriparams={"lambda_arn": funcarn}
@@ -42,7 +42,7 @@ def ApiGwMethod(**kwargs):
     return "AWS::ApiGateway::Method", props
 
 @resource(suffix="permission")
-def ApiGwPermission(**kwargs):
+def ApiPermission(**kwargs):
     arnpattern="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
     restapi=ref("%s-api" % kwargs["name"])
     stagename=ref("%s-stage" % kwargs["name"])
@@ -59,7 +59,7 @@ def ApiGwPermission(**kwargs):
     return "AWS::Lambda::Permission", props
 
 @output(suffix="url")
-def ApiGwUrl(**kwargs):
+def ApiUrl(**kwargs):
     urlpattern="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
     url=urlpattern % kwargs["region"]
     restapi=ref("%s-api" % kwargs["name"])
@@ -69,14 +69,14 @@ def ApiGwUrl(**kwargs):
     return fn_sub(url, urlparams)
 
 def synth_api(**kwargs):
-    template=Template(resources=[ApiGwApi(**kwargs),
-                                 ApiGwDeployment(**kwargs),
-                                 ApiGwStage(**kwargs),
-                                 ApiGwMethod(**kwargs)],
-                      outputs=[ApiGwUrl(**kwargs)])
+    template=Template(resources=[ApiApi(**kwargs),
+                                 ApiDeployment(**kwargs),
+                                 ApiStage(**kwargs),
+                                 ApiMethod(**kwargs)],
+                      outputs=[ApiUrl(**kwargs)])
     if "action" in kwargs:
         template.parameters.append(parameter("%s-arn" % kwargs["action"]))
-        template.resources.append(ApiGwPermission(**kwargs))
+        template.resources.append(ApiPermission(**kwargs))
     return template
 
 if __name__=="__main__":
