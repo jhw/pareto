@@ -14,9 +14,9 @@ def Website(event={"type":  "s3:ObjectCreated:*"},
                 "CorsConfiguration": corsconfig,
                 "WebsiteConfiguration": websiteconfig}
     def lambda_config(kwargs, event):
-        funcarn=ref("%s-arn" % kwargs["action"])
+        target=ref("%s-arn" % kwargs["action"])
         return {"Event": event["type"],
-                "Function": funcarn}
+                "Function": target}
     props={"BucketName": resource_name(kwargs)}
     props.update(website_config())
     if "action" in kwargs:

@@ -24,8 +24,8 @@ def ApiStage(**kwargs):
 @resource(suffix="method")
 def ApiMethod(**kwargs):
     arnpattern="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
-    funcarn=ref("%s-arn" % kwargs["action"])
-    uriparams={"lambda_arn": funcarn}
+    target=ref("%s-arn" % kwargs["action"])
+    uriparams={"lambda_arn": target}
     uri=fn_sub(arnpattern % kwargs["region"],
                uriparams)
     integration={"Uri": uri,
@@ -51,9 +51,9 @@ def ApiPermission(**kwargs):
     source=fn_sub(arnpattern % (kwargs["region"],
                                      kwargs["method"]),
                        eventparams)
-    funcarn=ref("%s-arn" % kwargs["action"])
+    target=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
-           "FunctionName": funcarn,
+           "FunctionName": target,
            "Principal": "apigateway.amazonaws.com",
            "SourceArn": source}
     return "AWS::Lambda::Permission", props

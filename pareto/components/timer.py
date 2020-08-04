@@ -13,9 +13,9 @@ def EventRule(**kwargs):
 @resource(suffix="permission")
 def EventPermission(**kwargs):
     source=fn_getatt(kwargs["name"], "Arn")
-    funcarn=ref("%s-arn" % kwargs["action"])
+    target=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
-           "FunctionName": funcarn,
+           "FunctionName": target,
            "Principal": "events.amazonaws.com",
            "SourceArn": source}
     return "AWS::Lambda::Permission", props
