@@ -1,7 +1,6 @@
 ### short
 
-- look for example of nested parameters
-- filter outputs from all templates
+- better mechanism for marshalling stack parameters
 - add nested parameters
 - test deployment
 
@@ -173,6 +172,8 @@
   
 ### done
 
+- look for example of nested parameters
+- filter outputs from all templates
 - simplify api gateway arn construction
 - rename `ApiGw` as simply `Api`
   - rename `ApiApi` as `ApiRestApi` or `ApiRoot`

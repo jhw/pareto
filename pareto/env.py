@@ -11,7 +11,7 @@ from pareto.components.timer import synth_timer
 from pareto.components.website import synth_website
 
 """
-- `add_nested_templates` is super- opinionated about layouts
+- `init_templates` is super- opinionated about layouts
 - bundles triggers, actions and related permissions/mappings under same nested templates so each can be indepedent / minimal parameter requiring required
 - also makes use of template.dashboard which may be an over- optimisation
 - but is not the only way to do it - could have triggers, actions and dashes in different stacks
@@ -20,43 +20,50 @@ from pareto.components.website import synth_website
 - then could maybe experiment with different layouts at env level
 """
 
-def add_nested_templates(config, templates):
-    def template_name(config, key):
+def init_templates(config, templates, outputs):
+    def template_name(config, groupkey):
         return "%s-%s-%s" % (config["globals"]["app"],
-                             key,
+                             groupkey,
                              config["globals"]["stage"])
-    def init_template(config, key, components):
-        name=template_name(config, key)
+    def init_template(config, groupkey, components):
+        name=template_name(config, groupkey)
         template=Template(name=name)
         for kwargs in components:
             kwargs.update(config["globals"]) # NB
-            fn=eval("synth_%s" % key[:-1])                
+            fn=eval("synth_%s" % groupkey[:-1])                
             component=fn(**kwargs)
-            template.update(component)
+            template.update(component)            
         return template.render()
-    for key, group in config["components"].items():
-        name=template_name(config, key)
-        templates[key]=init_template(config, key, group)
+    for groupkey, components in config["components"].items():
+        name=template_name(config, groupkey)
+        template=init_template(config, groupkey, components)
+        if "Outputs" in template:
+            outputs.update({outputkey: groupkey.capitalize() 
+                            for outputkey in template["Outputs"]})
+        templates[groupkey]=template
 
-def add_master(config, templates):
+def init_master(config, templates, outputs):
     def init_stack(config, tempname):
         stack={"name": tempname}
         stack.update(config["globals"])
         return stack
-    def init_template(config, templates):
-        components=[init_stack(config, tempname)
-                    for tempname in templates.keys()]
-        template=Template()
-        for kwargs in components:
+    def init_master(config, templates):
+        master=Template()
+        for tempname, template in templates.items():
+            """
+            if "Parameters" in template:
+                print (template["Parameters"])
+            """
+            kwargs=init_stack(config, tempname)
             stack=synth_stack(**kwargs)
-            template.update(stack)
-        return template.render()
-    templates["master"]=init_template(config, templates)
+            master.update(stack)
+        return master.render()
+    templates["master"]=init_master(config, templates)
         
 def synth_env(config):
-    templates={}
-    add_nested_templates(config, templates)
-    add_master(config, templates)
+    templates, outputs = {}, {}
+    init_templates(config, templates, outputs)
+    init_master(config, templates, outputs)
     return templates
 
 if __name__=="__main__":
