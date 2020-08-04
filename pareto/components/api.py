@@ -1,8 +1,8 @@
 from pareto.components import *
 
-MethodArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
+InvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
 
-PermissionArn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
+Arn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
 
 Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
 
@@ -31,7 +31,7 @@ def ApiStage(**kwargs):
 def ApiMethod(**kwargs):
     target=ref("%s-arn" % kwargs["action"])
     uriparams={"lambda_arn": target}
-    uri=fn_sub(MethodArn % kwargs["region"],
+    uri=fn_sub(InvokeArn % kwargs["region"],
                uriparams)
     integration={"Uri": uri,
                  "IntegrationHttpMethod": "POST",
@@ -52,8 +52,8 @@ def ApiPermission(**kwargs):
     stagename=ref("%s-stage" % kwargs["name"])
     eventparams={"rest_api": restapi,
                  "stage_name": stagename}
-    source=fn_sub(PermissionArn % (kwargs["region"],
-                                   kwargs["method"]),
+    source=fn_sub(Arn % (kwargs["region"],
+                         kwargs["method"]),
                   eventparams)
     target=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
