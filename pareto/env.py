@@ -11,27 +11,24 @@ from pareto.components.timer import synth_timer
 from pareto.components.website import synth_website
 
 def init_templates(config):
-    def template_name(config, groupkey):
-        return "%s-%s-%s" % (config["globals"]["app"],
-                             groupkey,
-                             config["globals"]["stage"])
-    def init_template(config, groupkey, components):
-        name=template_name(config, groupkey)
-        template=Template(name=name)
+    def init_template(config, tempkey, components):
+        template=Template()
         for kwargs in components:
             kwargs.update(config["globals"]) # NB
-            fn=eval("synth_%s" % groupkey[:-1])                
+            fn=eval("synth_%s" % tempkey[:-1])                
             component=fn(**kwargs)
             template.update(component)            
         return template
-    templates, outputs = {}, {}
-    for groupkey, components in config["components"].items():
-        template=init_template(config, groupkey, components)
-        outputs.update({outputkey: groupkey
-                        for outputkey, _ in template.outputs})
-        templates[groupkey]=template.render()
-    return templates, outputs
+    return {tempkey: init_template(config, tempkey, components)
+            for tempkey, components in config["components"].items()}
 
+def filter_outputs(templates):
+    outputs={}
+    for tempkey, template in templates.items():
+        outputs.update({outputkey: tempkey
+                        for outputkey, _ in template.outputs})
+    return outputs
+        
 def init_master(config, templates, outputs):
     def nested_param(outputs, paramname):
         return {"Fn::GetAtt": [outputs[paramname].capitalize(),
@@ -48,11 +45,14 @@ def init_master(config, templates, outputs):
         kwargs=init_stack(config, tempname, template, outputs)
         stack=synth_stack(**kwargs)
         master.update(stack)
-    return master.render()
+    return master
         
 def synth_env(config):
-    templates, outputs = init_templates(config)
-    templates["master"]=init_master(config, templates, outputs)    
+    templates=init_templates(config)
+    outputs=filter_outputs(templates)
+    for tempkey, template in templates.items():
+        templates[tempkey]=template.render()
+    templates["master"]=init_master(config, templates, outputs).render()
     return templates
 
 if __name__=="__main__":
