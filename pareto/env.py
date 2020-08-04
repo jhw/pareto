@@ -10,26 +10,39 @@ from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
 from pareto.components.website import synth_website
 
-def init_templates(config):
-    def init_template(config, tempkey, components):
+class Templates(dict):
+
+    def __init__(self, items={}):
+        dict.__init__(self, items)
+
+    @property
+    def outputs(self):
+        outputs={}
+        for tempkey, template in self.items():
+            outputs.update({outputkey: tempkey
+                            for outputkey, _ in template.outputs})
+        return outputs
+
+def TemplateMapper(groupkey):
+    # return "actions" if groupkey=="actions" else "triggers"
+    return groupkey
+    
+def init_templates(config, templatefn=TemplateMapper):
+    def init_template(config, groupkey, components):
         template=Template()
         for kwargs in components:
             kwargs.update(config["globals"]) # NB
-            fn=eval("synth_%s" % tempkey[:-1])                
+            fn=eval("synth_%s" % groupkey[:-1])                
             component=fn(**kwargs)
             template.update(component)            
         return template
-    return {tempkey: init_template(config, tempkey, components)
-            for tempkey, components in config["components"].items()}
+    templates=Templates()
+    for groupkey, components in config["components"].items():
+        tempkey=templatefn(groupkey)
+        templates[tempkey]=init_template(config, groupkey, components)
+    return templates
 
-def filter_outputs(templates):
-    outputs={}
-    for tempkey, template in templates.items():
-        outputs.update({outputkey: tempkey
-                        for outputkey, _ in template.outputs})
-    return outputs
-        
-def init_master(config, templates, outputs):
+def init_master(config, templates):
     def nested_param(outputs, paramname):
         return {"Fn::GetAtt": [outputs[paramname].capitalize(),
                                "Outputs.%s" %  paramname]}
@@ -41,7 +54,7 @@ def init_master(config, templates, outputs):
         return stack
     master=Template()
     for tempname, template in templates.items():
-        kwargs=init_stack(config, tempname, template, outputs)
+        kwargs=init_stack(config, tempname, template, templates.outputs)
         stack=synth_stack(**kwargs)
         master.update(stack)
     return master
@@ -55,8 +68,7 @@ def render(fn):
 @render
 def synth_env(config):
     templates=init_templates(config)
-    outputs=filter_outputs(templates)
-    templates["master"]=init_master(config, templates, outputs)
+    templates["master"]=init_master(config, templates)
     return templates
 
 if __name__=="__main__":

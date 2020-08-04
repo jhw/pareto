@@ -1,10 +1,7 @@
 ### short
 
-- avoid passing rendered template to master
-- render at end
-
-- template mapping function
-- test everything under triggers
+- templates for each group need to be pre- created / appended
+  - as they are currently overriding one another
 
 - new preprocessor validation step
 - validate action refs
@@ -180,6 +177,11 @@
   
 ### done
 
+- template mapping function
+- test everything under triggers
+- avoid passing rendered template to master
+- render at end
+- templates class
 - add dynamodb, sqs lookback permissions to config
 - remove event_mapping_permissions
 - check wildcard permissions handling
