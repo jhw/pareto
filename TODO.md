@@ -1,5 +1,6 @@
 ### short
 
+- fix rest api type
 - re- test deployment
 - add back dash as new template
 - pre- validate action references in dsl
