@@ -1,8 +1,5 @@
 ### short
 
-- templates for each group need to be pre- created / appended
-  - as they are currently overriding one another
-
 - new preprocessor validation step
 - validate action refs
 - insert dynamodb sqs lookback permissions
@@ -12,6 +9,8 @@
 
 ### medium
 
+- move nested stack param munging into stack component
+- remove template naming facility
 - output refs not being checked
 - add back multiple action support to buckets, websites
 - check "actions" before iterating over config["components"]["actions"]
@@ -177,6 +176,8 @@
   
 ### done
 
+- templates for each group need to be pre- created / appended
+  - as they are currently overriding one another
 - template mapping function
 - test everything under triggers
 - avoid passing rendered template to master

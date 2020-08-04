@@ -10,6 +10,11 @@ from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
 from pareto.components.website import synth_website
 
+Actions, Triggers = "actions", "triggers"
+
+def TemplateMapper(groupkey):
+    return Actions if groupkey==Actions else Triggers
+
 class Templates(dict):
 
     def __init__(self, items={}):
@@ -22,24 +27,17 @@ class Templates(dict):
             outputs.update({outputkey: tempkey
                             for outputkey, _ in template.outputs})
         return outputs
-
-def TemplateMapper(groupkey):
-    # return "actions" if groupkey=="actions" else "triggers"
-    return groupkey
     
 def init_templates(config, templatefn=TemplateMapper):
-    def init_template(config, groupkey, components):
-        template=Template()
+    templates=Templates()
+    for groupkey, components in config["components"].items():
+        tempkey=templatefn(groupkey)
+        templates.setdefault(tempkey, Template())
         for kwargs in components:
             kwargs.update(config["globals"]) # NB
             fn=eval("synth_%s" % groupkey[:-1])                
             component=fn(**kwargs)
-            template.update(component)            
-        return template
-    templates=Templates()
-    for groupkey, components in config["components"].items():
-        tempkey=templatefn(groupkey)
-        templates[tempkey]=init_template(config, groupkey, components)
+            templates[tempkey].update(component)         
     return templates
 
 def init_master(config, templates):
