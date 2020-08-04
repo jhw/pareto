@@ -15,11 +15,15 @@ Actions, Triggers = "actions", "triggers"
 def TemplateMapper(groupkey):
     return Actions if groupkey==Actions else Triggers
 
+def stack_param(paramname, outputs):
+    return {"Fn::GetAtt": [outputs[paramname].capitalize(),
+                           "Outputs.%s" % paramname]}
+
 class Env(dict):
 
     @classmethod
     def create(self, config, templatefn=TemplateMapper):
-        env=Env()
+        env=Env(config)
         for groupkey, components in config["components"].items():
             tempkey=templatefn(groupkey)
             env.setdefault(tempkey, Template())
@@ -30,8 +34,9 @@ class Env(dict):
                 env[tempkey].update(component)         
         return env
     
-    def __init__(self, items={}):
+    def __init__(self, config, items={}):
         dict.__init__(self, items)
+        self.config=config
 
     @property
     def outputs(self):
@@ -41,34 +46,28 @@ class Env(dict):
                             for outputkey, _ in template.outputs})
         return outputs
 
-def init_master(config, env):
-    def nested_param(outputs, paramname):
-        return {"Fn::GetAtt": [outputs[paramname].capitalize(),
-                               "Outputs.%s" %  paramname]}
-    def init_stack(config, tempname, template, outputs):
-        stack={"name": tempname}
-        stack.update(config["globals"])
-        stack["params"]={paramname: nested_param(outputs, paramname)
-                         for paramname, _ in template.parameters}
-        return stack
-    master=Template()
-    for tempname, template in env.items():
-        kwargs=init_stack(config, tempname, template, env.outputs)
-        stack=synth_stack(**kwargs)
-        master.update(stack)
-    return master
+    def stack_kwargs(self, tempkey, template):
+        outputs=self.outputs
+        kwargs={"name": tempkey,
+                "params": {paramname: stack_param(paramname, outputs)
+                           for paramname, _ in template.parameters}}
+        kwargs.update(self.config["globals"])
+        return kwargs
 
-def render(fn):
-    def wrapped(config):
+    def finalise(self):
+        self["master"]=Template()
+        for tempkey, template in self.items():
+            kwargs=self.stack_kwargs(tempkey, template)
+            stack=synth_stack(**kwargs)
+            self["master"].update(stack)
+        return self
+
+    def render(self):
         return {k:v.render()
-                for k, v in fn(config).items()}
-    return wrapped
+                for k, v in self.items()}
 
-@render
 def synth_env(config):
-    env=Env.create(config)
-    env["master"]=init_master(config, env)
-    return env
+    return Env.create(config).finalise().render();
 
 if __name__=="__main__":
     pass
