@@ -1,7 +1,6 @@
 ### short
 
 - dynamodb, sqs missing lookback permissions
-- ping apis
 
 - add back dash as new template
 - pre- validate action references in dsl
@@ -170,6 +169,7 @@
   
 ### done
 
+- ping apis
 - add back timers
 - add back buckets, websites
 - fix RestApiId
