@@ -46,32 +46,28 @@ class Env(dict):
                             for outputkey, _ in template.outputs})
         return outputs
 
-    def init_stack(self, tempname, template, outputs):
+    def stack_kwargs(self, tempname, template, outputs):
         stack={"name": tempname}
         stack.update(self.config["globals"])
         stack["params"]={paramname: stack_param(paramname, outputs)
                          for paramname, _ in template.parameters}
         return stack
 
-def init_master(env):
-    master=Template()
-    for tempname, template in env.items():
-        kwargs=env.init_stack(tempname, template, env.outputs)
-        stack=synth_stack(**kwargs)
-        master.update(stack)
-    return master
+    def finalise(self):
+        master=Template()
+        for tempname, template in self.items():
+            kwargs=self.stack_kwargs(tempname, template, self.outputs)
+            stack=synth_stack(**kwargs)
+            master.update(stack)
+        self["master"]=master # NB append at end so not iterated over
+        return self
 
-def render(fn):
-    def wrapped(config):
+    def render(self):
         return {k:v.render()
-                for k, v in fn(config).items()}
-    return wrapped
-
-@render
+                for k, v in self.items()}
+    
 def synth_env(config):
-    env=Env.create(config)
-    env["master"]=init_master(env)
-    return env
+    return Env.create(config).finalise().render()
 
 if __name__=="__main__":
     pass
