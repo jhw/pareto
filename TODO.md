@@ -1,7 +1,6 @@
 ### short
 
-- rename `ApiGw` as simply `Api`
-  - rename `ApiApi` as `ApiRestApi` or `ApiRoot`
+- refactor component local variable names
 - look for example of nested parameters
 - filter outputs from all templates
 - add nested parameters
@@ -16,7 +15,6 @@
 - cross- validate action references in dsl
 - check "actions" before iterating over config["components"]["actions"]
 - action to have permission to call another action
-- simplify api gateway arn construction
 - investigate adding region and account id to hardcoded event sources
 - replace api gateway stage name (currently == stage name) with action name
 - add back api gateway resources, logging
@@ -176,6 +174,9 @@
   
 ### done
 
+- simplify api gateway arn construction
+- rename `ApiGw` as simply `Api`
+  - rename `ApiApi` as `ApiRestApi` or `ApiRoot`
 - add back ref checking
 - simplify website lambda config
 - api still using internal function arns

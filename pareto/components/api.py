@@ -1,28 +1,28 @@
 from pareto.components import *
 
-InvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
+InvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${arn}/invocations"
 
-Arn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
+Arn="arn:aws:execute-api:%s:${AWS::AccountId}:${api}/${stage}/%s/"
 
-Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
+Url="https://${api}.execute-api.%s.${AWS::URLSuffix}/${stage}"
 
 @resource(suffix="api")
 def ApiRoot(**kwargs):
     props={"Name": random_id("rest-api")} # NB
-    return "AWS::ApiGateway::RestApi", props
+    return "AWS::ApiGateway::Api", props
 
 @resource(suffix="deployment")
 def ApiDeployment(**kwargs):
-    restapi=ref("%s-api" % kwargs["name"])
-    props={"RestApiId": restapi}
+    api=ref("%s-api" % kwargs["name"])
+    props={"ApiId": api}
     method="%s-method" % kwargs["name"]
     return "AWS::ApiGateway::Deployment", props, [method]
 
 @resource(suffix="stage")
 def ApiStage(**kwargs):
-    restapi=ref("%s-api" % kwargs["name"])
+    api=ref("%s-api" % kwargs["name"])
     deployment=ref("%s-deployment" % kwargs["name"])
-    props={"RestApiId": restapi,
+    props={"ApiId": api,
            "DeploymentId": deployment,
            "StageName": kwargs["stage"]}
     return "AWS::ApiGateway::Stage", props
@@ -30,17 +30,16 @@ def ApiStage(**kwargs):
 @resource(suffix="method")
 def ApiMethod(**kwargs):
     target=ref("%s-arn" % kwargs["action"])
-    uriparams={"lambda_arn": target}
     uri=fn_sub(InvokeArn % kwargs["region"],
-               uriparams)
+               {"arn": target})
     integration={"Uri": uri,
                  "IntegrationHttpMethod": "POST",
                  "Type": "AWS_PROXY"}
-    restapi=ref("%s-api" % kwargs["name"])
+    api=ref("%s-api" % kwargs["name"])
     parent=fn_getatt("%s-api" % kwargs["name"],
                      "RootResourceId")
     props={"AuthorizationType": "NONE",
-           "RestApiId": restapi,
+           "ApiId": api,
            "ResourceId": parent,
            "HttpMethod": kwargs["method"],
            "Integration": integration}
@@ -48,13 +47,12 @@ def ApiMethod(**kwargs):
 
 @resource(suffix="permission")
 def ApiPermission(**kwargs):
-    restapi=ref("%s-api" % kwargs["name"])
-    stagename=ref("%s-stage" % kwargs["name"])
-    eventparams={"rest_api": restapi,
-                 "stage_name": stagename}
+    api=ref("%s-api" % kwargs["name"])
+    stage=ref("%s-stage" % kwargs["name"])
     source=fn_sub(Arn % (kwargs["region"],
                          kwargs["method"]),
-                  eventparams)
+                  {"api": api,
+                   "stage": stage})
     target=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": target,
@@ -64,12 +62,11 @@ def ApiPermission(**kwargs):
 
 @output(suffix="url")
 def ApiUrl(**kwargs):
-    url=Url % kwargs["region"]
-    restapi=ref("%s-api" % kwargs["name"])
-    stagename=ref("%s-stage" % kwargs["name"])
-    urlparams={"rest_api": restapi,
-               "stage_name": stagename}
-    return fn_sub(url, urlparams)
+    api=ref("%s-api" % kwargs["name"])
+    stage=ref("%s-stage" % kwargs["name"])
+    return fn_sub(Url % kwargs["region"],
+                  {"api": api,
+                   "stage": stage})
 
 def synth_api(**kwargs):
     template=Template(resources=[ApiRoot(**kwargs),
