@@ -1,5 +1,11 @@
 from pareto.components import *
 
+"""
+- s3 ARNs contain neither region nor account id
+"""
+
+Arn="arn:aws:s3:::%s"
+
 @resource()
 def Bucket(event={"type":  "s3:ObjectCreated:*"},
            **kwargs):
@@ -15,11 +21,11 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
 
 @resource(suffix="permission")
 def BucketPermission(**kwargs):
-    source="arn:aws:s3:::%s" % resource_name(kwargs)
+    source=Arn % resource_name(kwargs)
     target=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": target,
-           "SourceAccount": fn_sub("${AWS::AccountId}"),
+           "SourceAccount": fn_sub("${AWS::AccountId}"), # recommended as arn does not contain account
            "SourceArn": source,
            "Principal": "s3.amazonaws.com"}
     return "AWS::Lambda::Permission", props

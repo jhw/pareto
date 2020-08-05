@@ -2,6 +2,12 @@ from pareto.components import *
 
 from pareto.components.bucket import BucketPermission
 
+"""
+- s3 arns contain neither region nor account id
+"""
+
+Arn="arn:aws:s3:::${bucket_name}/*"
+
 @resource()
 def Website(event={"type":  "s3:ObjectCreated:*"},
             **kwargs):
@@ -31,8 +37,7 @@ def WebsiteUrl(**kwargs):
 @resource(suffix="policy")
 def WebsitePolicy(**kwargs):
     def policy_document(kwargs):
-        resource=fn_sub("arn:aws:s3:::${bucket_name}/*",
-                        {"bucket_name": ref(kwargs["name"])})
+        resource=fn_sub(Arn, {"bucket_name": ref(kwargs["name"])})
         statement=[{"Action": "s3:GetObject",
                     "Effect": "Allow",
                     "Principal": "*",

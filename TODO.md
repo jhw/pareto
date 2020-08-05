@@ -16,7 +16,6 @@
 - add back multiple action support to buckets, websites
 - check "actions" before iterating over config["components"]["actions"]
 - action to have permission to call another action
-- investigate adding region and account id to hardcoded event sources
 - replace api gateway stage name (currently == stage name) with action name
 - add back api gateway resources, logging
 - ensure all components have action (=> website)
@@ -180,6 +179,7 @@
   
 ### done
 
+- investigate adding region and account id to hardcoded event sources
 - remove dashboard and named templates
 - merge init_master() into Env class
 - init_master into env as finalise
