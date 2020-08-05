@@ -1,9 +1,8 @@
 ### short
 
-- new preprocessor validation step
-- validate action refs
 - insert dynamodb sqs lookback permissions
-- validate uniqueness
+
+- add back dashboard class
 
 ### medium
 
@@ -177,6 +176,9 @@
   
 ### done
 
+- new preprocessor validation step
+- validate action refs
+- validate uniqueness
 - use logical_id for stack name so `non-actions` will resolve to `NonActions`
 - rename components as actions
 - check "actions" before iterating over config["components"]["actions"]

@@ -19,6 +19,33 @@ def stack_param(paramname, outputs):
     return {"Fn::GetAtt": [logical_id(outputs[paramname]),
                            "Outputs.%s" %  paramname]}
 
+def validate(config):
+    def filter_names(config):
+        names=[]
+        for groupkey in config["components"]:
+            for component in config["components"][groupkey]:
+                names.append(component["name"])
+        return names
+    def filter_action_refs(config):
+        names=[]
+        for groupkey in config["components"]:
+            for component in config["components"][groupkey]:
+                if "action" in component:
+                    names.append(component["action"])
+        return names
+    def validate_unique_names(config):
+        names=filter_names(config)
+        unames=list(set(names))
+        if len(names)!=len(unames):
+            raise RuntimeError("component names are not unique")
+    def validate_action_refs(config):
+        names=filter_names(config)
+        for ref in filter_action_refs(config):
+            if ref not in names:
+                raise RuntimeError("ref %s not found in component names" % ref)
+    validate_unique_names(config)
+    validate_action_refs(config)
+
 class Env(dict):
 
     @classmethod
@@ -66,7 +93,20 @@ class Env(dict):
     def render(self):
         return {k:v.render()
                 for k, v in self.items()}
+
+def prevalidate(fn):
+    def wrapped(config):
+        validate(config)
+        return fn(config)
+    return wrapped
+
+def preprocess(fn):
+    def wrapped(config):
+        return fn(config)
+    return wrapped
     
+@prevalidate
+@preprocess
 def synth_env(config):
     return Env.create(config).finalise().render()
 
