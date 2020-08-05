@@ -1,6 +1,5 @@
 ### short
 
-- use logical_id for stack name so `non-actions` will resolve to `NonActions`
 - move nested stack param munging into stack component
 
 - new preprocessor validation step
@@ -177,6 +176,7 @@
   
 ### done
 
+- use logical_id for stack name so `non-actions` will resolve to `NonActions`
 - rename components as actions
 - check "actions" before iterating over config["components"]["actions"]
 - investigate adding region and account id to hardcoded event sources

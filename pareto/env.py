@@ -16,7 +16,7 @@ def TemplateMapper(groupkey):
     return Actions if groupkey==Actions else Triggers
 
 def stack_param(paramname, outputs):
-    return {"Fn::GetAtt": [outputs[paramname].capitalize(),
+    return {"Fn::GetAtt": [logical_id(outputs[paramname]),
                            "Outputs.%s" %  paramname]}
 
 class Env(dict):
