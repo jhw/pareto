@@ -1,6 +1,5 @@
 ### short
 
-- check "actions" before iterating over config["components"]["actions"]
 - use logical_id for stack name so `non-actions` will resolve to `NonActions`
 - move nested stack param munging into stack component
 
@@ -178,6 +177,7 @@
   
 ### done
 
+- check "actions" before iterating over config["components"]["actions"]
 - investigate adding region and account id to hardcoded event sources
 - remove dashboard and named templates
 - merge init_master() into Env class

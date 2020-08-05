@@ -186,6 +186,8 @@ if __name__=="__main__":
         """, Loader=yaml.FullLoader)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
+        if "actions" not in config["components"]:
+            raise RuntimeError("No actions found")
         validate_bucket(config)
         run_tests(config)
         commits=latest_commits(config)
