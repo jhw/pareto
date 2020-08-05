@@ -20,8 +20,8 @@ def underscore(text):
 @toggle_aws_profile
 def run_tests(config):
     logging.info("running tests")
-    def index_test(component, klassname="IndexTest"):    
-        modname="%s.test" % underscore(component["name"])
+    def index_test(action, klassname="IndexTest"):    
+        modname="%s.test" % underscore(action["name"])
         try:
             mod=__import__(modname, fromlist=[klassname])
         except ModuleNotFoundError:
@@ -33,8 +33,8 @@ def run_tests(config):
         return klass
     if config["globals"]["src"] not in sys.path:
         sys.path.append(config["globals"]["src"])
-    klasses=[index_test(component)
-             for component in config["components"]["actions"]]
+    klasses=[index_test(action)
+             for action in config["components"]["actions"]]
     suite=unittest.TestSuite()
     for klass in klasses:
         suite.addTest(unittest.makeSuite(klass))
@@ -117,16 +117,16 @@ def add_staging(config, commits):
                                 name=name,
                                 hexsha=commits[name][0],
                                 timestamp=commits[name][1]))
-    for component in config["components"]["actions"]:
-        key=lambda_key(component["name"], commits)
-        component["staging"]={"bucket": config["globals"]["bucket"],
+    for action in config["components"]["actions"]:
+        key=lambda_key(action["name"], commits)
+        action["staging"]={"bucket": config["globals"]["bucket"],
                               "key": key}
 
 def push_lambdas(config):
     logging.info("pushing lambdas")
-    def validate_lambda(config, component):
+    def validate_lambda(config, action):
         path="%s/%s" % (config["globals"]["src"],
-                        underscore(component["name"]))
+                        underscore(action["name"]))
         if not os.path.exists(path):
             raise RuntimeError("%s does not exist" % path)
     def is_valid(filename, ignore=["test.py$",
@@ -135,9 +135,9 @@ def push_lambdas(config):
             if re.search(pat, filename)!=None:
                 return False
         return True
-    def write_zipfile(config, component, zf):
+    def write_zipfile(config, action, zf):
         path="%s/%s" % (config["globals"]["src"],
-                        underscore(component["name"]))
+                        underscore(action["name"]))
         count=0
         for root, dirs, files in os.walk(path):
             for filename in files:
@@ -147,35 +147,35 @@ def push_lambdas(config):
                     count+=1
         if not count:
             raise RuntimeError("no files found in %s" % path)
-    def init_zipfile(config, component):
-        tokens=["tmp"]+component["staging"]["key"].split("/")[-2:]
+    def init_zipfile(config, action):
+        tokens=["tmp"]+action["staging"]["key"].split("/")[-2:]
         zfdir, zfname = "/".join(tokens[:-1]), "/".join(tokens)        
         if not os.path.exists(zfdir):
             os.makedirs(zfdir)
         zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-        write_zipfile(config, component, zf)
+        write_zipfile(config, action, zf)
         zf.close()
         return zfname
     def check_exists(fn):
-        def wrapped(component, zfname):
+        def wrapped(action, zfname):
             try:
-                S3.head_object(Bucket=component["staging"]["bucket"],
-                               Key=component["staging"]["key"])
-                logging.warning("%s exists" % component["staging"]["key"])
+                S3.head_object(Bucket=action["staging"]["bucket"],
+                               Key=action["staging"]["key"])
+                logging.warning("%s exists" % action["staging"]["key"])
             except ClientError as error:
-                return fn(component, zfname)
+                return fn(action, zfname)
         return wrapped
     @check_exists
-    def push_lambda(component, zfname):
-        logging.info("pushing %s" % component["staging"]["key"])
+    def push_lambda(action, zfname):
+        logging.info("pushing %s" % action["staging"]["key"])
         S3.upload_file(zfname,
-                       component["staging"]["bucket"],
-                       component["staging"]["key"],
+                       action["staging"]["bucket"],
+                       action["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
-    for component in config["components"]["actions"]:
-        validate_lambda(config, component)
-        zfname=init_zipfile(config, component)
-        push_lambda(component, zfname)
+    for action in config["components"]["actions"]:
+        validate_lambda(config, action)
+        zfname=init_zipfile(config, action)
+        push_lambda(action, zfname)
         
 if __name__=="__main__":
     try:        

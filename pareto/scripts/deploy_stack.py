@@ -23,47 +23,47 @@ def init_region(config):
 
 def add_lambda_staging(config):
     logging.info("adding lambda staging")
-    def add_staging(component, commits):
+    def add_staging(action, commits):
         groups, latest = commits.grouped, commits.latest
         staging={"bucket": config["globals"]["bucket"]}
-        if "commit" in component: 
-            if component["commit"] not in groups[component["name"]]:
-                raise RuntimeError("commit %s not found for %s" % (component["commit"], component["name"]))
-            staging["key"]=str(groups[component["name"]][component["commit"]])
+        if "commit" in action: 
+            if action["commit"] not in groups[action["name"]]:
+                raise RuntimeError("commit %s not found for %s" % (action["commit"], action["name"]))
+            staging["key"]=str(groups[action["name"]][action["commit"]])
         else:
-            if component["name"] not in latest:
-                raise RuntimeError("no deployables found for %s" % component["name"])
-            staging["key"]=str(latest[component["name"]])
-        component.setdefault("staging", {})
-        component["staging"]["lambda"]=staging    
+            if action["name"] not in latest:
+                raise RuntimeError("no deployables found for %s" % action["name"])
+            staging["key"]=str(latest[action["name"]])
+        action.setdefault("staging", {})
+        action["staging"]["lambda"]=staging    
     commits=LambdaCommits(config=config, s3=S3)
-    for component in config["components"]["actions"]:
-       add_staging(component, commits)
+    for action in config["components"]["actions"]:
+       add_staging(action, commits)
 
 def add_layer_staging(config):
     logging.info("adding layer staging")
-    def filter_staged(config, component, packages):
+    def filter_staged(config, action, packages):
         staged=[]
-        for layerkwargs in component["layers"]:
+        for layerkwargs in action["layers"]:
             package=LayerPackage.create(config, **layerkwargs)
             if not packages.exists(package):
                 raise RuntimeError("%s does not exist" % package)
             staged.append(package)
         return staged
-    def assert_unique_versions(component, packages):        
+    def assert_unique_versions(action, packages):        
         names=[package["name"]
                for package in packages]
         unames=list(set(names))
         if len(names)!=len(unames):
-            raise RuntimeError("%s has multiple versions of the same package" % component["name"])
+            raise RuntimeError("%s has multiple versions of the same package" % action["name"])
     packages=LayerPackages(config=config, s3=S3)
-    for component in config["components"]["actions"]:
-        if "layers" not in component:
+    for action in config["components"]["actions"]:
+        if "layers" not in action:
             continue
-        staged=filter_staged(config, component, packages)
-        assert_unique_versions(component, staged)
-        component.setdefault("staging", {})
-        component["staging"]["layer"]=staged
+        staged=filter_staged(config, action, packages)
+        assert_unique_versions(action, staged)
+        action.setdefault("staging", {})
+        action["staging"]["layer"]=staged
         
 """
 - cloudformation will check this for you early in deployment process

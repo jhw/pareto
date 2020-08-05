@@ -1,5 +1,6 @@
 ### short
 
+- rename components as actions
 - use logical_id for stack name so `non-actions` will resolve to `NonActions`
 - move nested stack param munging into stack component
 
