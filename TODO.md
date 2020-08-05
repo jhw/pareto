@@ -1,17 +1,17 @@
 ### short
 
-- add back dashboard class
+- dashboards stack
+
+- replace checking for `actions` in `components` with decorators
 
 - check output refs
 
 ### medium
 
-- replace checking for `actions` in `components` with decorators
 - add back multiple action support to buckets, websites
 - action to have permission to call another action
 - add back api gateway resources, logging
 
-- dashboards
 - auth
 - template factory
 - apigw request validation
@@ -176,6 +176,7 @@
   
 ### done
 
+- add back dashboard class
 - use yaml.safe_load
 - insert dynamodb, sqs lookback permissions
 - new preprocessor validation step
