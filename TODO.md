@@ -1,7 +1,5 @@
 ### short
 
-- replace checking for `actions` in `components` with decorators
-
 - see if @resource can be simplified
 - @singleton
 - test layers as singletons
@@ -188,6 +186,7 @@
   
 ### done
 
+- replace checking for `actions` in `components` with decorators
 - deploy and test dashboard
 - dashboard naming
 - pass temp name to template

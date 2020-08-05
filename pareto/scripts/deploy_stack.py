@@ -21,6 +21,7 @@ def init_region(config):
         raise RuntimeError("region is not set in AWS profile")
     config["globals"]["region"]=region
 
+@assert_actions
 def add_lambda_staging(config):
     logging.info("adding lambda staging")
     def add_staging(action, commits):
@@ -40,6 +41,7 @@ def add_lambda_staging(config):
     for action in config["components"]["actions"]:
        add_staging(action, commits)
 
+@assert_actions
 def add_layer_staging(config):
     logging.info("adding layer staging")
     def filter_staged(config, action, packages):

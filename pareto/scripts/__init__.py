@@ -29,5 +29,13 @@ def validate_bucket(config):
     if config["globals"]["bucket"] not in bucketnames:
         raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
 
+def assert_actions(fn):
+    def wrapped(*args, **kwargs):
+        config=kwargs["config"] if "config" in kwargs else args[0]
+        if "actions" not in config["components"]:
+            raise RuntimeError("No actions found")
+        return fn(*args, **kwargs)
+    return wrapped
+    
 if __name__=="__main__":
     pass

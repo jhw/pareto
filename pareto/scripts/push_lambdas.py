@@ -18,6 +18,7 @@ def underscore(text):
     return text.replace("-", "_")
 
 @toggle_aws_profile
+@assert_actions
 def run_tests(config):
     logging.info("running tests")
     def index_test(action, klassname="IndexTest"):    
@@ -110,6 +111,7 @@ def latest_commits(config,
         raise RuntimeError("latest commit map is incomplete (if you've moved lambdas to new directory, has changed been committed ?)")
     return latest
 
+@assert_actions
 def add_staging(config, commits):
     logging.info("adding staging")
     def lambda_key(name, commits):
@@ -122,6 +124,7 @@ def add_staging(config, commits):
         action["staging"]={"bucket": config["globals"]["bucket"],
                               "key": key}
 
+@assert_actions
 def push_lambdas(config):
     logging.info("pushing lambdas")
     def validate_lambda(config, action):
