@@ -1,6 +1,5 @@
 ### short
 
-- dashboard naming
 - deploy and test dashboard
 
 ### medium
@@ -177,6 +176,7 @@
   
 ### done
 
+- dashboard naming
 - pass temp name to template
 - add back old self- contained dash
 - remove new dashboards stuff 

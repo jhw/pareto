@@ -87,10 +87,15 @@ class Env(dict):
 
     @classmethod
     def create(self, config, templatefn=TemplateMapper):
+        def template_name(config, tempkey):
+            return "%s-%s-%s" % (config["globals"]["app"],
+                                 tempkey,
+                                 config["globals"]["stage"])
         env=Env(config)
         for groupkey, components in config["components"].items():
             tempkey=templatefn(groupkey)
-            env.setdefault(tempkey, Template(name="hello-world"))
+            tempname=template_name(config, tempkey)
+            env.setdefault(tempkey, Template(name=tempname))
             for kwargs in components:
                 kwargs.update(config["globals"]) # NB
                 fn=eval("synth_%s" % groupkey[:-1])                
