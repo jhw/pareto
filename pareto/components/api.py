@@ -1,10 +1,10 @@
 from pareto.components import *
 
-InvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${arn}/invocations"
+InvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
 
-Arn="arn:aws:execute-api:%s:${AWS::AccountId}:${api}/${stage}/%s/"
+Arn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
 
-Url="https://${api}.execute-api.%s.${AWS::URLSuffix}/${stage}"
+Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
 
 @resource(suffix="api")
 def ApiRoot(**kwargs):
@@ -31,7 +31,7 @@ def ApiStage(**kwargs):
 def ApiMethod(**kwargs):
     target=ref("%s-arn" % kwargs["action"])
     uri=fn_sub(InvokeArn % kwargs["region"],
-               {"arn": target})
+               {"lambda_arn": target})
     integration={"Uri": uri,
                  "IntegrationHttpMethod": "POST",
                  "Type": "AWS_PROXY"}
@@ -51,8 +51,8 @@ def ApiPermission(**kwargs):
     stage=ref("%s-stage" % kwargs["name"])
     source=fn_sub(Arn % (kwargs["region"],
                          kwargs["method"]),
-                  {"api": api,
-                   "stage": stage})
+                  {"rest_api": api,
+                   "stage_name": stage})
     target=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": target,
@@ -65,8 +65,8 @@ def ApiUrl(**kwargs):
     api=ref("%s-api" % kwargs["name"])
     stage=ref("%s-stage" % kwargs["name"])
     return fn_sub(Url % kwargs["region"],
-                  {"api": api,
-                   "stage": stage})
+                  {"rest_api": api,
+                   "stage_name": stage})
 
 def synth_api(**kwargs):
     template=Template(resources=[ApiRoot(**kwargs),
