@@ -1,6 +1,6 @@
 ### short
 
-- remove new dashboards stuff and add back old self- contained dash
+- add back old self- contained dash
 - actions to add dashboards
 - pass names to dashboards
   - there was old code that did this
@@ -180,6 +180,7 @@
   
 ### done
 
+- remove new dashboards stuff 
 - add back dashboard class
 - use yaml.safe_load
 - insert dynamodb, sqs lookback permissions
