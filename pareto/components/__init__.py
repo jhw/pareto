@@ -44,13 +44,6 @@ def resource(suffix=None):
             return [logical_id(name)
                     for name in v]
         return format_depends(v) if k=="DependsOn" else v
-    def fill_in_props(fn):
-        def wrapped(values, **kwargs):
-            if not isinstance(values, tuple):
-                values=(values, {})
-            return fn(values, **kwargs)
-        return wrapped
-    @fill_in_props
     def format_values(values,
                       attrs=["Type", "Properties", "DependsOn"]):
         return {k:format_value(k, v)

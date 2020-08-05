@@ -1,8 +1,6 @@
 ### short
 
-- all resources to return three args
-- remove fill- in code in @resource
-- new decorator to fill in blank args
+- validate resource return type
 
 - @singleton
 - test layers as singletons
@@ -189,6 +187,9 @@
   
 ### done
 
+- all resources to return three args
+- remove fill- in code in @resource
+- new decorator to fill in blank args
 - replace checking for `actions` in `components` with decorators
 - deploy and test dashboard
 - dashboard naming

@@ -13,7 +13,7 @@ def Stack(**kwargs):
     if ("params" in kwargs and
         kwargs["params"]!={}):
         props["Parameters"]=kwargs["params"]
-    return "AWS::CloudFormation::Stack", props    
+    return "AWS::CloudFormation::Stack", props
 
 def synth_stack(**kwargs):
     return Template(resources=[Stack(**kwargs)])
