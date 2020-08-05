@@ -1,6 +1,9 @@
 ### short
 
-- see if @resource can be simplified
+- all resources to return three args
+- remove fill- in code in @resource
+- new decorator to fill in blank args
+
 - @singleton
 - test layers as singletons
 
