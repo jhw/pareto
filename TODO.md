@@ -1,9 +1,7 @@
 ### short
 
-- actions to add dashboards
-- pass names to dashboards
-  - there was old code that did this
-- check dashboard generated
+- dashboard naming
+- deploy and test dashboard
 
 ### medium
 
