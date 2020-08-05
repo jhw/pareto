@@ -1,12 +1,13 @@
 ### short
 
-- insert dynamodb sqs lookback permissions
+- use yaml.safe_load
 
 - add back dashboard class
 
 ### medium
 
 - check output refs
+- replace checking for `actions` in `components` with decorators
 - add back multiple action support to buckets, websites
 - action to have permission to call another action
 - add back api gateway resources, logging
@@ -176,6 +177,7 @@
   
 ### done
 
+- insert dynamodb, sqs lookback permissions
 - new preprocessor validation step
 - validate action refs
 - validate uniqueness

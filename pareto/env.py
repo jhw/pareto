@@ -12,6 +12,18 @@ from pareto.components.website import synth_website
 
 Actions, NonFunctionals = "actions", "non-functionals"
 
+LookbackPermissions=yaml.load("""
+table:
+- dynamodb:DescribeStream
+- dynamodb:GetRecords
+- dynamodb:GetShardIterator
+- dynamodb:ListStreams
+queue:
+- sqs:DeleteMessage
+- sqs:GetQueueAttributes
+- sqs:ReceiveMessage
+""", Loader=yaml.FullLoader)
+
 def TemplateMapper(groupkey):
     return Actions if groupkey==Actions else NonFunctionals
 
@@ -46,6 +58,31 @@ def validate(config):
     validate_unique_names(config)
     validate_action_refs(config)
 
+def assert_actions(fn):
+    def wrapped(config):
+        if "actions" in config["components"]:
+            return fn(config)
+    return wrapped
+    
+@assert_actions
+def preprocessor(config):
+    def filter_actions(config):
+        return {action["name"]:action
+                for action in config["components"]["actions"]}
+    def filter_types(config):
+        types={}
+        for groupkey in config["components"]:
+            for component in config["components"][groupkey]:
+                if "action" in component:
+                    types[component["action"]]=groupkey[:-1]
+        return types
+    actions, types = filter_actions(config), filter_types(config)
+    for actionname, action in actions.items():
+        if (actionname in types and
+            types[actionname] in LookbackPermissions):
+            action.setdefault("permissions", [])
+            action["permissions"]+=LookbackPermissions[types[actionname]]
+    
 class Env(dict):
 
     @classmethod
@@ -102,6 +139,7 @@ def prevalidate(fn):
 
 def preprocess(fn):
     def wrapped(config):
+        preprocessor(config)
         return fn(config)
     return wrapped
     
