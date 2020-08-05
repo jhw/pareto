@@ -1,4 +1,13 @@
-### nested stack parameterds 3/8/20
+### singletons 5/8/20
+
+- can think of a number of examples of useful singletons
+- layers, api gateway logging, iam roles, user pools
+- key is probably that they are not bound to a particular name specified in the dsl
+- which means you might have an @singleton decorator similar to @resource
+- which probably means @resource should be simplified
+- the nice thing is you can add multiple singletons to the list of resources and they will still be resolved to a single resource because of the conversion from list of tuples to dict
+
+### nested stack parameters 3/8/20
 
 - trigger stacks may require action arns output from actions template
 - should be able to hack via naming convention

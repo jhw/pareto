@@ -1,20 +1,23 @@
 ### short
 
-- dashboards stack
-
-- replace checking for `actions` in `components` with decorators
-
-- check output refs
+- remove new dashboards stuff and add back old self- contained dash
+- actions to add dashboards
+- pass names to dashboards
+  - there was old code that did this
+- check dashboard generated
 
 ### medium
 
+- singletons [notes]
+
+- replace checking for `actions` in `components` with decorators
+- check output refs
+
 - add back multiple action support to buckets, websites
 - action to have permission to call another action
-- add back api gateway resources, logging
 
 - auth
 - template factory
-- apigw request validation
 - scaffold generator
 - targets [notes]
 
@@ -25,8 +28,9 @@
 - federated login
 - unauthenticated access
 
-- layers pool
 - cloudwatch alerts
+- apigw request validation
+- apigw resources, logging
 - apigateway2
 - eventbridge
 - ci pipeline
