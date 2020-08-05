@@ -26,6 +26,7 @@
 - federated login
 - unauthenticated access
 
+- layers pool
 - cloudwatch alerts
 - apigateway2
 - eventbridge
