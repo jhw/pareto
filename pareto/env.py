@@ -27,7 +27,15 @@ queue:
 def TemplateMapper(groupkey):
     return Actions if groupkey==Actions else NonFunctionals
 
-def stack_param(paramname, outputs):
+def assert_output(fn):
+    def wrapped(paramname, outputs):
+        if paramname not in outputs:
+            raise RuntimeError("%s not found in outputs" % paramname)
+        return fn(paramname, outputs)
+    return wrapped
+
+@assert_output
+def stack_param(paramname, outputs):    
     return {"Fn::GetAtt": [logical_id(outputs[paramname]),
                            "Outputs.%s" %  paramname]}
 

@@ -66,9 +66,8 @@ def add_layer_staging(config):
         action["staging"]["layer"]=staged
         
 """
-- cloudformation will check this for you early in deployment process
-- but still better to have local version to get early warning I think
-- in particular is effective at checking references to logical id which may have been incorrectly coded within components
+- remember this checks resource ids (1st arg to fn:getatt) and not attribute names (2nd arg)
+- hence doesn't cover `Outputs.XXX`
 """
         
 def check_refs(templates):

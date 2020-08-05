@@ -1,3 +1,10 @@
+### checking of output refs 5/8/20
+
+- something which uses fn:getatt and `Outputs.XXX` as the second arg is a dfferent kind of beast to standard arg checking which checks the first argument (the reource)
+- this time it's an attribute name, similar to arn
+- therefore needs its own checking
+- which is actually done at the env level
+
 ### singletons 5/8/20
 
 - can think of a number of examples of useful singletons

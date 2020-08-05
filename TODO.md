@@ -1,5 +1,7 @@
 ### short
 
+- replace checking for `actions` in `components` with decorators
+
 - see if @resource can be simplified
 - @singleton
 - test layers as singletons
@@ -13,9 +15,6 @@
 - test scripts
 
 ### medium
-
-- check output refs
-- replace checking for `actions` in `components` with decorators
 
 - add back multiple action support to buckets, websites
 - action to have permission to call another action
@@ -49,6 +48,8 @@
 
 ### thoughts
 
+- check output refs ?
+  - no [notes]
 - move nested stack param munging into stack component ?
   - no because it involves resolving template key to stack name so belongs in env
 - replace api gateway stage name (currently == stage name) with action name ?
