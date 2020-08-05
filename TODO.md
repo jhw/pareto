@@ -1,25 +1,22 @@
 ### short
 
+- check "actions" before iterating over config["components"]["actions"]
 - use logical_id for stack name so `non-actions` will resolve to `NonActions`
+- move nested stack param munging into stack component
 
 - new preprocessor validation step
 - validate action refs
 - insert dynamodb sqs lookback permissions
 - validate uniqueness
 
-- add back dash as new template
-
 ### medium
 
-- move nested stack param munging into stack component
-- output refs not being checked
+- check output refs
 - add back multiple action support to buckets, websites
-- check "actions" before iterating over config["components"]["actions"]
 - action to have permission to call another action
-- replace api gateway stage name (currently == stage name) with action name
 - add back api gateway resources, logging
-- ensure all components have action (=> website)
 
+- dashboards
 - auth
 - template factory
 - apigw request validation
@@ -45,6 +42,8 @@
 
 ### thoughts
 
+- replace api gateway stage name (currently == stage name) with action name ?
+  - possibly seems logical but then this doesn't seem to be the recommended API gateway pattern
 - remove template naming facility ?
   - no because dashes need names
 - dsl json schema ?
