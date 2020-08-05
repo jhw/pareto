@@ -1,6 +1,5 @@
 ### short
 
-- add back old self- contained dash
 - actions to add dashboards
 - pass names to dashboards
   - there was old code that did this
@@ -180,6 +179,8 @@
   
 ### done
 
+- pass temp name to template
+- add back old self- contained dash
 - remove new dashboards stuff 
 - add back dashboard class
 - use yaml.safe_load

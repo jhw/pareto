@@ -90,7 +90,7 @@ class Env(dict):
         env=Env(config)
         for groupkey, components in config["components"].items():
             tempkey=templatefn(groupkey)
-            env.setdefault(tempkey, Template())
+            env.setdefault(tempkey, Template(name="hello-world"))
             for kwargs in components:
                 kwargs.update(config["globals"]) # NB
                 fn=eval("synth_%s" % groupkey[:-1])                
@@ -119,7 +119,7 @@ class Env(dict):
         return stack
 
     def finalise(self):
-        master=Template()
+        master=Template(name="master")
         for tempname, template in self.items():
             kwargs=self.stack_kwargs(tempname, template, self.outputs)
             stack=synth_stack(**kwargs)
