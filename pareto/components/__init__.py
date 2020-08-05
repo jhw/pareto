@@ -39,13 +39,9 @@ def parameter(name, type_="String"):
     return (logical_id(name), {"Type": type_})
 
 def resource(suffix=None):
-    def format_value(k, v):
-        def format_depends(v):
-            return [logical_id(name)
-                    for name in v]
-        return format_depends(v) if k=="DependsOn" else v
-    def format_values(values,
-                      attrs=["Type", "Properties", "DependsOn"]):
+    def format_values(values, attrs=["Type", "Properties", "DependsOn"]):
+        def format_value(k, v):
+            return [logical_id(name) for name in v] if k=="DependsOn" else v
         return {k:format_value(k, v)
                 for k, v in zip(attrs[:len(values)],
                                 values)}
