@@ -1,22 +1,18 @@
 ### short
 
-- validate resource return type
+- action to have permission to call another action
 
-- @singleton
-- test layers as singletons
-
+- @singleton decorator
+   
 ### auth
 
-- options method
+- options method [singleton]
 - userpool
 - authorizer
 - cross check userpool refs
 - test scripts
 
 ### medium
-
-- add back multiple action support to buckets, websites
-- action to have permission to call another action
 
 - template factory
 - scaffold generator
@@ -34,8 +30,8 @@
   - request validation
   - stage resorces
   - logging
-  - apigw2
 
+- s3 multiple action support
 - cloudwatch alerts
 - eventbridge
 - ci pipeline
@@ -47,6 +43,10 @@
 
 ### thoughts
 
+- apigw2 ?
+  - probably not worth it if the original apigw works fine
+- refactor layers as singletons ?
+  - no because may have different versions of the same package which means they have need to be defined on a per function basis  
 - check output refs ?
   - no [notes]
 - move nested stack param munging into stack component ?
@@ -187,6 +187,7 @@
   
 ### done
 
+- validate resource return type
 - all resources to return three args
 - remove fill- in code in @resource
 - new decorator to fill in blank args

@@ -36,8 +36,7 @@ def ActionFunction(concurrency=None,
 
 @resource(suffix="dead-letter-queue")
 def ActionDeadLetterQueue(**kwargs):
-    props={}
-    return "AWS::SQS::Queue", props
+    return "AWS::SQS::Queue", {}
 
 @resource(suffix="version")
 def ActionVersion(**kwargs):

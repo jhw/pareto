@@ -39,7 +39,17 @@ def parameter(name, type_="String"):
     return (logical_id(name), {"Type": type_})
 
 def resource(suffix=None):
-    def format_values(values, attrs=["Type", "Properties", "DependsOn"]):
+    def assert_values(fn):
+        def wrapped(key, values, **kwargs):
+            if (not isinstance(values, tuple) or
+                len(values) < 2 or
+                type(values[0])!=str or
+                type(values[1])!=dict):
+                raise RuntimeError("%s must return at least type, props" % key)
+            return fn(key, values, **kwargs)
+        return wrapped
+    @assert_values
+    def format_values(key, values, attrs=["Type", "Properties", "DependsOn"]):
         def format_value(k, v):
             return [logical_id(name) for name in v] if k=="DependsOn" else v
         return {k:format_value(k, v)
@@ -51,7 +61,7 @@ def resource(suffix=None):
                             suffix) if suffix else kwargs["name"]
             key=logical_id(name)
             values=fn(*args, **kwargs)
-            return (key, format_values(values))
+            return (key, format_values(key, values))
         return wrapped
     return decorator
 
