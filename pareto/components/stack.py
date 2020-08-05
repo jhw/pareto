@@ -2,7 +2,7 @@ from pareto.components import *
 
 TemplateUrl="https://s3.%s.amazonaws.com/%s/%s-%s/templates/%s.json"
 
-@resource() # NB no suffix
+@resource()
 def Stack(**kwargs):
     url=TemplateUrl % (kwargs["region"],
                        kwargs["bucket"],

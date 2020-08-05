@@ -95,7 +95,7 @@ def ActionRole(**kwargs):
                    for permission in sorted(permissions)]
         return {"PolicyDocument": {"Statement": statement,
                                    "Version": "2012-10-17"},
-                "PolicyName": random_id("inline-policy")} # "conditional"
+                "PolicyName": random_id("inline-policy")}
     props={"AssumeRolePolicyDocument": assume_role_policy_doc()}
     props["Policies"]=[policy(kwargs)]
     return "AWS::IAM::Role", props
@@ -110,7 +110,6 @@ def synth_action(**kwargs):
                                  ActionDeadLetterQueue(**kwargs),
                                  ActionVersion(**kwargs),
                                  ActionEventConfig(**kwargs)],
-                      # dashboard=[ActionCharts(**kwargs)],
                       outputs=[ActionArn(**kwargs)])
     if "layer" in kwargs["staging"]:
         template.resources+=[ActionLayer(package, **kwargs)

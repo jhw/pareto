@@ -15,11 +15,6 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
 
 @resource(suffix="permission")
 def BucketPermission(**kwargs):
-    """
-        - https://aws.amazon.com/premiumsupport/knowledge-center/unable-validate-circular-dependency-cloudformation/
-        - Fn::GetAtt Arn doesn't work for S3 lambda notifications :-(
-        - NB also recommends using SourceAccount as account not included in S3 arn format
-        """
     source="arn:aws:s3:::%s" % resource_name(kwargs)
     target=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",

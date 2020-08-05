@@ -9,10 +9,6 @@ float: N
 @resource()
 def Table(stream={"type": "NEW_IMAGE"},
           **kwargs):        
-    """
-    - primary key currently defined as single field hash
-    - ie no range key currently
-    """
     primaryfield=[field
                   for field in kwargs["fields"]
                   if ("primary" in field
@@ -26,12 +22,6 @@ def Table(stream={"type": "NEW_IMAGE"},
                      field["primary"]) or
                     ("index" in field and
                      field["index"]))]
-    """
-    - can have a hash- style GSI on any STRING field you want
-    - *think* you want ProjectionType=ALL but not 100% sure
-      - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-dynamodb-gsi.html
-    - ProvisionedThroughput not required for index and hopefully covered by BillingType=PAY_PER_REQUEST
-    """
     indexes=[{"IndexName": "%s-index" % field["name"],
               "Projection": {"ProjectionType": "ALL"},
               "KeySchema": [{"AttributeName": field["name"],
