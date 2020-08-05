@@ -10,10 +10,10 @@ from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
 from pareto.components.website import synth_website
 
-Actions, Triggers = "actions", "triggers"
+Actions, NonFunctionals = "actions", "non-functionals"
 
 def TemplateMapper(groupkey):
-    return Actions if groupkey==Actions else Triggers
+    return Actions if groupkey==Actions else NonFunctionals
 
 def stack_param(paramname, outputs):
     return {"Fn::GetAtt": [logical_id(outputs[paramname]),
@@ -47,10 +47,11 @@ class Env(dict):
         return outputs
 
     def stack_kwargs(self, tempname, template, outputs):
-        stack={"name": tempname}
+        params={paramname: stack_param(paramname, outputs)
+                for paramname, _ in template.parameters}
+        stack={"name": tempname,
+               "params": params}
         stack.update(self.config["globals"])
-        stack["params"]={paramname: stack_param(paramname, outputs)
-                         for paramname, _ in template.parameters}
         return stack
 
     def finalise(self):

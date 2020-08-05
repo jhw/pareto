@@ -1,7 +1,5 @@
 ### short
 
-- move nested stack param munging into stack component
-
 - new preprocessor validation step
 - validate action refs
 - insert dynamodb sqs lookback permissions
@@ -40,6 +38,8 @@
 
 ### thoughts
 
+- move nested stack param munging into stack component ?
+  - no because it involves resolving template key to stack name so belongs in env
 - replace api gateway stage name (currently == stage name) with action name ?
   - possibly seems logical but then this doesn't seem to be the recommended API gateway pattern
 - remove template naming facility ?
