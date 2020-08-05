@@ -1,33 +1,44 @@
 ### short
 
-- deploy and test dashboard
+- see if @resource can be simplified
+- @singleton
+- test layers as singletons
+
+### auth
+
+- options method
+- userpool
+- authorizer
+- cross check userpool refs
+- test scripts
 
 ### medium
 
-- singletons [notes]
-
-- replace checking for `actions` in `components` with decorators
 - check output refs
+- replace checking for `actions` in `components` with decorators
 
 - add back multiple action support to buckets, websites
 - action to have permission to call another action
 
-- auth
 - template factory
 - scaffold generator
 - targets [notes]
 
 ### v1.1
 
-- self sign- up
-- forgot password
-- federated login
-- unauthenticated access
+- auth
+  - self sign- up
+  - forgot password
+  - federated login
+  - unauthenticated access
+
+- apigw
+  - request validation
+  - stage resorces
+  - logging
+  - apigw2
 
 - cloudwatch alerts
-- apigw request validation
-- apigw resources, logging
-- apigateway2
 - eventbridge
 - ci pipeline
 - github actions
@@ -176,6 +187,7 @@
   
 ### done
 
+- deploy and test dashboard
 - dashboard naming
 - pass temp name to template
 - add back old self- contained dash
