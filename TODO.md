@@ -2,6 +2,8 @@
 
 - add back dashboard class
 
+- check output refs
+
 ### medium
 
 - replace checking for `actions` in `components` with decorators
