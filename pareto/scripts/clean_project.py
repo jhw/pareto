@@ -47,10 +47,10 @@ def clean_codebuild(config):
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
-        argsconfig=yaml.load("""
+        argsconfig=yaml.safe_load("""
         - name: config
           type: file
-        """, Loader=yaml.FullLoader)
+        """)
         args=argsparse(sys.argv[1:], argsconfig)
         for fn in [clean_s3,
                    clean_iam,

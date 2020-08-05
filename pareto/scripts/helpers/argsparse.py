@@ -31,8 +31,7 @@ def parse_str(value):
 def parse_file(value):
     if not os.path.exists(value):
         raise RuntimeError("file does not exist")
-    return yaml.load(open(value, 'r'),
-                     Loader=yaml.FullLoader)
+    return yaml.safe_load(open(value, 'r'))
 
 def validate_int(value, item):
     pass

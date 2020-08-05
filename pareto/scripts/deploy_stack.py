@@ -181,7 +181,7 @@ def deploy_env(config, template):
 if __name__=="__main__":
     try:        
         init_stdout_logger(logging.INFO)
-        argsconfig=yaml.load("""
+        argsconfig=yaml.safe_load("""
         - name: config
           type: file
         - name: stage
@@ -191,7 +191,7 @@ if __name__=="__main__":
           - prod
         - name: live
           type: bool
-        """, Loader=yaml.FullLoader)
+        """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         if "actions" not in config["components"]:

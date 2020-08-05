@@ -12,7 +12,7 @@ from pareto.components.website import synth_website
 
 Actions, NonFunctionals = "actions", "non-functionals"
 
-LookbackPermissions=yaml.load("""
+LookbackPermissions=yaml.safe_load("""
 table:
 - dynamodb:DescribeStream
 - dynamodb:GetRecords
@@ -22,7 +22,7 @@ queue:
 - sqs:DeleteMessage
 - sqs:GetQueueAttributes
 - sqs:ReceiveMessage
-""", Loader=yaml.FullLoader)
+""")
 
 def TemplateMapper(groupkey):
     return Actions if groupkey==Actions else NonFunctionals

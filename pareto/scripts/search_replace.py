@@ -27,14 +27,14 @@ def refactor_src(pat, rep, root):
                         
 if __name__=="__main__":
     try:
-        argsconfig=yaml.load("""
+        argsconfig=yaml.safe_load("""
         - name: pat
           type: str
         - name: rep
           type: str
         - name: root
           type: str
-        """, Loader=yaml.FullLoader)
+        """)
         args=argsparse(sys.argv[1:], argsconfig)
         refactor_src(**args)
     except RuntimeError as error:

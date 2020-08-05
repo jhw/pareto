@@ -10,7 +10,7 @@ from pareto.staging.layers import *
 
 if __name__=="__main__":
     try:
-        argsconfig=yaml.load("""
+        argsconfig=yaml.safe_load("""
         - name: config
           type: file
         - name: package
@@ -19,7 +19,7 @@ if __name__=="__main__":
           type: int
         - name: query
           type: str
-        """, Loader=yaml.FullLoader)
+        """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         package=LayerPackage.create_cli(config,

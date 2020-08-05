@@ -14,10 +14,10 @@ def list_s3(config):
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
-        argsconfig=yaml.load("""
+        argsconfig=yaml.safe_load("""
         - name: config
           type: file
-        """, Loader=yaml.FullLoader)
+        """)
         args=argsparse(sys.argv[1:], argsconfig)
         list_s3(args["config"])
     except ClientError as error:

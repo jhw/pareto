@@ -9,14 +9,14 @@ from pareto.scripts import *
 
 from pareto.staging.layers import *
 
-RolePolicyDoc=yaml.load("""
+RolePolicyDoc=yaml.safe_load("""
 Statement:
   - Action: sts:AssumeRole
     Effect: Allow
     Principal:
       Service: codebuild.amazonaws.com
 Version: '2012-10-17'
-""", Loader=yaml.FullLoader)
+""")
 
 """
 - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
@@ -185,12 +185,12 @@ def run_project(config, package,
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
-        argsconfig=yaml.load("""
+        argsconfig=yaml.safe_load("""
         - name: config
           type: file
         - name: package
           type: str
-        """, Loader=yaml.FullLoader)
+        """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         validate_bucket(config)

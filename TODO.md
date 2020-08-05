@@ -1,12 +1,9 @@
 ### short
 
-- use yaml.safe_load
-
 - add back dashboard class
 
 ### medium
 
-- check output refs
 - replace checking for `actions` in `components` with decorators
 - add back multiple action support to buckets, websites
 - action to have permission to call another action
@@ -177,6 +174,7 @@
   
 ### done
 
+- use yaml.safe_load
 - insert dynamodb, sqs lookback permissions
 - new preprocessor validation step
 - validate action refs

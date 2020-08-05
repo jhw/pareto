@@ -2,12 +2,12 @@ from pareto.components import *
 
 from pareto.charts.action import ActionCharts
 
-DefaultPermissions=yaml.load("""
+DefaultPermissions=yaml.safe_load("""
 - logs:CreateLogGroup
 - logs:CreateLogStream
 - logs:PutLogEvents                                          
 - sqs:SendMessage # dead letter queue
-""", Loader=yaml.FullLoader)
+""")
 
 @resource()
 def ActionFunction(concurrency=None,

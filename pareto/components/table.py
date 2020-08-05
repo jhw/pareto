@@ -1,10 +1,10 @@
 from pareto.components import *
 
-DDBTypes=yaml.load("""
+DDBTypes=yaml.safe_load("""
 string: S
 int: N
 float: N
-""", Loader=yaml.FullLoader)
+""")
 
 @resource()
 def Table(stream={"type": "NEW_IMAGE"},
