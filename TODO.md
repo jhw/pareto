@@ -180,6 +180,7 @@
   
 ### done
 
+- remove dashboard and named templates
 - merge init_master() into Env class
 - init_master into env as finalise
 - rename templates as env
