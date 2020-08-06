@@ -24,8 +24,11 @@ queue:
 - sqs:ReceiveMessage
 """)
 
-def TemplateMapper(groupkey):
-    return Actions if groupkey==Actions else NonFunctionals
+def TemplateMapper(groupkey,
+                   dedicated=["actions",
+                              "apis"],
+                   default="misc"):
+    return groupkey if groupkey in dedicated else default
 
 def assert_output(fn):
     def wrapped(paramname, outputs):

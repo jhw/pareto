@@ -1,6 +1,5 @@
 ### short 
 
-- separate apis template
 - apigw resources
 
 - userpool component
@@ -34,6 +33,7 @@
 - s3 multiple action support
 - cloudwatch alerts
 - eventbridge
+- step functions
 - ci pipeline
 - github actions
 - lambda xray
@@ -190,6 +190,7 @@
   
 ### done
 
+- separate apis template
 - compare/contrast options methods (vs amplify_auth_demo)
 - test cors with curl
 - ensure all header- like methods which use string values make use of single quotes
