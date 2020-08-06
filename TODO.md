@@ -1,14 +1,13 @@
-### short
+### short [cors]
 
-- cors options deployment failing on "Invalid Mapping"
-  - https://stackoverflow.com/questions/37094170/a-single-string-in-single-quotes-with-pyyaml
-  - cors request templates / response models need to json.dumps values
-
+- investigate how JSON templates are rendering single quotes
+- see if can replace JSON templates with yaml
+- integrate and test replace_single_quotes
 - test cors via curl
 
-- userpool component
-
 ### medium
+
+- userpool component
 
 - api authorizer
 - userpool ref validation
