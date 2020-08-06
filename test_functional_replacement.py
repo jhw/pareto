@@ -6,8 +6,8 @@ class Counter:
     def increment(self):
         self.counter+=1
 
-def increment(fn):
-    def wrapped(match, counter):
+def increment(fn, counter=Counter()):
+    def wrapped(match):
         resp=fn(match, counter)
         counter.increment()
         return resp
@@ -18,7 +18,6 @@ def matcher(match, counter):
     return "hah" if 0==counter.counter % 2 else 'bah'
 
 if __name__=="__main__":
-    counter=Counter()
     print (re.sub("XXX",
-                  lambda m: matcher(m, counter),
+                  matcher,
                   "abasdasdad XXX asjdasdsd XXX asdasdd XXX ashdahjsadsa XXX asasasas"))
