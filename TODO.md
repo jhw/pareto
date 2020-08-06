@@ -1,6 +1,8 @@
 ### short
 
 - cors options deployment failing on "Invalid Mapping"
+  - https://stackoverflow.com/questions/37094170/a-single-string-in-single-quotes-with-pyyaml
+  - cors request templates / response models need to json.dumps values
 
 - test cors via curl
 
