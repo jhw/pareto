@@ -1,19 +1,18 @@
 ### short
 
-- action to have permission to call another action
+- apigw options method
 
-- @singleton decorator
-   
+- userpool component
+
 ### auth
 
-- options method [singleton]
-- userpool
-- authorizer
-- cross check userpool refs
-- test scripts
+- api authorizer
+- userpool ref validation
+- auth testing scripts
 
-### medium
+- action to have permission to call another action
 
+- cloudfront + route 53
 - template factory
 - scaffold generator
 - targets [notes]
@@ -21,6 +20,7 @@
 ### v1.1
 
 - auth
+  - change password
   - self sign- up
   - forgot password
   - federated login
@@ -37,12 +37,13 @@
 - ci pipeline
 - github actions
 - lambda xray
-- route 53/cloudfront
 - appsync/graphql
-- topology chart generation
+- topology charts
 
 ### thoughts
 
+- @singleton decorator
+  - no just munge the resource names to be the same 
 - apigw2 ?
   - probably not worth it if the original apigw works fine
 - refactor layers as singletons ?

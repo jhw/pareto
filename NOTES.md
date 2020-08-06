@@ -1,3 +1,11 @@
+### polyreader non functionals 6/8/20
+
+- cloudfront and route 53
+- google federated login
+- chrome link importer
+- landing page / email harvester (webflow?) 
+- stripe and pricing 
+
 ### checking of output refs 5/8/20
 
 - something which uses fn:getatt and `Outputs.XXX` as the second arg is a dfferent kind of beast to standard arg checking which checks the first argument (the reource)
