@@ -1,9 +1,5 @@
 ### short
 
-- models is dual nested
-- models headers
-- deployment depends
-
 - userpool component
 
 ### auth
@@ -190,6 +186,9 @@
   
 ### done
 
+- deployment depends
+- models is dual nested
+- models headers
 - apigw options method
 - validate resource return type
 - all resources to return three args

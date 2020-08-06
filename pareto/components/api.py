@@ -17,8 +17,10 @@ def ApiRoot(**kwargs):
 def ApiDeployment(**kwargs):
     api=ref("%s-api" % kwargs["name"])
     props={"RestApiId": api}
-    method="%s-method" % kwargs["name"]
-    return "AWS::ApiGateway::Deployment", props, [method]
+    depends=[pat % kwargs["name"]
+             for pat in ["%s-method",
+                         "%s-cors-options-method"]]
+    return "AWS::ApiGateway::Deployment", props, depends
 
 @resource(suffix="stage")
 def ApiStage(**kwargs):
@@ -47,16 +49,14 @@ def ApiMethod(**kwargs):
            "Integration": integration}
     return "AWS::ApiGateway::Method", props
 
-@resource(suffix="cors-options")
-def ApiCorsOptions(**kwargs):
+@resource(suffix="cors-options-method")
+def ApiCorsOptionsMethod(**kwargs):
     def init_integration(method):
         def init_response(method):
-            def init_params(method):
-                return {CorsHeader % k.capitalize(): v
-                        for k, v in [("headers", "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"),
-                                     ("methods", "%s,OPTIONS" % method),
-                                     ("origin", "*")]}
-            params=init_params(method)
+            params={CorsHeader % k.capitalize(): v
+                    for k, v in [("headers", "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"),
+                                 ("methods", "%s,OPTIONS" % method),
+                                 ("origin", "*")]}
             templates={"application/json": ""}
             return {"StatusCode": 200,
                     "ResponseParameters": params,
@@ -68,11 +68,12 @@ def ApiCorsOptions(**kwargs):
                 "RequestTemplates": templates,
                 "Type": "MOCK"}
     def init_response():
-        models=None
-        params=None
-        return [{"StatusCode": 200,
-                 "ResponseModels": models,
-                 "ResponseParameters": params}]
+        params={CorsHeader % k.capitalize(): False
+                for k in ["headers", "methods", "origin"]}
+        models={"application/json": "Empty"}
+        return {"StatusCode": 200,
+                "ResponseModels": models,
+                "ResponseParameters": params}
     api=ref("%s-api" % kwargs["name"])
     resource=fn_getatt("%s-api" % kwargs["name"],
                        "RootResourceId")
@@ -113,7 +114,7 @@ def synth_api(**kwargs):
     template=Template(resources=[ApiRoot(**kwargs),
                                  ApiDeployment(**kwargs),
                                  ApiStage(**kwargs),
-                                 ApiCorsOptions(**kwargs),
+                                 ApiCorsOptionsMethod(**kwargs),
                                  ApiMethod(**kwargs)],
                       outputs=[ApiUrl(**kwargs)])
     if "action" in kwargs:
