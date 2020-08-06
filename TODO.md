@@ -1,9 +1,10 @@
 ### short [cors]
 
-- investigate how JSON templates are rendering single quotes
-- see if can replace JSON templates with yaml
-- integrate and test replace_single_quotes
-- test cors via curl
+- add notes re single string formatting
+- ensure all header- like methods which use string values make use of single quotes
+- incorporate rewrite_single_strings so json consistent with yaml
+- compare/contrast options methods (vs amplify_auth_demo)
+- test cors with curl
 
 ### medium
 
@@ -16,6 +17,7 @@
 - layers as defined type
   - improved reference mechanism
 
+- test pushing nested yaml templates to s3
 - action to have permission to call another action
 
 - cloudfront + route 53
@@ -194,6 +196,7 @@
   
 ### done
 
+- json single quote renderer
 - deployment depends
 - models is dual nested
 - models headers

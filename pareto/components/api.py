@@ -53,15 +53,15 @@ def ApiMethod(**kwargs):
 def ApiCorsOptionsMethod(**kwargs):
     def init_integration(method):
         def init_response(method):
-            params={CorsHeader % k.capitalize(): v
+            params={CorsHeader % k.capitalize(): "'%s'" % v
                     for k, v in [("headers", "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"),
-                                 ("methods", "'%s,OPTIONS'" % method),
+                                 ("methods", "%s,OPTIONS" % method),
                                  ("origin", "*")]}
             templates={"application/json": ""}
             return {"StatusCode": 200,
                     "ResponseParameters": params,
                     "ResponseTemplates": templates}
-        templates={"application/json": "Empty"}
+        templates={"application/json": json.dumps({"statusCode": 200})}
         response=init_response(method)
         return {"IntegrationResponses": [response],
                 "PassthroughBehavior": "WHEN_NO_MATCH",

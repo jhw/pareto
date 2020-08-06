@@ -148,12 +148,19 @@ def dump_env(env):
 
 def push_templates(config, templates):
     logging.info("pushing templates")
+    class CFSingleQuoteEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if (isinstance(obj, str) and
+                "'" in obj):
+                return obj
+            return json.JSONEncoder.default(self, obj)
     def push_template(config, tempname, template):
         key="%s-%s/templates/%s.json" % (config["globals"]["app"],
                                          config["globals"]["stage"],
                                          tempname)
         logging.info("pushing %s" % key)
-        body=json.dumps(template).encode("utf-8")
+        body=json.dumps(template,
+                        cls=CFSingleQuoteEncoder).encode("utf-8")
         S3.put_object(Bucket=config["globals"]["bucket"],
                       Key=key,
                       Body=body,
