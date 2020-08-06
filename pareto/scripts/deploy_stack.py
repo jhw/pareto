@@ -148,6 +148,10 @@ def dump_env(env):
 
 def push_templates(config, templates):
     logging.info("pushing templates")
+    """
+    - encoder to avoid escaping single quotes
+    - for some fields, particularly apigw http header- like fields, CF *requires* non- escaped single quotes
+    """
     class CFSingleQuoteEncoder(json.JSONEncoder):
         def default(self, obj):
             if (isinstance(obj, str) and

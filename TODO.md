@@ -1,6 +1,5 @@
 ### short [cors]
 
-- add notes re single string formatting
 - ensure all header- like methods which use string values make use of single quotes
 - incorporate rewrite_single_strings so json consistent with yaml
 - compare/contrast options methods (vs amplify_auth_demo)
@@ -196,6 +195,7 @@
   
 ### done
 
+- add notes re single string formatting
 - json single quote renderer
 - deployment depends
 - models is dual nested

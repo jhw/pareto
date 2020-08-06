@@ -53,6 +53,10 @@ def ApiMethod(**kwargs):
 def ApiCorsOptionsMethod(**kwargs):
     def init_integration(method):
         def init_response(method):
+            """
+            - inclusion of single quotes very important here else CF will barf
+            - json template dumping in deploy_stack.py needs to avoid encoding single quotes
+            """
             params={CorsHeader % k.capitalize(): "'%s'" % v
                     for k, v in [("headers", "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"),
                                  ("methods", "%s,OPTIONS" % method),
