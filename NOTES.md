@@ -1,3 +1,7 @@
+### cors testing 6/8/20
+
+- https://stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe
+
 ### single quotes rendering 6/8/20
 
 - https://stackoverflow.com/questions/37094170/a-single-string-in-single-quotes-with-pyyaml

@@ -1,27 +1,23 @@
-### short [cors]
+### short 
 
-- compare/contrast options methods (vs amplify_auth_demo)
-- test cors with curl
-
-### medium
-
-- generic reference mechanism
-- layers as comoponent group
+- separate apis template
+- apigw resources
 
 - userpool component
-
 - api authorizer
 - userpool ref validation
 - auth testing scripts
 
-- test pushing nested yaml templates to s3
-- action to have permission to call another action
+### medium
 
+- layers as component group
+- generic reference mechanism
+- action to have permission to call another action
 - cloudfront + route 53
 - change password routine
 - template factory
 - scaffold generator
-- targets [notes]
+- targets
 
 ### v1.1
 
@@ -33,7 +29,6 @@
 
 - apigw
   - request validation
-  - stage resorces
   - logging
 
 - s3 multiple action support
@@ -47,6 +42,8 @@
 
 ### thoughts
 
+- test pushing nested yaml templates to s3 ?
+  - simply not worth it, JSON easier
 - @singleton decorator
   - no just munge the resource names to be the same 
 - apigw2 ?
@@ -193,6 +190,8 @@
   
 ### done
 
+- compare/contrast options methods (vs amplify_auth_demo)
+- test cors with curl
 - ensure all header- like methods which use string values make use of single quotes
 - incorporate rewrite_single_strings so json consistent with yaml
 - add notes re single string formatting
