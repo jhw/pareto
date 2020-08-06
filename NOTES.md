@@ -1,3 +1,13 @@
+### singletons 6/8/20
+
+- maybe singletons doesn't need a decorator
+- maybe instead you get singleton behaviour by defining different types
+- eg a user pool, defined as a type, is a singleton
+- so the ref mechanism becomes all important
+- can the ref mechanism be made generic if you have more refs than simply actions ?
+- layers would be good candidate for a separate type
+- api cors options would probably not as currently depends on a specific method type
+
 ### polyreader non functionals 6/8/20
 
 - cloudfront and route 53
