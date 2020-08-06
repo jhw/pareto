@@ -1,6 +1,8 @@
 ### short
 
-- apigw options method
+- models is dual nested
+- models headers
+- deployment depends
 
 - userpool component
 
@@ -188,6 +190,7 @@
   
 ### done
 
+- apigw options method
 - validate resource return type
 - all resources to return three args
 - remove fill- in code in @resource

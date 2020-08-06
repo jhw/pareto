@@ -6,6 +6,8 @@ Arn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
 
 Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
 
+CorsHeader="method.response.header.Access-Control-Allow-%s"
+
 @resource(suffix="api")
 def ApiRoot(**kwargs):
     props={"Name": random_id("rest-api")} # NB
@@ -22,8 +24,8 @@ def ApiDeployment(**kwargs):
 def ApiStage(**kwargs):
     api=ref("%s-api" % kwargs["name"])
     deployment=ref("%s-deployment" % kwargs["name"])
-    props={"RestApiId": api,
-           "DeploymentId": deployment,
+    props={"DeploymentId": deployment,
+           "RestApiId": api,           
            "StageName": kwargs["stage"]}
     return "AWS::ApiGateway::Stage", props
 
@@ -36,13 +38,52 @@ def ApiMethod(**kwargs):
                  "IntegrationHttpMethod": "POST",
                  "Type": "AWS_PROXY"}
     api=ref("%s-api" % kwargs["name"])
-    parent=fn_getatt("%s-api" % kwargs["name"],
+    resource=fn_getatt("%s-api" % kwargs["name"],
                      "RootResourceId")
     props={"AuthorizationType": "NONE",
            "RestApiId": api,
-           "ResourceId": parent,
+           "ResourceId": resource,
            "HttpMethod": kwargs["method"],
            "Integration": integration}
+    return "AWS::ApiGateway::Method", props
+
+@resource(suffix="cors-options")
+def ApiCorsOptions(**kwargs):
+    def init_integration(method):
+        def init_response(method):
+            def init_params(method):
+                return {CorsHeader % k.capitalize(): v
+                        for k, v in [("headers", "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"),
+                                     ("methods", "%s,OPTIONS" % method),
+                                     ("origin", "*")]}
+            params=init_params(method)
+            templates={"application/json": ""}
+            return {"StatusCode": 200,
+                    "ResponseParameters": params,
+                    "ResponseTemplates": templates}
+        templates={"application/json": "Empty"}
+        response=init_response(method)
+        return {"IntegrationResponses": [response],
+                "PassthroughBehavior": "WHEN_NO_MATCH",
+                "RequestTemplates": templates,
+                "Type": "MOCK"}
+    def init_response():
+        models=None
+        params=None
+        return [{"StatusCode": 200,
+                 "ResponseModels": models,
+                 "ResponseParameters": params}]
+    api=ref("%s-api" % kwargs["name"])
+    resource=fn_getatt("%s-api" % kwargs["name"],
+                       "RootResourceId")
+    integration=init_integration(kwargs["method"])
+    response=init_response()
+    props={"AuthorizationType": "NONE",
+           "HttpMethod": "OPTIONS",
+           "Integration": integration,
+           "MethodResponses": [response],
+           "ResourceId": resource,
+           "RestApiId": api}
     return "AWS::ApiGateway::Method", props
 
 @resource(suffix="permission")
@@ -72,6 +113,7 @@ def synth_api(**kwargs):
     template=Template(resources=[ApiRoot(**kwargs),
                                  ApiDeployment(**kwargs),
                                  ApiStage(**kwargs),
+                                 ApiCorsOptions(**kwargs),
                                  ApiMethod(**kwargs)],
                       outputs=[ApiUrl(**kwargs)])
     if "action" in kwargs:
