@@ -1,10 +1,8 @@
 ### short
 
-- comment out options method
-- add resource
-- deploy / test
+- configure single API with multiple resources, each with defined methods
 
-- add support for multiple resources
+- add back cors options method
 
 ### medium
 
@@ -196,6 +194,9 @@
   
 ### done
 
+- comment out options method
+- add resource
+- deploy / test
 - separate apis template
 - compare/contrast options methods (vs amplify_auth_demo)
 - test cors with curl

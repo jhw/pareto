@@ -2,11 +2,15 @@ from pareto.components import *
 
 InvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
 
-Arn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/"
+"""
+- https://docs.aws.amazon.com/apigateway/latest/developerguide/arn-format-reference.html
+"""
 
-Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}"
+ExecuteArn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/%s"
 
-CorsHeader="method.response.header.Access-Control-Allow-%s"
+Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}/%s"
+
+PathPart="hello"
 
 @resource(suffix="api")
 def ApiRoot(**kwargs):
@@ -18,8 +22,7 @@ def ApiDeployment(**kwargs):
     api=ref("%s-api" % kwargs["name"])
     props={"RestApiId": api}
     depends=[pat % kwargs["name"]
-             for pat in ["%s-method",
-                         "%s-cors-options-method"]]
+             for pat in ["%s-method"]]
     return "AWS::ApiGateway::Deployment", props, depends
 
 @resource(suffix="stage")
@@ -31,6 +34,16 @@ def ApiStage(**kwargs):
            "StageName": kwargs["stage"]}
     return "AWS::ApiGateway::Stage", props
 
+@resource(suffix="resource")
+def ApiResource(**kwargs):
+    api=ref("%s-api" % kwargs["name"])
+    resource=fn_getatt("%s-api" % kwargs["name"],
+                       "RootResourceId")
+    props={"ParentId": resource,
+           "RestApiId": api,
+           "PathPart": PathPart}
+    return "AWS::ApiGateway::Resource", props
+
 @resource(suffix="method")
 def ApiMethod(**kwargs):
     target=ref("%s-arn" % kwargs["action"])
@@ -40,8 +53,7 @@ def ApiMethod(**kwargs):
                  "IntegrationHttpMethod": "POST",
                  "Type": "AWS_PROXY"}
     api=ref("%s-api" % kwargs["name"])
-    resource=fn_getatt("%s-api" % kwargs["name"],
-                     "RootResourceId")
+    resource=ref("%s-resource" % kwargs["name"])
     props={"AuthorizationType": "NONE",
            "RestApiId": api,
            "ResourceId": resource,
@@ -49,54 +61,13 @@ def ApiMethod(**kwargs):
            "Integration": integration}
     return "AWS::ApiGateway::Method", props
 
-@resource(suffix="cors-options-method")
-def ApiCorsOptionsMethod(**kwargs):
-    def init_integration(method):
-        def init_response(method):
-            """
-            - inclusion of single quotes very important here else CF will barf
-            - json template dumping in deploy_stack.py needs to avoid encoding single quotes
-            """
-            params={CorsHeader % k.capitalize(): "'%s'" % v
-                    for k, v in [("headers", "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"),
-                                 ("methods", "%s,OPTIONS" % method),
-                                 ("origin", "*")]}
-            templates={"application/json": ""}
-            return {"StatusCode": 200,
-                    "ResponseParameters": params,
-                    "ResponseTemplates": templates}
-        templates={"application/json": json.dumps({"statusCode": 200})}
-        response=init_response(method)
-        return {"IntegrationResponses": [response],
-                "PassthroughBehavior": "WHEN_NO_MATCH",
-                "RequestTemplates": templates,
-                "Type": "MOCK"}
-    def init_response():
-        params={CorsHeader % k.capitalize(): False
-                for k in ["headers", "methods", "origin"]}
-        models={"application/json": "Empty"}
-        return {"StatusCode": 200,
-                "ResponseModels": models,
-                "ResponseParameters": params}
-    api=ref("%s-api" % kwargs["name"])
-    resource=fn_getatt("%s-api" % kwargs["name"],
-                       "RootResourceId")
-    integration=init_integration(kwargs["method"])
-    response=init_response()
-    props={"AuthorizationType": "NONE",
-           "HttpMethod": "OPTIONS",
-           "Integration": integration,
-           "MethodResponses": [response],
-           "ResourceId": resource,
-           "RestApiId": api}
-    return "AWS::ApiGateway::Method", props
-
 @resource(suffix="permission")
 def ApiPermission(**kwargs):
     api=ref("%s-api" % kwargs["name"])
     stage=ref("%s-stage" % kwargs["name"])
-    source=fn_sub(Arn % (kwargs["region"],
-                         kwargs["method"]),
+    source=fn_sub(ExecuteArn % (kwargs["region"],
+                                kwargs["method"],
+                                PathPart),
                   {"rest_api": api,
                    "stage_name": stage})
     target=ref("%s-arn" % kwargs["action"])
@@ -110,7 +81,8 @@ def ApiPermission(**kwargs):
 def ApiUrl(**kwargs):
     api=ref("%s-api" % kwargs["name"])
     stage=ref("%s-stage" % kwargs["name"])
-    return fn_sub(Url % kwargs["region"],
+    return fn_sub(Url % (kwargs["region"],
+                         PathPart),
                   {"rest_api": api,
                    "stage_name": stage})
 
@@ -118,7 +90,7 @@ def synth_api(**kwargs):
     template=Template(resources=[ApiRoot(**kwargs),
                                  ApiDeployment(**kwargs),
                                  ApiStage(**kwargs),
-                                 ApiCorsOptionsMethod(**kwargs),
+                                 ApiResource(**kwargs),
                                  ApiMethod(**kwargs)],
                       outputs=[ApiUrl(**kwargs)])
     if "action" in kwargs:
