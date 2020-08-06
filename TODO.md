@@ -1,20 +1,18 @@
 ### short [cors]
 
-- ensure all header- like methods which use string values make use of single quotes
-- incorporate rewrite_single_strings so json consistent with yaml
 - compare/contrast options methods (vs amplify_auth_demo)
 - test cors with curl
 
 ### medium
+
+- generic reference mechanism
+- layers as comoponent group
 
 - userpool component
 
 - api authorizer
 - userpool ref validation
 - auth testing scripts
-
-- layers as defined type
-  - improved reference mechanism
 
 - test pushing nested yaml templates to s3
 - action to have permission to call another action
@@ -195,6 +193,8 @@
   
 ### done
 
+- ensure all header- like methods which use string values make use of single quotes
+- incorporate rewrite_single_strings so json consistent with yaml
 - add notes re single string formatting
 - json single quote renderer
 - deployment depends
