@@ -1,20 +1,17 @@
 import re
 
 class Counter:
-
     def __init__(self):
         self.counter=0
-
     def increment(self):
         self.counter+=1
 
-def matcher(match, counter):
+def matcher(match, counter=Counter()):
     resp="hah" if 0==counter.counter % 2 else 'bah'
     counter.increment()
     return resp
 
 if __name__=="__main__":
     counter=Counter()
-    print (re.sub("XXX",
-                  lambda m: matcher(m, counter),
+    print (re.sub("XXX", matcher, 
                   "abasdasdad XXX asjdasdsd XXX asdasdd XXX ashdahjsadsa XXX asasasas"))
