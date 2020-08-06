@@ -1,12 +1,12 @@
 from pareto.components import *
 
-InvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
+LambdaInvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
 
 """
 - https://docs.aws.amazon.com/apigateway/latest/developerguide/arn-format-reference.html
 """
 
-ExecuteArn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/%s"
+ExecuteApiArn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/%s"
 
 Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}/%s"
 
@@ -47,7 +47,7 @@ def ApiResource(**kwargs):
 @resource(suffix="method")
 def ApiMethod(**kwargs):
     target=ref("%s-arn" % kwargs["action"])
-    uri=fn_sub(InvokeArn % kwargs["region"],
+    uri=fn_sub(LambdaInvokeArn % kwargs["region"],
                {"lambda_arn": target})
     integration={"Uri": uri,
                  "IntegrationHttpMethod": "POST",
@@ -65,9 +65,9 @@ def ApiMethod(**kwargs):
 def ApiPermission(**kwargs):
     api=ref("%s-api" % kwargs["name"])
     stage=ref("%s-stage" % kwargs["name"])
-    source=fn_sub(ExecuteArn % (kwargs["region"],
-                                kwargs["method"],
-                                PathPart),
+    source=fn_sub(ExecuteApiArn % (kwargs["region"],
+                                   kwargs["method"],
+                                   PathPart),
                   {"rest_api": api,
                    "stage_name": stage})
     target=ref("%s-arn" % kwargs["action"])

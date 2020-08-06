@@ -4,18 +4,23 @@
 
 - add back cors options method
 
+- request validation
+- apigw logging
+
 ### medium
+
+- layers as component
 
 - userpool component
 - api authorizer
 - userpool ref validation
 - auth testing scripts
 
-- layers as component group
 - generic reference mechanism
 - action to have permission to call another action
 
-- cloudfront + route 53
+- s3 multiple action support
+- cloudfront + https + route 53
 - change password routine
 - template factory
 - scaffold generator
@@ -29,11 +34,6 @@
   - federated login
   - unauthenticated access
 
-- apigw
-  - request validation
-  - logging
-
-- s3 multiple action support
 - cloudwatch alerts
 - eventbridge
 - ci pipeline
@@ -48,7 +48,7 @@
 
 - test pushing nested yaml templates to s3 ?
   - simply not worth it, JSON easier
-- @singleton decorator
+- @singleton decorator ?
   - no just munge the resource names to be the same 
 - apigw2 ?
   - probably not worth it if the original apigw works fine
