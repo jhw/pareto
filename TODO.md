@@ -1,17 +1,22 @@
-### short 
+### short
 
-- apigw resources
+- comment out options method
+- add resource
+- deploy / test
+
+- add support for multiple resources
+
+### medium
 
 - userpool component
 - api authorizer
 - userpool ref validation
 - auth testing scripts
 
-### medium
-
 - layers as component group
 - generic reference mechanism
 - action to have permission to call another action
+
 - cloudfront + route 53
 - change password routine
 - template factory
