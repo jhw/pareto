@@ -1,3 +1,14 @@
+### single quotes rendering 6/8/20
+
+- https://stackoverflow.com/questions/37094170/a-single-string-in-single-quotes-with-pyyaml
+- problem is some cors strings need to be encoded with very specific quotes eg "'foobar'"
+- but pyyaml will render "'foobar'" as '''foobar'''
+- ruamel.yaml will solve this
+- https://pypi.org/project/ruamel.yaml/
+- but do you want to replace your core yaml parser
+- might be better to hack it
+- see dev/yaml_single_quotes.py
+
 ### singletons 6/8/20
 
 - maybe singletons doesn't need a decorator

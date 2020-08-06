@@ -55,7 +55,7 @@ def ApiCorsOptionsMethod(**kwargs):
         def init_response(method):
             params={CorsHeader % k.capitalize(): v
                     for k, v in [("headers", "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"),
-                                 ("methods", "%s,OPTIONS" % method),
+                                 ("methods", "'%s,OPTIONS'" % method),
                                  ("origin", "*")]}
             templates={"application/json": ""}
             return {"StatusCode": 200,
