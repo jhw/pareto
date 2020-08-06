@@ -33,10 +33,11 @@
 - s3 multiple action support
 - cloudwatch alerts
 - eventbridge
-- step functions
 - ci pipeline
 - github actions
 - lambda xray
+- step functions
+- fargate
 - appsync/graphql
 - topology charts
 
