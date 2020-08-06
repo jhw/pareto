@@ -1,16 +1,24 @@
 ### short
 
+- cors options deployment failing on "Invalid Mapping"
+
+- test cors via curl
+
 - userpool component
 
-### auth
+### medium
 
 - api authorizer
 - userpool ref validation
 - auth testing scripts
 
+- layers as defined type
+  - improved reference mechanism
+
 - action to have permission to call another action
 
 - cloudfront + route 53
+- change password routine
 - template factory
 - scaffold generator
 - targets [notes]
@@ -18,7 +26,6 @@
 ### v1.1
 
 - auth
-  - change password
   - self sign- up
   - forgot password
   - federated login
