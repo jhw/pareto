@@ -1,9 +1,9 @@
 ### short
 
-- refactor resource/endpoint nomenclature
 - extend to multiple methods
 - cors options method
 
+- refactor resource vs endpoint nomenclature
 - request validation
 - apigw logging
 
@@ -12,6 +12,8 @@
 - layers as component
 
 - consider class- based implementation ?
+
+- dash somehow needs to appear under separate template
 
 - userpool component
 - api authorizer
