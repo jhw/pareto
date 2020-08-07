@@ -1,3 +1,11 @@
+### template structure 7/8/20
+
+- problem is check_refs is run post- render and relies on structure being a list of dicts
+- won't work if is list of lists of tuples
+- but what to do with charts ?
+- seems like you need a class which pushes refs to dict but not in the case of charts
+- and you have to fix the lists of tuples thing
+
 ### cors testing 6/8/20
 
 - https://stackoverflow.com/questions/43871637/no-access-control-allow-origin-header-is-present-on-the-requested-resource-whe

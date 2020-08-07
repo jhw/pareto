@@ -1,11 +1,9 @@
 ### short
 
-- template.references
-  - not working if you take directly from deploy_stack.py because that is post- render
+- refactor template to be list of dicts / remove render stage [notes]
 
-- move reference checking code from deploy_stack.py to template.py
-  - add reference validation to env
-  
+- move reference checking code from deploy_stack to template
+
 ### medium
 
 - apigw logging
