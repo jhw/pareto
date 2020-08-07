@@ -19,9 +19,11 @@ def ApiRoot(**kwargs):
 def ApiDeployment(**kwargs):
     root=ref("%s-root" % kwargs["name"])
     props={"RestApiId": root}
-    depends=["%s-%s-method" % (kwargs["name"],
-                               resource["name"])
-             for resource in kwargs["resources"]]
+    depends=["%s-%s-%s" % (kwargs["name"],
+                           resource["name"],
+                           suffix)
+             for resource in kwargs["resources"]
+             for suffix in ["method", "cors-options"]]
     return "AWS::ApiGateway::Deployment", props, depends
 
 @resource(suffix="stage")
@@ -67,6 +69,14 @@ def ApiMethod(endpoint, **kwargs):
         return "AWS::ApiGateway::Method", props
     return ApiMethod(endpoint, **kwargs)
 
+def ApiCorsOptions(endpoint, **kwargs):
+    suffix="%s-cors-options" % endpoint["name"]
+    @resource(suffix=suffix)
+    def ApiCorsOptions(endpoint, **kwargs):
+        props={}
+        return "AWS::ApiGateway::Method", props
+    return ApiCorsOptions(endpoint, **kwargs)
+
 def ApiPermission(endpoint, **kwargs):
     suffix="%s-permission" % endpoint["name"]
     @resource(suffix=suffix)
@@ -106,6 +116,7 @@ def synth_api(**kwargs):
         template.parameters.append(parameter("%s-arn" % endpoint["action"]))
         template.resources+=[ApiResource(endpoint, **kwargs),
                              ApiMethod(endpoint, **kwargs),
+                             ApiCorsOptions(endpoint, **kwargs),
                              ApiPermission(endpoint, **kwargs)]
         template.outputs.append(ApiUrl(endpoint, **kwargs))
     return template
