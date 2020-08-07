@@ -1,15 +1,18 @@
 ### short
 
-- separate preprocessor
+- eliminate render()
+- move template metrics into template
+- move reference filtering into template
+
+- apigw logging
+- layers-as-components
+
+- notes on template/env design
 
 ### medium
 
-- api
-  - refactor resource vs endpoint nomenclature
-  - request validation
-  - logging
-
-- layers as component
+- refactor api resource vs endpoint nomenclature
+- api request validation
 
 - consider class- based implementation ?
 
@@ -199,6 +202,7 @@
   
 ### done
 
+- separate preprocessor
 - synth_dashboard
 - rename finalise as synth_master
 - new decorator to append
