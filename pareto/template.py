@@ -11,64 +11,24 @@ class Element(list):
     def render(self):
         return dict(self) # because component returns tuples
 
-def grid_layout(charts,
-                pagewidth=24,
-                heightratio=0.75):
-    x, y, widgets = 0, 0, []
-    for row in charts:
-        width=int(pagewidth/len(row))
-        height=int(heightratio*width)
-        for chart in row:
-            widget={"type": "metric",
-                    "x": x,
-                    "y": y,
-                    "width": width,
-                    "height": height,
-                    "properties": chart}
-            widgets.append(widget)
-            x+=width
-        y+=height
-        x=0 # NB reset
-    return {"widgets": widgets}
-    
-class Dashboard(list):
-
-    def __init__(self, name, items):
-        list.__init__(self, items)
-        self.name=name
-        
-    def update(self, items):
-        self+=items
-
-    def render(self):
-        layout=grid_layout(self)
-        props={"DashboardName": self.name,
-               "DashboardBody": json.dumps(layout)}
-        attrs={"Type": "AWS::CloudWatch::Dashboard",
-               "Properties": props}
-        return {"Dashboard": attrs} # to match Element.render output
-            
 class Template:
 
     def __init__(self,
-                 name=None,
                  parameters=[],
                  resources=[],
                  outputs=[],
-                 dashboard=[],
+                 charts=[],
                  **kwargs):
-        self.name=name
         self.parameters=Element(parameters)
         self.resources=Element(resources)
         self.outputs=Element(outputs)
-        self.dashboard=Dashboard(name=name,
-                                 items=dashboard)
+        self.charts=Element(charts)
 
     def update(self, template):
         for attr in ["parameters",
                      "resources",
                      "outputs",
-                     "dashboard"]:
+                     "charts"]:
             parent=getattr(self, attr)
             parent.update(getattr(template, attr))
 
@@ -78,8 +38,6 @@ class Template:
                              "resources",
                              "outputs"]
                 if getattr(self, attr)!=[]}
-        if self.dashboard!=[]:
-            struct["resources"].update(self.dashboard.render())
         return {k.capitalize():v
                 for k, v in struct.items()}
             

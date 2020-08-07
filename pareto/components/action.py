@@ -110,7 +110,7 @@ def synth_action(**kwargs):
                                  ActionDeadLetterQueue(**kwargs),
                                  ActionVersion(**kwargs),
                                  ActionEventConfig(**kwargs)],
-                      dashboard=[ActionCharts(**kwargs)],
+                      charts=[ActionCharts(**kwargs)],
                       outputs=[ActionArn(**kwargs)])
     if "layer" in kwargs["staging"]:
         template.resources+=[ActionLayer(package, **kwargs)

@@ -3,6 +3,7 @@ from pareto.components import *
 from pareto.components.action import synth_action
 from pareto.components.api import synth_api
 from pareto.components.bucket import synth_bucket
+from pareto.components.dashboard import synth_dashboard
 from pareto.components.queue import synth_queue
 from pareto.components.secret import synth_secret
 from pareto.components.stack import synth_stack
@@ -98,15 +99,10 @@ class Env(dict):
 
     @classmethod
     def create(self, config, templatefn=TemplateMapper):
-        def template_name(config, tempkey):
-            return "%s-%s-%s" % (config["globals"]["app"],
-                                 tempkey,
-                                 config["globals"]["stage"])
         env=Env(config)
         for groupkey, components in config["components"].items():
             tempkey=templatefn(groupkey)
-            tempname=template_name(config, tempkey)
-            env.setdefault(tempkey, Template(name=tempname))
+            env.setdefault(tempkey, Template())
             for kwargs in components:
                 kwargs.update(config["globals"]) # NB
                 fn=eval("synth_%s" % groupkey[:-1])                
@@ -142,6 +138,23 @@ class Env(dict):
             return wrapped
         return decorator
 
+    @attach("dashboards")
+    def synth_dash(self):
+        def dash_name(config, tempkey):
+            return "%s-%s-%s" % (config["globals"]["app"],
+                                 tempkey,
+                                 config["globals"]["stage"])
+        dash=Template()
+        for tempname, template in self.items():
+            if template.charts==[]:
+                continue
+            name=dash_name(self.config, tempname)
+            kwargs={"name": name,
+                    "body": template.charts}
+            stack=synth_dashboard(**kwargs)
+            dash.update(stack)            
+        return dash
+    
     @attach("master")
     def synth_master(self):
         master=Template()
@@ -170,7 +183,7 @@ def preprocess(fn):
 @prevalidate
 @preprocess
 def synth_env(config):
-    return Env.create(config).synth_master().render()
+    return Env.create(config).synth_dash().synth_master().render()
 
 if __name__=="__main__":
     pass

@@ -1,6 +1,6 @@
 ### short
 
-- synth_dashboard
+- separate preprocessor
 
 ### medium
 
@@ -19,6 +19,7 @@
 - auth testing scripts
 
 - generic reference mechanism
+
 - action to have permission to call another action
 
 - s3 multiple action support
@@ -198,6 +199,7 @@
   
 ### done
 
+- synth_dashboard
 - rename finalise as synth_master
 - new decorator to append
 - test cors
