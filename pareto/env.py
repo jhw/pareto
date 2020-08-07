@@ -11,19 +11,9 @@ from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
 from pareto.components.website import synth_website
 
-Actions, NonFunctionals = "actions", "non-functionals"
+from pareto.preprocessor import preprocess
 
-LookbackPermissions=yaml.safe_load("""
-table:
-- dynamodb:DescribeStream
-- dynamodb:GetRecords
-- dynamodb:GetShardIterator
-- dynamodb:ListStreams
-queue:
-- sqs:DeleteMessage
-- sqs:GetQueueAttributes
-- sqs:ReceiveMessage
-""")
+Actions, NonFunctionals = "actions", "non-functionals"
 
 def TemplateMapper(groupkey,
                    dedicated=["actions",
@@ -43,58 +33,6 @@ def stack_param(paramname, outputs):
     return {"Fn::GetAtt": [logical_id(outputs[paramname]),
                            "Outputs.%s" %  paramname]}
 
-def validate(config):
-    def filter_names(config):
-        names=[]
-        for groupkey in config["components"]:
-            for component in config["components"][groupkey]:
-                names.append(component["name"])
-        return names
-    def filter_action_refs(config):
-        names=[]
-        for groupkey in config["components"]:
-            for component in config["components"][groupkey]:
-                if "action" in component:
-                    names.append(component["action"])
-        return names
-    def validate_unique_names(config):
-        names=filter_names(config)
-        unames=list(set(names))
-        if len(names)!=len(unames):
-            raise RuntimeError("component names are not unique")
-    def validate_action_refs(config):
-        names=filter_names(config)
-        for ref in filter_action_refs(config):
-            if ref not in names:
-                raise RuntimeError("ref %s not found in component names" % ref)
-    validate_unique_names(config)
-    validate_action_refs(config)
-
-def assert_actions(fn):
-    def wrapped(config):
-        if "actions" in config["components"]:
-            return fn(config)
-    return wrapped
-    
-@assert_actions
-def preprocessor(config):
-    def filter_actions(config):
-        return {action["name"]:action
-                for action in config["components"]["actions"]}
-    def filter_types(config):
-        types={}
-        for groupkey in config["components"]:
-            for component in config["components"][groupkey]:
-                if "action" in component:
-                    types[component["action"]]=groupkey[:-1]
-        return types
-    actions, types = filter_actions(config), filter_types(config)
-    for actionname, action in actions.items():
-        if (actionname in types and
-            types[actionname] in LookbackPermissions):
-            action.setdefault("permissions", [])
-            action["permissions"]+=LookbackPermissions[types[actionname]]
-    
 class Env(dict):
 
     @classmethod
@@ -168,19 +106,6 @@ class Env(dict):
         return {k:v.render()
                 for k, v in self.items()}
 
-def prevalidate(fn):
-    def wrapped(config):
-        validate(config)
-        return fn(config)
-    return wrapped
-
-def preprocess(fn):
-    def wrapped(config):
-        preprocessor(config)
-        return fn(config)
-    return wrapped
-    
-@prevalidate
 @preprocess
 def synth_env(config):
     return Env.create(config).synth_dash().synth_master().render()
