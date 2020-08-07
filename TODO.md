@@ -1,6 +1,5 @@
 ### short
 
-- eliminate render()
 - move template metrics into template
 - move reference filtering into template
 
@@ -10,6 +9,8 @@
 - notes on template/env design
 
 ### medium
+
+- merge website back into bucket
 
 - refactor api resource vs endpoint nomenclature
 - api request validation
@@ -202,6 +203,7 @@
   
 ### done
 
+- remove element class
 - separate preprocessor
 - synth_dashboard
 - rename finalise as synth_master
