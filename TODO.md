@@ -1,6 +1,5 @@
 ### short
 
-- extend to multiple methods
 - cors options method
 
 - refactor resource vs endpoint nomenclature
@@ -50,6 +49,8 @@
 
 ### thoughts
 
+- api endpoint to have multiple methods ?
+  - no; for now is enough to have a specified endpoint and a cors endpoint
 - test pushing nested yaml templates to s3 ?
   - simply not worth it, JSON easier
 - @singleton decorator ?
