@@ -1,8 +1,11 @@
 ### short
 
-- cors options method
+- dash somehow needs to appear under separate template
+  - refactor finalise as synth_master
+  - use decorator for appending
 
 - refactor resource vs endpoint nomenclature
+
 - request validation
 - apigw logging
 
@@ -11,8 +14,6 @@
 - layers as component
 
 - consider class- based implementation ?
-
-- dash somehow needs to appear under separate template
 
 - userpool component
 - api authorizer
@@ -199,6 +200,8 @@
   
 ### done
 
+- test cors
+- cors options method
 - rename -api as -root
 - check action refs
 - check depends

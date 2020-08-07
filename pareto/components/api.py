@@ -10,6 +10,16 @@ ExecuteApiArn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name
 
 Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}/%s"
 
+CorsHeaderPath="method.response.header.Access-Control-Allow-%s"
+
+CorsHeaders=yaml.safe_load("""
+- Content-Type
+- X-Amz-Date,
+- Authorization
+- X-Api-Key
+- X-Amz-Security-Token
+""")
+
 @resource(suffix="root")
 def ApiRoot(**kwargs):
     props={"Name": random_id("rest-api")} # NB
@@ -73,7 +83,40 @@ def ApiCorsOptions(endpoint, **kwargs):
     suffix="%s-cors-options" % endpoint["name"]
     @resource(suffix=suffix)
     def ApiCorsOptions(endpoint, **kwargs):
-        props={}
+        def init_integration_response(endpoint):
+            params={CorsHeaderPath % k.capitalize(): "'%s'" % v # NB "'"
+                    for k, v in [("headers", ",".join(CorsHeaders)),
+                                 ("methods", "%s,OPTIONS" % endpoint["method"]),
+                                 ("origin", "*")]}
+            templates={"application/json": ""}
+            return {"StatusCode": 200,
+                    "ResponseParameters": params,
+                    "ResponseTemplates": templates}
+        def init_integration(endpoint):
+            templates={"application/json": json.dumps({"statusCode": 200})}
+            response=init_integration_response(endpoint)
+            return {"IntegrationResponses": [response],
+                    "PassthroughBehavior": "WHEN_NO_MATCH",
+                    "RequestTemplates": templates,
+                    "Type": "MOCK"}
+        def init_response():
+            params={CorsHeaderPath % k.capitalize(): False
+                    for k in ["headers", "methods", "origin"]}
+            models={"application/json": "Empty"}
+            return {"StatusCode": 200,
+                    "ResponseModels": models,
+                    "ResponseParameters": params}
+        root=ref("%s-root" % kwargs["name"])
+        parent=ref("%s-%s-resource" % (kwargs["name"],
+                                       endpoint["name"]))
+        integration=init_integration(endpoint)
+        response=init_response()
+        props={"AuthorizationType": "NONE",
+               "HttpMethod": "OPTIONS",
+               "Integration": integration,
+               "MethodResponses": [response],
+               "ResourceId": parent,
+               "RestApiId": root}
         return "AWS::ApiGateway::Method", props
     return ApiCorsOptions(endpoint, **kwargs)
 
