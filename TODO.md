@@ -1,13 +1,16 @@
 ### short
 
-- move reference filtering into template
+- template.references
+  - not working if you take directly from deploy_stack.py because that is post- render
+
+- move reference checking code from deploy_stack.py to template.py
+  - add reference validation to env
+  
+### medium
 
 - apigw logging
 - layers-as-components
-
 - notes on template/env design
-
-### medium
 
 - merge website back into bucket
 

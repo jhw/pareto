@@ -103,11 +103,17 @@ class Env(dict):
         return master
 
     def validate(self):
-        for tempname, template in self.items():
+        def validate_metrics(tempname, template):
             metrics=template.metrics
             for k, v in metrics.items():
                 if v > 1:
                     raise RuntimeError("%s %s metrics exceeds limit" % (tempname, k))
+        def validate_refs(tempname, template):
+            # do stuff
+            pass
+        for tempname, template in self.items():
+            validate_metrics(tempname, template)
+            validate_refs(tempname, template)
         return self
     
     def render(self):
