@@ -25,12 +25,14 @@ components:
     - name: hello-timer-action
     - name: hello-queue-action
   apis:
-    - name: hello-get
-      method: GET
-      action: hello-get-action
-    - name: hello-post
-      method: POST
-      action: hello-post-action
+    - name: hello-api
+      resources:
+        - name: hello-get
+          method: GET
+          action: hello-get-action
+        - name: hello-post
+          method: POST
+          action: hello-post-action
   buckets:
     - name: hello-bucket
       action: hello-bucket-action

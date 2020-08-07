@@ -1,8 +1,8 @@
 ### short
 
-- configure single API with multiple resources, each with defined methods
-
-- add back cors options method
+- refactor resource/endpoint nomenclature
+- extend to multiple methods
+- cors options method
 
 - request validation
 - apigw logging
@@ -10,6 +10,8 @@
 ### medium
 
 - layers as component
+
+- consider class- based implementation ?
 
 - userpool component
 - api authorizer
@@ -194,6 +196,11 @@
   
 ### done
 
+- rename -api as -root
+- check action refs
+- check depends
+- check resource, method, permission, output references
+- configure single API with multiple resources, each with defined methods
 - comment out options method
 - add resource
 - deploy / test

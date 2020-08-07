@@ -10,92 +10,104 @@ ExecuteApiArn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name
 
 Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}/%s"
 
-PathPart="hello"
-
-@resource(suffix="api")
+@resource(suffix="root")
 def ApiRoot(**kwargs):
     props={"Name": random_id("rest-api")} # NB
     return "AWS::ApiGateway::RestApi", props
 
 @resource(suffix="deployment")
 def ApiDeployment(**kwargs):
-    api=ref("%s-api" % kwargs["name"])
-    props={"RestApiId": api}
-    depends=[pat % kwargs["name"]
-             for pat in ["%s-method"]]
+    root=ref("%s-root" % kwargs["name"])
+    props={"RestApiId": root}
+    depends=["%s-%s-method" % (kwargs["name"],
+                               resource["name"])
+             for resource in kwargs["resources"]]
     return "AWS::ApiGateway::Deployment", props, depends
 
 @resource(suffix="stage")
 def ApiStage(**kwargs):
-    api=ref("%s-api" % kwargs["name"])
+    root=ref("%s-root" % kwargs["name"])
     deployment=ref("%s-deployment" % kwargs["name"])
     props={"DeploymentId": deployment,
-           "RestApiId": api,           
+           "RestApiId": root,           
            "StageName": kwargs["stage"]}
     return "AWS::ApiGateway::Stage", props
 
-@resource(suffix="resource")
-def ApiResource(**kwargs):
-    api=ref("%s-api" % kwargs["name"])
-    resource=fn_getatt("%s-api" % kwargs["name"],
-                       "RootResourceId")
-    props={"ParentId": resource,
-           "RestApiId": api,
-           "PathPart": PathPart}
-    return "AWS::ApiGateway::Resource", props
+def ApiResource(endpoint, **kwargs):
+    suffix="%s-resource" % endpoint["name"]
+    @resource(suffix=suffix)
+    def ApiResource(endpoint, **kwargs):
+        root=ref("%s-root" % kwargs["name"])
+        parent=fn_getatt("%s-root" % kwargs["name"],
+                         "RootResourceId")
+        props={"ParentId": parent,
+               "RestApiId": root,
+               "PathPart": endpoint["name"]}
+        return "AWS::ApiGateway::Resource", props
+    return ApiResource(endpoint, **kwargs)
 
-@resource(suffix="method")
-def ApiMethod(**kwargs):
-    target=ref("%s-arn" % kwargs["action"])
-    uri=fn_sub(LambdaInvokeArn % kwargs["region"],
-               {"lambda_arn": target})
-    integration={"Uri": uri,
-                 "IntegrationHttpMethod": "POST",
-                 "Type": "AWS_PROXY"}
-    api=ref("%s-api" % kwargs["name"])
-    resource=ref("%s-resource" % kwargs["name"])
-    props={"AuthorizationType": "NONE",
-           "RestApiId": api,
-           "ResourceId": resource,
-           "HttpMethod": kwargs["method"],
-           "Integration": integration}
-    return "AWS::ApiGateway::Method", props
+def ApiMethod(endpoint, **kwargs):
+    suffix="%s-method" % endpoint["name"]
+    @resource(suffix=suffix)
+    def ApiMethod(endpoint, **kwargs):
+        target=ref("%s-arn" % endpoint["action"])
+        uri=fn_sub(LambdaInvokeArn % kwargs["region"],
+                   {"lambda_arn": target})
+        integration={"Uri": uri,
+                     "IntegrationHttpMethod": "POST",
+                     "Type": "AWS_PROXY"}
+        root=ref("%s-root" % kwargs["name"])
+        parent=ref("%s-%s-resource" % (kwargs["name"],
+                                       endpoint["name"]))
+        props={"AuthorizationType": "NONE",
+               "RestApiId": root,
+               "ResourceId": parent,
+               "HttpMethod": endpoint["method"],
+               "Integration": integration}
+        return "AWS::ApiGateway::Method", props
+    return ApiMethod(endpoint, **kwargs)
 
-@resource(suffix="permission")
-def ApiPermission(**kwargs):
-    api=ref("%s-api" % kwargs["name"])
-    stage=ref("%s-stage" % kwargs["name"])
-    source=fn_sub(ExecuteApiArn % (kwargs["region"],
-                                   kwargs["method"],
-                                   PathPart),
-                  {"rest_api": api,
-                   "stage_name": stage})
-    target=ref("%s-arn" % kwargs["action"])
-    props={"Action": "lambda:InvokeFunction",
-           "FunctionName": target,
-           "Principal": "apigateway.amazonaws.com",
-           "SourceArn": source}
-    return "AWS::Lambda::Permission", props
+def ApiPermission(endpoint, **kwargs):
+    suffix="%s-permission" % endpoint["name"]
+    @resource(suffix=suffix)
+    def ApiPermission(endpoint, **kwargs):
+        root=ref("%s-root" % kwargs["name"])
+        stage=ref("%s-stage" % kwargs["name"])
+        source=fn_sub(ExecuteApiArn % (kwargs["region"],
+                                       endpoint["method"],
+                                       endpoint["name"]),
+                      {"rest_api": root,
+                       "stage_name": stage})
+        target=ref("%s-arn" % endpoint["action"])
+        props={"Action": "lambda:InvokeFunction",
+               "FunctionName": target,
+               "Principal": "apigateway.amazonaws.com",
+               "SourceArn": source}
+        return "AWS::Lambda::Permission", props
+    return ApiPermission(endpoint, **kwargs)
 
-@output(suffix="url")
-def ApiUrl(**kwargs):
-    api=ref("%s-api" % kwargs["name"])
-    stage=ref("%s-stage" % kwargs["name"])
-    return fn_sub(Url % (kwargs["region"],
-                         PathPart),
-                  {"rest_api": api,
-                   "stage_name": stage})
+def ApiUrl(endpoint, **kwargs):
+    suffix="%s-url" % endpoint["name"]
+    @output(suffix=suffix)
+    def ApiUrl(endpoint, **kwargs):
+        root=ref("%s-root" % kwargs["name"])
+        stage=ref("%s-stage" % kwargs["name"])
+        return fn_sub(Url % (kwargs["region"],
+                             endpoint["name"]),
+                      {"rest_api": root,
+                       "stage_name": stage})
+    return ApiUrl(endpoint, **kwargs)
 
 def synth_api(**kwargs):
     template=Template(resources=[ApiRoot(**kwargs),
                                  ApiDeployment(**kwargs),
-                                 ApiStage(**kwargs),
-                                 ApiResource(**kwargs),
-                                 ApiMethod(**kwargs)],
-                      outputs=[ApiUrl(**kwargs)])
-    if "action" in kwargs:
-        template.parameters.append(parameter("%s-arn" % kwargs["action"]))
-        template.resources.append(ApiPermission(**kwargs))
+                                 ApiStage(**kwargs)])
+    for endpoint in kwargs["resources"]:
+        template.parameters.append(parameter("%s-arn" % endpoint["action"]))
+        template.resources+=[ApiResource(endpoint, **kwargs),
+                             ApiMethod(endpoint, **kwargs),
+                             ApiPermission(endpoint, **kwargs)]
+        template.outputs.append(ApiUrl(endpoint, **kwargs))
     return template
 
 if __name__=="__main__":
