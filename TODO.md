@@ -1,15 +1,15 @@
 ### short
 
-- dash somehow needs to appear under separate template
-  - refactor finalise as synth_master
-  - use decorator for appending
-
-- refactor resource vs endpoint nomenclature
-
-- request validation
-- apigw logging
+- rename finalise as synth_master
+- new decorator to append
+- synth_dashboard
 
 ### medium
+
+- api
+  - refactor resource vs endpoint nomenclature
+  - request validation
+  - logging
 
 - layers as component
 
