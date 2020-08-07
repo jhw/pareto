@@ -1,7 +1,5 @@
 ### short
 
-- rename finalise as synth_master
-- new decorator to append
 - synth_dashboard
 
 ### medium
@@ -200,6 +198,8 @@
   
 ### done
 
+- rename finalise as synth_master
+- new decorator to append
 - test cors
 - cors options method
 - rename -api as -root

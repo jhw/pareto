@@ -134,14 +134,22 @@ class Env(dict):
         stack.update(self.config["globals"])
         return stack
 
-    def finalise(self):
-        master=Template(name="master")
+    def attach(key):
+        def decorator(fn):
+            def wrapped(self):
+                self[key]=fn(self)
+                return self
+            return wrapped
+        return decorator
+
+    @attach("master")
+    def synth_master(self):
+        master=Template()
         for tempname, template in self.items():
             kwargs=self.stack_kwargs(tempname, template, self.outputs)
             stack=synth_stack(**kwargs)
             master.update(stack)
-        self["master"]=master # NB append at end so not iterated over
-        return self
+        return master
 
     def render(self):
         return {k:v.render()
@@ -162,7 +170,7 @@ def preprocess(fn):
 @prevalidate
 @preprocess
 def synth_env(config):
-    return Env.create(config).finalise().render()
+    return Env.create(config).synth_master().render()
 
 if __name__=="__main__":
     pass
