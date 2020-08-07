@@ -7,14 +7,6 @@ from pareto.staging.layers import *
 
 from pareto.env import synth_env
 
-"""
-- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
-"""
-
-Metrics={"resources": (lambda x: (len(x["Resources"]) if "Resources" in x else 0)/200),
-         "outputs": (lambda x: (len(x["Outputs"]) if "Outputs" in x else 0)/60),
-         "template_size": (lambda x: (len(json.dumps(x))/51200))}
-
 def init_region(config):
     region=boto3.session.Session().region_name
     if region in ['', None]:
@@ -115,25 +107,6 @@ def check_refs(templates):
     for tempname, template in templates.items():
         check_refs(tempname, template)
         
-def check_metrics(templates, metrics=Metrics):
-    logging.info("checking template metrics")
-    def calc_metrics(tempname, template, metrics):
-        outputs={"name": tempname}
-        outputs.update({metrickey: metricfn(template)
-                        for metrickey, metricfn in metrics.items()})
-        return outputs
-    def validate_metrics(metrics, limit=0.9):
-        for row in metrics:
-            for attr in row.keys():
-                if (type(row[attr])==float and
-                    row[attr] > limit):
-                    raise RuntimeError("%s %s exceeds limit" % (row["name"],
-                                                                attr))
-    metrics=[calc_metrics(tempname, template, metrics)
-             for tempname, template in templates.items()]
-    print ("\n%s\n" % pd.DataFrame(metrics))
-    validate_metrics(metrics)
-
 """
 - some CF methods, notably apigw ones related to HTTP headers, *require* single- quote enclosed strings
 - both json.dumps and yaml.safe_dump mess this up
@@ -240,7 +213,6 @@ if __name__=="__main__":
         add_layer_staging(config)
         env=synth_env(config)
         check_refs(env)
-        check_metrics(env)
         dump_env(env)
         push_templates(config, env)
         if args["live"]:

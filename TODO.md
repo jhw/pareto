@@ -1,6 +1,5 @@
 ### short
 
-- move template metrics into template
 - move reference filtering into template
 
 - apigw logging
@@ -203,6 +202,7 @@
   
 ### done
 
+- move template metrics into template
 - remove element class
 - separate preprocessor
 - synth_dashboard

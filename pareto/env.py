@@ -102,13 +102,21 @@ class Env(dict):
             master.update(stack)
         return master
 
+    def validate(self):
+        for tempname, template in self.items():
+            metrics=template.metrics
+            for k, v in metrics.items():
+                if v > 1:
+                    raise RuntimeError("%s %s metrics exceeds limit" % (tempname, k))
+        return self
+    
     def render(self):
         return {k:v.render()
                 for k, v in self.items()}
 
 @preprocess
 def synth_env(config):
-    return Env.create(config).synth_dash().synth_master().render()
+    return Env.create(config).synth_dash().synth_master().validate().render()
 
 if __name__=="__main__":
     pass
