@@ -2,7 +2,7 @@
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
 """
 
-import json
+import json, re, yaml
 
 Metrics={"resources": (lambda t: len(t["Resources"])/200),
          "outputs": (lambda t: len(t["Outputs"])/60),
@@ -66,6 +66,29 @@ class Template(dict):
         refs=[]
         filter_refs(self, refs)
         return refs
+
+    @property
+    def yaml_repr(self):
+        class Counter:
+            def __init__(self):
+                self.value=0
+            def increment(self):
+                self.value+=1
+        def count(fn):
+            counter=Counter()
+            def wrapped(match):
+                resp=fn(match, counter)
+                counter.increment()
+                return resp
+            return wrapped
+        @count
+        def matcher(match, counter):
+            return "\"'" if 0==counter.value % 2 else "'\""
+        def unescape_single_quotes(text):
+            return re.sub("'''", matcher, text)
+        yaml.SafeDumper.ignore_aliases=lambda *args : True
+        return unescape_single_quotes(yaml.safe_dump(dict(self), # remove Template class
+                                                     default_flow_style=False))
     
 if __name__=="__main__":
     pass

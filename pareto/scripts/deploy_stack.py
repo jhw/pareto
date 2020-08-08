@@ -73,36 +73,8 @@ def check_refs(templates):
                 raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
     for tempname, template in templates.items():
         check_refs(tempname, template)
-        
-"""
-- some CF methods, notably apigw ones related to HTTP headers, *require* single- quote enclosed strings
-- both json.dumps and yaml.safe_dump mess this up
-- json.dumps can be fixed with custom encoder (see push_templates)
-- but hacking pyyaml is more complex
-- could use https://pypi.org/project/ruamel.yaml/ but not convinced want to deprecate pyyaml at this stage, esp as not required here - the yaml dump is just for debugging
-- so simpler to add unescape_single_quotes() for consistency with custom json encoder
-- https://stackoverflow.com/questions/37094170/a-single-string-in-single-quotes-with-pyyaml
-"""
-    
+            
 def dump_env(env):
-    def unescape_single_quotes(text):
-        class Counter:
-            def __init__(self):
-                self.value=0
-            def increment(self):
-                self.value+=1
-        def count(fn):
-            counter=Counter()
-            def wrapped(match):
-                resp=fn(match, counter)
-                counter.increment()
-                return resp
-            return wrapped
-        @count
-        def matcher(match, counter):
-            return "\"'" if 0==counter.value % 2 else "'\""
-        return re.sub("'''", matcher, text)
-    yaml.Dumper.ignore_aliases=lambda *args : True
     timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
     for tempname, template in env.items():
         tokens=["tmp", "env", timestamp, "%s.yaml" % tempname]
@@ -110,8 +82,7 @@ def dump_env(env):
         if not os.path.exists(dirname):
             os.makedirs(dirname)
         with open(filename, 'w') as f:
-            f.write(unescape_single_quotes(yaml.dump(dict(template), # remove Template class
-                                                     default_flow_style=False)))
+            f.write(template.yaml_repr)
 
 def push_templates(config, templates):
     logging.info("pushing templates")
