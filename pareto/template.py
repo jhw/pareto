@@ -38,34 +38,28 @@ class Template(dict):
     
     @property
     def resource_refs(self):
-        def is_new_ref(key, element, refs):
+        def is_ref(key, element):
             return (key=="Ref" and
-                    type(element)==str and
-                    element not in refs)
-        def is_new_getatt(key, element, refs):
+                    type(element)==str)
+        def is_getatt(key, element):
             return (key=="Fn::GetAtt" and
                     type(element)==list and
-                    type(element[0])==str and
-                    element[0] not in refs)
+                    type(element[0])==str)
         def filter_refs(element, refs):
             if isinstance(element, list):
                 for subelement in element:
                     filter_refs(subelement, refs)
             elif isinstance(element, dict):
                 for key, subelement in element.items():
-                    if is_new_ref(key, subelement, refs):
-                        # print ("ref: %s" % subelement)
-                        refs.append(subelement)
-                    elif is_new_getatt(key, subelement, refs):
-                        # print ("getatt: %s" % subelement[0])
-                        refs.append(subelement[0])
+                    if is_ref(key, subelement):
+                        refs.add(subelement)
+                    elif is_getatt(key, subelement):
+                        refs.add(subelement[0])
                     else:
                         filter_refs(subelement, refs)
-                else:
-                    pass
-        refs=[]
+        refs=set()
         filter_refs(self, refs)
-        return refs
+        return list(refs)
 
     """
     - some CF fields, notably ApiGateway HTTP header related ones, explicity require single quoted string values

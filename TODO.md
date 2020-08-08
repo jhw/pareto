@@ -1,7 +1,5 @@
 ### short
 
-- ref filtering to use set()
-
 - new actions dashboard component
 
 ### medium
@@ -206,6 +204,7 @@
   
 ### done
 
+- ref filtering to use set()
 - move deployment into env
 - move template push into env
 - move yaml dumping into env
