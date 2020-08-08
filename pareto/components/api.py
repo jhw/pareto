@@ -152,18 +152,16 @@ def ApiUrl(endpoint, **kwargs):
     return ApiUrl(endpoint, **kwargs)
 
 def synth_api(**kwargs):
-    template=Template({"Parameters": {},
-                       "Resources": dict([ApiRoot(**kwargs),
-                                          ApiDeployment(**kwargs),
-                                          ApiStage(**kwargs)]),
-                       "Outputs": {}})
+    template=Template({"Resources": [ApiRoot(**kwargs),
+                                     ApiDeployment(**kwargs),
+                                     ApiStage(**kwargs)]})
     for endpoint in kwargs["resources"]:
-        template["Parameters"].update(dict([parameter("%s-arn" % endpoint["action"])]))
-        template["Resources"].update(dict([ApiResource(endpoint, **kwargs),
-                                           ApiMethod(endpoint, **kwargs),
-                                           ApiCorsOptions(endpoint, **kwargs),
-                                           ApiPermission(endpoint, **kwargs)]))
-        template["Outputs"].update(dict([ApiUrl(endpoint, **kwargs)]))
+        template.update({"Parameters": [parameter("%s-arn" % endpoint["action"])],
+                         "Resources": [ApiResource(endpoint, **kwargs),
+                                       ApiMethod(endpoint, **kwargs),
+                                       ApiCorsOptions(endpoint, **kwargs),
+                                       ApiPermission(endpoint, **kwargs)],
+                         "Outputs": [ApiUrl(endpoint, **kwargs)]})
     return template
 
 if __name__=="__main__":

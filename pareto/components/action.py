@@ -105,16 +105,15 @@ def ActionArn(**kwargs):
     return fn_getatt(kwargs["name"], "Arn")
 
 def synth_action(**kwargs):
-    template=Template({"Parameters": {},
-                       "Resources": dict([ActionFunction(**kwargs),
-                                          ActionRole(**kwargs),
-                                          ActionDeadLetterQueue(**kwargs),
-                                          ActionVersion(**kwargs),
-                                          ActionEventConfig(**kwargs)]),
-                       "Outputs": dict([ActionArn(**kwargs)])})
+    template=Template({"Resources": [ActionFunction(**kwargs),
+                                     ActionRole(**kwargs),
+                                     ActionDeadLetterQueue(**kwargs),
+                                     ActionVersion(**kwargs),
+                                     ActionEventConfig(**kwargs)],
+                       "Outputs": [ActionArn(**kwargs)]})
     if "layer" in kwargs["staging"]:
-        template["Resources"].update(dict([ActionLayer(package, **kwargs)
-                                           for package in kwargs["staging"]["layer"]]))
+        template.update({"Resources": [ActionLayer(package, **kwargs)
+                                       for package in kwargs["staging"]["layer"]]})
     return template
 
 if __name__=="__main__":

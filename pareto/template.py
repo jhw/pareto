@@ -11,12 +11,13 @@ Metrics={"resources": (lambda t: len(t["Resources"])/200),
 class Template(dict):
 
     def __init__(self, items={}):
-        dict.__init__(self, items)
-
+        dict.__init__(self)
+        self.update(items)
+        
     def update(self, items):
         for k, v in items.items():
             self.setdefault(k, {})
-            self[k].update(v)
+            self[k].update(dict(v))
         
     @property
     def metrics(self, metrics=Metrics):
