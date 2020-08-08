@@ -3,7 +3,6 @@ from pareto.components import *
 from pareto.components.action import synth_action
 from pareto.components.api import synth_api
 from pareto.components.bucket import synth_bucket
-from pareto.components.dashboard import synth_dashboard
 from pareto.components.queue import synth_queue
 from pareto.components.secret import synth_secret
 from pareto.components.stack import synth_stack
@@ -76,23 +75,6 @@ class Env(dict):
             return wrapped
         return decorator
 
-    @attach("dashboards")
-    def synth_dash(self):
-        def dash_name(config, tempkey):
-            return "%s-%s-%s" % (config["globals"]["app"],
-                                 tempkey,
-                                 config["globals"]["stage"])
-        dash=Template()
-        for tempname, template in self.items():
-            if template.charts==[]:
-                continue
-            name=dash_name(self.config, tempname)
-            kwargs={"name": name,
-                    "body": template.charts}
-            stack=synth_dashboard(**kwargs)
-            dash.update(stack)            
-        return dash
-    
     @attach("master")
     def synth_master(self):
         master=Template()
@@ -122,7 +104,7 @@ class Env(dict):
 
 @preprocess
 def synth_env(config):
-    return Env.create(config).synth_dash().synth_master().validate().render()
+    return Env.create(config).synth_master().validate().render()
 
 if __name__=="__main__":
     pass

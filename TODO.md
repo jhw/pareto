@@ -1,6 +1,5 @@
 ### short
 
-- comment out/remove all dash related stuff
 - comvert template to be list of dicts
 - ensure all template updators convert lists of tuples to dicts
 - new actions dashboard class
@@ -204,6 +203,7 @@
   
 ### done
 
+- comment out/remove all dash related stuff
 - move template metrics into template
 - remove element class
 - separate preprocessor
