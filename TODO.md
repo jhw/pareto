@@ -1,29 +1,26 @@
 ### short
 
-- refactor api resource vs endpoint nomenclature
-- merge website back into bucket
+- template to take keyword args
+- replace current default args setting with default keywords
+- decorator to assert uppercase keywords
 
+- merge website back into bucket
+- new actions dashboard component
+- apigw logging
+- layers-as-components
+
+### medium
+
+- refactor api resource vs endpoint nomenclature
+- action to have permission to call another action
 - template/env param/output checking
 
 - consider if python-git stuff could be moved into class
 - consider if lambda/layout staging stuff could be moved into class
 
-- new actions dashboard component
-
-### medium
-
-- investigate moving more script stuff into template
-
-- apigw logging
 - apigw request validation
-- layers-as-components
 - userpool component
 - api authorizer
-- userpool ref validation
-- auth testing scripts
-
-- action to have permission to call another action
-
 - s3 multiple action support
 - cloudfront + https + route 53
 - change password routine
