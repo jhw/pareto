@@ -9,7 +9,18 @@ Metrics={"resources": (lambda t: len(t.resources)/200),
          "template_size": (lambda t: len(json.dumps(t))/51200)}
 
 class Template(dict):
+
+    Attrs=["Parameters", "Resources", "Outputs"]
     
+    def assert_keywords(fn):
+        def wrapped(self, **kwargs):
+            for k in kwargs:
+                if k not in self.Attrs:
+                    raise RuntimeError("Unknown template keyword %s (template takes capitalized keywords only" % k)
+            return fn(self, **kwargs)
+        return wrapped
+    
+    @assert_keywords
     def __init__(self, **kwargs):
         dict.__init__(self)
         self.update(**kwargs)
@@ -24,7 +35,8 @@ class Template(dict):
     @default_attr
     def __getattr__(self, k):
         return self[k.capitalize()]
-        
+
+    @assert_keywords
     def update(self, **kwargs):
         for k, v in kwargs.items():
             self.setdefault(k, {})

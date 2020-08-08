@@ -1,6 +1,5 @@
 ### short
 
-- decorator to assert uppercase keywords
 
 - add list conversion if tuple
 
@@ -207,6 +206,7 @@
   
 ### done
 
+- decorator to assert uppercase keywords
 - override __getattr__ so can to template.resources etc
 - template to take keyword args
 - replace current default args setting with default keywords
