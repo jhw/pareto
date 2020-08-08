@@ -1,6 +1,5 @@
 ### short
 
-- remove render stuff
 - comvert template to be list of dicts
 - ensure all template updators convert lists of tuples to dicts
 - new actions dashboard class
