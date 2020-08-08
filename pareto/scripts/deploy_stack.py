@@ -59,21 +59,6 @@ def add_layer_staging(config):
         action.setdefault("staging", {})
         action["staging"]["layer"]=staged
         
-"""
-- remember this checks resource ids (1st arg to fn:getatt) and not attribute names (2nd arg)
-- hence doesn't cover `Outputs.XXX`
-"""
-        
-def check_refs(templates):
-    logging.info("checking template refs")
-    def check_refs(tempname, template):
-        resourceids=template.resource_ids
-        for ref in template.resource_refs:
-            if ref not in resourceids:
-                raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
-    for tempname, template in templates.items():
-        check_refs(tempname, template)
-            
 def dump_env(env):
     timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
     for tempname, template in env.items():
@@ -138,7 +123,6 @@ if __name__=="__main__":
         add_lambda_staging(config)
         add_layer_staging(config)
         env=synth_env(config)
-        check_refs(env)
         dump_env(env)
         push_templates(config, env)
         if args["live"]:

@@ -83,7 +83,7 @@ class Env(dict):
             stack=synth_stack(**kwargs)
             master.update(stack)
         return master
-
+    
     def validate(self):
         def validate_metrics(tempname, template):
             metrics=template.metrics
@@ -91,8 +91,10 @@ class Env(dict):
                 if v > 1:
                     raise RuntimeError("%s %s metrics exceeds limit" % (tempname, k))
         def validate_refs(tempname, template):
-            # do stuff
-            pass
+            resourceids=template.resource_ids
+            for ref in template.resource_refs:
+                if ref not in resourceids:
+                    raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
         for tempname, template in self.items():
             validate_metrics(tempname, template)
             validate_refs(tempname, template)

@@ -1,6 +1,5 @@
 ### short
 
-- move ref checking into env validation stage
 - move yaml dumping into env
 - move template push into env
 
@@ -214,6 +213,7 @@
   
 ### done
 
+- move ref checking into env validation stage
 - move json/yaml template representation into template
 - move reference checking into dash where can check self
 - re- introduce template update helpers
