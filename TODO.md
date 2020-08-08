@@ -1,5 +1,8 @@
 ### short
 
+- trigger creation failed :-/
+  - compare generated templates with master branch ?
+
 - allow parameter fields to be lower case
 - pass kwargs to parameters
 
