@@ -15,10 +15,12 @@ def QueueMapping(batch=1, **kwargs):
     return "AWS::Lambda::EventSourceMapping", props
 
 def synth_queue(**kwargs):
-    template=Template(resources=[Queue(**kwargs)])
+    template=Template({"Parameters": {},
+                       "Resources": dict([Queue(**kwargs)]),
+                       "Outputs": {}})
     if "action" in kwargs:
-        template.parameters.append(parameter("%s-arn" % kwargs["action"]))
-        template.resources.append(QueueMapping(**kwargs))
+        template["Parameters"].update(dict([parameter("%s-arn" % kwargs["action"])]))
+        template["Resources"].update(dict([QueueMapping(**kwargs)]))
     return template
 
 if __name__=="__main__":

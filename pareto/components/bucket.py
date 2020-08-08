@@ -31,10 +31,12 @@ def BucketPermission(**kwargs):
     return "AWS::Lambda::Permission", props
 
 def synth_bucket(**kwargs):
-    template=Template(resources=[Bucket(**kwargs)])
+    template=Template({"Parameters": {},
+                       "Resources": dict([Bucket(**kwargs)]),
+                       "Outputs": {}})
     if "action" in kwargs:
-        template.parameters.append(parameter("%s-arn" % kwargs["action"]))
-        template.resources.append(BucketPermission(**kwargs))
+        template["Parameters"].update(dict([parameter("%s-arn" % kwargs["action"])]))
+        template["Resources"].update(dict([BucketPermission(**kwargs)]))
     return template
 
 if __name__=="__main__":

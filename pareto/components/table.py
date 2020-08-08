@@ -50,10 +50,12 @@ def TableMapping(**kwargs):
     return "AWS::Lambda::EventSourceMapping", props
 
 def synth_table(**kwargs):
-    template=Template(resources=[Table(**kwargs)])
+    template=Template({"Parameters": {},
+                       "Resources": dict([Table(**kwargs)]),
+                       "Outputs": {}})
     if "action" in kwargs:
-        template.parameters.append(parameter("%s-arn" % kwargs["action"]))
-        template.resources.append(TableMapping(**kwargs))
+        template["Parameters"].update(dict([parameter("%s-arn" % kwargs["action"])]))
+        template["Resources"].update(dict([TableMapping(**kwargs)]))
     return template
 
 if __name__=="__main__":

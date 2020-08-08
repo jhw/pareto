@@ -49,12 +49,13 @@ def WebsitePolicy(**kwargs):
     return "AWS::S3::BucketPolicy", props
 
 def synth_website(**kwargs):
-    template=Template(resources=[Website(**kwargs),
-                                 WebsitePolicy(**kwargs)],
-                      outputs=[WebsiteUrl(**kwargs)])
+    template=Template({"Parameters": {},
+                       "Resources": dict([Website(**kwargs),
+                                          WebsitePolicy(**kwargs)]),
+                       "Outputs": dict([WebsiteUrl(**kwargs)])})
     if "action" in kwargs:
-        template.parameters.append(parameter("%s-arn" % kwargs["name"]))
-        template.resources.append(BucketPermission(**kwargs))
+        template["Parameters"].update(dict([parameter("%s-arn" % kwargs["name"])]))
+        template["Resources"].update(dict([BucketPermission(**kwargs)]))
     return template
 
 if __name__=="__main__":

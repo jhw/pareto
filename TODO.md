@@ -1,7 +1,8 @@
 ### short
 
-- comvert template to be list of dicts
-- ensure all template updators convert lists of tuples to dicts
+- missing components
+- add back template helpers
+
 - new actions dashboard class
 - move reference checking into dash where can check self
 
@@ -203,6 +204,12 @@
   
 ### done
 
+- revert Template to dict
+- yaml representer output problem
+- move grid_layout to chart root
+- retire dash temporarily
+- comvert template to be list of dicts
+- ensure all template updators convert lists of tuples to dicts
 - comment out/remove all dash related stuff
 - move template metrics into template
 - remove element class

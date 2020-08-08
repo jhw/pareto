@@ -4,33 +4,19 @@
 
 import json
 
-Metrics={"resources": (lambda t: len(t.resources)/200),
-         "outputs": (lambda t: len(t.outputs)/60),
+Metrics={"resources": (lambda t: len(t["Resources"])/200),
+         "outputs": (lambda t: len(t["Outputs"])/60),
          "template_size": (lambda t: len(json.dumps(t))/51200)}
 
-class Template:
+class Template(dict):
 
-    def __init__(self,
-                 parameters=[],
-                 resources=[],
-                 outputs=[],
-                 charts=[]):
-        self.parameters=list(parameters)
-        self.resources=list(resources)
-        self.outputs=list(outputs)
-        self.charts=list(charts)
+    def __init__(self, items={}):
+        dict.__init__(self, items)
 
     @property
     def metrics(self, metrics=Metrics):
         return {metrickey: metricfn(self)
                 for metrickey, metricfn in metrics.items()}
-
-    def update(self, template):
-        for attr in ["parameters",
-                     "resources",
-                     "outputs"]:
-            parent=getattr(self, attr)
-            parent+=getattr(template, attr)
             
 if __name__=="__main__":
     pass

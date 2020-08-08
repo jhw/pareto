@@ -152,17 +152,29 @@ def ApiUrl(endpoint, **kwargs):
     return ApiUrl(endpoint, **kwargs)
 
 def synth_api(**kwargs):
-    template=Template(resources=[ApiRoot(**kwargs),
-                                 ApiDeployment(**kwargs),
-                                 ApiStage(**kwargs)])
+    template=Template({"Parameters": {},
+                       "Resources": dict([ApiRoot(**kwargs),
+                                          ApiDeployment(**kwargs),
+                                          ApiStage(**kwargs)]),
+                       "Outputs": {}})
     for endpoint in kwargs["resources"]:
-        template.parameters.append(parameter("%s-arn" % endpoint["action"]))
-        template.resources+=[ApiResource(endpoint, **kwargs),
-                             ApiMethod(endpoint, **kwargs),
-                             ApiCorsOptions(endpoint, **kwargs),
-                             ApiPermission(endpoint, **kwargs)]
-        template.outputs.append(ApiUrl(endpoint, **kwargs))
+        template["Parameters"].update(dict([parameter("%s-arn" % endpoint["action"])]))
+        template["Resources"].update(dict([ApiResource(endpoint, **kwargs),
+                                           ApiMethod(endpoint, **kwargs),
+                                           ApiCorsOptions(endpoint, **kwargs),
+                                           ApiPermission(endpoint, **kwargs)]))
+        template["Outputs"].update(dict([ApiUrl(endpoint, **kwargs)]))
     return template
 
 if __name__=="__main__":
-    pass
+    import yaml
+    api=yaml.safe_load("""
+    stage: dev
+    region: eu-west-1
+    name: hello-api
+    resources:
+    - name: hello-get
+      method: GET
+      action: hello-action
+    """)
+    print (synth_api(**api))

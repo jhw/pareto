@@ -56,12 +56,12 @@ class Env(dict):
         outputs={}
         for tempkey, template in self.items():
             outputs.update({outputkey: tempkey
-                            for outputkey, _ in template.outputs})
+                            for outputkey, _ in template["Outputs"].items()})
         return outputs
 
     def stack_kwargs(self, tempname, template, outputs):
         params={paramname: stack_param(paramname, outputs)
-                for paramname, _ in template.parameters}
+                for paramname, _ in template["Parameters"].items()}
         stack={"name": tempname,
                "params": params}
         stack.update(self.config["globals"])
@@ -100,7 +100,8 @@ class Env(dict):
     
 @preprocess
 def synth_env(config):
-    return Env.create(config).synth_master().validate()
+    # return Env.create(config).synth_master().validate()
+    return Env.create(config)
 
 if __name__=="__main__":
     pass

@@ -135,7 +135,7 @@ def dump_env(env):
         def matcher(match, counter):
             return "\"'" if 0==counter.value % 2 else "'\""
         return re.sub("'''", matcher, text)
-    yaml.SafeDumper.ignore_aliases=lambda *args: True
+    yaml.Dumper.ignore_aliases=lambda *args : True
     timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
     for tempname, template in env.items():
         tokens=["tmp", "env", timestamp, "%s.yaml" % tempname]
@@ -143,8 +143,8 @@ def dump_env(env):
         if not os.path.exists(dirname):
             os.makedirs(dirname)
         with open(filename, 'w') as f:
-            f.write(unescape_single_quotes(yaml.safe_dump(template,
-                                                          default_flow_style=False)))
+            f.write(unescape_single_quotes(yaml.dump(dict(template), # remove Template class
+                                                     default_flow_style=False)))
 
 def push_templates(config, templates):
     logging.info("pushing templates")
@@ -212,7 +212,7 @@ if __name__=="__main__":
         add_lambda_staging(config)
         add_layer_staging(config)
         env=synth_env(config)
-        check_refs(env)
+        # check_refs(env)
         dump_env(env)
         push_templates(config, env)
         if args["live"]:
