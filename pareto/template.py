@@ -4,23 +4,26 @@
 
 import json, re, yaml
 
-Metrics={"resources": (lambda t: len(t["Resources"])/200),
-         "outputs": (lambda t: len(t["Outputs"])/60),
+Metrics={"resources": (lambda t: len(t.resources)/200),
+         "outputs": (lambda t: len(t.outputs)/60),
          "template_size": (lambda t: len(json.dumps(t))/51200)}
 
 class Template(dict):
     
     def __init__(self, **kwargs):
         dict.__init__(self)
-        # START TEMP CODE
-        """
-        - just to stop env barfing on template["Parameters"]}
-        - should be replaced by overriding __getattr__ which checks for existencce of key
-        """
-        for attr in ["Parameters", "Resources", "Outputs"]:
-            kwargs.setdefault(attr, {})
-        # END TEMP CODE
         self.update(**kwargs)
+
+    def default_attr(fn):
+        def wrapped(self, k):
+            if k.capitalize() not in self:
+                return {}
+            return fn(self, k)
+        return wrapped
+
+    @default_attr
+    def __getattr__(self, k):
+        return self[k.capitalize()]
         
     def update(self, **kwargs):
         for k, v in kwargs.items():

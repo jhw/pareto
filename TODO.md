@@ -2,7 +2,6 @@
 
 - decorator to assert uppercase keywords
 
-- override __getattr__ so can to template.resources etc
 - add list conversion if tuple
 
 - merge website back into bucket
@@ -208,6 +207,7 @@
   
 ### done
 
+- override __getattr__ so can to template.resources etc
 - template to take keyword args
 - replace current default args setting with default keywords
 - ref filtering to use set()

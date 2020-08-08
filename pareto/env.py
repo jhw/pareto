@@ -58,12 +58,12 @@ class Env(dict):
         outputs={}
         for tempkey, template in self.items():
             outputs.update({outputkey: tempkey
-                            for outputkey in template["Outputs"]})
+                            for outputkey in template.outputs})
         return outputs
 
     def stack_kwargs(self, tempname, template, outputs):
         params={paramname: stack_param(paramname, outputs)
-                for paramname in template["Parameters"]}
+                for paramname in template.parameters}
         stack={"name": tempname,
                "params": params}
         stack.update(self.config["globals"])
