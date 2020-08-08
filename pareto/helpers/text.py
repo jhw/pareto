@@ -11,3 +11,6 @@ def labelise(text):
 def hungarorise(text):
     return "".join([tok.capitalize()
                     for tok in re.split("\\-|\\_", text)])    
+
+def underscore(text):
+    return text.replace("-", "_")

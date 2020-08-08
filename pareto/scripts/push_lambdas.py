@@ -1,21 +1,16 @@
 #!/usr/bin/env python
 
-"""
-- should be replaced with Github Action in fullness of time :)
-"""
-
 from pareto.scripts import *
 
 from pareto.staging.lambdas import *
+
+from pareto.helpers.text import underscore
 
 from pareto.scripts.helpers.profiles import toggle_aws_profile
 
 from git import Repo
 
 import zipfile
-
-def underscore(text):
-    return text.replace("-", "_")
 
 @toggle_aws_profile
 @assert_actions

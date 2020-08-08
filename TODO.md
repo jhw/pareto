@@ -1,7 +1,8 @@
 ### short
 
-- template/env param/output checking
 - refactor api resource vs endpoint nomenclature
+
+- template/env param/output checking
 - env dashboard popping code
 - apigw logging
 - layers-as-components
@@ -206,6 +207,7 @@
   
 ### done
 
+- move underscore
 - dashboard to avoid cloning hungarorise/logical_id/@resource
 - template_name function
 - add charts logical id
