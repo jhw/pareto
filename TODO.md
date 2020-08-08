@@ -1,8 +1,5 @@
 ### short
 
-- convert capitalized variables to lower case
-  - only render() to capitalize
-
 - chart class to name dashbords
 
 - env dashboard popping code
@@ -51,6 +48,8 @@
 
 ### thoughts
 
+- convert capitalized variables to lower case ?
+  - over- optimisation :/
 - pass kwargs to parameters ?
   - don't see the point
 - allow parameter fields to be lower case ?
