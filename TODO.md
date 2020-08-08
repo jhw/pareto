@@ -1,6 +1,5 @@
 ### short
 
-- move yaml dumping into env
 - move template push into env
 
 - allow parameter fields to be lower case
@@ -213,6 +212,7 @@
   
 ### done
 
+- move yaml dumping into env
 - move ref checking into env validation stage
 - move json/yaml template representation into template
 - move reference checking into dash where can check self

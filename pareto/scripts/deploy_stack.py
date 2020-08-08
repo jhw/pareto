@@ -59,15 +59,6 @@ def add_layer_staging(config):
         action.setdefault("staging", {})
         action["staging"]["layer"]=staged
         
-def dump_env(env):
-    timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-    for tempname, template in env.items():
-        tokens=["tmp", "env", timestamp, "%s.yaml" % tempname]
-        dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
-        if not os.path.exists(dirname):
-            os.makedirs(dirname)
-        with open(filename, 'w') as f:
-            f.write(template.yaml_repr)
 
 def push_templates(config, templates):
     logging.info("pushing templates")
@@ -123,7 +114,7 @@ if __name__=="__main__":
         add_lambda_staging(config)
         add_layer_staging(config)
         env=synth_env(config)
-        dump_env(env)
+        env.dump()
         push_templates(config, env)
         if args["live"]:
             deploy_env(config, env["master"])

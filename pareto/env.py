@@ -12,7 +12,7 @@ from pareto.components.website import synth_website
 
 from pareto.preprocessor import preprocess
 
-Actions, NonFunctionals = "actions", "non-functionals"
+import datetime, os
 
 def TemplateMapper(groupkey,
                    dedicated=["actions",
@@ -99,6 +99,16 @@ class Env(dict):
             validate_metrics(tempname, template)
             validate_refs(tempname, template)
         return self
+
+    def dump(self):
+        timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+        for tempname, template in self.items():
+            tokens=["tmp", "env", timestamp, "%s.yaml" % tempname]
+            dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
+            with open(filename, 'w') as f:
+                f.write(template.yaml_repr)
     
 @preprocess
 def synth_env(config):
