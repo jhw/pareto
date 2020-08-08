@@ -13,11 +13,18 @@ Metrics={"resources": (lambda t: len(t.Resources)/200),
 - to maintain consistency with how non- dash components are treated
 """
 
+def hungarorise(text):
+    return "".join([tok.capitalize()
+                    for tok in re.split("\\-|\\_", text)])    
+
+def logical_id(name):
+    return hungarorise(name)
+
 def resource(fn):
     def wrapped(**kwargs):
         component={k:v for k, v in zip(["Type", "Properties"],
                                        fn(**kwargs))}
-        return ("MyDash", component) # TEMP
+        return (logical_id(kwargs["name"]), component)
     return wrapped
 
 @resource
@@ -85,7 +92,7 @@ class Template:
                 for attr in self.Attrs
                 if attr!="Charts"}
         if self.Charts!=[]:
-            dash=Dashboard(**{"name": "foobar", # TEMP
+            dash=Dashboard(**{"name": "my-sample-charts", # TEMP
                               "body": self.Charts})
             struct["Resources"].update(dict([dash]))
         return struct

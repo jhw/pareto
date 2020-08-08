@@ -1,6 +1,10 @@
 ### short
 
-- chart class to name dashbords
+- add charts logical id
+- pass name to template
+- use dashboard name for chart naming
+
+- dashboard to avoid cloning hungarorise/logical_id/@resource
 
 - env dashboard popping code
 
