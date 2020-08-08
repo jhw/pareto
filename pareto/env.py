@@ -128,7 +128,8 @@ class Env(dict):
         action="update" if stack_exists(stackname) else "create"
         fn=getattr(cf, "%s_stack" % action)
         fn(StackName=stackname,
-           TemplateBody=json.dumps(self[Master]),
+           # TemplateBody=self[Master].json_repr,
+           TemplateBody=json.dumps(self[Master].render()),
            Capabilities=["CAPABILITY_IAM"])
         waiter=cf.get_waiter("stack_%s_complete" % action)
         waiter.wait(StackName=stackname)

@@ -1,12 +1,18 @@
 ### short
 
-- chart class to name dashbords
+- test!
+
+- website policy messed up
+
+- encode("utf-8") messing up master template push ?
+
 - convert capitalized variables to lower case
   - only render() to capitalize
 
-- test!
+- chart class to name dashbords
 
 - rename template.#{something}.format_value()
+
 - env dashboard popping code
 
 ### medium
