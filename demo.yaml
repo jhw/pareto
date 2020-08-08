@@ -36,8 +36,7 @@ components:
   buckets:
     - name: hello-bucket
       action: hello-bucket-action
-  websites:
-    - name: hello-website
+      website: true
   queues:
     - name: hello-queue
       batch: 1

@@ -1,6 +1,5 @@
 ### short
 
-- merge website back into bucket
 - new actions dashboard component
 
 - apigw logging
@@ -206,6 +205,7 @@
   
 ### done
 
+- merge website back into bucket
 - add list conversion if tuple
 - decorator to assert uppercase keywords
 - override __getattr__ so can to template.resources etc

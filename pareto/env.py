@@ -8,7 +8,6 @@ from pareto.components.secret import synth_secret
 from pareto.components.stack import synth_stack
 from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
-from pareto.components.website import synth_website
 
 from pareto.preprocessor import preprocess
 
