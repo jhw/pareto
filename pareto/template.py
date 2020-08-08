@@ -12,6 +12,10 @@ class Template(dict):
 
     def __init__(self, items={}):
         dict.__init__(self)
+        for attr in ["Parameters",
+                     "Resources",
+                     "Outputs"]:
+            items.setdefault(attr, {})
         self.update(items)
         
     def update(self, items):
