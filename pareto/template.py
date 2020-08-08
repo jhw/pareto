@@ -57,21 +57,21 @@ class Template:
     
     Attrs=["Parameters", "Resources", "Outputs", "Charts"]
     
-    def assert_keywords(fn):
-        def wrapped(self, **kwargs):
-            for k in kwargs:
-                if k not in self.Attrs:
-                    raise RuntimeError("Unknown template keyword %s (template takes capitalized keywords only" % k)
-            return fn(self, **kwargs)
-        return wrapped
-    
-    @assert_keywords
-    def __init__(self):
+    def __init__(self, name):
+        self.name=name
         def default_value(k):
             return [] if k=="Charts" else {}
         for attr in self.Attrs:
             setattr(self, attr, default_value(attr))
 
+    def assert_keywords(fn):
+        def wrapped(self, **kwargs):
+            for k in kwargs:
+                if k not in self.Attrs:
+                    raise RuntimeError("Unknown template keyword %s (template takes capitalized keywords only)" % k)
+            return fn(self, **kwargs)
+        return wrapped
+                
     @assert_keywords
     def update(self, **kwargs):
         def listify(fn):
@@ -92,7 +92,7 @@ class Template:
                 for attr in self.Attrs
                 if attr!="Charts"}
         if self.Charts!=[]:
-            dash=Dashboard(**{"name": "my-sample-charts", # TEMP
+            dash=Dashboard(**{"name": "%s-charts" % self.name,
                               "body": self.Charts})
             struct["Resources"].update(dict([dash]))
         return struct

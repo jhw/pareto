@@ -1,8 +1,6 @@
 ### short
 
-- add charts logical id
-- pass name to template
-- use dashboard name for chart naming
+- template_name function
 
 - dashboard to avoid cloning hungarorise/logical_id/@resource
 
@@ -213,6 +211,9 @@
   
 ### done
 
+- add charts logical id
+- pass name to template
+- use dashboard name for chart naming
 - rename template.#{something}.format_value()
 - encode("utf-8") messing up master template push ?
 - test!

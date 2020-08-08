@@ -42,7 +42,7 @@ class Env(dict):
         env=Env(config)
         for groupkey, components in config["components"].items():
             tempkey=templatefn(groupkey)
-            env.setdefault(tempkey, Template())
+            env.setdefault(tempkey, Template(name="hello-world")) # TEMP
             for kwargs in components:
                 kwargs.update(config["globals"]) # NB
                 fn=eval("synth_%s" % groupkey[:-1])                
@@ -79,7 +79,7 @@ class Env(dict):
 
     @attach(Master)
     def synth_master(self):
-        master=Template()
+        master=Template(name=Master)
         for tempname, template in self.items():
             kwargs=self.stack_kwargs(tempname, template, self.outputs)
             synth_stack(master, **kwargs)
