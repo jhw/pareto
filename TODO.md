@@ -1,5 +1,9 @@
 ### short
 
+- move ref checking into env validation stage
+- move yaml dumping into env
+- move template push into env
+
 - allow parameter fields to be lower case
 - pass kwargs to parameters
 
