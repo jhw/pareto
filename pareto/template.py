@@ -141,7 +141,7 @@ class Template:
                     return obj
                 return json.JSONEncoder.default(self, obj)
         return json.dumps(self.render(),
-                          cls=SingleQuoteEncoder).encode("utf-8")
+                          cls=SingleQuoteEncoder)
 
     """
     - pyyaml will encode `"'` as `'''` :-/

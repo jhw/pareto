@@ -110,7 +110,7 @@ class Env(dict):
             logging.info("pushing %s" % key)
             s3.put_object(Bucket=config["globals"]["bucket"],
                           Key=key,
-                          Body=template.json_repr,
+                          Body=template.json_repr.encode("utf-8"),
                           ContentType='application/json')
         for tempname, template in self.items():
             if tempname==Master:
@@ -128,8 +128,7 @@ class Env(dict):
         action="update" if stack_exists(stackname) else "create"
         fn=getattr(cf, "%s_stack" % action)
         fn(StackName=stackname,
-           # TemplateBody=self[Master].json_repr,
-           TemplateBody=json.dumps(self[Master].render()),
+           TemplateBody=self[Master].json_repr,
            Capabilities=["CAPABILITY_IAM"])
         waiter=cf.get_waiter("stack_%s_complete" % action)
         waiter.wait(StackName=stackname)

@@ -1,13 +1,11 @@
 ### short
 
-- encode("utf-8") messing up master template push ?
+- rename template.#{something}.format_value()
 
 - convert capitalized variables to lower case
   - only render() to capitalize
 
 - chart class to name dashbords
-
-- rename template.#{something}.format_value()
 
 - env dashboard popping code
 
@@ -20,6 +18,7 @@
 - consider if python-git stuff could be moved into class
 - consider if lambda/layout staging stuff could be moved into class
 
+- template counting / metrics checking
 - refactor api resource vs endpoint nomenclature
 - action to have permission to call another action
 - template/env param/output checking
@@ -28,6 +27,7 @@
 - userpool component
 - api authorizer
 
+- cloudwatch alerts
 - cloudfront + https + route 53
 - change password routine
 - template factory
@@ -42,7 +42,6 @@
   - federated login
   - unauthenticated access
 
-- cloudwatch alerts
 - eventbridge
 - ci pipeline
 - github actions
@@ -213,6 +212,7 @@
   
 ### done
 
+- encode("utf-8") messing up master template push ?
 - test!
 - website policy messed up
 - check you can pass template to synth_xxx from envx
