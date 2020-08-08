@@ -1,26 +1,26 @@
 ### short
 
-
-- add list conversion if tuple
-
 - merge website back into bucket
 - new actions dashboard component
+
 - apigw logging
 - layers-as-components
 
 ### medium
 
+- consider if python-git stuff could be moved into class
+- consider if lambda/layout staging stuff could be moved into class
+
 - refactor api resource vs endpoint nomenclature
 - action to have permission to call another action
 - template/env param/output checking
 
-- consider if python-git stuff could be moved into class
-- consider if lambda/layout staging stuff could be moved into class
-
 - apigw request validation
 - userpool component
 - api authorizer
+
 - s3 multiple action support
+
 - cloudfront + https + route 53
 - change password routine
 - template factory
@@ -206,6 +206,7 @@
   
 ### done
 
+- add list conversion if tuple
 - decorator to assert uppercase keywords
 - override __getattr__ so can to template.resources etc
 - template to take keyword args

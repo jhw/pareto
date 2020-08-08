@@ -38,9 +38,16 @@ class Template(dict):
 
     @assert_keywords
     def update(self, **kwargs):
+        def listify(fn):
+            def wrapped(v):
+                return [v] if isinstance(v, tuple) else v
+            return wrapped
+        @listify
+        def format_value(v):
+            return dict(v)            
         for k, v in kwargs.items():
             self.setdefault(k, {})
-            self[k].update(dict(v))
+            self[k].update(format_value(v))
         
     @property
     def metrics(self, metrics=Metrics):

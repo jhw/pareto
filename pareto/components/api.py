@@ -156,12 +156,12 @@ def synth_api(**kwargs):
                                  ApiDeployment(**kwargs),
                                  ApiStage(**kwargs)])
     for endpoint in kwargs["resources"]:
-        template.update(Parameters=[parameter("%s-arn" % endpoint["action"])],
+        template.update(Parameters=parameter("%s-arn" % endpoint["action"]),
                         Resources=[ApiResource(endpoint, **kwargs),
                                    ApiMethod(endpoint, **kwargs),
                                    ApiCorsOptions(endpoint, **kwargs),
                                    ApiPermission(endpoint, **kwargs)],
-                        Outputs=[ApiUrl(endpoint, **kwargs)])
+                        Outputs=ApiUrl(endpoint, **kwargs))
     return template
 
 if __name__=="__main__":

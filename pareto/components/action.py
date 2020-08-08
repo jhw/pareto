@@ -110,7 +110,7 @@ def synth_action(**kwargs):
                                  ActionDeadLetterQueue(**kwargs),
                                  ActionVersion(**kwargs),
                                  ActionEventConfig(**kwargs)],
-                      Outputs=[ActionArn(**kwargs)])
+                      Outputs=ActionArn(**kwargs))
     if "layer" in kwargs["staging"]:
         template.update(Resources=[ActionLayer(package, **kwargs)
                                    for package in kwargs["staging"]["layer"]])
