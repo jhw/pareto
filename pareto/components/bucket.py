@@ -4,7 +4,9 @@ from pareto.components import *
 - s3 ARNs contain neither region nor account id
 """
 
-Arn="arn:aws:s3:::%s"
+PermissionArn="arn:aws:s3:::%s"
+
+WebsitePolicyArn="arn:aws:s3:::${bucket_name}/*"
 
 @resource()
 def Bucket(event={"type":  "s3:ObjectCreated:*"},
@@ -31,7 +33,7 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
 
 @resource(suffix="permission")
 def BucketPermission(**kwargs):
-    source=Arn % resource_name(kwargs)
+    source=PermissionArn % resource_name(kwargs)
     target=ref("%s-arn" % kwargs["action"])
     props={"Action": "lambda:InvokeFunction",
            "FunctionName": target,
@@ -47,7 +49,8 @@ def BucketWebsiteUrl(**kwargs):
 @resource(suffix="website-policy")
 def BucketWebsitePolicy(**kwargs):
     def policy_document(kwargs):
-        resource=fn_sub(Arn, {"bucket_name": ref(kwargs["name"])})
+        resource=fn_sub(WebsitePolicyArn,
+                        {"bucket_name": ref(kwargs["name"])})
         statement=[{"Action": "s3:GetObject",
                     "Effect": "Allow",
                     "Principal": "*",

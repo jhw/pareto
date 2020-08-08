@@ -1,9 +1,5 @@
 ### short
 
-- test!
-
-- website policy messed up
-
 - encode("utf-8") messing up master template push ?
 
 - convert capitalized variables to lower case
@@ -217,6 +213,8 @@
   
 ### done
 
+- test!
+- website policy messed up
 - check you can pass template to synth_xxx from envx
 - change synth_xxx to take template
 - remove args passing and setting of default values in  template constructor
