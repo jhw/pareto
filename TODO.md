@@ -1,8 +1,5 @@
 ### short
 
-- trigger creation failed :-/
-  - compare generated templates with master branch ?
-
 - allow parameter fields to be lower case
 - pass kwargs to parameters
 
@@ -60,6 +57,9 @@
 
 ### thoughts
 
+- trigger creation failed :-/
+  - compare generated templates with master branch ?
+  - feels like isolated incident as worked the next time
 - api endpoint to have multiple methods ?
   - no; for now is enough to have a specified endpoint and a cors endpoint
 - test pushing nested yaml templates to s3 ?
