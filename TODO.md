@@ -1,12 +1,18 @@
 ### short
 
+- refactor api resource vs endpoint nomenclature
+- merge website back into bucket
+
+- template/env param/output checking
+
+- consider if python-git stuff could be moved into class
+- consider if lambda/layout staging stuff could be moved into class
+
 - new actions dashboard component
 
 ### medium
 
 - investigate moving more script stuff into template
-- refactor api resource vs endpoint nomenclature
-- merge website back into bucket
 
 - apigw logging
 - apigw request validation
