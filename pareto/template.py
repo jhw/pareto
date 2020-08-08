@@ -13,6 +13,11 @@ class Template(dict):
     def __init__(self, items={}):
         dict.__init__(self, items)
 
+    def update(self, items):
+        for k, v in items.items():
+            self.setdefault(k, {})
+            self[k].update(v)
+        
     @property
     def metrics(self, metrics=Metrics):
         return {metrickey: metricfn(self)

@@ -1,6 +1,9 @@
 ### short
 
-- missing components
+- add back master
+- add back ref checking
+- compare template sizes with start of day
+
 - add back template helpers
 
 - new actions dashboard class
@@ -204,6 +207,7 @@
   
 ### done
 
+- missing components
 - revert Template to dict
 - yaml representer output problem
 - move grid_layout to chart root
