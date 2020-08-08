@@ -21,9 +21,9 @@ def EventPermission(**kwargs):
     return "AWS::Lambda::Permission", props
 
 def synth_timer(**kwargs):
-    return Template({"Parameters": [parameter("%s-arn" % kwargs["action"])],
-                     "Resources": [EventRule(**kwargs),
-                                   EventPermission(**kwargs)]})
+    return Template(Parameters=[parameter("%s-arn" % kwargs["action"])],
+                    Resources=[EventRule(**kwargs),
+                               EventPermission(**kwargs)])
 
 if __name__=="__main__":
     pass

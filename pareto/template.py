@@ -9,17 +9,21 @@ Metrics={"resources": (lambda t: len(t["Resources"])/200),
          "template_size": (lambda t: len(json.dumps(t))/51200)}
 
 class Template(dict):
-
-    def __init__(self, items={}):
+    
+    def __init__(self, **kwargs):
         dict.__init__(self)
-        for attr in ["Parameters",
-                     "Resources",
-                     "Outputs"]:
-            items.setdefault(attr, {})
-        self.update(items)
+        # START TEMP CODE
+        """
+        - just to stop env barfing on template["Parameters"]}
+        - should be replaced by overriding __getattr__ which checks for existencce of key
+        """
+        for attr in ["Parameters", "Resources", "Outputs"]:
+            kwargs.setdefault(attr, {})
+        # END TEMP CODE
+        self.update(**kwargs)
         
-    def update(self, items):
-        for k, v in items.items():
+    def update(self, **kwargs):
+        for k, v in kwargs.items():
             self.setdefault(k, {})
             self[k].update(dict(v))
         
