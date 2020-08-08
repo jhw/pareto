@@ -3,6 +3,8 @@
 - allow parameter fields to be lower case
 - pass kwargs to parameters
 
+- ref filtering to use set()
+
 - new actions dashboard component
 
 ### medium
