@@ -4,7 +4,6 @@
 - pass kwargs to parameters
 
 - new actions dashboard class
-- move reference checking into dash where can check self
 - move json/yaml template representation into template
 
 ### medium
@@ -205,6 +204,7 @@
   
 ### done
 
+- move reference checking into dash where can check self
 - re- introduce template update helpers
 - compare template sizes with start of day
 - add back master

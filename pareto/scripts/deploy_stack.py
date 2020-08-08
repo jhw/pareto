@@ -66,42 +66,9 @@ def add_layer_staging(config):
         
 def check_refs(templates):
     logging.info("checking template refs")
-    def filter_resource_ids(template):
-        ids=[]
-        for attr in ["Resources", "Parameters"]:
-            if attr in template:
-                ids+=template[attr].keys()
-        return ids
-    def is_new_ref(key, element, refs):
-        return (key=="Ref" and
-                type(element)==str and
-                element not in refs)
-    def is_new_getatt(key, element, refs):
-        return (key=="Fn::GetAtt" and
-                type(element)==list and
-                type(element[0])==str and
-                element[0] not in refs)
-    def filter_refs(element, refs):
-        if isinstance(element, list):
-            for subelement in element:
-                filter_refs(subelement, refs)
-        elif isinstance(element, dict):
-            for key, subelement in element.items():
-                if is_new_ref(key, subelement, refs):
-                    # print ("ref: %s" % subelement)
-                    refs.append(subelement)
-                elif is_new_getatt(key, subelement, refs):
-                    # print ("getatt: %s" % subelement[0])
-                    refs.append(subelement[0])
-                else:
-                    filter_refs(subelement, refs)
-        else:
-            pass
     def check_refs(tempname, template):
-        resourceids=filter_resource_ids(template)
-        refs=[]
-        filter_refs(template, refs)
-        for ref in refs:
+        resourceids=template.resource_ids
+        for ref in template.resource_refs:
             if ref not in resourceids:
                 raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
     for tempname, template in templates.items():

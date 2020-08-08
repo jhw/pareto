@@ -27,6 +27,45 @@ class Template(dict):
     def metrics(self, metrics=Metrics):
         return {metrickey: metricfn(self)
                 for metrickey, metricfn in metrics.items()}
-            
+
+    @property
+    def resource_ids(self):
+        ids=[]
+        for attr in ["Resources", "Parameters"]:
+            if attr in self:
+                ids+=self[attr].keys()
+        return ids
+    
+    @property
+    def resource_refs(self):
+        def is_new_ref(key, element, refs):
+            return (key=="Ref" and
+                    type(element)==str and
+                    element not in refs)
+        def is_new_getatt(key, element, refs):
+            return (key=="Fn::GetAtt" and
+                    type(element)==list and
+                    type(element[0])==str and
+                    element[0] not in refs)
+        def filter_refs(element, refs):
+            if isinstance(element, list):
+                for subelement in element:
+                    filter_refs(subelement, refs)
+            elif isinstance(element, dict):
+                for key, subelement in element.items():
+                    if is_new_ref(key, subelement, refs):
+                        # print ("ref: %s" % subelement)
+                        refs.append(subelement)
+                    elif is_new_getatt(key, subelement, refs):
+                        # print ("getatt: %s" % subelement[0])
+                        refs.append(subelement[0])
+                    else:
+                        filter_refs(subelement, refs)
+                else:
+                    pass
+        refs=[]
+        filter_refs(self, refs)
+        return refs
+    
 if __name__=="__main__":
     pass
