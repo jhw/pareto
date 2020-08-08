@@ -67,6 +67,27 @@ class Template(dict):
         filter_refs(self, refs)
         return refs
 
+    """
+    - some CF fields, notably ApiGateway HTTP header related ones, explicity require single quoted string values
+    - and if you encode (backquote) those values they will be rejected :-/    
+    """
+    
+    @property
+    def json_repr(self):
+        class SingleQuoteEncoder(json.JSONEncoder):
+            def default(self, obj):
+                if (isinstance(obj, str) and
+                    "'" in obj):
+                    return obj
+                return json.JSONEncoder.default(self, obj)
+        return json.dumps(self,
+                          cls=SingleQuoteEncoder).encode("utf-8")
+
+    """
+    - pyyaml will encode `"'` as `'''` :-/
+    - not strictly required that this needs to be fixed (as only JSON templates are pushed to S3), but just for consistency with JSON when debugging via YAML templates
+    """
+    
     @property
     def yaml_repr(self):
         class Counter:

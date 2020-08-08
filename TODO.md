@@ -3,8 +3,7 @@
 - allow parameter fields to be lower case
 - pass kwargs to parameters
 
-- new actions dashboard class
-- move json/yaml template representation into template
+- new actions dashboard component
 
 ### medium
 
@@ -12,6 +11,8 @@
 - layers-as-components
 
 - merge website back into bucket
+
+- investigate moving more script stuff into template
 
 - refactor api resource vs endpoint nomenclature
 - api request validation
@@ -204,6 +205,7 @@
   
 ### done
 
+- move json/yaml template representation into template
 - move reference checking into dash where can check self
 - re- introduce template update helpers
 - compare template sizes with start of day
