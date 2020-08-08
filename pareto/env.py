@@ -23,20 +23,21 @@ def TemplateMapper(groupkey,
                    default="misc"):
     return groupkey if groupkey in dedicated else default
 
-def assert_output(fn):
-    def wrapped(paramname, outputs):
-        if paramname not in outputs:
-            raise RuntimeError("%s not found in outputs" % paramname)
-        return fn(paramname, outputs)
-    return wrapped
 
-@assert_output
+"""
+- doesn't currently assert outputs as assumes these are checked at the validate() stage, and that can follow the happy path
+"""
+
 def stack_param(paramname, outputs):    
     return {"Fn::GetAtt": [logical_id(outputs[paramname]),
                            "Outputs.%s" %  paramname]}
 
 class Env(dict):
 
+    """
+    - needs to be extended to spawn new metrics if current template exceeds capacity    
+    """
+    
     @classmethod
     def create(self, config, templatefn=TemplateMapper):
         def template_name(config, tempkey):
@@ -58,6 +59,21 @@ class Env(dict):
         dict.__init__(self, items)
         self.config=config
 
+    """
+    - extend to validate outputs
+    """
+        
+    def validate(self):
+        def validate_refs(tempname, template):
+            resourceids=template.resource_ids
+            for ref in template.resource_refs:
+                if ref not in resourceids:
+                    raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
+        logging.info("validating templates")
+        for tempname, template in self.items():
+            validate_refs(tempname, template)
+        return self
+        
     @property
     def outputs(self):
         outputs={}
@@ -89,24 +105,14 @@ class Env(dict):
             kwargs=self.stack_kwargs(tempname, template, self.outputs)
             synth_stack(master, **kwargs)
         return master
-    
-    def validate(self):
-        def validate_metrics(tempname, template):
-            metrics=template.metrics
-            for k, v in metrics.items():
-                if v > 1:
-                    raise RuntimeError("%s %s metrics exceeds limit" % (tempname, k))
-        def validate_refs(tempname, template):
-            resourceids=template.resource_ids
-            for ref in template.resource_refs:
-                if ref not in resourceids:
-                    raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
-        logging.info("validating templates")
-        for tempname, template in self.items():
-            validate_metrics(tempname, template)
-            validate_refs(tempname, template)
-        return self
 
+    """
+    - does nothing for the moment but might validate master metrics ?
+    """
+    
+    def post_validate(self):
+        return self
+    
     def push(self, s3):
         def push(config, tempname, template, s3):
             key="%s-%s/templates/%s.json" % (config["globals"]["app"],
@@ -151,7 +157,7 @@ class Env(dict):
     
 @preprocess
 def synth_env(config):
-    return Env.create(config).synth_master().validate()
+    return Env.create(config).validate().synth_master().post_validate()
 
 if __name__=="__main__":
     pass

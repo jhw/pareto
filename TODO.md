@@ -1,7 +1,10 @@
 ### short
 
-- template/env param/output checking
+- template to filter outputs
+- env to check outputs prior to generating master template
+
 - env dashboard popping code
+
 - apigw logging
 - layers-as-components
 - s3 multiple action support
@@ -10,6 +13,8 @@
 
 - consider if python-git stuff could be moved into class
 - consider if lambda/layout staging stuff could be moved into class
+- could lambda versions be utilised somehow ?
+- could CF.validate_template() be useful ?
 
 - template counting / metrics checking
 - action to have permission to call another action
@@ -37,7 +42,9 @@
 - github actions
 - lambda xray
 - step functions
-- fargate
+- payments and stripe
+- webflow
+- fargate/ec2
 - appsync/graphql
 - topology charts
 
