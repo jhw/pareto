@@ -1,13 +1,9 @@
 ### short
 
-- add back master
-- add back ref checking
-- compare template sizes with start of day
-
-- add back template helpers
-
+- re- introduce template update helpers
 - new actions dashboard class
 - move reference checking into dash where can check self
+- move json/yaml template representation into template
 
 ### medium
 
@@ -207,6 +203,9 @@
   
 ### done
 
+- compare template sizes with start of day
+- add back master
+- add back ref checking
 - missing components
 - revert Template to dict
 - yaml representer output problem

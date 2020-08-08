@@ -100,8 +100,7 @@ class Env(dict):
     
 @preprocess
 def synth_env(config):
-    # return Env.create(config).synth_master().validate()
-    return Env.create(config)
+    return Env.create(config).synth_master().validate()
 
 if __name__=="__main__":
     pass
