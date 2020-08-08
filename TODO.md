@@ -1,7 +1,5 @@
 ### short
 
-- template_name function
-
 - dashboard to avoid cloning hungarorise/logical_id/@resource
 
 - env dashboard popping code
@@ -211,6 +209,7 @@
   
 ### done
 
+- template_name function
 - add charts logical id
 - pass name to template
 - use dashboard name for chart naming

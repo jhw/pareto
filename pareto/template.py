@@ -24,7 +24,8 @@ def resource(fn):
     def wrapped(**kwargs):
         component={k:v for k, v in zip(["Type", "Properties"],
                                        fn(**kwargs))}
-        return (logical_id(kwargs["name"]), component)
+        return (logical_id("%s-dash" % kwargs["name"]),
+                component)
     return wrapped
 
 @resource
@@ -92,7 +93,7 @@ class Template:
                 for attr in self.Attrs
                 if attr!="Charts"}
         if self.Charts!=[]:
-            dash=Dashboard(**{"name": "%s-charts" % self.name,
+            dash=Dashboard(**{"name": self.name,
                               "body": self.Charts})
             struct["Resources"].update(dict([dash]))
         return struct
