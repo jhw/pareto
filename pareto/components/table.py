@@ -49,12 +49,11 @@ def TableMapping(**kwargs):
            "StartingPosition": "LATEST"}
     return "AWS::Lambda::EventSourceMapping", props
 
-def synth_table(**kwargs):
-    template=Template(Resources=Table(**kwargs))
+def synth_table(template, **kwargs):
+    template.update(Resources=Table(**kwargs))
     if "action" in kwargs:
         template.update(Parameters=parameter("%s-arn" % kwargs["action"]),
                         Resources=TableMapping(**kwargs))
-    return template
 
 if __name__=="__main__":
     pass

@@ -15,8 +15,8 @@ def Stack(**kwargs):
         props["Parameters"]=kwargs["params"]
     return "AWS::CloudFormation::Stack", props
 
-def synth_stack(**kwargs):
-    return Template(Resources=Stack(**kwargs))
+def synth_stack(template, **kwargs):
+    template.update(Resources=Stack(**kwargs))
     
 if __name__=="__main__":
     pass

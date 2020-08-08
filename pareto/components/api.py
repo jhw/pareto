@@ -151,10 +151,10 @@ def ApiUrl(endpoint, **kwargs):
                        "stage_name": stage})
     return ApiUrl(endpoint, **kwargs)
 
-def synth_api(**kwargs):
-    template=Template(Resources=[ApiRoot(**kwargs),
-                                 ApiDeployment(**kwargs),
-                                 ApiStage(**kwargs)])
+def synth_api(template, **kwargs):
+    template.update(Resources=[ApiRoot(**kwargs),
+                               ApiDeployment(**kwargs),
+                               ApiStage(**kwargs)])
     for endpoint in kwargs["resources"]:
         template.update(Parameters=parameter("%s-arn" % endpoint["action"]),
                         Resources=[ApiResource(endpoint, **kwargs),
@@ -162,7 +162,6 @@ def synth_api(**kwargs):
                                    ApiCorsOptions(endpoint, **kwargs),
                                    ApiPermission(endpoint, **kwargs)],
                         Outputs=ApiUrl(endpoint, **kwargs))
-    return template
 
 if __name__=="__main__":
     import yaml

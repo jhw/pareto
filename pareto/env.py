@@ -11,6 +11,8 @@ from pareto.components.timer import synth_timer
 
 from pareto.preprocessor import preprocess
 
+from pareto.template import Template
+
 import datetime, logging, os
 
 Master="master"
@@ -44,8 +46,7 @@ class Env(dict):
             for kwargs in components:
                 kwargs.update(config["globals"]) # NB
                 fn=eval("synth_%s" % groupkey[:-1])                
-                component=fn(**kwargs)
-                env[tempkey].update(**component.render())         
+                fn(env[tempkey], **kwargs)
         return env
     
     def __init__(self, config, items={}):
@@ -81,8 +82,7 @@ class Env(dict):
         master=Template()
         for tempname, template in self.items():
             kwargs=self.stack_kwargs(tempname, template, self.outputs)
-            stack=synth_stack(**kwargs)
-            master.update(**stack.render())
+            synth_stack(master, **kwargs)
         return master
     
     def validate(self):

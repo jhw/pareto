@@ -58,15 +58,14 @@ def BucketWebsitePolicy(**kwargs):
            "PolicyDocument": policy_document(kwargs)}
     return "AWS::S3::BucketPolicy", props
 
-def synth_bucket(**kwargs):
-    template=Template(Resources=Bucket(**kwargs))
+def synth_bucket(template, **kwargs):
+    template.update(Resources=Bucket(**kwargs))
     if "action" in kwargs:
         template.update(Parameters=parameter("%s-arn" % kwargs["action"]),
                         Resources=BucketPermission(**kwargs))
     if "website" in kwargs and kwargs["website"]:
         template.update(Resources=BucketWebsitePolicy(**kwargs),
                         Outputs=BucketWebsiteUrl(**kwargs))
-    return template
 
 if __name__=="__main__":
     pass

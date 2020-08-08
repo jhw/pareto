@@ -1,7 +1,5 @@
 import json, random, re, yaml
 
-from pareto.template import *
-
 def titleise(text):
     return " ".join([tok.capitalize()
                      for tok in re.split("\\-|\\_", text)])

@@ -7,8 +7,8 @@ def Secret(**kwargs):
            "SecretString": secret}
     return "AWS::SecretsManager::Secret", props
 
-def synth_secret(**kwargs):
-    return Template(Resources=Secret(**kwargs))
+def synth_secret(template, **kwargs):
+    template.update(Resources=Secret(**kwargs))
 
 if __name__=="__main__":
     pass

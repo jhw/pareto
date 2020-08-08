@@ -59,12 +59,11 @@ class Template:
         return wrapped
     
     @assert_keywords
-    def __init__(self, **kwargs):
+    def __init__(self):
         def default_value(k):
             return [] if k=="Charts" else {}
         for attr in self.Attrs:
             setattr(self, attr, default_value(attr))
-        self.update(**kwargs)
 
     @assert_keywords
     def update(self, **kwargs):

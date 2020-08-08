@@ -1,9 +1,5 @@
 ### short
 
-- check you can pass template to synth_xxx from env
-- change synth_xxx to take template
-- remove args passing and setting of default values in  template constructor
-
 - chart class to name dashbords
 - convert capitalized variables to lower case
   - only render() to capitalize
@@ -215,6 +211,9 @@
   
 ### done
 
+- check you can pass template to synth_xxx from envx
+- change synth_xxx to take template
+- remove args passing and setting of default values in  template constructor
 - new charts variable, ignored by rendering
 - add back ActionCharts
 - render() to aggregate charts as single Dashboard component
