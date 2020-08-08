@@ -1,14 +1,15 @@
 ### short
 
-- refactor template to be list of dicts / remove render stage [notes]
-
-- move reference checking code from deploy_stack to template
+- comment out/remove all dash related stuff
+- comvert template to be list of dicts
+- ensure all template updators convert lists of tuples to dicts
+- new actions dashboard class
+- move reference checking into dash where can check self
 
 ### medium
 
 - apigw logging
 - layers-as-components
-- notes on template/env design
 
 - merge website back into bucket
 
