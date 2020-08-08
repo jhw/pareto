@@ -45,7 +45,7 @@ class Env(dict):
                 kwargs.update(config["globals"]) # NB
                 fn=eval("synth_%s" % groupkey[:-1])                
                 component=fn(**kwargs)
-                env[tempkey].update(**component)         
+                env[tempkey].update(**component.render())         
         return env
     
     def __init__(self, config, items={}):
@@ -57,12 +57,12 @@ class Env(dict):
         outputs={}
         for tempkey, template in self.items():
             outputs.update({outputkey: tempkey
-                            for outputkey in template.outputs})
+                            for outputkey in template.Outputs})
         return outputs
 
     def stack_kwargs(self, tempname, template, outputs):
         params={paramname: stack_param(paramname, outputs)
-                for paramname in template.parameters}
+                for paramname in template.Parameters}
         stack={"name": tempname,
                "params": params}
         stack.update(self.config["globals"])
@@ -82,7 +82,7 @@ class Env(dict):
         for tempname, template in self.items():
             kwargs=self.stack_kwargs(tempname, template, self.outputs)
             stack=synth_stack(**kwargs)
-            master.update(**stack)
+            master.update(**stack.render())
         return master
     
     def validate(self):

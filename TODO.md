@@ -1,13 +1,17 @@
 ### short
 
-- consider dashboard strategy
+- convert capitalized variables to lower case
+  - only render() to capitalize
+- see if you can avoid calling `template.update(**component.render())`
 
-- apigw logging
-
-- layers-as-components
+- new charts variable, ignored by rendering
+- add back ActionCharts
+- render() to aggregate charts as single Dashboard component
 
 ### medium
 
+- apigw logging
+- layers-as-components
 - s3 multiple action support
 
 - consider if python-git stuff could be moved into class
@@ -206,6 +210,9 @@
   
 ### done
 
+- metrics failure
+- convert dash back to standard object
+- check for dict.__init__()
 - merge website back into bucket
 - add list conversion if tuple
 - decorator to assert uppercase keywords

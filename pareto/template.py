@@ -4,11 +4,11 @@
 
 import json, re, yaml
 
-Metrics={"resources": (lambda t: len(t.resources)/200),
-         "outputs": (lambda t: len(t.outputs)/60),
-         "template_size": (lambda t: len(json.dumps(t))/51200)}
+Metrics={"resources": (lambda t: len(t.Resources)/200),
+         "outputs": (lambda t: len(t.Outputs)/60),
+         "template_size": (lambda t: len(json.dumps(t.render()))/51200)}
 
-class Template(dict):
+class Template:
 
     Attrs=["Parameters", "Resources", "Outputs"]
     
@@ -22,19 +22,9 @@ class Template(dict):
     
     @assert_keywords
     def __init__(self, **kwargs):
-        dict.__init__(self)
+        for attr in self.Attrs:
+            setattr(self, attr, {})
         self.update(**kwargs)
-
-    def default_attr(fn):
-        def wrapped(self, k):
-            if k.capitalize() not in self:
-                return {}
-            return fn(self, k)
-        return wrapped
-
-    @default_attr
-    def __getattr__(self, k):
-        return self[k.capitalize()]
 
     @assert_keywords
     def update(self, **kwargs):
@@ -46,20 +36,19 @@ class Template(dict):
         def format_value(v):
             return dict(v)            
         for k, v in kwargs.items():
-            self.setdefault(k, {})
-            self[k].update(format_value(v))
-        
-    @property
-    def metrics(self, metrics=Metrics):
-        return {metrickey: metricfn(self)
-                for metrickey, metricfn in metrics.items()}
+            if not hasattr(self, k):
+                setattr(self, k, {})
+            getattr(self, k).update(format_value(v))
 
+    def render(self):
+        return {attr: getattr(self, attr)
+                for attr in self.Attrs}
+            
     @property
     def resource_ids(self):
         ids=[]
         for attr in ["Resources", "Parameters"]:
-            if attr in self:
-                ids+=self[attr].keys()
+            ids+=getattr(self, attr).keys()
         return ids
     
     @property
@@ -84,9 +73,14 @@ class Template(dict):
                     else:
                         filter_refs(subelement, refs)
         refs=set()
-        filter_refs(self, refs)
+        filter_refs(self.render(), refs)
         return list(refs)
 
+    @property
+    def metrics(self, metrics=Metrics):
+        return {metrickey: metricfn(self)
+                for metrickey, metricfn in metrics.items()}
+      
     """
     - some CF fields, notably ApiGateway HTTP header related ones, explicity require single quoted string values
     - and if you encode (backquote) those values they will be rejected :-/    
@@ -100,7 +94,7 @@ class Template(dict):
                     "'" in obj):
                     return obj
                 return json.JSONEncoder.default(self, obj)
-        return json.dumps(self,
+        return json.dumps(self.render(),
                           cls=SingleQuoteEncoder).encode("utf-8")
 
     """
@@ -128,7 +122,7 @@ class Template(dict):
         def unescape_single_quotes(text):
             return re.sub("'''", matcher, text)
         yaml.SafeDumper.ignore_aliases=lambda *args : True
-        return unescape_single_quotes(yaml.safe_dump(dict(self), # remove Template class
+        return unescape_single_quotes(yaml.safe_dump(self.render(),
                                                      default_flow_style=False))
     
 if __name__=="__main__":
