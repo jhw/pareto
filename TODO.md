@@ -1,34 +1,22 @@
 ### short
 
-- move template push into env
-
-- allow parameter fields to be lower case
-- pass kwargs to parameters
-
 - ref filtering to use set()
 
 - new actions dashboard component
 
 ### medium
 
-- apigw logging
-- layers-as-components
-
+- investigate moving more script stuff into template
+- refactor api resource vs endpoint nomenclature
 - merge website back into bucket
 
-- investigate moving more script stuff into template
-
-- refactor api resource vs endpoint nomenclature
-- api request validation
-
-- consider class- based implementation ?
-
+- apigw logging
+- apigw request validation
+- layers-as-components
 - userpool component
 - api authorizer
 - userpool ref validation
 - auth testing scripts
-
-- generic reference mechanism
 
 - action to have permission to call another action
 
@@ -59,6 +47,12 @@
 
 ### thoughts
 
+- pass kwargs to parameters ?
+  - don't see the point
+- allow parameter fields to be lower case ?
+  - don't see the point
+- consider class- based implementation ?
+  - really don't see the pointx
 - trigger creation failed :-/
   - compare generated templates with master branch ?
   - feels like isolated incident as worked the next time
@@ -212,6 +206,8 @@
   
 ### done
 
+- move deployment into env
+- move template push into env
 - move yaml dumping into env
 - move ref checking into env validation stage
 - move json/yaml template representation into template

@@ -12,7 +12,9 @@ from pareto.components.website import synth_website
 
 from pareto.preprocessor import preprocess
 
-import datetime, os
+import datetime, logging, os
+
+Master="master"
 
 def TemplateMapper(groupkey,
                    dedicated=["actions",
@@ -75,7 +77,7 @@ class Env(dict):
             return wrapped
         return decorator
 
-    @attach("master")
+    @attach(Master)
     def synth_master(self):
         master=Template()
         for tempname, template in self.items():
@@ -95,12 +97,45 @@ class Env(dict):
             for ref in template.resource_refs:
                 if ref not in resourceids:
                     raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
+        logging.info("validating templates")
         for tempname, template in self.items():
             validate_metrics(tempname, template)
             validate_refs(tempname, template)
         return self
 
+    def push(self, s3):
+        def push(config, tempname, template, s3):
+            key="%s-%s/templates/%s.json" % (config["globals"]["app"],
+                                             config["globals"]["stage"],
+                                             tempname)
+            logging.info("pushing %s" % key)
+            s3.put_object(Bucket=config["globals"]["bucket"],
+                          Key=key,
+                          Body=template.json_repr,
+                          ContentType='application/json')
+        for tempname, template in self.items():
+            if tempname==Master:
+                continue
+            push(self.config, tempname, template, s3)
+    
+    def deploy(self, cf):
+        logging.info("deploying stack")
+        def stack_exists(stackname):
+            stacknames=[stack["StackName"]
+                        for stack in cf.describe_stacks()["Stacks"]]
+            return stackname in stacknames
+        stackname="%s-%s" % (self.config["globals"]["app"],
+                             self.config["globals"]["stage"])
+        action="update" if stack_exists(stackname) else "create"
+        fn=getattr(cf, "%s_stack" % action)
+        fn(StackName=stackname,
+           TemplateBody=json.dumps(self[Master]),
+           Capabilities=["CAPABILITY_IAM"])
+        waiter=cf.get_waiter("stack_%s_complete" % action)
+        waiter.wait(StackName=stackname)
+            
     def dump(self):
+        logging.info("dumping templates")
         timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         for tempname, template in self.items():
             tokens=["tmp", "env", timestamp, "%s.yaml" % tempname]

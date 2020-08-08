@@ -59,39 +59,6 @@ def add_layer_staging(config):
         action.setdefault("staging", {})
         action["staging"]["layer"]=staged
         
-
-def push_templates(config, templates):
-    logging.info("pushing templates")
-    def push_template(config, tempname, template):
-        key="%s-%s/templates/%s.json" % (config["globals"]["app"],
-                                         config["globals"]["stage"],
-                                         tempname)
-        logging.info("pushing %s" % key)
-        S3.put_object(Bucket=config["globals"]["bucket"],
-                      Key=key,
-                      Body=template.json_repr,
-                      ContentType='application/json')
-    for tempname, template in templates.items():
-        if tempname=="master":
-            continue
-        push_template(config, tempname, template)
-
-def deploy_env(config, template):
-    logging.info("deploying stack")
-    def stack_exists(stackname):
-        stacknames=[stack["StackName"]
-                    for stack in CF.describe_stacks()["Stacks"]]
-        return stackname in stacknames
-    stackname="%s-%s" % (config["globals"]["app"],
-                         config["globals"]["stage"])
-    action="update" if stack_exists(stackname) else "create"
-    fn=getattr(CF, "%s_stack" % action)
-    fn(StackName=stackname,
-       TemplateBody=json.dumps(template),
-       Capabilities=["CAPABILITY_IAM"])
-    waiter=CF.get_waiter("stack_%s_complete" % action)
-    waiter.wait(StackName=stackname)
-        
 if __name__=="__main__":
     try:        
         init_stdout_logger(logging.INFO)
@@ -115,9 +82,9 @@ if __name__=="__main__":
         add_layer_staging(config)
         env=synth_env(config)
         env.dump()
-        push_templates(config, env)
+        env.push(S3)
         if args["live"]:
-            deploy_env(config, env["master"])
+            env.deploy(CF)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
