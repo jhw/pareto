@@ -8,9 +8,47 @@ Metrics={"resources": (lambda t: len(t.Resources)/200),
          "outputs": (lambda t: len(t.Outputs)/60),
          "template_size": (lambda t: len(json.dumps(t.render()))/51200)}
 
-class Template:
+"""
+- a simplified version of @resource from components/__init__.py as dash is a special case and you can't seem to importr from nested package without circularity
+- to maintain consistency with how non- dash components are treated
+"""
 
-    Attrs=["Parameters", "Resources", "Outputs"]
+def resource(fn):
+    def wrapped(**kwargs):
+        component={k:v for k, v in zip(["Type", "Properties"],
+                                       fn(**kwargs))}
+        return ("MyDash", component) # TEMP
+    return wrapped
+
+@resource
+def Dashboard(**kwargs):
+    def grid_layout(charts,
+                    pagewidth=24,
+                    heightratio=0.75):
+        x, y, widgets = 0, 0, []
+        for row in charts:
+            width=int(pagewidth/len(row))
+            height=int(heightratio*width)
+            for chart in row:
+                widget={"type": "metric",
+                        "x": x,
+                        "y": y,
+                        "width": width,
+                        "height": height,
+                        "properties": chart}
+                widgets.append(widget)
+                x+=width
+            y+=height
+            x=0 # NB reset
+        return {"widgets": widgets}
+    layout=grid_layout(kwargs["body"])
+    props={"DashboardName": kwargs["name"],
+           "DashboardBody": json.dumps(layout)}
+    return "AWS::CloudWatch::Dashboard", props
+
+class Template:
+    
+    Attrs=["Parameters", "Resources", "Outputs", "Charts"]
     
     def assert_keywords(fn):
         def wrapped(self, **kwargs):
@@ -22,8 +60,10 @@ class Template:
     
     @assert_keywords
     def __init__(self, **kwargs):
+        def default_value(k):
+            return [] if k=="Charts" else {}
         for attr in self.Attrs:
-            setattr(self, attr, {})
+            setattr(self, attr, default_value(attr))
         self.update(**kwargs)
 
     @assert_keywords
@@ -34,15 +74,22 @@ class Template:
             return wrapped
         @listify
         def format_value(v):
-            return dict(v)            
+            return dict(v)
         for k, v in kwargs.items():
-            if not hasattr(self, k):
-                setattr(self, k, {})
-            getattr(self, k).update(format_value(v))
+            if k!="Charts":
+                getattr(self, k).update(format_value(v))
+            else:
+                getattr(self, k).append(v)                
 
     def render(self):
-        return {attr: getattr(self, attr)
-                for attr in self.Attrs}
+        struct={attr: getattr(self, attr)
+                for attr in self.Attrs
+                if attr!="Charts"}
+        if self.Charts!=[]:
+            dash=Dashboard(**{"name": "foobar", # TEMP
+                              "body": self.Charts})
+            struct["Resources"].update(dict([dash]))
+        return struct
             
     @property
     def resource_ids(self):

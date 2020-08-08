@@ -1,12 +1,18 @@
 ### short
 
+- dashboard naming
+  - should be named by action module
+
 - convert capitalized variables to lower case
   - only render() to capitalize
+
 - see if you can avoid calling `template.update(**component.render())`
 
-- new charts variable, ignored by rendering
-- add back ActionCharts
-- render() to aggregate charts as single Dashboard component
+- rename template.#{something}.format_value()
+
+- env dashboard popping code
+
+- test!
 
 ### medium
 
@@ -210,6 +216,9 @@
   
 ### done
 
+- new charts variable, ignored by rendering
+- add back ActionCharts
+- render() to aggregate charts as single Dashboard component
 - metrics failure
 - convert dash back to standard object
 - check for dict.__init__()
