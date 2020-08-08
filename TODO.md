@@ -1,22 +1,19 @@
 ### short
 
-- dashboard to avoid cloning hungarorise/logical_id/@resource
-
+- template/env param/output checking
+- refactor api resource vs endpoint nomenclature
 - env dashboard popping code
-
-### medium
-
 - apigw logging
 - layers-as-components
 - s3 multiple action support
+
+### medium
 
 - consider if python-git stuff could be moved into class
 - consider if lambda/layout staging stuff could be moved into class
 
 - template counting / metrics checking
-- refactor api resource vs endpoint nomenclature
 - action to have permission to call another action
-- template/env param/output checking
 
 - apigw request validation
 - userpool component
@@ -209,6 +206,7 @@
   
 ### done
 
+- dashboard to avoid cloning hungarorise/logical_id/@resource
 - template_name function
 - add charts logical id
 - pass name to template

@@ -2,6 +2,8 @@
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
 """
 
+from pareto.helpers.cloudformation.utils import logical_id
+
 import json, re, yaml
 
 Metrics={"resources": (lambda t: len(t.Resources)/200),
@@ -12,13 +14,6 @@ Metrics={"resources": (lambda t: len(t.Resources)/200),
 - a simplified version of @resource from components/__init__.py as dash is a special case and you can't seem to importr from nested package without circularity
 - to maintain consistency with how non- dash components are treated
 """
-
-def hungarorise(text):
-    return "".join([tok.capitalize()
-                    for tok in re.split("\\-|\\_", text)])    
-
-def logical_id(name):
-    return hungarorise(name)
 
 def resource(fn):
     def wrapped(**kwargs):
