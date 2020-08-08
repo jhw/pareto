@@ -1,11 +1,14 @@
 ### short
 
-- new actions dashboard component
+- consider dashboard strategy
 
 - apigw logging
+
 - layers-as-components
 
 ### medium
+
+- s3 multiple action support
 
 - consider if python-git stuff could be moved into class
 - consider if lambda/layout staging stuff could be moved into class
@@ -17,8 +20,6 @@
 - apigw request validation
 - userpool component
 - api authorizer
-
-- s3 multiple action support
 
 - cloudfront + https + route 53
 - change password routine

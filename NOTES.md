@@ -1,3 +1,11 @@
+### dashboards 8/8/20
+
+- you can't add ActionDashboard to resources as all dashboard in a single template need to be concatenated under a single resource!
+- you could have an extra Charts attribute but would have to be ignored for updating and rendering purposes
+- but then doesn't this rather leads back towards having a render method again ?
+- you could have a standard class with parameter/resources/outputs/charts fields
+- render would then render charts under a dashboard
+
 ### template structure 7/8/20
 
 - problem is check_refs is run post- render and relies on structure being a list of dicts
