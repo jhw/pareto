@@ -1,18 +1,17 @@
 ### short
 
-- dashboard naming
-  - should be named by action module
+- check you can pass template to synth_xxx from env
+- change synth_xxx to take template
+- remove args passing and setting of default values in  template constructor
 
+- chart class to name dashbords
 - convert capitalized variables to lower case
   - only render() to capitalize
 
-- see if you can avoid calling `template.update(**component.render())`
+- test!
 
 - rename template.#{something}.format_value()
-
 - env dashboard popping code
-
-- test!
 
 ### medium
 
