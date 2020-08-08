@@ -1,7 +1,5 @@
 ### short
 
-- rename template.#{something}.format_value()
-
 - convert capitalized variables to lower case
   - only render() to capitalize
 
@@ -212,6 +210,7 @@
   
 ### done
 
+- rename template.#{something}.format_value()
 - encode("utf-8") messing up master template push ?
 - test!
 - website policy messed up

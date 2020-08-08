@@ -72,11 +72,11 @@ class Template:
                 return [v] if isinstance(v, tuple) else v
             return wrapped
         @listify
-        def format_value(v):
+        def format_non_chart_value(v):
             return dict(v)
         for k, v in kwargs.items():
             if k!="Charts":
-                getattr(self, k).update(format_value(v))
+                getattr(self, k).update(format_non_chart_value(v))
             else:
                 getattr(self, k).append(v)                
 
