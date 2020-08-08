@@ -6,7 +6,7 @@ import json
 
 Metrics={"resources": (lambda t: len(t.resources)/200),
          "outputs": (lambda t: len(t.outputs)/60),
-         "template_size": (lambda t: len(json.dumps(t.render()))/51200)}
+         "template_size": (lambda t: len(json.dumps(t))/51200)}
 
 class Template:
 
@@ -28,19 +28,9 @@ class Template:
     def update(self, template):
         for attr in ["parameters",
                      "resources",
-                     "outputs",
-                     "charts"]:
+                     "outputs"]:
             parent=getattr(self, attr)
             parent+=getattr(template, attr)
-            
-    def render(self):
-        struct={attr:dict(getattr(self, attr))
-                for attr in ["parameters",
-                             "resources",
-                             "outputs"]
-                if getattr(self, attr)!=[]}
-        return {k.capitalize():v
-                for k, v in struct.items()}
             
 if __name__=="__main__":
     pass

@@ -98,13 +98,9 @@ class Env(dict):
             validate_refs(tempname, template)
         return self
     
-    def render(self):
-        return {k:v.render()
-                for k, v in self.items()}
-
 @preprocess
 def synth_env(config):
-    return Env.create(config).synth_master().validate().render()
+    return Env.create(config).synth_master().validate()
 
 if __name__=="__main__":
     pass
