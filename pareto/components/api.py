@@ -164,14 +164,4 @@ def synth_api(template, **kwargs):
                         Outputs=ApiUrl(endpoint, **kwargs))
 
 if __name__=="__main__":
-    import yaml
-    api=yaml.safe_load("""
-    stage: dev
-    region: eu-west-1
-    name: hello-api
-    resources:
-    - name: hello-get
-      method: GET
-      action: hello-action
-    """)
-    print (synth_api(**api))
+    pass

@@ -1,9 +1,5 @@
 from pareto.components import *
 
-"""
-- s3 ARNs contain neither region nor account id
-"""
-
 PermissionArn="arn:aws:s3:::%s"
 
 WebsitePolicyArn="arn:aws:s3:::${bucket_name}/*"

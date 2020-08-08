@@ -1,7 +1,5 @@
 ### short
 
-- refactor api resource vs endpoint nomenclature
-
 - template/env param/output checking
 - env dashboard popping code
 - apigw logging
@@ -23,7 +21,6 @@
 - cloudwatch alerts
 - cloudfront + https + route 53
 - change password routine
-- template factory
 - scaffold generator
 - targets
 
@@ -46,6 +43,8 @@
 
 ### thoughts
 
+- refactor api resource vs endpoint nomenclature ?
+  - no point
 - convert capitalized variables to lower case ?
   - over- optimisation :/
 - pass kwargs to parameters ?
