@@ -24,14 +24,41 @@ def TemplateMapper(groupkey,
     return groupkey if groupkey in dedicated else default
 
 
-"""
-- doesn't currently assert outputs as assumes these are checked at the validate() stage, and that can follow the happy path
-"""
+class Refs(list):
 
-def stack_param(paramname, outputs):    
-    return {"Fn::GetAtt": [logical_id(outputs[paramname]),
-                           "Outputs.%s" %  paramname]}
+    @classmethod
+    def filter_params(self, env):
+        return self.create(env, "Parameters")
 
+    @classmethod
+    def filter_outputs(self, env):
+        return self.create(env, "Outputs")
+
+    @classmethod
+    def create(self, env, attr):
+        refs=Refs()
+        for tempname, template in env.items():
+            refs+=[(key, tempname)                   
+                   for key in getattr(template, attr)]
+        return refs
+
+    def __init__(self):
+        list.__init__(self)
+
+    def cross_validate(self, refs):
+        attrs, errors = [item[0] for item in self], []
+        for attr, _ in refs:
+            if attr not in attrs:
+                errors.append(attr)
+        if errors!=[]:
+            raise RuntimeError("refs not found: %s" % ", ".join(errors))
+
+    def output_parameters(self, attrs):
+        refs=dict(self)
+        return {attr: {"Fn::GetAtt": [logical_id(refs[attr]),
+                                      "Outputs.%s" %  attr]}
+                for attr in attrs}
+            
 class Env(dict):
 
     """
@@ -74,22 +101,6 @@ class Env(dict):
             validate_refs(tempname, template)
         return self
         
-    @property
-    def outputs(self):
-        outputs={}
-        for tempkey, template in self.items():
-            outputs.update({outputkey: tempkey
-                            for outputkey in template.Outputs})
-        return outputs
-
-    def stack_kwargs(self, tempname, template, outputs):
-        params={paramname: stack_param(paramname, outputs)
-                for paramname in template.Parameters}
-        stack={"name": tempname,
-               "params": params}
-        stack.update(self.config["globals"])
-        return stack
-
     def attach(key):
         def decorator(fn):
             def wrapped(self):
@@ -101,8 +112,13 @@ class Env(dict):
     @attach(Master)
     def synth_master(self):
         master=Template(name=Master)
+        outputs=Refs.filter_outputs(self)
         for tempname, template in self.items():
-            kwargs=self.stack_kwargs(tempname, template, self.outputs)
+            paramnames=list(template.Parameters.keys())
+            params=outputs.output_parameters(paramnames)
+            kwargs={"name": tempname,
+                    "params": params}
+            kwargs.update(self.config["globals"])
             synth_stack(master, **kwargs)
         return master
 
