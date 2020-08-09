@@ -1,10 +1,7 @@
 ### short
 
-- apigw logging
-  - https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
-
 - s3 multiple action support
-
+- env dashboard popping code
 - layers-as-components
 
 ### medium
@@ -15,7 +12,6 @@
 - template counting / metrics checking
 - action to have permission to call another action
 
-- env dashboard popping code
 - apigw request validation
 - userpool component
 - api authorizer
@@ -215,6 +211,8 @@
   
 ### done
 
+- apigw logging
+  - https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
 - add check for src, dest template
 - output vs param validation
 - outputs vs params checks

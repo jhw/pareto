@@ -20,10 +20,48 @@ CorsHeaders=yaml.safe_load("""
 - X-Amz-Security-Token
 """)
 
+LogsPermissions=yaml.safe_load("""
+- logs:CreateLogGroup
+- logs:CreateLogStream
+- logs:DescribeLogGroups
+- logs:DescribeLogStreams
+- logs:PutLogEvents
+- logs:GetLogEvents
+- logs:FilterLogEvents
+""")
+
 @resource(suffix="root")
 def ApiRoot(**kwargs):
     props={"Name": random_id("rest-api")} # NB
     return "AWS::ApiGateway::RestApi", props
+
+@resource(suffix="account")
+def ApiAccount(**kwargs):
+    logsrole=fn_getatt("%s-logs-role" % kwargs["name"],
+                       "Arn")
+    props={"CloudWatchRoleArn": logsrole}
+    depends=["%s-root" % kwargs["name"]]
+    return "AWS::ApiGateway::Account", props, depends
+
+@resource(suffix="logs-role")
+def ApiLogsRole(**kwargs):
+    def assume_role_policy_doc():
+        statement=[{"Action": "sts:AssumeRole",
+                    "Effect": "Allow",
+                    "Principal": {"Service": "apigateway.amazonaws.com"}}]
+        return {"Statement": statement,
+                "Version": "2012-10-17"}
+    def policy(permissions=LogsPermissions):            
+        statement=[{"Action": permission,
+                    "Effect": "Allow",
+                    "Resource": "*"}
+                   for permission in sorted(permissions)]
+        return {"PolicyDocument": {"Statement": statement,
+                                   "Version": "2012-10-17"},
+                "PolicyName": random_id("inline-policy")}
+    props={"AssumeRolePolicyDocument": assume_role_policy_doc()}
+    props["Policies"]=[policy()]
+    return "AWS::IAM::Role", props
 
 @resource(suffix="deployment")
 def ApiDeployment(**kwargs):
@@ -153,6 +191,8 @@ def ApiUrl(endpoint, **kwargs):
 
 def synth_api(template, **kwargs):
     template.update(Resources=[ApiRoot(**kwargs),
+                               ApiAccount(**kwargs),
+                               ApiLogsRole(**kwargs),
                                ApiDeployment(**kwargs),
                                ApiStage(**kwargs)])
     for endpoint in kwargs["resources"]:
