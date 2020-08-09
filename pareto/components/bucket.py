@@ -31,16 +31,19 @@ def Bucket(**kwargs):
         props["NotificationConfiguration"]=notifications
     return "AWS::S3::Bucket", props
 
-@resource(suffix="permission")
-def BucketPermission(**kwargs):
-    source=PermissionArn % resource_name(kwargs)
-    target=ref("%s-arn" % kwargs["action"])
-    props={"Action": "lambda:InvokeFunction",
-           "FunctionName": target,
-           "SourceAccount": fn_sub("${AWS::AccountId}"), # recommended as arn does not contain account
-           "SourceArn": source,
-           "Principal": "s3.amazonaws.com"}
-    return "AWS::Lambda::Permission", props
+def BucketPermission(action, **kwargs):
+    suffix="%s-permission" % action["name"]
+    @resource(suffix=suffix)
+    def BucketPermission(action, **kwargs):
+        source=PermissionArn % resource_name(kwargs)
+        target=ref("%s-arn" % action["name"])
+        props={"Action": "lambda:InvokeFunction",
+               "FunctionName": target,
+               "SourceAccount": fn_sub("${AWS::AccountId}"), # recommended as arn does not contain account
+               "SourceArn": source,
+               "Principal": "s3.amazonaws.com"}
+        return "AWS::Lambda::Permission", props
+    return BucketPermission(action, **kwargs)
 
 @output(suffix="website-url")
 def BucketWebsiteUrl(**kwargs):
@@ -63,9 +66,10 @@ def BucketWebsitePolicy(**kwargs):
 
 def synth_bucket(template, **kwargs):
     template.update(Resources=Bucket(**kwargs))
-    if "action" in kwargs:
-        template.update(Parameters=parameter("%s-arn" % kwargs["action"]),
-                        Resources=BucketPermission(**kwargs))
+    if "actions" in kwargs:
+        for action in kwargs["actions"]:
+            template.update(Parameters=parameter("%s-arn" % action["name"]),
+                            Resources=BucketPermission(action, **kwargs))
     if "website" in kwargs and kwargs["website"]:
         template.update(Resources=BucketWebsitePolicy(**kwargs),
                         Outputs=BucketWebsiteUrl(**kwargs))

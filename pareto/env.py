@@ -108,6 +108,7 @@ class Env(dict):
             return wrapped
         return decorator
 
+    """
     @attach(Dashboards)
     def pop_dashboards(self):
         dashboards=Template(name=Dashboards)
@@ -117,7 +118,11 @@ class Env(dict):
             for dashkey in dashkeys:
                 dashboards.Resources[dashkey]=template.Resources.pop(dashkey)
         return dashboards if dashboards.Resources!={} else None
-        
+    """
+
+    def pop_dashboards(self):
+        return self
+    
     @attach(Master)
     def synth_master(self):
         master=Template(name=Master)

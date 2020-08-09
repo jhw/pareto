@@ -37,7 +37,7 @@ components:
     - name: hello-bucket
       actions:
         - name: hello-bucket-action
-	  path: foobar
+          path: foobar
       website: true
   queues:
     - name: hello-queue

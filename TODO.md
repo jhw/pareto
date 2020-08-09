@@ -2,8 +2,6 @@
 
 - pop_dashboards() is failing to remove dash from source
 
-- s3 multiple action support
-
 - layers-as-components
 
 ### medium
@@ -18,6 +16,7 @@
 - userpool component
 - api authorizer
 
+- google sheets export
 - cloudwatch alerts
 - cloudfront + https + route 53
 - change password routine
@@ -213,6 +212,7 @@
   
 ### done
 
+- s3 multiple action support
 - env dashboard popping code
 - apigw logging
   - https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
