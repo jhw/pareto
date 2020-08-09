@@ -6,9 +6,6 @@
 
 ### medium
 
-- consider if python-git stuff could be moved into class
-- consider if lambda/layout staging stuff could be moved into class
-
 - template counting / metrics checking
 - action to have permission to call another action
 
@@ -47,6 +44,10 @@
 
 ### thoughts
 
+- consider if lambda/layout staging stuff could be moved into class
+  - struggling to see how that would work
+- consider if python-git stuff could be moved into class ?
+  - no because is very one- off stuff
 - could CF.validate_template() be useful ?
   - no; just checks syntax
 - refactor api resource vs endpoint nomenclature ?

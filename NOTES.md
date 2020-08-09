@@ -1,3 +1,11 @@
+### push lambdas 9/8/20
+
+- could push_lambdas code be moved into staging ?
+- issue is that staging classes are really s3 based, ie look for commits in s3
+- the latest_commits stuff in push_lambdas is really git based
+- and although they are both "commit related", one relates to deployments (which happen to be tagged using commit) whilst the other relates to "real" commits
+- so not at all clear they should be handled by the same code
+
 ### dashboards 8/8/20
 
 - you can't add ActionDashboard to resources as all dashboard in a single template need to be concatenated under a single resource!
