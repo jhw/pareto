@@ -1,15 +1,15 @@
 ### short
 
-- output vs param validation
+- add check for src, dest template
+
+- s3 multiple action support
 
 - layers-as-components
-- s3 multiple action support
 
 ### medium
 
 - consider if python-git stuff could be moved into class
 - consider if lambda/layout staging stuff could be moved into class
-- could lambda versions be utilised somehow ?
 
 - template counting / metrics checking
 - action to have permission to call another action
@@ -27,6 +27,9 @@
 - targets
 
 ### v1.1
+
+- gists
+  - see if version allows you to redeploy from S3 without name change
 
 - auth
   - self sign- up
@@ -212,6 +215,7 @@
   
 ### done
 
+- output vs param validation
 - outputs vs params checks
 - move underscore
 - dashboard to avoid cloning hungarorise/logical_id/@resource

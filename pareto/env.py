@@ -46,12 +46,12 @@ class Refs(list):
         list.__init__(self)
 
     def cross_validate(self, refs):
-        attrs, errors = [item[0] for item in self], []
+        attrs, errors = dict(self), []
         for attr, _ in refs:
             if attr not in attrs:
-                errors.append(attr)
+                errors.append("%s not found" % attr)
         if errors!=[]:
-            raise RuntimeError("refs not found: %s" % ", ".join(errors))
+            raise RuntimeError(", ".join(errors))
 
     def output_parameters(self, attrs):
         refs=dict(self)
@@ -86,19 +86,19 @@ class Env(dict):
         dict.__init__(self, items)
         self.config=config
 
-    """
-    - extend to validate outputs
-    """
-        
     def validate(self):
-        def validate_refs(tempname, template):
-            resourceids=template.resource_ids
-            for ref in template.resource_refs:
-                if ref not in resourceids:
-                    raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
-        logging.info("validating templates")
-        for tempname, template in self.items():
-            validate_refs(tempname, template)
+        def validate_outer(self):
+            outputs=Refs.filter_outputs(self)
+            params=Refs.filter_params(self)
+            outputs.cross_validate(params)
+        def validate_inner(self):
+            for tempname, template in self.items():
+                resourceids=template.resource_ids
+                for ref in template.resource_refs:
+                    if ref not in resourceids:
+                        raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
+        validate_outer(self)
+        validate_inner(self)
         return self
         
     def attach(key):
