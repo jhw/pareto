@@ -23,7 +23,6 @@ def TemplateMapper(groupkey,
                    default="misc"):
     return groupkey if groupkey in dedicated else default
 
-
 class Refs(list):
 
     @classmethod
@@ -47,9 +46,11 @@ class Refs(list):
 
     def cross_validate(self, refs):
         attrs, errors = dict(self), []
-        for attr, _ in refs:
+        for attr, tempname in refs:
             if attr not in attrs:
                 errors.append("%s not found" % attr)
+            elif attrs[attr]==tempname:
+                errors.append("%s can't be both parameter and output in same template")
         if errors!=[]:
             raise RuntimeError(", ".join(errors))
 
@@ -61,10 +62,6 @@ class Refs(list):
             
 class Env(dict):
 
-    """
-    - needs to be extended to spawn new metrics if current template exceeds capacity    
-    """
-    
     @classmethod
     def create(self, config, templatefn=TemplateMapper):
         def template_name(config, tempkey):
@@ -122,10 +119,6 @@ class Env(dict):
             synth_stack(master, **kwargs)
         return master
 
-    """
-    - does nothing for the moment but might validate master metrics ?
-    """
-    
     def post_validate(self):
         return self
     

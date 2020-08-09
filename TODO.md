@@ -1,7 +1,5 @@
 ### short
 
-- add check for src, dest template
-
 - s3 multiple action support
 
 - layers-as-components
@@ -215,6 +213,7 @@
   
 ### done
 
+- add check for src, dest template
 - output vs param validation
 - outputs vs params checks
 - move underscore
