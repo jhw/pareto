@@ -1,7 +1,9 @@
 ### short
 
+- pop_dashboards() is failing to remove dash from source
+
 - s3 multiple action support
-- env dashboard popping code
+
 - layers-as-components
 
 ### medium
@@ -211,6 +213,7 @@
   
 ### done
 
+- env dashboard popping code
 - apigw logging
   - https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
 - add check for src, dest template

@@ -15,7 +15,7 @@ from pareto.template import Template
 
 import datetime, logging, os
 
-Master="master"
+Master, Dashboards = "master", "dashboards"
 
 def TemplateMapper(groupkey,
                    dedicated=["actions",
@@ -101,11 +101,23 @@ class Env(dict):
     def attach(key):
         def decorator(fn):
             def wrapped(self):
-                self[key]=fn(self)
+                resp=fn(self)
+                if resp:
+                    self[key]=resp
                 return self
             return wrapped
         return decorator
 
+    @attach(Dashboards)
+    def pop_dashboards(self):
+        dashboards=Template(name=Dashboards)
+        for tempname, template in self.items():
+            dashkeys=([k for k, v in template.Resources.items()
+                       if v["Type"]=="AWS::CloudWatch::Dashboard"])
+            for dashkey in dashkeys:
+                dashboards.Resources[dashkey]=template.Resources.pop(dashkey)
+        return dashboards if dashboards.Resources!={} else None
+        
     @attach(Master)
     def synth_master(self):
         master=Template(name=Master)
@@ -166,7 +178,7 @@ class Env(dict):
     
 @preprocess
 def synth_env(config):
-    return Env.create(config).validate().synth_master().post_validate()
+    return Env.create(config).validate().pop_dashboards().synth_master().post_validate()
 
 if __name__=="__main__":
     pass
