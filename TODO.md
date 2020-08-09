@@ -1,17 +1,19 @@
 ### short
 
+- userpool component
+- api authorizer
+- auth testing scripts
+
+### medium
+
 - pop_dashboards() is failing to remove dash from source
 
 - layers-as-components
-
-### medium
 
 - template counting / metrics checking
 - action to have permission to call another action
 
 - apigw request validation
-- userpool component
-- api authorizer
 
 - google sheets export
 - cloudwatch alerts
