@@ -1,11 +1,6 @@
 ### short
 
-- template to filter outputs
-- env to check outputs prior to generating master template
-
-- env dashboard popping code
-
-- apigw logging
+- outputs vs params checks
 - layers-as-components
 - s3 multiple action support
 
@@ -19,6 +14,8 @@
 - template counting / metrics checking
 - action to have permission to call another action
 
+- env dashboard popping code
+- apigw logging
 - apigw request validation
 - userpool component
 - api authorizer
