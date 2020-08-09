@@ -1,5 +1,8 @@
 ### short
 
+- apigw logging
+  - https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html
+
 - s3 multiple action support
 
 - layers-as-components
@@ -13,7 +16,6 @@
 - action to have permission to call another action
 
 - env dashboard popping code
-- apigw logging
 - apigw request validation
 - userpool component
 - api authorizer
