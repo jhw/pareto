@@ -1,5 +1,8 @@
 ### short
 
+- action to have permission to call another action
+  - needs to use string arn in case action is part of another template, once template numbering is implemented
+
 - userpool component
 - api authorizer
 - auth testing scripts
@@ -11,11 +14,9 @@
 - layers-as-components
 
 - template counting / metrics checking
-- action to have permission to call another action
 
 - apigw request validation
 
-- google sheets export
 - cloudwatch alerts
 - cloudfront + https + route 53
 - change password routine
@@ -215,6 +216,7 @@
   
 ### done
 
+- google sheets export
 - s3 multiple action support
 - env dashboard popping code
 - apigw logging
