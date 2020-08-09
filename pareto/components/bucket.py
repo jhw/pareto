@@ -5,8 +5,7 @@ PermissionArn="arn:aws:s3:::%s"
 WebsitePolicyArn="arn:aws:s3:::${bucket_name}/*"
 
 @resource()
-def Bucket(event={"type":  "s3:ObjectCreated:*"},
-           **kwargs):
+def Bucket(**kwargs):
     def website_config(index="index.json"):
         corsrules=[{"AllowedMethods": ["GET"],
                     "AllowedOrigins": ["*"]}]
@@ -15,15 +14,20 @@ def Bucket(event={"type":  "s3:ObjectCreated:*"},
         return {"AccessControl": "PublicRead",
                 "CorsConfiguration": corsconfig,
                 "WebsiteConfiguration": websiteconfig}
-    def lambda_config(kwargs, event):
-        target=ref("%s-arn" % kwargs["action"])
-        return {"Event": event["type"],
-                "Function": target}
+    def lambda_config(action):
+        target=ref("%s-arn" % action["name"])
+        rules=[{"Name": "prefix",
+                "Value": action["path"]}]
+        return {"Event": "s3:ObjectCreated:*",
+                "Function": target,
+                "Filter": {"S3Key": {"Rules": rules}}}
     props={"BucketName": resource_name(kwargs)}
     if "website" in kwargs and kwargs["website"]:
         props.update(website_config())
-    if "action" in kwargs:
-        notifications={"LambdaConfigurations": [lambda_config(kwargs, event)]}
+    if "actions" in kwargs:
+        lambdaconfig=[lambda_config(action)
+                      for action in kwargs["actions"]]
+        notifications={"LambdaConfigurations": lambdaconfig}
         props["NotificationConfiguration"]=notifications
     return "AWS::S3::Bucket", props
 
