@@ -1,11 +1,11 @@
-### runtime
+### app
+awscli
 botocore
 boto3
-pandas
 gitpython
-### buildtime
-awscli
 git+https://github.com/spulec/moto
-### layer tests
+pandas
+ruamel.yaml
+### layer testing
 lxml
 pymorphy2

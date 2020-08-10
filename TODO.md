@@ -1,15 +1,12 @@
 ### short
 
-- ruamel.yaml for yaml dumping
-  - https://pypi.org/project/ruamel.yaml/
+- pop_dashboards() is failing to remove dash from source
 
 ### medium
 
 - userpool component
 - api authorizer
 - auth testing scripts
-
-- pop_dashboards() is failing to remove dash from source
 
 - abstract push_lambdas.py code into class
 - template counting / metrics checking
@@ -215,6 +212,8 @@
   
 ### done
 
+- ruamel.yaml for yaml dumping
+  - https://pypi.org/project/ruamel.yaml/
 - dump env prior to validation
 - separate testing of lambdas from deployment
 - preprocessor to validate actions

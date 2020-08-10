@@ -4,7 +4,7 @@
 
 from pareto.helpers.cloudformation.utils import logical_id
 
-import json, re, yaml
+import io, json, re, ruamel.yaml
 
 Metrics={"resources": (lambda t: len(t.Resources)/200),
          "outputs": (lambda t: len(t.Outputs)/60),
@@ -155,32 +155,18 @@ class Template:
                           cls=SingleQuoteEncoder)
 
     """
-    - pyyaml will encode `"'` as `'''` :-/
-    - not strictly required that this needs to be fixed (as only JSON templates are pushed to S3), but just for consistency with JSON when debugging via YAML templates
+    - becase pyyaml messes up quotes in strings, which are required by some AWS primitives
+    - https://stackoverflow.com/questions/37094170/a-single-string-in-single-quotes-with-pyyaml
+    - isn't required to do this (as json_repr above used for template deployment, but just for consistency with json string handling
     """
     
     @property
     def yaml_repr(self):
-        class Counter:
-            def __init__(self):
-                self.value=0
-            def increment(self):
-                self.value+=1
-        def count(fn):
-            counter=Counter()
-            def wrapped(match):
-                resp=fn(match, counter)
-                counter.increment()
-                return resp
-            return wrapped
-        @count
-        def matcher(match, counter):
-            return "\"'" if 0==counter.value % 2 else "'\""
-        def unescape_single_quotes(text):
-            return re.sub("'''", matcher, text)
-        yaml.SafeDumper.ignore_aliases=lambda *args : True
-        return unescape_single_quotes(yaml.safe_dump(self.render(),
-                                                     default_flow_style=False))
+        yaml=ruamel.yaml.YAML()
+        yaml.preserve_quotes=True
+        buf=io.StringIO()
+        yaml.dump(self.render(), buf)
+        return buf.getvalue()
     
 if __name__=="__main__":
     pass
