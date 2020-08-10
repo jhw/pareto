@@ -5,6 +5,45 @@
 - https://itnext.io/how-to-validate-http-requests-before-they-reach-lambda-2fff68bfe93b
 - https://medium.com/devtechblogs/https-medium-com-lior-k-sh-controlling-aws-api-gateway-request-parameters-lambda-function-49b08f96ccd9
 
+---
+
+- https://www.alexdebrie.com/posts/api-gateway-elements/#step-1-validation-with-method-requests
+
+```
+To configure request validation in CloudFormation, you’ll need to do two things:
+
+Create an AWS::ApiGateway::RequestValidator resource that is configured to validate request parameters.
+
+On your AWS::ApiGateway::Method resource, use the validator you created as the ValidatorRequestId property, then specify the parameters to validate in the RequestParameters property.
+```
+
+```
+To validate your request body, you’ll first need to create a request model. A model is a JSON schema document that describes the expected shape of an object
+```
+
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-method.html#cfn-apigateway-method-requestparameters
+
+
+```
+The request parameters that API Gateway accepts. Specify request parameters as key-value pairs (string-to-Boolean mapping), with a source as the key and a Boolean as the value. The Boolean specifies whether a parameter is required. A source must match the format method.request.location.name, where the location is querystring, path, or header, and name is a valid, unique parameter name.
+```
+
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-requestvalidator.html
+
+```
+Type: AWS::ApiGateway::RequestValidator
+Properties: 
+  Name: String
+  RestApiId: String
+  ValidateRequestBody: Boolean
+  ValidateRequestParameters: Boolean
+```
+
+- note in the above that ValidateXXX are booleans ie you specify one or the other
+
+- https://docs.aws.amazon.com/cdk/api/latest/docs/aws-apigateway-readme.html
+
+
 ### lambda execution permissions 10/8/20
 
 - how do you know where target lives ? is it in the same template or a different one ?

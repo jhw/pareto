@@ -1,36 +1,38 @@
 ### short
 
-- publish() to publish index.json and test fetching
+- validate AWS type
+- fifo queues by default
 
-- apigw request validation
+- apigw parameter validation
+- apigw schema validation
 
 ### medium
+
+- numbered templates
 
 - userpool component
 - api authorizer
 - auth testing scripts
 
-- template counting / metrics checking
+- publish() to publish index.json and test fetching
 
 - scaffold generator
 - targets
 
 ### gists
 
-- cloudwatch alerts
-- amplify change password
-- google sheets upload
 - cloudfront/https/route 53
-- lambda version to see if u can re- deploy without s3 key change
+- google sheets upload
+- amplify change password
 
 ### v1.1
 
-- auth
-  - self sign- up
-  - forgot password
-  - federated login
-  - unauthenticated access
-
+- lambda version -> redeploy without s3 key change ?
+- amplify self sign- up
+- amplify forgot password
+- amplify federated login
+- amplify unauthenticated access
+- cloudwatch alerts
 - chrome extension
 - eventbridge
 - ci pipeline
