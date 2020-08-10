@@ -1,6 +1,5 @@
 ### short
 
-- service permission not found
 - service refs need to be checked by pre- processor
 - rename permissions as ActionPermission
 
@@ -216,6 +215,7 @@
   
 ### done
 
+- actions needs to require service parameter
 - action service execution permission
 - services
 - layer components

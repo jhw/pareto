@@ -119,7 +119,8 @@ def synth_action(template, **kwargs):
     if "services" in kwargs:
         for servicename in kwargs["services"]:
             service={"name": servicename}
-            template.update(Parameters=ServicePermission(service, **kwargs))
+            template.update(Parameters=parameter("%s-arn" % service["name"]),
+                            Resources=ServicePermission(service, **kwargs))
     if "layers" in kwargs:
         for layername in kwargs["layers"]:
             template.update(Parameters=parameter("%s-layer-arn" % layername))
