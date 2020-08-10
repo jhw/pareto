@@ -27,8 +27,7 @@ def add_lambda_staging(config):
             if action["name"] not in latest:
                 raise RuntimeError("no deployables found for %s" % action["name"])
             staging["key"]=str(latest[action["name"]])
-        action.setdefault("staging", {})
-        action["staging"]["lambda"]=staging    
+        action["staging"]=staging    
     commits=LambdaCommits(config=config, s3=S3)
     for action in config["components"]["actions"]:
        add_staging(action, commits)

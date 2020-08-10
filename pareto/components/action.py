@@ -17,8 +17,8 @@ def ActionFunction(concurrency=None,
                    **kwargs):
     dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
     rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
-    props={"Code": {"S3Bucket": kwargs["staging"]["lambda"]["bucket"],
-                    "S3Key": kwargs["staging"]["lambda"]["key"]},
+    props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
+                    "S3Key": kwargs["staging"]["key"]},
            "FunctionName": resource_name(kwargs),
            "Handler": handler,
            "MemorySize": memory,
@@ -26,10 +26,9 @@ def ActionFunction(concurrency=None,
            "Role": rolearn,
            "Runtime": "python%s" % kwargs["runtime"],
            "Timeout": timeout}
-    if "layer" in kwargs["staging"]:
-        props["Layers"]=[ref("%s-%s-layer" % (kwargs["name"],
-                                              package["name"]))
-                         for package in kwargs["staging"]["layer"]]
+    if "layers" in kwargs:
+        # include layer reference
+        pass
     if concurrency:
         props["ReservedConcurrentExecutions"]=concurrency
     return "AWS::Lambda::Function", props
@@ -52,17 +51,6 @@ def ActionEventConfig(retries=0,
            "MaximumRetryAttempts": retries}
     return "AWS::Lambda::EventInvokeConfig", props
 
-def ActionLayer(package, **kwargs):
-    suffix="%s-layer" % (package["name"])
-    @resource(suffix=suffix)
-    def ActionLayer(package, **kwargs):
-        content={"S3Key": str(package),
-                 "S3Bucket": kwargs["bucket"]}
-        props={"Content": content,
-               "CompatibleRuntimes": ["python%s" % kwargs["runtime"]]}
-        return "AWS::Lambda::LayerVersion", props
-    return ActionLayer(package, **kwargs)
-    
 @resource(suffix="role")
 def ActionRole(**kwargs):
     def assume_role_policy_doc():
@@ -112,9 +100,9 @@ def synth_action(template, **kwargs):
                                ActionEventConfig(**kwargs)],
                     Charts=ActionCharts(**kwargs),
                     Outputs=ActionArn(**kwargs))
-    if "layer" in kwargs["staging"]:
-        template.update(Resources=[ActionLayer(package, **kwargs)
-                                   for package in kwargs["staging"]["layer"]])
+    if "layers" in kwargs:
+        # include layer params
+        pass
 
 if __name__=="__main__":
     pass

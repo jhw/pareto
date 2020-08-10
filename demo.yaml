@@ -19,11 +19,10 @@ components:
   actions:
     - name: hello-get-action
       layers:
-        - name: lxml
+        - lxml
     - name: hello-post-action
       layers:
-        - name: pymorphy2
-          version: "0.8"
+        - pymorphy
     - name: hello-bucket-action
       permissions:
         - translate:TranslateText
