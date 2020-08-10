@@ -1,6 +1,13 @@
 ### short
 
-- service refs need to be checked by pre- processor
+- services deployment failing due to bad arn in permissions
+  - check outputs for lambda format ?
+  - use direct arn rather than string constructor ?
+
+- preprocessor needs to cover actions, services refs
+
+- separate testing of lambdas from deployment
+- dump env prior to validation
 
 ### medium
 
@@ -8,8 +15,6 @@
 - api authorizer
 - auth testing scripts
 
-- separate testing of lambdas from deployment
-- dump dashboards prior to validation
 - pop_dashboards() is failing to remove dash from source
 
 - abstract push_lambdas.py code into class
