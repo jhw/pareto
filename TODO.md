@@ -24,11 +24,14 @@
 
 ### v1.1
 
+- extended apigw param validation
 - lambda version -> redeploy without s3 key change ?
+
 - amplify self sign- up
 - amplify forgot password
 - amplify federated login
 - amplify unauthenticated access
+
 - cloudwatch alerts
 - chrome extension
 - eventbridge
