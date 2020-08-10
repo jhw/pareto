@@ -1,6 +1,6 @@
 from pareto.components import *
 
-@resource()
+@resource(suffix="layer")
 def Layer(**kwargs):
     content={"S3Key": str(kwargs["staging"]),
              "S3Bucket": kwargs["bucket"]}
@@ -8,7 +8,7 @@ def Layer(**kwargs):
            "CompatibleRuntimes": ["python%s" % kwargs["runtime"]]}
     return "AWS::Lambda::LayerVersion", props
     
-@output(suffix="arn")
+@output(suffix="layer-arn")
 def LayerArn(**kwargs):
     return fn_getatt(kwargs["name"], "Arn")
 

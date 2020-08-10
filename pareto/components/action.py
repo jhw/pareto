@@ -101,8 +101,8 @@ def synth_action(template, **kwargs):
                     Charts=ActionCharts(**kwargs),
                     Outputs=ActionArn(**kwargs))
     if "layers" in kwargs:
-        # include layer params
-        pass
+        for layername in kwargs["layers"]:
+            template.update(Parameters=parameter("%s-layer-arn" % layername))
 
 if __name__=="__main__":
     pass
