@@ -1,6 +1,5 @@
 ### short
 
-- services
 - action service execution permission
 
 ### medium
@@ -215,6 +214,7 @@
   
 ### done
 
+- services
 - layer components
 - template clone method
 - google sheets export

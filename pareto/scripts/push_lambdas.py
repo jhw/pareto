@@ -12,18 +12,6 @@ from git import Repo
 
 import zipfile
 
-"""
-- because services are also actions
-- for now, keep referring to all lambdas as actions since lambda is a protected keyword
-"""
-
-def filter_actions(components):
-    actions=[]
-    for attr in ["actions", "services"]:
-        if attr in components:
-            actions+=components[attr]
-    return actions
-
 @toggle_aws_profile
 @assert_actions
 def run_tests(config):

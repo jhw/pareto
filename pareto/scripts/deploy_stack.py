@@ -29,7 +29,7 @@ def add_lambda_staging(config):
             staging["key"]=str(latest[action["name"]])
         action["staging"]=staging    
     commits=LambdaCommits(config=config, s3=S3)
-    for action in config["components"]["actions"]:
+    for action in filter_actions(config["components"]):
        add_staging(action, commits)
 
 def add_layer_staging(config):

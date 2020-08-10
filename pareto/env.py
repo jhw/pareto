@@ -21,7 +21,8 @@ Master, Dashboards = "master", "dashboards"
 
 def TemplateMapper(groupkey,
                    dedicated=["layers",
-                              "actions",                              
+                              "actions",
+                              "services",
                               "apis"],
                    default="misc"):
     return groupkey if groupkey in dedicated else default

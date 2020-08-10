@@ -36,6 +36,18 @@ def assert_actions(fn):
             raise RuntimeError("No actions found")
         return fn(*args, **kwargs)
     return wrapped
-    
+
+"""
+- because services are also actions
+- for now, keep referring to all lambdas as actions since lambda is a protected keyword
+"""
+
+def filter_actions(components):
+    actions=[]
+    for attr in ["actions", "services"]:
+        if attr in components:
+            actions+=components[attr]
+    return actions
+
 if __name__=="__main__":
     pass
