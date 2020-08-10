@@ -27,8 +27,8 @@ def ActionFunction(concurrency=None,
            "Runtime": "python%s" % kwargs["runtime"],
            "Timeout": timeout}
     if "layers" in kwargs:
-        # include layer reference
-        pass
+        props["Layers"]=[ref("%s-layer-arn" % layername)
+                         for layername in kwargs["layers"]]
     if concurrency:
         props["ReservedConcurrentExecutions"]=concurrency
     return "AWS::Lambda::Function", props
