@@ -2,8 +2,6 @@ from pareto.components import *
 
 from pareto.charts.action import ActionCharts
 
-PermissionArn="arn:aws:lambda:%s:${AWS::AccountId}:%s"
-
 DefaultPermissions=yaml.safe_load("""
 - logs:CreateLogGroup
 - logs:CreateLogStream
@@ -94,8 +92,7 @@ def ServicePermission(service, **kwargs):
     suffix="%s-permission" % service["name"]
     @resource(suffix=suffix)
     def ServicePermission(service, **kwargs):
-        source=PermissionArn % (kwargs["region"],
-                                resource_name(kwargs))
+        source=fn_getatt(kwargs["name"], "Arn")
         target=ref("%s-arn" % service["name"])
         props={"Action": "lambda:InvokeFunction",
                "FunctionName": target,

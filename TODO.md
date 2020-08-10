@@ -1,12 +1,10 @@
 ### short
 
-- services deployment failing due to bad arn in permissions
-  - check outputs for lambda format ?
-  - use direct arn rather than string constructor ?
-
-- preprocessor needs to cover actions, services refs
+- preprocessor to validate actions
+- preprocessor to validate services
 
 - separate testing of lambdas from deployment
+
 - dump env prior to validation
 
 ### medium
@@ -219,6 +217,7 @@
   
 ### done
 
+- fix service arn source
 - rename permissions as ActionPermission
 - actions needs to require service parameter
 - action service execution permission
