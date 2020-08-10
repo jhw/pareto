@@ -8,6 +8,14 @@ components:
   secrets:
     - name: foo
       value: bar
+  layers:
+     - name: lxml
+       package:
+         name: lxml
+     - name: pymorphy
+       package:
+         name: pymorphy2
+         version: "0.8"
   actions:
     - name: hello-get-action
       layers:

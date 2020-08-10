@@ -33,31 +33,13 @@ def add_lambda_staging(config):
     for action in config["components"]["actions"]:
        add_staging(action, commits)
 
-@assert_actions
 def add_layer_staging(config):
-    logging.info("adding layer staging")
-    def filter_staged(config, action, packages):
-        staged=[]
-        for layerkwargs in action["layers"]:
-            package=LayerPackage.create(config, **layerkwargs)
-            if not packages.exists(package):
-                raise RuntimeError("%s does not exist" % package)
-            staged.append(package)
-        return staged
-    def assert_unique_versions(action, packages):        
-        names=[package["name"]
-               for package in packages]
-        unames=list(set(names))
-        if len(names)!=len(unames):
-            raise RuntimeError("%s has multiple versions of the same package" % action["name"])
     packages=LayerPackages(config=config, s3=S3)
-    for action in config["components"]["actions"]:
-        if "layers" not in action:
-            continue
-        staged=filter_staged(config, action, packages)
-        assert_unique_versions(action, staged)
-        action.setdefault("staging", {})
-        action["staging"]["layer"]=staged
+    for layer in config["components"]["layers"]:
+        package=LayerPackage.create(config, **layer["package"])
+        if not packages.exists(package):
+            raise RuntimeError("%s does not exist" % package)
+        layer["staging"]=package
         
 if __name__=="__main__":
     try:        

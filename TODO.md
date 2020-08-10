@@ -1,21 +1,18 @@
 ### short
 
+- layer components
+
+### medium
+
 - userpool component
 - api authorizer
 - auth testing scripts
 
-### medium
-
+- abstract push_lambdas.py code into class
 - pop_dashboards() is failing to remove dash from source
-
 - lambda execution permissions [notes]
-
-- layers-as-components
-
 - template counting / metrics checking
-
 - apigw request validation
-
 - cloudwatch alerts
 - cloudfront + https + route 53
 - change password routine
