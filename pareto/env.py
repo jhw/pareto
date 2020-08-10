@@ -19,7 +19,8 @@ import datetime, logging, os
 Master, Dashboards = "master", "dashboards"
 
 def TemplateMapper(groupkey,
-                   dedicated=["actions",
+                   dedicated=["layers",
+                              "actions",                              
                               "apis"],
                    default="misc"):
     return groupkey if groupkey in dedicated else default

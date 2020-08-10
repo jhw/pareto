@@ -10,7 +10,8 @@ def Layer(**kwargs):
     
 @output(suffix="layer-arn")
 def LayerArn(**kwargs):
-    return fn_getatt("%s-layer" % kwargs["name"], "Arn")
+    # return fn_getatt("%s-layer" % kwargs["name"], "Arn")
+    return ref("%s-layer" % kwargs["name"])
 
 def synth_layer(template, **kwargs):
     template.update(Resources=Layer(**kwargs),
