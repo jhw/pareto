@@ -60,6 +60,14 @@ class Template:
         for attr in self.Attrs:
             setattr(self, attr, default_value(attr))
 
+    def clone(self, name):
+        template=Template(name)
+        def clone(v):
+            return list(v) if isinstance(v, list) else dict(v)
+        for attr in self.Attrs:
+            setattr(template, attr, clone(getattr(self, attr)))
+        return template
+            
     def assert_keywords(fn):
         def wrapped(self, **kwargs):
             for k in kwargs:

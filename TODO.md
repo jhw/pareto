@@ -215,6 +215,7 @@
   
 ### done
 
+- template clone method
 - google sheets export
 - s3 multiple action support
 - env dashboard popping code
