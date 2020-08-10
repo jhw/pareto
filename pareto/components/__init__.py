@@ -15,8 +15,16 @@ def resource(suffix=None):
                 raise RuntimeError("%s must return at least type, props" % key)
             return fn(key, values, **kwargs)
         return wrapped
+    def validate_type(fn):
+        def wrapped(k, v):
+            if (k=="Type" and
+                not re.search("^AWS\\:\\:\\w+\\:\\:\\w+$", v)):
+                raise RuntimeError("%s is invalid type" % v)
+            return fn(k, v)
+        return wrapped
     @assert_values
     def format_values(key, values, attrs=["Type", "Properties", "DependsOn"]):
+        @validate_type
         def format_value(k, v):
             return [logical_id(name) for name in v] if k=="DependsOn" else v
         return {k:format_value(k, v)
