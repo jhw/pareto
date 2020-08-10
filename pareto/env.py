@@ -173,7 +173,7 @@ class Env(dict):
            Capabilities=["CAPABILITY_IAM"])
         waiter=cf.get_waiter("stack_%s_complete" % action)
         waiter.wait(StackName=stackname)
-            
+
     def dump(self):
         logging.info("dumping templates")
         timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
@@ -184,10 +184,11 @@ class Env(dict):
                 os.makedirs(dirname)
             with open(filename, 'w') as f:
                 f.write(template.yaml_repr)
-    
+        return self 
+        
 @preprocess
 def synth_env(config):
-    return Env.create(config).validate().pop_dashboards().synth_master().post_validate()
+    return Env.create(config).dump().validate().pop_dashboards().synth_master().post_validate()
 
 if __name__=="__main__":
     pass
