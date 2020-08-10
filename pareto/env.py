@@ -17,7 +17,7 @@ from pareto.template import Template
 
 import datetime, logging, os
 
-Master, Dashboards = "master", "dashboards"
+Master="master"
 
 """
 - services need to be separate from actions as action permissions to execute services assume service arns imported as parameters 
@@ -117,21 +117,6 @@ class Env(dict):
             return wrapped
         return decorator
 
-    """
-    @attach(Dashboards)
-    def pop_dashboards(self):
-        dashboards=Template(name=Dashboards)
-        for tempname, template in self.items():
-            dashkeys=([k for k, v in template.Resources.items()
-                       if v["Type"]=="AWS::CloudWatch::Dashboard"])
-            for dashkey in dashkeys:
-                dashboards.Resources[dashkey]=template.Resources.pop(dashkey)
-        return dashboards if dashboards.Resources!={} else None
-    """
-
-    def pop_dashboards(self):
-        return self
-    
     @attach(Master)
     def synth_master(self):
         master=Template(name=Master)
@@ -145,9 +130,6 @@ class Env(dict):
             synth_stack(master, **kwargs)
         return master
 
-    def post_validate(self):
-        return self
-    
     def push(self, s3):
         def push(config, tempname, template, s3):
             key="%s-%s/templates/%s.json" % (config["globals"]["app"],
@@ -190,10 +172,14 @@ class Env(dict):
             with open(filename, 'w') as f:
                 f.write(template.yaml_repr)
         return self 
-        
+
+"""
+- dump() executed before validate() for debugging
+"""
+    
 @preprocess
 def synth_env(config):
-    return Env.create(config).dump().validate().pop_dashboards().synth_master().post_validate()
+    return Env.create(config).dump().validate().synth_master()
 
 if __name__=="__main__":
     pass

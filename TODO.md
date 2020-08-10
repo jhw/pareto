@@ -1,8 +1,8 @@
 ### short
 
-- pop_dashboards() is failing to remove dash from source
-
 - publish() to publish index.json and test fetching
+
+- apigw request validation
 
 ### medium
 
@@ -11,18 +11,19 @@
 - auth testing scripts
 
 - template counting / metrics checking
-- apigw request validation
-- google sheets upload test
-- cloudwatch alerts
-- cloudfront + https + route 53
-- change password routine
+
 - scaffold generator
 - targets
 
-### v1.1
+### gists
 
-- gists
-  - see if version allows you to redeploy from S3 without name change
+- cloudwatch alerts
+- amplify change password
+- google sheets upload
+- cloudfront/https/route 53
+- lambda version to see if u can re- deploy without s3 key change
+
+### v1.1
 
 - auth
   - self sign- up
@@ -30,8 +31,7 @@
   - federated login
   - unauthenticated access
 
-- option for internal or external arn refs
-
+- chrome extension
 - eventbridge
 - ci pipeline
 - github actions
@@ -45,6 +45,10 @@
 
 ### thoughts
 
+- option for internal or external arn refs ?
+  - not sure is worth it
+- pop_dashboards() ?
+  - over optimisation
 - abstract push_lambdas.py code into class
   - hard to see how this can be a class
 - genericise preprocessor reference checking ?

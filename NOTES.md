@@ -1,3 +1,10 @@
+### apigw request validation 10/8/20
+
+- https://www.alexdebrie.com/posts/api-gateway-elements/#step-1-validation-with-method-requests
+- https://stackoverflow.com/questions/31329958/how-to-pass-a-querystring-or-route-parameter-to-aws-lambda-from-amazon-api-gatew
+- https://itnext.io/how-to-validate-http-requests-before-they-reach-lambda-2fff68bfe93b
+- https://medium.com/devtechblogs/https-medium-com-lior-k-sh-controlling-aws-api-gateway-request-parameters-lambda-function-49b08f96ccd9
+
 ### lambda execution permissions 10/8/20
 
 - how do you know where target lives ? is it in the same template or a different one ?
