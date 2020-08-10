@@ -1,7 +1,7 @@
 from pareto.components import *
 
 @resource()
-def EventRule(**kwargs):
+def Timer(**kwargs):
     action={"Id": resource_name(kwargs),
             "Input": json.dumps(kwargs["payload"]),
             "Arn": ref("%s-arn" % kwargs["action"])}
@@ -22,7 +22,7 @@ def ActionPermission(**kwargs):
 
 def synth_timer(template, **kwargs):
     template.update(Parameters=parameter("%s-arn" % kwargs["action"]),
-                    Resources=[EventRule(**kwargs),
+                    Resources=[Timer(**kwargs),
                                ActionPermission(**kwargs)])
 
 if __name__=="__main__":
