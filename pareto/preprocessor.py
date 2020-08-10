@@ -19,12 +19,20 @@ def validate(config):
             for component in config["components"][groupkey]:
                 names.append(component["name"])
         return names
+    """
+    - filter_action_refs should be genericised somehow
+    """    
     def filter_action_refs(config):
         names=[]
         for groupkey in config["components"]:
             for component in config["components"][groupkey]:
                 if "action" in component:
                     names.append(component["action"])
+                elif "actions" in component:
+                    names+=[action["name"]
+                            for action in component["actions"]]
+                elif "services" in component:
+                    names+=component["services"]
         return names
     def validate_unique_names(config):
         names=filter_names(config)

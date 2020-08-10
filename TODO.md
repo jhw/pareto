@@ -1,9 +1,9 @@
 ### short
 
-- preprocessor to validate actions
-- preprocessor to validate services
-
 - separate testing of lambdas from deployment
+
+- ruamel.yaml for yaml dumping
+  - https://pypi.org/project/ruamel.yaml/
 
 - dump env prior to validation
 
@@ -48,6 +48,8 @@
 
 ### thoughts
 
+- genericise preprocessor reference checking ?
+  - not sure it's worth it
 - consider if lambda/layout staging stuff could be moved into class
   - struggling to see how that would work
 - consider if python-git stuff could be moved into class ?
@@ -217,6 +219,8 @@
   
 ### done
 
+- preprocessor to validate actions
+- preprocessor to validate services
 - fix service arn source
 - rename permissions as ActionPermission
 - actions needs to require service parameter
