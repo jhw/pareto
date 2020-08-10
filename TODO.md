@@ -1,8 +1,5 @@
 ### short
 
-- action to have permission to call another action
-  - needs to use string arn in case action is part of another template, once template numbering is implemented
-
 - userpool component
 - api authorizer
 - auth testing scripts
@@ -10,6 +7,8 @@
 ### medium
 
 - pop_dashboards() is failing to remove dash from source
+
+- lambda execution permissions [notes]
 
 - layers-as-components
 

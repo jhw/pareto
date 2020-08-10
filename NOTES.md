@@ -1,3 +1,7 @@
+### lambda execution permissions 10/8/20
+
+- how do you know where target lives ? is it in the same template or a different one ?
+
 ### push lambdas 9/8/20
 
 - could push_lambdas code be moved into staging ?
