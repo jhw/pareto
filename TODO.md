@@ -1,8 +1,8 @@
 ### short
 
-- abstract push_lambdas.py code into class
-
 - pop_dashboards() is failing to remove dash from source
+
+- publish() to publish index.json and test fetching
 
 ### medium
 
@@ -30,6 +30,8 @@
   - federated login
   - unauthenticated access
 
+- option for internal or external arn refs
+
 - eventbridge
 - ci pipeline
 - github actions
@@ -43,6 +45,8 @@
 
 ### thoughts
 
+- abstract push_lambdas.py code into class
+  - hard to see how this can be a class
 - genericise preprocessor reference checking ?
   - not sure it's worth it
 - consider if lambda/layout staging stuff could be moved into class
