@@ -1,6 +1,8 @@
 ### short
 
-- action service execution permission
+- service permission not found
+- service refs need to be checked by pre- processor
+- rename permissions as ActionPermission
 
 ### medium
 
@@ -214,6 +216,7 @@
   
 ### done
 
+- action service execution permission
 - services
 - layer components
 - template clone method

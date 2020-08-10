@@ -2,6 +2,8 @@ from pareto.components import *
 
 from pareto.charts.action import ActionCharts
 
+PermissionArn="arn:aws:lambda:%s:${AWS::AccountId}:%s"
+
 DefaultPermissions=yaml.safe_load("""
 - logs:CreateLogGroup
 - logs:CreateLogStream
@@ -88,6 +90,20 @@ def ActionRole(**kwargs):
     props["Policies"]=[policy(kwargs)]
     return "AWS::IAM::Role", props
 
+def ServicePermission(service, **kwargs):
+    suffix="%s-permission" % service["name"]
+    @resource(suffix=suffix)
+    def ServicePermission(service, **kwargs):
+        source=PermissionArn % (kwargs["region"],
+                                resource_name(kwargs))
+        target=ref("%s-arn" % service["name"])
+        props={"Action": "lambda:InvokeFunction",
+               "FunctionName": target,
+               "SourceArn": source,
+               "Principal": "lambda.amazonaws.com"}
+        return "AWS::Lambda::Permission", props
+    return ServicePermission(service, **kwargs)
+
 @output(suffix="arn")
 def ActionArn(**kwargs):
     return fn_getatt(kwargs["name"], "Arn")
@@ -100,6 +116,10 @@ def synth_action(template, **kwargs):
                                ActionEventConfig(**kwargs)],
                     Charts=ActionCharts(**kwargs),
                     Outputs=ActionArn(**kwargs))
+    if "services" in kwargs:
+        for servicename in kwargs["services"]:
+            service={"name": servicename}
+            template.update(Parameters=ServicePermission(service, **kwargs))
     if "layers" in kwargs:
         for layername in kwargs["layers"]:
             template.update(Parameters=parameter("%s-layer-arn" % layername))

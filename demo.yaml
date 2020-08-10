@@ -22,6 +22,8 @@ components:
     - name: hello-get-fn
       layers:
         - lxml
+      services:
+        - hello-service-fn
     - name: hello-post-fn
       layers:
         - pymorphy
