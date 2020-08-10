@@ -1,7 +1,5 @@
 ### short
 
-- fifo queues by default
-
 - apigw parameter validation
 - apigw schema validation
 
@@ -223,6 +221,7 @@
   
 ### done
 
+- fifo queues by default
 - validate AWS type
 - ruamel.yaml for yaml dumping
   - https://pypi.org/project/ruamel.yaml/
