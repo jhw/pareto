@@ -1,7 +1,6 @@
 ### short
 
 - service refs need to be checked by pre- processor
-- rename permissions as ActionPermission
 
 ### medium
 
@@ -215,6 +214,7 @@
   
 ### done
 
+- rename permissions as ActionPermission
 - actions needs to require service parameter
 - action service execution permission
 - services

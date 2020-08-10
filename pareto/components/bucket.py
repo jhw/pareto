@@ -31,10 +31,10 @@ def Bucket(**kwargs):
         props["NotificationConfiguration"]=notifications
     return "AWS::S3::Bucket", props
 
-def BucketPermission(action, **kwargs):
+def ActionPermission(action, **kwargs):
     suffix="%s-permission" % action["name"]
     @resource(suffix=suffix)
-    def BucketPermission(action, **kwargs):
+    def ActionPermission(action, **kwargs):
         source=PermissionArn % resource_name(kwargs)
         target=ref("%s-arn" % action["name"])
         props={"Action": "lambda:InvokeFunction",
@@ -43,7 +43,7 @@ def BucketPermission(action, **kwargs):
                "SourceArn": source,
                "Principal": "s3.amazonaws.com"}
         return "AWS::Lambda::Permission", props
-    return BucketPermission(action, **kwargs)
+    return ActionPermission(action, **kwargs)
 
 @output(suffix="website-url")
 def BucketWebsiteUrl(**kwargs):
@@ -69,7 +69,7 @@ def synth_bucket(template, **kwargs):
     if "actions" in kwargs:
         for action in kwargs["actions"]:
             template.update(Parameters=parameter("%s-arn" % action["name"]),
-                            Resources=BucketPermission(action, **kwargs))
+                            Resources=ActionPermission(action, **kwargs))
     if "website" in kwargs and kwargs["website"]:
         template.update(Resources=BucketWebsitePolicy(**kwargs),
                         Outputs=BucketWebsiteUrl(**kwargs))

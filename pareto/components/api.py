@@ -158,10 +158,10 @@ def ApiCorsOptions(endpoint, **kwargs):
         return "AWS::ApiGateway::Method", props
     return ApiCorsOptions(endpoint, **kwargs)
 
-def ApiPermission(endpoint, **kwargs):
+def ActionPermission(endpoint, **kwargs):
     suffix="%s-permission" % endpoint["name"]
     @resource(suffix=suffix)
-    def ApiPermission(endpoint, **kwargs):
+    def ActionPermission(endpoint, **kwargs):
         root=ref("%s-root" % kwargs["name"])
         stage=ref("%s-stage" % kwargs["name"])
         source=fn_sub(ExecuteApiArn % (kwargs["region"],
@@ -175,7 +175,7 @@ def ApiPermission(endpoint, **kwargs):
                "Principal": "apigateway.amazonaws.com",
                "SourceArn": source}
         return "AWS::Lambda::Permission", props
-    return ApiPermission(endpoint, **kwargs)
+    return ActionPermission(endpoint, **kwargs)
 
 def ApiUrl(endpoint, **kwargs):
     suffix="%s-url" % endpoint["name"]
@@ -200,7 +200,7 @@ def synth_api(template, **kwargs):
                         Resources=[ApiResource(endpoint, **kwargs),
                                    ApiMethod(endpoint, **kwargs),
                                    ApiCorsOptions(endpoint, **kwargs),
-                                   ApiPermission(endpoint, **kwargs)],
+                                   ActionPermission(endpoint, **kwargs)],
                         Outputs=ApiUrl(endpoint, **kwargs))
 
 if __name__=="__main__":
