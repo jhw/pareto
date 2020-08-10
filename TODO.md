@@ -1,11 +1,9 @@
 ### short
 
-- layer components
-
-### medium
-
 - services
 - action service execution permission
+
+### medium
 
 - userpool component
 - api authorizer
@@ -214,6 +212,7 @@
   
 ### done
 
+- layer components
 - template clone method
 - google sheets export
 - s3 multiple action support
