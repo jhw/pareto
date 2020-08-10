@@ -1,5 +1,7 @@
 ### short
 
+- abstract push_lambdas.py code into class
+
 - pop_dashboards() is failing to remove dash from source
 
 ### medium
@@ -8,9 +10,9 @@
 - api authorizer
 - auth testing scripts
 
-- abstract push_lambdas.py code into class
 - template counting / metrics checking
 - apigw request validation
+- google sheets upload test
 - cloudwatch alerts
 - cloudfront + https + route 53
 - change password routine

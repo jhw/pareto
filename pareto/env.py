@@ -19,6 +19,11 @@ import datetime, logging, os
 
 Master, Dashboards = "master", "dashboards"
 
+"""
+- services need to be separate from actions as action permissions to execute services assume service arns imported as parameters 
+- layers need to be separate from actions else circular dependency error
+"""
+
 def TemplateMapper(groupkey,
                    dedicated=["layers",
                               "actions",
