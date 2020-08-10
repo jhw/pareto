@@ -12,6 +12,18 @@ from git import Repo
 
 import zipfile
 
+"""
+- because services are also actions
+- for now, keep referring to all lambdas as actions since lambda is a protected keyword
+"""
+
+def filter_actions(components):
+    actions=[]
+    for attr in ["actions", "services"]:
+        if attr in components:
+            actions+=components[attr]
+    return actions
+
 @toggle_aws_profile
 @assert_actions
 def run_tests(config):
@@ -30,7 +42,7 @@ def run_tests(config):
     if config["globals"]["src"] not in sys.path:
         sys.path.append(config["globals"]["src"])
     klasses=[index_test(action)
-             for action in config["components"]["actions"]]
+             for action in filter_actions(config["components"])]
     suite=unittest.TestSuite()
     for klass in klasses:
         suite.addTest(unittest.makeSuite(klass))
@@ -114,7 +126,7 @@ def add_staging(config, commits):
                                 name=name,
                                 hexsha=commits[name][0],
                                 timestamp=commits[name][1]))
-    for action in config["components"]["actions"]:
+    for action in filter_actions(config["components"]):
         key=lambda_key(action["name"], commits)
         action["staging"]={"bucket": config["globals"]["bucket"],
                               "key": key}
@@ -170,7 +182,7 @@ def push_lambdas(config):
                        action["staging"]["bucket"],
                        action["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
-    for action in config["components"]["actions"]:
+    for action in filter_actions(config["components"]):
         validate_lambda(config, action)
         zfname=init_zipfile(config, action)
         push_lambda(action, zfname)

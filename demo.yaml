@@ -16,50 +16,52 @@ components:
        package:
          name: pymorphy2
          version: "0.8"
+  services:
+    - name: hello-service-fn
   actions:
-    - name: hello-get
+    - name: hello-get-fn
       layers:
         - lxml
-    - name: hello-post
+    - name: hello-post-fn
       layers:
         - pymorphy
-    - name: hello-bucket
+    - name: hello-bucket-fn
       permissions:
         - translate:TranslateText
-    - name: hello-table
+    - name: hello-table-fn
       permissions:
         - polly:SynthesizeSpeech
-    - name: hello-timer
-    - name: hello-queue
+    - name: hello-timer-fn
+    - name: hello-queue-fn
   apis:
     - name: hello-api
       resources:
         - name: hello-get
           method: GET
-          action: hello-get
+          action: hello-get-fn
         - name: hello-post
           method: POST
-          action: hello-post
+          action: hello-post-fn
   buckets:
     - name: hello-bucket
       actions:
-        - name: hello-bucket
+        - name: hello-bucket-fn
           path: foobar
       website: true
   queues:
     - name: hello-queue
       batch: 1
-      action: hello-queue
+      action: hello-queue-fn
   tables:
     - name: hello-table
       fields:
         - name: my-hash
           type: string
           primary: true
-      action: hello-table
+      action: hello-table-fn
   timers:
     - name: hello-timer
       rate: "1 hour"
       payload:
         hello: world
-      action: hello-timer
+      action: hello-timer-fn

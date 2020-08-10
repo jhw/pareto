@@ -3,7 +3,7 @@ import json, unittest
 class IndexTest(unittest.TestCase):
 
     def test_handler(self):
-        from hello_get.index import handler
+        from hello_get_fn.index import handler
         resp=handler({"hello": "world"}, None)
         self.assertTrue("statusCode" in resp)
         self.assertEqual(resp["statusCode"], 200)

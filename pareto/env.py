@@ -6,6 +6,7 @@ from pareto.components.bucket import synth_bucket
 from pareto.components.layer import synth_layer
 from pareto.components.queue import synth_queue
 from pareto.components.secret import synth_secret
+from pareto.components.service import synth_service
 from pareto.components.stack import synth_stack
 from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer

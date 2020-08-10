@@ -9,8 +9,11 @@
 - api authorizer
 - auth testing scripts
 
-- abstract push_lambdas.py code into class
+- separate testing of lambdas from deployment
+- dump dashboards prior to validation
 - pop_dashboards() is failing to remove dash from source
+
+- abstract push_lambdas.py code into class
 - template counting / metrics checking
 - apigw request validation
 - cloudwatch alerts
