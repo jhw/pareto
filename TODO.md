@@ -1,7 +1,5 @@
 ### short
 
-- separate testing of lambdas from deployment
-
 - ruamel.yaml for yaml dumping
   - https://pypi.org/project/ruamel.yaml/
 
@@ -219,6 +217,7 @@
   
 ### done
 
+- separate testing of lambdas from deployment
 - preprocessor to validate actions
 - preprocessor to validate services
 - fix service arn source
