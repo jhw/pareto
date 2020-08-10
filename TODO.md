@@ -4,13 +4,15 @@
 
 ### medium
 
+- services
+- action service execution permission
+
 - userpool component
 - api authorizer
 - auth testing scripts
 
 - abstract push_lambdas.py code into class
 - pop_dashboards() is failing to remove dash from source
-- lambda execution permissions [notes]
 - template counting / metrics checking
 - apigw request validation
 - cloudwatch alerts

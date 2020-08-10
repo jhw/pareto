@@ -1,6 +1,7 @@
 ### lambda execution permissions 10/8/20
 
 - how do you know where target lives ? is it in the same template or a different one ?
+- why not have a separate service component for request/response lambdas, just set synth_service=synth_action ?
 
 ### push lambdas 9/8/20
 
