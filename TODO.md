@@ -1,10 +1,10 @@
 ### short
 
-- test parameter validation
+- apigw POST parameter validation
+- apigw schema body validation
+- apigw depends
 
 ### medium
-
-- apigw schema validation
 
 - pass debug() option to deploy_stack which dumps env prior to deployment
 
@@ -226,6 +226,7 @@
   
 ### done
 
+- test parameter validation
 - AWS::ApiGateway::RequestValidator
 - AWS::ApiGateway::Method.ValidatorRequestId
   - method.request.location.name, where the location is querystring
