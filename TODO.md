@@ -1,17 +1,16 @@
 ### short [numbered-templates]
 
-- test
+- apigw parameter validation
+- apigw schema validation
 
 ### medium
 
-- apigw parameter validation
-- apigw schema validation
+- publish() script to push index.json to all websites
+- test() script to ping all apis and buckets
 
 - userpool component
 - api authorizer
 - auth testing scripts
-
-- publish() to publish index.json and test fetching
 
 - scaffold generator
 - targets
