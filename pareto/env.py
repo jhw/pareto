@@ -73,25 +73,37 @@ class Env(dict):
 
     @classmethod
     def create(self, config, templatefn=TemplateMapper):
-        def template_name(config, tempkey):
-            return "%s-%s-%s" % (config["globals"]["app"],
-                                 tempkey,
-                                 config["globals"]["stage"])
         env=Env(config)
         for groupkey, components in config["components"].items():
             tempkey=templatefn(groupkey)
-            tempname=template_name(config, tempkey)
-            env.setdefault(tempkey, Template(name=tempname))
-            for kwargs in components:
-                kwargs.update(config["globals"]) # NB
-                fn=eval("synth_%s" % groupkey[:-1])                
-                fn(env[tempkey], **kwargs)
+            for component in components:
+                env.add_component(groupkey, tempkey, component)
         return env
     
     def __init__(self, config, items={}):
         dict.__init__(self, items)
         self.config=config
 
+    def template_name(self, tempkey):
+        return "%s-%s-%s" % (self.config["globals"]["app"],
+                             tempkey,
+                             self.config["globals"]["stage"])
+
+    def init_template(fn):
+        def wrapped(self, groupkey, tempkey, kwargs):
+            if tempkey not in self:
+                tempname=self.template_name(tempkey)
+                self[tempkey]=Template(name=tempname)
+            return fn(self, groupkey, tempkey, kwargs)
+        return wrapped
+                
+    @init_template
+    def add_component(self, groupkey, tempkey, component):
+        component.update(self.config["globals"]) # NB
+        fn=eval("synth_%s" % groupkey[:-1])                
+        fn(self[tempkey],**component)
+        # print ("%s -> %s" % (tempkey, self[tempkey].metrics))
+    
     def validate(self):
         def validate_outer(self):
             outputs=Refs.filter_outputs(self)

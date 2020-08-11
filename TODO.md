@@ -1,11 +1,11 @@
 ### short
 
-- apigw parameter validation
-- apigw schema validation
+- numbered templates
 
 ### medium
 
-- numbered templates
+- apigw parameter validation
+- apigw schema validation
 
 - userpool component
 - api authorizer
