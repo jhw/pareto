@@ -1,7 +1,5 @@
 ### short [numbered-templates]
 
-- add count to temp key
-
 ### medium
 
 - apigw parameter validation
@@ -224,6 +222,7 @@
   
 ### done
 
+- add count to temp key
 - @check_metrics is terminating execution
 - fifo queues by default
 - validate AWS type

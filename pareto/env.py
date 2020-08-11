@@ -83,9 +83,18 @@ class Env(dict):
     def __init__(self, config, items={}):
         dict.__init__(self, items)
         self.config=config
+        self.count={}
 
+    def init_count(fn):
+        def wrapped(self, groupkey, **kwargs):
+            self.count.setdefault(groupkey, 1)
+            return fn(self, groupkey, **kwargs)
+        return wrapped
+        
+    @init_count
     def template_key(self, groupkey, templatefn=TemplateMapper):
-        return templatefn(groupkey)
+        return "%s-%i" % (templatefn(groupkey),
+                         self.count[groupkey])
         
     def template_name(self, tempkey):
         return "%s-%s-%s" % (self.config["globals"]["app"],
@@ -104,7 +113,7 @@ class Env(dict):
             template=self[tempkey].clone() if tempkey in self else Template()
             synthfn=eval("synth_%s" % groupkey[:-1])                
             synthfn(template, **component)
-            print ("%s -> %s" % (tempkey, template.metrics))
+            # print ("%s -> %s" % (tempkey, template.metrics))
             return fn(self, groupkey, component)
         return wrapped
     
@@ -212,7 +221,7 @@ class Env(dict):
     
 @preprocess
 def synth_env(config):
-    return Env.create(config).dump().validate().synth_master()
+    return Env.create(config).validate().synth_master().dump()
 
 if __name__=="__main__":
     pass
