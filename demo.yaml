@@ -40,6 +40,8 @@ components:
       resources:
         - name: hello-get
           method: GET
+          params:
+            - msg
           action: hello-get-fn
         - name: hello-post
           method: POST

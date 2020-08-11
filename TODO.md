@@ -1,9 +1,12 @@
 ### short
 
-- apigw parameter validation
-- apigw schema validation
+- test parameter validation
 
 ### medium
+
+- apigw schema validation
+
+- pass debug() option to deploy_stack which dumps env prior to deployment
 
 - publish() script to push index.json to all websites
 - test() script to ping all apis and buckets
@@ -223,6 +226,9 @@
   
 ### done
 
+- AWS::ApiGateway::RequestValidator
+- AWS::ApiGateway::Method.ValidatorRequestId
+  - method.request.location.name, where the location is querystring
 - add count to temp key
 - @check_metrics is terminating execution
 - fifo queues by default

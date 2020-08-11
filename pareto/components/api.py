@@ -96,6 +96,16 @@ def ApiResource(endpoint, **kwargs):
         return "AWS::ApiGateway::Resource", props
     return ApiResource(endpoint, **kwargs)
 
+def ApiValidator(endpoint, **kwargs):
+    suffix="%s-validator" % endpoint["name"]
+    @resource(suffix=suffix)
+    def ApiValidator(endpoint, **kwargs):
+        root=ref("%s-root" % kwargs["name"])
+        props={"RestApiId": root,
+               "ValidateRequestParameters": True}
+        return "AWS::ApiGateway::RequestValidator", props
+    return ApiValidator(endpoint, **kwargs)
+
 def ApiMethod(endpoint, **kwargs):
     suffix="%s-method" % endpoint["name"]
     @resource(suffix=suffix)
@@ -114,6 +124,13 @@ def ApiMethod(endpoint, **kwargs):
                "ResourceId": parent,
                "HttpMethod": endpoint["method"],
                "Integration": integration}
+        if "params" in endpoint:
+            validator=ref("%s-%s-validator" % (kwargs["name"],
+                                               endpoint["name"]))
+            params={"method.request.querystring.%s" % param:True
+                    for param in endpoint["params"]}
+            props.update({"RequestValidatorId": validator,
+                          "RequestParameters": params})
         return "AWS::ApiGateway::Method", props
     return ApiMethod(endpoint, **kwargs)
 
@@ -202,6 +219,8 @@ def synth_api(template, **kwargs):
                                    ApiCorsOptions(endpoint, **kwargs),
                                    ActionPermission(endpoint, **kwargs)],
                         Outputs=ApiUrl(endpoint, **kwargs))
+        if "params" in endpoint:
+            template.update(Resources=ApiValidator(endpoint, **kwargs))
 
 if __name__=="__main__":
     pass
