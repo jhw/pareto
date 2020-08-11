@@ -1,15 +1,11 @@
-### short [numbered templates]
-
-- refactor template iteration
-  - template should be selected on each iteration
-- dump template metrics on each iteration
-- clone new template and check metrics on each iteration
-- spawn new template if limits exceeded
-
-### medium
+### short
 
 - apigw parameter validation
 - apigw schema validation
+
+### medium
+
+- numbered templates
 
 - userpool component
 - api authorizer
