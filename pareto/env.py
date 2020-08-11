@@ -101,19 +101,17 @@ class Env(dict):
                              tempkey,
                              self.config["globals"]["stage"])
 
-    """
-    - include count state variable (dict)
-    - include count in template key
-    - bump count[tempkey] if metrics limit is breached
-    """
-    
     def check_metrics(fn):
+        def is_valid(template):
+            # print (template.metrics)
+            return max(template.metrics.values()) < 1
         def wrapped(self, groupkey, component):
             tempkey=self.template_key(groupkey)
             template=self[tempkey].clone() if tempkey in self else Template()
             synthfn=eval("synth_%s" % groupkey[:-1])                
             synthfn(template, **component)
-            # print ("%s -> %s" % (tempkey, template.metrics))
+            if not is_valid(template):
+                self.count[groupkey]+=1
             return fn(self, groupkey, component)
         return wrapped
     
