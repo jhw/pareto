@@ -53,7 +53,7 @@ class Template:
     
     Attrs=["Parameters", "Resources", "Outputs", "Charts"]
     
-    def __init__(self, name):
+    def __init__(self, name=None):
         self.name=name
         def default_value(k):
             return [] if k=="Charts" else {}

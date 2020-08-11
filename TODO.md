@@ -1,6 +1,8 @@
-### short
+### short [numbered-templates]
 
-- numbered templates
+- @check_metrics is terminating execution
+
+- add count to temp key
 
 ### medium
 

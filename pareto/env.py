@@ -72,37 +72,57 @@ class Refs(list):
 class Env(dict):
 
     @classmethod
-    def create(self, config, templatefn=TemplateMapper):
+    def create(self, config):
         env=Env(config)
         for groupkey, components in config["components"].items():
-            tempkey=templatefn(groupkey)
             for component in components:
-                env.add_component(groupkey, tempkey, component)
+                component.update(env.config["globals"]) # NB
+                env.add_component(groupkey, component)
         return env
     
     def __init__(self, config, items={}):
         dict.__init__(self, items)
         self.config=config
 
+    def template_key(self, groupkey, templatefn=TemplateMapper):
+        return templatefn(groupkey)
+        
     def template_name(self, tempkey):
         return "%s-%s-%s" % (self.config["globals"]["app"],
                              tempkey,
                              self.config["globals"]["stage"])
 
+    """
+    - include count state variable (dict)
+    - include count in template key
+    - bump count[tempkey] if metrics limit is breached
+    """
+    
+    def check_metrics(fn):
+        def wrapped(self, groupkey, component):
+            tempkey=self.template_key(groupkey)
+            template=self[tempkey].clone() if tempkey in self else Template()
+            fn=eval("synth_%s" % groupkey[:-1])                
+            fn(template, **component)
+            print ("%s -> %s" % (tempkey, template.metrics))
+        return wrapped
+    
     def init_template(fn):
-        def wrapped(self, groupkey, tempkey, kwargs):
+        def wrapped(self, groupkey, component):
+            tempkey=self.template_key(groupkey)
             if tempkey not in self:
                 tempname=self.template_name(tempkey)
                 self[tempkey]=Template(name=tempname)
-            return fn(self, groupkey, tempkey, kwargs)
+            return fn(self, groupkey, component)
         return wrapped
-                
+
+    # @check_metrics
     @init_template
-    def add_component(self, groupkey, tempkey, component):
-        component.update(self.config["globals"]) # NB
+    def add_component(self, groupkey, component):
+        tempkey=self.template_key(groupkey)
+        template=self[tempkey]
         fn=eval("synth_%s" % groupkey[:-1])                
-        fn(self[tempkey],**component)
-        # print ("%s -> %s" % (tempkey, self[tempkey].metrics))
+        fn(template, **component)
     
     def validate(self):
         def validate_outer(self):
