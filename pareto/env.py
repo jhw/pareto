@@ -102,9 +102,10 @@ class Env(dict):
         def wrapped(self, groupkey, component):
             tempkey=self.template_key(groupkey)
             template=self[tempkey].clone() if tempkey in self else Template()
-            fn=eval("synth_%s" % groupkey[:-1])                
-            fn(template, **component)
+            synthfn=eval("synth_%s" % groupkey[:-1])                
+            synthfn(template, **component)
             print ("%s -> %s" % (tempkey, template.metrics))
+            return fn(self, groupkey, component)
         return wrapped
     
     def init_template(fn):
@@ -116,13 +117,13 @@ class Env(dict):
             return fn(self, groupkey, component)
         return wrapped
 
-    # @check_metrics
+    @check_metrics
     @init_template
     def add_component(self, groupkey, component):
         tempkey=self.template_key(groupkey)
         template=self[tempkey]
-        fn=eval("synth_%s" % groupkey[:-1])                
-        fn(template, **component)
+        synthfn=eval("synth_%s" % groupkey[:-1])                
+        synthfn(template, **component)
     
     def validate(self):
         def validate_outer(self):

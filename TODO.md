@@ -1,7 +1,5 @@
 ### short [numbered-templates]
 
-- @check_metrics is terminating execution
-
 - add count to temp key
 
 ### medium
@@ -226,6 +224,7 @@
   
 ### done
 
+- @check_metrics is terminating execution
 - fifo queues by default
 - validate AWS type
 - ruamel.yaml for yaml dumping

@@ -60,7 +60,7 @@ class Template:
         for attr in self.Attrs:
             setattr(self, attr, default_value(attr))
 
-    def clone(self, name):
+    def clone(self, name=None):
         template=Template(name)
         def clone(v):
             return list(v) if isinstance(v, list) else dict(v)
