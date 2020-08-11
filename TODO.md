@@ -1,11 +1,15 @@
-### short
+### short [numbered templates]
 
-- apigw parameter validation
-- apigw schema validation
+- refactor template iteration
+  - template should be selected on each iteration
+- dump template metrics on each iteration
+- clone new template and check metrics on each iteration
+- spawn new template if limits exceeded
 
 ### medium
 
-- numbered templates
+- apigw parameter validation
+- apigw schema validation
 
 - userpool component
 - api authorizer
@@ -18,8 +22,8 @@
 
 ### gists
 
-- cloudfront/https/route 53
 - google sheets upload
+- cloudfront/https/route 53
 - amplify change password
 
 ### v1.1
