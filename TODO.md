@@ -1,4 +1,4 @@
-### short [numbered-templates]
+### short
 
 - apigw parameter validation
 - apigw schema validation
