@@ -1,18 +1,18 @@
 ### short
 
-- apigw depends
+- apigw POST parameter validation
+
+- publish() script to push index.json to all websites
 
 ### medium
 
-- apigw POST parameter validation
 - apigw schema body validation
 
-- regex parameter matching
+- regex api parameter matching
 
 - layers with multiple packages
   - might need to rethink layer naming ?
 
-- publish() script to push index.json to all websites
 - test() script to ping all apis and buckets
 
 - userpool component
@@ -231,6 +231,7 @@
   
 ### done
 
+- apigw depends
 - pass debug() option to deploy_stack which dumps env prior to deployment
 - template.json_repr encoder doesn't seem to be being called
 - test parameter validation
