@@ -201,9 +201,8 @@ class Env(dict):
         waiter=cf.get_waiter("stack_%s_complete" % action)
         waiter.wait(StackName=stackname)
 
-    def dump(self):
+    def dump(self, timestamp):
         logging.info("dumping templates")
-        timestamp=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
         for tempname, template in self.items():
             tokens=["tmp", "env", timestamp, "%s.yaml" % tempname]
             dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
@@ -214,12 +213,13 @@ class Env(dict):
         return self 
 
 """
-- dump() executed before validate() for debugging
+- first dumping to get output prior to validation, second to get any post- validation changes (master, dashboards)
 """
     
 @preprocess
 def synth_env(config):
-    return Env.create(config).validate().synth_master().dump()
+    ts=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+    return Env.create(config).dump(ts).validate().synth_master().dump(ts)
 
 if __name__=="__main__":
     pass

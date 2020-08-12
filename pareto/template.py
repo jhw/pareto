@@ -138,28 +138,10 @@ class Template:
         return {metrickey: metricfn(self)
                 for metrickey, metricfn in metrics.items()}
       
-    """
-    - some CF fields, notably ApiGateway HTTP header related ones, explicity require single quoted string values
-    - and if you encode (backquote) those values they will be rejected :-/    
-    """
-    
     @property
     def json_repr(self):
-        class SingleQuoteEncoder(json.JSONEncoder):
-            def default(self, obj):
-                if (isinstance(obj, str) and
-                    "'" in obj):
-                    return obj
-                return json.JSONEncoder.default(self, obj)
-        return json.dumps(self.render(),
-                          cls=SingleQuoteEncoder)
+        return json.dumps(self.render())
 
-    """
-    - becase pyyaml messes up quotes in strings, which are required by some AWS primitives
-    - https://stackoverflow.com/questions/37094170/a-single-string-in-single-quotes-with-pyyaml
-    - isn't required to do this (as json_repr above used for template deployment, but just for consistency with json string handling
-    """
-    
     @property
     def yaml_repr(self):
         yaml=ruamel.yaml.YAML()
