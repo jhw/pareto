@@ -24,22 +24,23 @@
 
 ### gists
 
+- cloudfront
+- route 53
 - google sheets upload
-- cloudfront/https/route 53
-- amplify change password
+- chrome extension
+- cloudwatch alerts
 
 ### v1.1
 
 - extended apigw param validation
 - lambda version -> redeploy without s3 key change ?
 
+- amplify change password
 - amplify self sign- up
 - amplify forgot password
 - amplify federated login
 - amplify unauthenticated access
 
-- cloudwatch alerts
-- chrome extension
 - eventbridge
 - ci pipeline
 - github actions
