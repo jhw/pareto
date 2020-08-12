@@ -1,10 +1,16 @@
 ### short
 
-- apigw POST parameter validation
-- apigw schema body validation
 - apigw depends
 
+- apigw POST parameter validation
+- apigw schema body validation
+
 ### medium
+
+- template.json_repr encoder doesn't seem to be being called
+
+- layers with multiple packages
+  - might need to rethink layer naming ?
 
 - pass debug() option to deploy_stack which dumps env prior to deployment
 
