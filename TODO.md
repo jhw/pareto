@@ -1,18 +1,17 @@
 ### short
 
+- pass debug() option to deploy_stack which dumps env prior to deployment
+- template.json_repr encoder doesn't seem to be being called
 - apigw depends
+
+### medium
 
 - apigw POST parameter validation
 - apigw schema body validation
 
-### medium
-
-- template.json_repr encoder doesn't seem to be being called
-
 - layers with multiple packages
   - might need to rethink layer naming ?
 
-- pass debug() option to deploy_stack which dumps env prior to deployment
 
 - publish() script to push index.json to all websites
 - test() script to ping all apis and buckets
