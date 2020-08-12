@@ -1,14 +1,13 @@
 ### short
 
-- apigw POST parameter validation
-
 - publish() script to push index.json to all websites
 
-### medium
-
+- undo apigw depends
+- allow params validation for depends only
+- regex api parameter matching
 - apigw schema body validation
 
-- regex api parameter matching
+### medium
 
 - layers with multiple packages
   - might need to rethink layer naming ?
@@ -231,6 +230,8 @@
   
 ### done
 
+- apigw POST parameter validation ?
+  - probably not worth it
 - apigw depends
 - pass debug() option to deploy_stack which dumps env prior to deployment
 - template.json_repr encoder doesn't seem to be being called
