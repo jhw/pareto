@@ -101,10 +101,27 @@ def ApiValidator(endpoint, **kwargs):
     @resource(suffix=suffix)
     def ApiValidator(endpoint, **kwargs):
         root=ref("%s-root" % kwargs["name"])
-        props={"RestApiId": root,
-               "ValidateRequestParameters": True}
+        props={"RestApiId": root}
+        if "params" in endpoint:
+            props["ValidateRequestParameters"]=True
+        if "schema" in endpoint:
+            props["ValidateRequestBody"]=True
         return "AWS::ApiGateway::RequestValidator", props
     return ApiValidator(endpoint, **kwargs)
+
+def ApiModel(endpoint, **kwargs):
+    suffix="%s-model" % endpoint["name"]
+    @resource(suffix=suffix)
+    def ApiModel(endpoint, **kwargs):
+        root=ref("%s-root" % kwargs["name"])
+        name=logical_id("%s-%s-model" % (kwargs["name"],
+                                         endpoint["name"]))
+        props={"RestApiId": root,
+               "ContentType": "application/json",
+               "Name": name,
+               "Schema": endpoint["schema"]}
+        return "AWS::ApiGateway::Model", props
+    return ApiModel(endpoint, **kwargs)
 
 def ApiMethod(endpoint, **kwargs):
     suffix="%s-method" % endpoint["name"]
@@ -124,13 +141,20 @@ def ApiMethod(endpoint, **kwargs):
                "ResourceId": parent,
                "HttpMethod": endpoint["method"],
                "Integration": integration}
-        if "params" in endpoint:
+        if ("params" in endpoint or
+            "schema" in endpoint):
             validator=ref("%s-%s-validator" % (kwargs["name"],
                                                endpoint["name"]))
+            props["RequestValidatorId"]=validator
+        if "params" in endpoint:
             params={"method.request.querystring.%s" % param:True
                     for param in endpoint["params"]}
-            props.update({"RequestValidatorId": validator,
-                          "RequestParameters": params})
+            props["RequestParameters"]=params
+        if "schema" in endpoint:
+            model=logical_id("%s-%s-model" % (kwargs["name"],
+                                              endpoint["name"]))
+            models={"application/json": model}
+            props["RequestModels"]=models
         return "AWS::ApiGateway::Method", props
     return ApiMethod(endpoint, **kwargs)
 
@@ -219,8 +243,11 @@ def synth_api(template, **kwargs):
                                    ApiCorsOptions(endpoint, **kwargs),
                                    ActionPermission(endpoint, **kwargs)],
                         Outputs=ApiUrl(endpoint, **kwargs))
-        if "params" in endpoint:
+        if ("params" in endpoint or
+            "schema" in endpoint):
             template.update(Resources=ApiValidator(endpoint, **kwargs))
-
+        if "schema" in endpoint:
+            template.update(Resources=ApiModel(endpoint, **kwargs))
+                            
 if __name__=="__main__":
     pass

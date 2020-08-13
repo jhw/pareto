@@ -1,9 +1,11 @@
 ### short
 
-- change validator to allow params and/or schema validation
-- new apigw model resource
-- delete/redeploy/test
+- schema doesn't appear to be working
+  - check local jsonschema ?
+
 - test removing superfluous headers
+- see if you can avoid specifying model name
+- ensure schema can't be specified for GET requests
 
 ### medium
 
@@ -234,6 +236,9 @@
   
 ### done
 
+- delete/redeploy/test
+- change validator to allow params and/or schema validation
+- new apigw model resource
 - add schema to dsl config
 - undo apigw depends
 - apigw POST parameter validation ?
