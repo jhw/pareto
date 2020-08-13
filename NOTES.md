@@ -1,3 +1,18 @@
+### layers
+
+- feels like that in layer definitions you should be able to specify multiple pacakges
+- and then build_layers would iterate over these one by one to create the layers you want
+- this would involve building multiple packages in each layer
+- the layer deployable naming should be simplified so no longer references the package name, but instead references the layer name
+- which should result in significant reduction in complexity of layer staging
+- only problem with this is its much harder to find details on what packages each layer contains, unless you include a README in there
+- which you probably badly need to do
+- then maybe you don't want to iterate over the layers in the dsl
+- instead specify a name and have it look up the layer from the dsl
+- main problem will be installing multiple pip packages rather than a single one
+- probably need to use jinja but will than muck up the yaml spacing
+- so could actuall yaml- load the template and then add pip- install lines in the appropriate places
+
 ### apigw request validation 10/8/20
 
 - https://www.alexdebrie.com/posts/api-gateway-elements/#step-1-validation-with-method-requests

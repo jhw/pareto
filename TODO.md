@@ -6,12 +6,11 @@
 
 ### medium
 
+- application/x-www-form-urlencoded request body validation
+
 - publish() script to push index.json to all websites
 
-- regex api parameter matching
-
-- layers with multiple packages
-  - might need to rethink layer naming ?
+- multi- package layers [notes]
 
 - test() script to ping all apis and buckets
 
@@ -21,6 +20,11 @@
 
 - scaffold generator
 - targets
+
+### pending
+
+- regex api parameter matching
+  - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271517221&language=en
 
 ### gists
 
