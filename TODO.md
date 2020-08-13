@@ -1,22 +1,22 @@
 ### short
 
-- see if you can avoid specifying model name
-- error deleting stack due to Model
-- schema for url-encoded parameters
+- check double comma in cors headers
+
+- [support] application/x-www-form-urlencoded request body validation
 
 ### medium
-
-- application/x-www-form-urlencoded request body validation
 
 - publish() script to push index.json to all websites
 
 - multi- package layers [notes]
 
-- test() script to ping all apis and buckets
+- is having a separate type the best way to differentiate a service from an action ?
 
 - userpool component
 - api authorizer
 - auth testing scripts
+
+- test() script to ping all apis and buckets
 
 - scaffold generator
 - targets
@@ -25,6 +25,9 @@
 
 - regex api parameter matching
   - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271517221&language=en
+
+- error deleting stack due to Model
+  - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271579711&language=en
 
 ### gists
 
