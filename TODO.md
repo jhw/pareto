@@ -1,6 +1,5 @@
 ### short
 
-- add schema to dsl config
 - change validator to allow params and/or schema validation
 - new apigw model resource
 - delete/redeploy/test
@@ -235,6 +234,7 @@
   
 ### done
 
+- add schema to dsl config
 - undo apigw depends
 - apigw POST parameter validation ?
   - probably not worth it

@@ -45,6 +45,13 @@ components:
           action: hello-get-fn
         - name: hello-post
           method: POST
+          schema:
+            "$schema": "http://json-schema.org/draft-04/schema#" 
+            title: hello
+            type: object
+            properties:
+              msg:
+                type: string
           action: hello-post-fn
   buckets:
     - name: hello-bucket
