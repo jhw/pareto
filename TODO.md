@@ -2,12 +2,11 @@
 
 - publish() script to push index.json to all websites
 
-- undo apigw depends
-- allow params validation for depends only
-- regex api parameter matching
 - apigw schema body validation
 
 ### medium
+
+- regex api parameter matching
 
 - layers with multiple packages
   - might need to rethink layer naming ?
@@ -31,7 +30,6 @@
 
 ### v1.1
 
-- extended apigw param validation
 - lambda version -> redeploy without s3 key change ?
 
 - amplify change password
@@ -53,6 +51,8 @@
 
 ### thoughts
 
+- allow params validation for GET only ?
+  - no is useful for POST too probably
 - option for internal or external arn refs ?
   - not sure is worth it
 - pop_dashboards() ?
@@ -230,6 +230,7 @@
   
 ### done
 
+- undo apigw depends
 - apigw POST parameter validation ?
   - probably not worth it
 - apigw depends

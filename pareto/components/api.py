@@ -106,11 +106,6 @@ def ApiValidator(endpoint, **kwargs):
         return "AWS::ApiGateway::RequestValidator", props
     return ApiValidator(endpoint, **kwargs)
 
-"""
-- apigw methods don't always seem to register addition of new validators, method etc
-- workaround solution is to make apigw method depend on anything it makes a ref to 
-"""
-
 def ApiMethod(endpoint, **kwargs):
     suffix="%s-method" % endpoint["name"]
     @resource(suffix=suffix)
@@ -121,24 +116,22 @@ def ApiMethod(endpoint, **kwargs):
         integration={"Uri": uri,
                      "IntegrationHttpMethod": "POST",
                      "Type": "AWS_PROXY"}
-        root="%s-root" % kwargs["name"]
-        parent="%s-%s-resource" % (kwargs["name"],
-                                   endpoint["name"])
+        root=ref("%s-root" % kwargs["name"])
+        parent=ref("%s-%s-resource" % (kwargs["name"],
+                                       endpoint["name"]))
         props={"AuthorizationType": "NONE",
-               "RestApiId": ref(root),
-               "ResourceId": ref(parent),
+               "RestApiId": root,
+               "ResourceId": parent,
                "HttpMethod": endpoint["method"],
                "Integration": integration}
-        depends=[root, parent]
         if "params" in endpoint:
-            validator="%s-%s-validator" % (kwargs["name"],
-                                           endpoint["name"])
+            validator=ref("%s-%s-validator" % (kwargs["name"],
+                                               endpoint["name"]))
             params={"method.request.querystring.%s" % param:True
                     for param in endpoint["params"]}
-            props.update({"RequestValidatorId": ref(validator),
+            props.update({"RequestValidatorId": validator,
                           "RequestParameters": params})
-            depends.append(validator)
-        return "AWS::ApiGateway::Method", props, depends
+        return "AWS::ApiGateway::Method", props
     return ApiMethod(endpoint, **kwargs)
 
 def ApiCorsOptions(endpoint, **kwargs):
@@ -168,19 +161,18 @@ def ApiCorsOptions(endpoint, **kwargs):
             return {"StatusCode": 200,
                     "ResponseModels": models,
                     "ResponseParameters": params}
-        root="%s-root" % kwargs["name"]
-        parent="%s-%s-resource" % (kwargs["name"],
-                                   endpoint["name"])
+        root=ref("%s-root" % kwargs["name"])
+        parent=ref("%s-%s-resource" % (kwargs["name"],
+                                       endpoint["name"]))
         integration=init_integration(endpoint)
         response=init_response()
         props={"AuthorizationType": "NONE",
                "HttpMethod": "OPTIONS",
                "Integration": integration,
                "MethodResponses": [response],
-               "ResourceId": ref(parent),
-               "RestApiId": ref(root)}
-        depends=[root, parent]
-        return "AWS::ApiGateway::Method", props, depends
+               "ResourceId": parent,
+               "RestApiId": root}
+        return "AWS::ApiGateway::Method", props
     return ApiCorsOptions(endpoint, **kwargs)
 
 def ActionPermission(endpoint, **kwargs):
