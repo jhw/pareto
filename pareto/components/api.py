@@ -102,6 +102,14 @@ def ApiResource(endpoint, **kwargs):
 
 def ApiValidator(endpoint, **kwargs):
     suffix="%s-validator" % endpoint["name"]
+    def assert_post_schema(fn):
+        def wrapped(endpoint, **kwargs):
+            if (endpoint["method"]=="GET" and
+                "schema" in endpoint):
+                raise RuntimeError("schema not supported for GET methods")
+            return fn(endpoint, **kwargs)
+        return wrapped
+    @assert_post_schema    
     @resource(suffix=suffix)
     def ApiValidator(endpoint, **kwargs):
         root=ref("%s-root" % kwargs["name"])
