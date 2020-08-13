@@ -9,13 +9,13 @@ components:
     - name: foo
       value: bar
   layers:
-     - name: lxml
-       package:
-         name: lxml
-     - name: pymorphy
-       package:
-         name: pymorphy2
-         version: "0.8"
+    - name: lxml
+      package:
+        name: lxml
+    - name: pymorphy
+      package:
+        name: pymorphy2
+        version: "0.8"
   services:
     - name: hello-service-fn
   actions:
@@ -46,12 +46,14 @@ components:
         - name: hello-post
           method: POST
           schema:
-            "$schema": "http://json-schema.org/draft-04/schema#" 
+            "$schema": "http://json-schema.org/draft-04/schema#"
             title: hello
             type: object
             properties:
               msg:
                 type: string
+            required:
+              - msg
           action: hello-post-fn
   buckets:
     - name: hello-bucket

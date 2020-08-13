@@ -1,11 +1,11 @@
 ### short
 
-- schema doesn't appear to be working
-  - check local jsonschema ?
-
+- pre- validate schema
 - test removing superfluous headers
 - see if you can avoid specifying model name
 - ensure schema can't be specified for GET requests
+- error deleting stack due to Model
+- schema for url-encoded parameters
 
 ### medium
 
@@ -236,6 +236,8 @@
   
 ### done
 
+- schema doesn't appear to be working
+  - check local jsonschema ?
 - delete/redeploy/test
 - change validator to allow params and/or schema validation
 - new apigw model resource
