@@ -3,6 +3,7 @@ awscli
 botocore
 boto3
 gitpython
+jsonschema
 git+https://github.com/spulec/moto
 pandas
 ruamel.yaml

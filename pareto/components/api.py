@@ -1,5 +1,9 @@
 from pareto.components import *
 
+from jsonschema import Draft7Validator
+
+Draft7Schema="http://json-schema.org/draft-07/schema#"
+
 LambdaInvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
 
 """
@@ -111,6 +115,21 @@ def ApiValidator(endpoint, **kwargs):
 
 def ApiModel(endpoint, **kwargs):
     suffix="%s-model" % endpoint["name"]
+    def validate_schema(fn):
+        def wrapped(endpoint, **kwargs):
+            try:
+                Draft7Validator.check_schema(endpoint["schema"])
+            except Exception as error:
+                raise RuntimeError("ValidationError: %s" % str(error))
+            return fn(endpoint, **kwargs)
+        return wrapped
+    def add_schema_metadata(fn):
+        def wrapped(endpoint, **kwargs):
+            endpoint["schema"]["$schema"]=Draft7Schema
+            return fn(endpoint, **kwargs)
+        return wrapped
+    @validate_schema
+    @add_schema_metadata
     @resource(suffix=suffix)
     def ApiModel(endpoint, **kwargs):
         root=ref("%s-root" % kwargs["name"])

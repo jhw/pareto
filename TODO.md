@@ -1,10 +1,7 @@
 ### short
 
-- pre- validate schema (draft 7)
-- remove title and insert schema type
-
-- see if you can avoid specifying model name
 - ensure schema can't be specified for GET requests
+- see if you can avoid specifying model name
 - error deleting stack due to Model
 - schema for url-encoded parameters
 
@@ -237,6 +234,8 @@
   
 ### done
 
+- pre- validate schema (draft 7)
+- remove title and insert schema type
 - schema doesn't appear to be working
   - check local jsonschema ?
 - delete/redeploy/test
