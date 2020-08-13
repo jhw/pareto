@@ -1,10 +1,12 @@
 ### short
 
-- publish() script to push index.json to all websites
-
-- apigw schema body validation
+- add schema to dsl config
+- change validator to allow params and/or schema validation
+- new apigw model resource
 
 ### medium
+
+- publish() script to push index.json to all websites
 
 - regex api parameter matching
 
@@ -27,6 +29,7 @@
 - google sheets upload
 - chrome extension
 - cloudwatch alerts
+- pinpoint
 
 ### v1.1
 
