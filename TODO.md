@@ -3,6 +3,7 @@
 - add schema to dsl config
 - change validator to allow params and/or schema validation
 - new apigw model resource
+- delete/redeploy/test
 
 ### medium
 
