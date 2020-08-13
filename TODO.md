@@ -4,6 +4,7 @@
 - change validator to allow params and/or schema validation
 - new apigw model resource
 - delete/redeploy/test
+- test removing superfluous headers
 
 ### medium
 
