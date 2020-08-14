@@ -1,9 +1,8 @@
 ### short [multi package layers]
 
+- test deployment
 - rename LambdaCommits
-
 - refactor search_layer_build_logs.py
-
 - test deployed lambda package import
 
 ### medium
