@@ -1,16 +1,15 @@
 ### short [multi package layers]
 
+- replace layer.json with requirements.txt
 - staging
   - check for existence of layer
-- layer.json missing quotes
+- test deployed lambda package import
 - layer build logs search failing
   - possibly due to new naming convention
 
 ### medium
 
 - publish() script to push index.json to all websites
-
-- multi- package layers [notes]
 
 - is having a separate type the best way to differentiate a service from an action ?
 
@@ -36,7 +35,6 @@
 - cloudfront
 - route 53
 - google sheets upload
-- chrome extension
 - cloudwatch alerts
 - pinpoint
 
@@ -50,6 +48,7 @@
 - amplify federated login
 - amplify unauthenticated access
 
+- chrome extension
 - eventbridge
 - ci pipeline
 - github actions

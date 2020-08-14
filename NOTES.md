@@ -1,4 +1,11 @@
-### layers
+### chrome extension 14/8/20
+
+- chrome extension could be tricky because of cookie lookup
+- what if aws cookies are encoded and u have to decode them as part of request ?
+- also other problems with chrome extension such as UI + notification upload has completed, and then main page refresh
+- having a popup UI into which you enter URL solves all these problems initially
+
+### layers 13/8/20
 
 - feels like that in layer definitions you should be able to specify multiple pacakges
 - and then build_layers would iterate over these one by one to create the layers you want

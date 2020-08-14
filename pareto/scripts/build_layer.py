@@ -37,7 +37,7 @@ def init_build_spec(config, layer,
         return {"runtime-versions": rtversions,
                 "commands": commands}
     def init_postbuild_phase(config, layer):
-        commands=["echo \"%s\" > build/layer.json" % json.dumps(layer),
+        commands=["echo '%s' > build/layer.json" % json.dumps(layer),
                   'bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"']
         return {"commands": commands}
     def init_phases(config, layer):
