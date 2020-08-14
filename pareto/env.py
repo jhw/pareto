@@ -202,7 +202,6 @@ class Env(dict):
         waiter.wait(StackName=stackname)
 
     def dump(self, timestamp):
-        logging.info("dumping templates")
         for tempname, template in self.items():
             tokens=["tmp", "env", timestamp, "%s.yaml" % tempname]
             dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)

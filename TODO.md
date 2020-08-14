@@ -1,7 +1,6 @@
 ### short [multi package layers]
 
 - test deployment
-- refactor search_layer_build_logs.py
 - test deployed lambda package import
 
 ### medium
@@ -238,6 +237,7 @@
   
 ### done
 
+- refactor search_layer_build_logs.py
 - rename LambdaCommits
 - refactor layer handling in deploy_stack.py
 - simpify layer staging

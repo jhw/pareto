@@ -6,14 +6,14 @@
 
 from pareto.scripts import *
 
-from pareto.staging.layers import *
+from pareto.scripts.build_layer import layer_project_name
 
 if __name__=="__main__":
     try:
         argsconfig=yaml.safe_load("""
         - name: config
           type: file
-        - name: package
+        - name: layer
           type: str
         - name: window
           type: int
@@ -22,10 +22,9 @@ if __name__=="__main__":
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        package=LayerPackage.create_cli(config,
-                                        args.pop("package"))
+        layer={"name": args["layer"]}
         loggroupname="/aws/codebuild/%s" % layer_project_name(config,
-                                                              package)
+                                                              layer)
         starttime=int(1000*(time.time()-args["window"]))                
         kwargs={"logGroupName": loggroupname,
                 "startTime": starttime,
