@@ -1,6 +1,6 @@
 ### short [multi package layers]
 
-- refactor layer handling in deploy_stack.py
+- rename LambdaCommits
 
 - refactor search_layer_build_logs.py
 
@@ -240,6 +240,7 @@
   
 ### done
 
+- refactor layer handling in deploy_stack.py
 - simpify layer staging
 - pymorphy version being ignored
 - replace layer.json with requirements.txt

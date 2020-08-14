@@ -1,7 +1,7 @@
-class LayerPackages(dict):
+class Layers(dict):
 
     def __init__(self, config, s3):
-        list.__init__(self)
+        dict.__init__(self)
         paginator=s3.get_paginator("list_objects_v2")
         pages=paginator.paginate(Bucket=config["globals"]["bucket"],
                                  Prefix="%s/layers" % config["globals"]["app"])

@@ -33,12 +33,11 @@ def add_lambda_staging(config):
        add_staging(action, commits)
 
 def add_layer_staging(config):
-    packages=LayerPackages(config=config, s3=S3)
+    layers=Layers(config=config, s3=S3)
     for layer in config["components"]["layers"]:
-        package=LayerPackage.create(config, **layer["package"])
-        if not packages.exists(package):
-            raise RuntimeError("%s does not exist" % package)
-        layer["staging"]=package
+        if layer["name"] not in layers:
+            raise RuntimeError("layer %s does not exist" % layer["name"])
+        layer["staging"]=layers[layer["name"]]
         
 if __name__=="__main__":
     try:        
