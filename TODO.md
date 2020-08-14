@@ -1,12 +1,6 @@
 ### short
 
-- check double comma in cors headers
-
 - [support] application/x-www-form-urlencoded request body validation
-
-- depends to solve deletion problem
-  - https://mail.google.com/mail/u/0/#inbox/FMfcgxwJXLntgZhwxDjJQNVzVvNBkrpl
-  - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271579711&language=en
 
 ### medium
 
@@ -241,6 +235,10 @@
   
 ### done
 
+- depends to solve deletion problem
+  - https://mail.google.com/mail/u/0/#inbox/FMfcgxwJXLntgZhwxDjJQNVzVvNBkrpl
+  - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271579711&language=en
+- check double comma in cors headers
 - ensure schema can't be specified for GET requests
 - pre- validate schema (draft 7)
 - remove title and insert schema type

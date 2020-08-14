@@ -18,7 +18,7 @@ CorsHeaderPath="method.response.header.Access-Control-Allow-%s"
 
 CorsHeaders=yaml.safe_load("""
 - Content-Type
-- X-Amz-Date,
+- X-Amz-Date
 - Authorization
 - X-Api-Key
 - X-Amz-Security-Token
@@ -150,7 +150,26 @@ def ApiModel(endpoint, **kwargs):
         return "AWS::ApiGateway::Model", props
     return ApiModel(endpoint, **kwargs)
 
+"""
+- creation/deletion of AWS::ApiGateway::Method can be a pain
+- often newly registered dependent resource only appear on second deployment
+- and deletion can fail due to dependency ordering
+- advice is to use depends liberally :-)
+- https://console.aws.amazon.com/support/home#/case/?displayId=7271579711&language=en
+"""
+
 def ApiMethod(endpoint, **kwargs):
+    def root_name(kwargs):
+        return "%s-root" % kwargs["name"]
+    def resource_name(endpoint, kwargs):
+        return "%s-%s-resource" % (kwargs["name"],
+                                   endpoint["name"])
+    def validator_name(endpoint, kwargs):
+        return "%s-%s-validator" % (kwargs["name"],
+                                    endpoint["name"])
+    def model_name(endpoint, kwargs):
+        return "%s-%s-model" % (kwargs["name"],
+                                endpoint["name"])
     suffix="%s-method" % endpoint["name"]
     @resource(suffix=suffix)
     def ApiMethod(endpoint, **kwargs):
@@ -160,29 +179,29 @@ def ApiMethod(endpoint, **kwargs):
         integration={"Uri": uri,
                      "IntegrationHttpMethod": "POST",
                      "Type": "AWS_PROXY"}
-        root=ref("%s-root" % kwargs["name"])
-        parent=ref("%s-%s-resource" % (kwargs["name"],
-                                       endpoint["name"]))
+        root=root_name(kwargs)
+        parent=resource_name(endpoint, kwargs)
         props={"AuthorizationType": "NONE",
-               "RestApiId": root,
-               "ResourceId": parent,
+               "RestApiId": ref(root),
+               "ResourceId": ref(parent),
                "HttpMethod": endpoint["method"],
                "Integration": integration}
+        depends=[root, parent]
         if ("params" in endpoint or
             "schema" in endpoint):
-            validator=ref("%s-%s-validator" % (kwargs["name"],
-                                               endpoint["name"]))
-            props["RequestValidatorId"]=validator
+            validator=validator_name(endpoint, kwargs)
+            props["RequestValidatorId"]=ref(validator)
+            depends.append(validator)
         if "params" in endpoint:
             params={"method.request.querystring.%s" % param:True
                     for param in endpoint["params"]}
             props["RequestParameters"]=params
         if "schema" in endpoint:
-            model=logical_id("%s-%s-model" % (kwargs["name"],
-                                              endpoint["name"]))
-            models={"application/json": model}
+            model=model_name(endpoint, kwargs)
+            models={"application/json": logical_id(model)}
             props["RequestModels"]=models
-        return "AWS::ApiGateway::Method", props
+            depends.append(model)
+        return "AWS::ApiGateway::Method", props, depends
     return ApiMethod(endpoint, **kwargs)
 
 def ApiCorsOptions(endpoint, **kwargs):
