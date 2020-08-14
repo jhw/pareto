@@ -1,9 +1,10 @@
 ### short [multi package layers]
 
-- remove any hint of versioning from layer staging
-- dsl layer to have list of packages
-- build_layer to take config and name
-- create BuildSpec dynamically and test yaml rendering
+- staging
+  - check for existence of layer
+- layer.json missing quotes
+- layer build logs search failing
+  - possibly due to new naming convention
 
 ### medium
 
@@ -241,6 +242,11 @@
   
 ### done
 
+- artifacts file is badly named with dual slug and no zip
+- need to include list of packages
+- dsl layer to have list of packages
+- build_layer to take config and name
+- create BuildSpec dynamically and test yaml rendering
 - [support] application/x-www-form-urlencoded request body validation
 - depends to solve deletion problem
   - https://mail.google.com/mail/u/0/#inbox/FMfcgxwJXLntgZhwxDjJQNVzVvNBkrpl

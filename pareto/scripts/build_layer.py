@@ -7,8 +7,6 @@
 
 from pareto.scripts import *
 
-from pareto.staging.layers import *
-
 RolePolicyDoc=yaml.safe_load("""
 Statement:
   - Action: sts:AssumeRole
@@ -18,29 +16,40 @@ Statement:
 Version: '2012-10-17'
 """)
 
+def layer_project_name(config, pkg):
+    return "%s-%s-layer" % (config["globals"]["app"],
+                            pkg["name"])
+
 """
 - https://stackoverflow.com/questions/46584324/code-build-continues-after-build-fails
 """
 
-BuildSpec="""
-version: {version}
-phases:
-  install:
-    runtime-versions:
-      python: {runtime}
-    commands:
-      - mkdir -p build/python
-      - pip install --upgrade pip
-      - pip install --upgrade --target build/python {pip_source}
-  post_build:
-    commands:
-      - bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"
-artifacts:
-  files:
-    - '**/*'
-  base-directory: build
-  name: {artifacts_name}
-"""
+def init_build_spec(config, layer,
+                    version="0.2"):
+    def init_install_phase(config, layer):
+        rtversions={"python": config["globals"]["runtime"]}
+        commands=["mkdir -p build/python",
+                  "pip install --upgrade pip"]
+        for package in layer["packages"]:
+            source="%s==%s" % (package["name"],
+                               package["version"]) if version in package else package["name"]
+            commands.append("pip install --upgrade --target build/python %s" % source)
+        return {"runtime-versions": rtversions,
+                "commands": commands}
+    def init_postbuild_phase(config, layer):
+        commands=["echo \"%s\" > build/layer.json" % json.dumps(layer),
+                  'bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"']
+        return {"commands": commands}
+    def init_phases(config, layer):
+        return {"install": init_install_phase(config, layer),
+                "post_build": init_postbuild_phase(config, layer)}
+    def init_artifacts(config, layer):
+        return {"files": ["**/*"],
+                "base-directory": "build",
+                "name": "%s.zip" % layer["name"]}
+    return {"version": version,
+            "phases": init_phases(config, layer),
+            "artifacts": init_artifacts(config, layer)}
 
 """
 - need to reset project / create new one because `buildspec` (the thing that likely gets changed) is part of the `source` arg passed to `create_project` :/
@@ -49,8 +58,8 @@ artifacts:
 def reset_project(fn,
                   maxtries=10,
                   wait=1):
-    def wrapped(config, package):
-        projectname=layer_project_name(config, package)
+    def wrapped(config, layer):
+        projectname=layer_project_name(config, layer)
         for i in range(maxtries):
             projects=CB.list_projects()["projects"]
             if projectname in projects:
@@ -58,7 +67,7 @@ def reset_project(fn,
                 CB.delete_project(name=projectname)
                 time.sleep(wait)
             else:
-                return fn(config, package)
+                return fn(config, layer)
         projects=CB.list_projects()["projects"]
         if projectname in projects:
             raise RuntimeError("%s already exists" % projectname)
@@ -93,7 +102,7 @@ def assert_role(fn):
         IAM.attach_role_policy(RoleName=rolename,
                                PolicyArn=policy["Policy"]["Arn"])
         return role["Role"]["Arn"]
-    def wrapped(config, package):
+    def wrapped(config, layer):
         rolename=admin_role_name(config)
         rolearns={role["RoleName"]:role["Arn"]
                   for role in IAM.list_roles()["Roles"]}
@@ -106,35 +115,28 @@ def assert_role(fn):
             logging.info("waiting for role creation ..")
             waiter=IAM.get_waiter("role_exists")
             waiter.wait(RoleName=rolename)
-        return fn(config, package, rolearn)
+        return fn(config, layer, rolearn)
     return wrapped
 
 @reset_project
 @assert_role
-def init_project(config, package, rolearn,
-                 buildspec=BuildSpec,
+def init_project(config, layer, rolearn,
+                 env={"type": "LINUX_CONTAINER",
+                      "image": "aws/codebuild/standard:2.0",
+                      "computeType": "BUILD_GENERAL1_SMALL"},
                  maxtries=20,
                  wait=3):
     logging.info("creating project")
-    def format_args(args):
-        return [{"name": name,
-                 "value": value}
-                for name, value in args.items()]
-    env={"type": "LINUX_CONTAINER",
-         "image": "aws/codebuild/standard:2.0",
-         "computeType": "BUILD_GENERAL1_SMALL"}
-    args=dict(package)
-    args.update({"version": "0.2",
-                 "runtime": config["globals"]["runtime"]})
-    template=buildspec.format(**args)
+    buildspec=init_build_spec(config, layer)
+    template=yaml.safe_dump(buildspec,
+                            default_flow_style=False)
     print (template)
     print ()
     source={"type": "NO_SOURCE",
             "buildspec": template}
     artifacts={"type": "S3",
                "location": config["globals"]["bucket"],
-               "path": "%s/layers/%s" % (config["globals"]["app"],
-                                         package["name"]),
+               "path": "%s/layers" % config["globals"]["app"],
                "overrideArtifactName": True,
                "packaging": "ZIP"}
     """
@@ -142,7 +144,7 @@ def init_project(config, package, rolearn,
     - and the waiters don't catch it
     - ERROR - An error occurred (InvalidInputException) when calling the CreateProject operation: CodeBuild is not authorized to perform: sts:AssumeRole on arn:aws:iam::119552584133:role/pareto-demo-admin-role
     """
-    projectname=layer_project_name(config, package)
+    projectname=layer_project_name(config, layer)
     for i in range(maxtries):
         try:
             logging.info("trying to create project [%i/%i]" % (i+1, maxtries))
@@ -156,8 +158,8 @@ def init_project(config, package, rolearn,
         except ClientError as error:
             time.sleep(wait)
     raise RuntimeError("couldn't create codebuild project")
-                            
-def run_project(config, package,
+                          
+def run_project(config, layer,
                 wait=3,
                 maxtries=100,
                 exitcodes=["SUCCEEDED",
@@ -170,7 +172,7 @@ def run_project(config, package,
             resp["ids"]==[]):
             raise RuntimeError("no build ids found")
         return CB.batch_get_builds(ids=resp["ids"])["builds"].pop()
-    projectname=layer_project_name(config, package)    
+    projectname=layer_project_name(config, layer)    
     CB.start_build(projectName=projectname)
     for i in range(maxtries):
         time.sleep(wait)
@@ -188,16 +190,21 @@ if __name__=="__main__":
         argsconfig=yaml.safe_load("""
         - name: config
           type: file
-        - name: package
+        - name: layer
           type: str
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         validate_bucket(config)
-        package=LayerPackage.create_cli(config,
-                                        args.pop("package"))
-        init_project(config, package)
-        run_project(config, package)
+        if "layers" not in config["components"]:
+            raise RuntimeError("no layers found")
+        layers={layer["name"]:layer
+                for layer in config["components"]["layers"]}
+        if args["layer"] not in layers:
+            raise RuntimeError("layer not found")
+        layer=layers[args["layer"]]
+        init_project(config, layer)
+        run_project(config, layer)
     except ClientError as error:
         logging.error(str(error))
     except RuntimeError as error:
