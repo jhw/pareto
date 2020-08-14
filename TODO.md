@@ -1,16 +1,17 @@
-### short [multi package layers]
+### short
 
-- test deployment
+- preprocessor is not validating against action names
+- layer reference validation
+
+- cognito components
+- api authorizer
+- auth testing scripts
 
 ### medium
 
 - publish() script to push index.json to all websites
 
 - is having a separate type the best way to differentiate a service from an action ?
-
-- userpool component
-- api authorizer
-- auth testing scripts
 
 - test() script to ping all apis and buckets
 
@@ -236,6 +237,7 @@
   
 ### done
 
+- test deployment
 - refactor search_layer_build_logs.py
 - rename LambdaCommits
 - refactor layer handling in deploy_stack.py
