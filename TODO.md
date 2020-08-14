@@ -1,7 +1,5 @@
 ### short
 
-- [support] application/x-www-form-urlencoded request body validation
-
 ### medium
 
 - publish() script to push index.json to all websites
@@ -21,8 +19,11 @@
 
 ### pending
 
-- regex api parameter matching
-  - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271517221&language=en
+- POST body validation x-www-form-urlencoded params
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7273562571&language=en
+
+- regex validation of x-www-form-urlencoded params
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7271517221&language=en
 
 ### gists
 
@@ -235,6 +236,7 @@
   
 ### done
 
+- [support] application/x-www-form-urlencoded request body validation
 - depends to solve deletion problem
   - https://mail.google.com/mail/u/0/#inbox/FMfcgxwJXLntgZhwxDjJQNVzVvNBkrpl
   - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271579711&language=en
