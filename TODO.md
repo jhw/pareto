@@ -1,7 +1,6 @@
 ### short [multi package layers]
 
 - test deployment
-- test deployed lambda package import
 
 ### medium
 

@@ -1,6 +1,6 @@
 import boto3, json, logging
 
-import lxml # layer test
+import lxml, pymorphy2  # layer test
 
 logger=logging.getLogger()
 logger.setLevel(logging.INFO)    
