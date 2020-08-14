@@ -1,4 +1,9 @@
-### short
+### short [multi package layers]
+
+- remove any hint of versioning from layer staging
+- dsl layer to have list of packages
+- build_layer to take config and name
+- create BuildSpec dynamically and test yaml rendering
 
 ### medium
 
