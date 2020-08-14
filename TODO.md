@@ -1,7 +1,5 @@
 ### short [multi package layers]
 
-- pymorphy version being ignored
-
 - staging
   - check for existence of layer
 
@@ -244,6 +242,7 @@
   
 ### done
 
+- pymorphy version being ignored
 - replace layer.json with requirements.txt
 - artifacts file is badly named with dual slug and no zip
 - need to include list of packages

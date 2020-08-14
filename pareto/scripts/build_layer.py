@@ -32,7 +32,7 @@ def init_build_spec(config, layer,
                   "pip install --upgrade pip"]
         for package in layer["packages"]:
             source="%s==%s" % (package["name"],
-                               package["version"]) if version in package else package["name"]
+                               package["version"]) if "version" in package else package["name"]
             commands.append("pip install --upgrade --target build/python %s" % source)
         return {"runtime-versions": rtversions,
                 "commands": commands}
