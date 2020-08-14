@@ -1,12 +1,10 @@
 ### short [multi package layers]
 
-- staging
-  - check for existence of layer
+- refactor layer handling in deploy_stack.py
+
+- refactor search_layer_build_logs.py
 
 - test deployed lambda package import
-
-- layer build logs search failing
-  - possibly due to new naming convention
 
 ### medium
 
@@ -242,6 +240,7 @@
   
 ### done
 
+- simpify layer staging
 - pymorphy version being ignored
 - replace layer.json with requirements.txt
 - artifacts file is badly named with dual slug and no zip
