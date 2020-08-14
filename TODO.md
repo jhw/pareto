@@ -1,9 +1,12 @@
 ### short [multi package layers]
 
-- replace layer.json with requirements.txt
+- pymorphy version being ignored
+
 - staging
   - check for existence of layer
+
 - test deployed lambda package import
+
 - layer build logs search failing
   - possibly due to new naming convention
 
@@ -241,6 +244,7 @@
   
 ### done
 
+- replace layer.json with requirements.txt
 - artifacts file is badly named with dual slug and no zip
 - need to include list of packages
 - dsl layer to have list of packages

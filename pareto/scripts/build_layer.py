@@ -36,8 +36,17 @@ def init_build_spec(config, layer,
             commands.append("pip install --upgrade --target build/python %s" % source)
         return {"runtime-versions": rtversions,
                 "commands": commands}
+    def format_requirements(layer):
+        def format_package(package):
+            if "version" in package:
+                return "%s==%s" % (package["name"],
+                                   package["version"])
+            else:
+                return package["name"]
+        return "\n".join([format_package(package)
+                          for package in layer["packages"]])
     def init_postbuild_phase(config, layer):
-        commands=["echo '%s' > build/layer.json" % json.dumps(layer),
+        commands=["echo \"%s\" > build/requirements.txt" % format_requirements(layer),
                   'bash -c "if [ /"$CODEBUILD_BUILD_SUCCEEDING/" == /"0/" ]; then exit 1; fi"']
         return {"commands": commands}
     def init_phases(config, layer):
