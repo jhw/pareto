@@ -4,6 +4,10 @@
 
 - [support] application/x-www-form-urlencoded request body validation
 
+- depends to solve deletion problem
+  - https://mail.google.com/mail/u/0/#inbox/FMfcgxwJXLntgZhwxDjJQNVzVvNBkrpl
+  - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271579711&language=en
+
 ### medium
 
 - publish() script to push index.json to all websites
@@ -25,9 +29,6 @@
 
 - regex api parameter matching
   - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271517221&language=en
-
-- error deleting stack due to Model
-  - https://console.aws.amazon.com/support/home?region=eu-west-1#/case/?displayId=7271579711&language=en
 
 ### gists
 
