@@ -81,7 +81,7 @@ def latest_commits(config,
 def add_staging(config, commits):
     logging.info("adding staging")
     def lambda_key(name, commits):
-        return str(LambdaCommit(app=config["globals"]["app"],
+        return str(Lambda(app=config["globals"]["app"],
                                 name=name,
                                 hexsha=commits[name][0],
                                 timestamp=commits[name][1]))

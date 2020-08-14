@@ -1,4 +1,4 @@
-class LayerDeployables(dict):
+class Layers(dict):
 
     def __init__(self, config, s3):
         dict.__init__(self)

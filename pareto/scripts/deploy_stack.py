@@ -28,12 +28,12 @@ def add_lambda_staging(config):
                 raise RuntimeError("no deployables found for %s" % action["name"])
             staging["key"]=str(latest[action["name"]])
         action["staging"]=staging    
-    commits=LambdaCommits(config=config, s3=S3)
+    commits=Lambdas(config=config, s3=S3)
     for action in filter_actions(config["components"]):
        add_staging(action, commits)
 
 def add_layer_staging(config):
-    layers=LayerDeployables(config=config, s3=S3)
+    layers=Layers(config=config, s3=S3)
     for layer in config["components"]["layers"]:
         if layer["name"] not in layers:
             raise RuntimeError("layer %s does not exist" % layer["name"])
