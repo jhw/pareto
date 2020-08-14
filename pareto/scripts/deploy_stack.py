@@ -33,7 +33,7 @@ def add_lambda_staging(config):
        add_staging(action, commits)
 
 def add_layer_staging(config):
-    layers=Layers(config=config, s3=S3)
+    layers=LayerDeployables(config=config, s3=S3)
     for layer in config["components"]["layers"]:
         if layer["name"] not in layers:
             raise RuntimeError("layer %s does not exist" % layer["name"])
