@@ -1,3 +1,14 @@
+### services 15/8/20
+
+- could services and actions be merged ?
+- Problem if they are of the same type is that, due to numbered templates, it’s very hard to know if the service and the action will be in the same template or different ones 
+- Which have different wiring implications
+- So it’s easiest to force them to be either internal or external
+- Since numbered templates mean that external is always at least a theoretical possibility, this rules out internal and means external is really the only way to go
+- This means that services needs to be in a separate template; and the simplest way to force that is to have them as a separate type
+- fortunately this is just a one liner ie synth service  = synth action, and services can inherit all action stuff
+- it maybe doesn’t feel great but is an elegant way to avoid lots of pain in other places 
+
 ### chrome extension 14/8/20
 
 - chrome extension could be tricky because of cookie lookup

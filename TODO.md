@@ -11,16 +11,14 @@
 - api authorizer
 - scripts to test api authorised access
 
-- check for capitalisation of 2nd arg to fn_getatt
-
 ### medium
 
+- preprocess templates prior to staging
+  - no longer need to ignore staging field
+
+- group iam permissions according to service
 - __main__ blocks for all components like userpool
-
 - publish() script to push index.json to all websites
-
-- is having a separate type the best way to differentiate a service from an action ?
-
 - test() script to ping all apis and buckets
 
 - scaffold generator
@@ -63,6 +61,8 @@
 
 ### thoughts
 
+- check for capitalisation of 2nd arg to fn_getatt  ?
+  - not worth it
 - allow params validation for GET only ?
   - no is useful for POST too probably
 - option for internal or external arn refs ?
