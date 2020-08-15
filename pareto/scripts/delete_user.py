@@ -20,7 +20,10 @@ if __name__=="__main__":
         - name: config
           type: file
         - name: stage
-          type: str
+          type: enum
+          options:
+          - dev
+          - prod
         - name: userpool
           type: str
         - name: email
