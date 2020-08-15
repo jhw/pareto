@@ -16,7 +16,6 @@
 - pass search term to list_xxx functions
 - group iam permissions according to service
 - publish() script to push index.json to all websites
-- test() script to ping all apis and buckets
 
 - scaffold generator
 - targets
@@ -58,6 +57,8 @@
 
 ### thoughts
 
+- test() script to ping all apis and buckets ?
+  - no because u have this already for api access
 - __main__ blocks for all components like userpool ?
   - not worth it
 - check for capitalisation of 2nd arg to fn_getatt  ?
