@@ -23,6 +23,10 @@ if __name__=="__main__":
           type: str
         - name: userpool
           type: str
+        - name: email
+          type: email
+        - name: password
+          type: str
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
@@ -37,12 +41,22 @@ if __name__=="__main__":
         if args["userpool"] not in userpools:
             raise RuntimeError("userpool not found")
         userpool=userpools[args["userpool"]]
+        userpoolclientkey="%sUserPoolClientId" % hungarorise(userpool["name"])
+        if userpoolclientkey not in outputs:
+            raise RuntimeError("user pool client id not found")
+        userpoolclientid=outputs[userpoolclientkey]
+        resp=CG.sign_up(ClientId=userpoolclientid,
+                        Username=args["email"],
+                        Password=args["password"])
+        print (yaml.safe_dump(resp, default_flow_style=False))
         userpoolkey="%sUserPoolId" % hungarorise(userpool["name"])
         if userpoolkey not in outputs:
-            raise RuntimeError("user pool id not found")
+            raise RuntimeError("user pool client id not found")            
         userpoolid=outputs[userpoolkey]
-        resp=CG.list_users(UserPoolId=userpoolid)
-        print (yaml.safe_dump(resp["Users"],
-                              default_flow_style=False))
+        resp=CG.admin_confirm_sign_up(UserPoolId=userpoolid,
+                                      Username=args["email"])
+        print (yaml.safe_dump(resp, default_flow_style=False))
+    except ClientError as error:
+        print (error)
     except RuntimeError as error:
         print ("Error: %s" % str(error))

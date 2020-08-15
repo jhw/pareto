@@ -12,7 +12,9 @@ def match_str(value):
     return True
 def match_file(value):
     return value.endswith(".yaml")
-            
+def match_email(value):
+    return re.search("^\\w+(\\.\\w+)?\\@\\w+\\.\\w+$", value)!=None
+
 def parse_int(value):
     return int(value)
 def parse_float(value):
@@ -32,6 +34,8 @@ def parse_file(value):
     if not os.path.exists(value):
         raise RuntimeError("file does not exist")
     return yaml.safe_load(open(value, 'r'))
+def parse_email(value):
+    return value
 
 def validate_int(value, item):
     pass
@@ -45,6 +49,8 @@ def validate_enum(value, item):
 def validate_str(value, item):
     pass
 def validate_file(value, item):
+    pass
+def validate_email(value, item):
     pass
 
 def assert_length(fn):
