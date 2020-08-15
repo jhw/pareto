@@ -3,6 +3,8 @@
 - preprocessor is not validating against action names
 - layer reference validation
 
+- genericise reference checking
+
 - cognito components
 - api authorizer
 - auth testing scripts
@@ -22,9 +24,6 @@
 
 - POST body validation x-www-form-urlencoded params
   - https://console.aws.amazon.com/support/home#/case/?displayId=7273562571&language=en
-
-- regex validation of x-www-form-urlencoded params
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7271517221&language=en
 
 ### gists
 
@@ -237,6 +236,8 @@
   
 ### done
 
+- regex validation of x-www-form-urlencoded params
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7271517221&language=en
 - test deployment
 - refactor search_layer_build_logs.py
 - rename LambdaCommits
