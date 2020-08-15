@@ -7,27 +7,21 @@
 
 ### medium
 
-- preprocess templates prior to staging
-  - no longer need to ignore staging field
-
 - group iam permissions according to service
 - publish() script to push index.json to all websites
 
 - scaffold generator
 - targets
-
-### pending
-
-- POST body validation x-www-form-urlencoded params
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7273562571&language=en
-
-### gists
-
 - cloudfront
 - route 53
 - google sheets upload
 - cloudwatch alerts
 - pinpoint
+
+### pending
+
+- POST body validation x-www-form-urlencoded params
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7273562571&language=en
 
 ### v1.1
 
@@ -53,6 +47,8 @@
 
 ### thoughts
 
+- preprocess templates prior to staging ?
+  - not possible; just ignore staging field
 - script to login user ?
   - not really required here 
 - test() script to ping all apis and buckets ?

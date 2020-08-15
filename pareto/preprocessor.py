@@ -14,6 +14,10 @@ queue:
 - sqs:ReceiveMessage
 """)
 
+IgnoreAttrs=yaml.safe_load("""
+- staging # because contains `bucket
+""")
+
 def validate_unique(config):
     def filter_names(config):
         names=[]
@@ -45,9 +49,9 @@ def validate_refs(config):
             refs.setdefault(attr, set())
             for item in v:
                 refs[attr].add(item_name(item))
-        def filter_attrs(fn, reject=["staging"]):
+        def filter_attrs(fn, ignore=IgnoreAttrs):
             def wrapped(k, v, types, refs):
-                if k not in reject:
+                if k not in ignore:
                     return fn(k, v, types, refs)
             return wrapped
         @filter_attrs
