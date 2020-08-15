@@ -1,9 +1,8 @@
 ### short
 
-- test userpool deployment
+- test removing unauthorised access role
 
 - userpool create_user, test_login scripts
-
 - api authorizer
 - scripts to test api authorised access
 
@@ -12,8 +11,9 @@
 - preprocess templates prior to staging
   - no longer need to ignore staging field
 
+- pass ignore_arn term to list_outputs.py
+- pass search term to list_xxx functions
 - group iam permissions according to service
-- __main__ blocks for all components like userpool
 - publish() script to push index.json to all websites
 - test() script to ping all apis and buckets
 
@@ -57,6 +57,8 @@
 
 ### thoughts
 
+- __main__ blocks for all components like userpool ?
+  - not worth it
 - check for capitalisation of 2nd arg to fn_getatt  ?
   - not worth it
 - allow params validation for GET only ?
@@ -238,6 +240,7 @@
   
 ### done
 
+- test userpool deployment
 - add userpool to sole templates
 - add userpool to dsl
 - review userpool syntax line by line

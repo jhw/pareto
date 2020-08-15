@@ -11,7 +11,7 @@ def UserPool(userattrs=UserAttrs,
              minpasswordlength=8,
              **kwargs):
     policies={"PasswordPolicy": {"MinimumLength": minpasswordlength}}
-    schema=[{"AttributeDataType": "string",
+    schema=[{"AttributeDataType": "String",
              "Name": attr,
              "Required": True}
             for attr in userattrs]
