@@ -50,7 +50,13 @@ def IdentityPool(**kwargs):
 
 @resource(suffix="identity-pool-roles")
 def IdentityPoolRoles(**kwargs):
-    props={}
+    identitypool=ref("%s-identity-pool" % kwargs["name"])
+    authrole=fn_getatt("%s-auth-role" % kwargs["name"], "Arn")
+    unauthrole=fn_getatt("%s-unauth-role" % kwargs["name"], "Arn")
+    roles={"authenticated": authrole,
+           "unauthenticated": unauthrole}
+    props={"IdentityPoolId": identitypool,
+           "Roles": roles}
     return "AWS::Cognito::IdentityPoolRoleAttachment", props
 
 @resource(suffix="identity-pool-auth-role")
