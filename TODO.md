@@ -1,7 +1,6 @@
 ### short
 
-- script to create user
-- script to login user
+- script to delete user
 - api authorizer
 - add userpool ref to api
 - test deployment
@@ -57,6 +56,8 @@
 
 ### thoughts
 
+- script to login user ?
+  - not really required here 
 - test() script to ping all apis and buckets ?
   - no because u have this already for api access
 - __main__ blocks for all components like userpool ?
