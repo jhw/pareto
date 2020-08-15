@@ -50,7 +50,7 @@ def IdentityPool(**kwargs):
            "AllowUnauthenticatedIdentities": True}
     return "AWS::Cognito::IdentityPool", props
 
-@resource(suffix="identity-pool-roles")
+@resource(suffix="roles")
 def IdentityPoolRoles(**kwargs):
     identitypool=ref("%s-identity-pool" % kwargs["name"])
     authrole=fn_getatt("%s-auth-role" % kwargs["name"], "Arn")
@@ -86,7 +86,7 @@ def IdentityPoolRole(name, authtype, permissions):
     props["Policies"]=[policy(permissions)]
     return "AWS::IAM::Role", props
     
-@resource(suffix="identity-pool-auth-role")
+@resource(suffix="auth-role")
 def IdentityPoolAuthRole(**kwargs):
     return IdentityPoolRole(name=kwargs["name"],
                             authtype="authenticated",
@@ -95,7 +95,7 @@ def IdentityPoolAuthRole(**kwargs):
                                          "cognito-identity:*",
                                          "lambda:InvokeFunction"])
 
-@resource(suffix="identity-pool-unauth-role")
+@resource(suffix="unauth-role")
 def IdentityPoolUnauthRole(**kwargs):
     return IdentityPoolRole(name=kwargs["name"],
                             authtype="unauthenticated",

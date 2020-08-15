@@ -10,6 +10,7 @@ from pareto.components.service import synth_service
 from pareto.components.stack import synth_stack
 from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
+from pareto.components.userpool import synth_userpool
 
 from pareto.preprocessor import preprocess
 
@@ -28,7 +29,8 @@ def TemplateMapper(groupkey,
                    dedicated=["layers",
                               "actions",
                               "services",
-                              "apis"],
+                              "apis",
+                              "userpools"],
                    default="misc"):
     return groupkey if groupkey in dedicated else default
 

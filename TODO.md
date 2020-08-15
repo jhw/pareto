@@ -1,7 +1,5 @@
 ### short
 
-- review userpool syntax line by line
-- add userpool to dsl
 - test userpool deployment
 
 - userpool create_user, test_login scripts
@@ -240,6 +238,9 @@
   
 ### done
 
+- add userpool to sole templates
+- add userpool to dsl
+- review userpool syntax line by line
 - callback, logout urls contain hardcoded apigw-auth-demo name
 - ruamel is dumping references
 - cognito components

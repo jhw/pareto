@@ -8,6 +8,8 @@ components:
   secrets:
     - name: foo
       value: bar
+  userpools:
+    - name: hello-pool
   layers:
     - name: hello-layer
       packages:
