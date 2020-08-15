@@ -24,6 +24,8 @@ if __name__=="__main__":
           options:
           - dev
           - prod
+        - name: term
+          type: str
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
@@ -32,15 +34,25 @@ if __name__=="__main__":
                              config["globals"]["stage"])
         resources=sorted(fetch_resources(stackname),
                          key=lambda x: x["Timestamp"])
-        def lookup(event, attr, sz=32):
-            return str(event[attr])[:sz] if attr in event else ""
+        def lookup(resource, attr, sz=32):
+            return str(resource[attr])[:sz] if attr in resource else ""
+        def is_valid(resource, term):
+            for attr in ["StackName",
+                         "LogicalResourceId",
+                         "PhysicalResourceId",
+                         "ResourceType"]:
+                if re.search(term, lookup(resource, attr), re.I):
+                    return True
+            return False
         df=pd.DataFrame([{"timestamp": lookup(resource, "Timestamp"),
                           "stack": lookup(resource, "StackName"),
                           "logical_id": lookup(resource, "LogicalResourceId"),
                           "physical_id": lookup(resource, "PhysicalResourceId"),
                           "type": lookup(resource, "ResourceType"),
                           "status": lookup(resource, "ResourceStatus")}
-                         for resource in resources])
+                         for resource in resources
+                         if (args["term"]=="*" or
+                             is_valid(resource, args["term"]))])
         pd.set_option('display.max_rows', df.shape[0]+1)
         print (df)
     except ClientError as error:
