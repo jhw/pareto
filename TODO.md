@@ -1,5 +1,7 @@
 ### short
 
+- callback, logout urls contain hardcoded apigw-auth-demo name
+
 - review userpool syntax line by line
 - add userpool to dsl
 - test userpool deployment
@@ -12,6 +14,8 @@
 - check for capitalisation of 2nd arg to fn_getatt
 
 ### medium
+
+- __main__ blocks for all components like userpool
 
 - publish() script to push index.json to all websites
 
