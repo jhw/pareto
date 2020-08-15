@@ -1,5 +1,9 @@
 from pareto.components import *
 
+CallbackUrl="https://apigw-auth-demo.auth.${AWS::Region}.amazoncognito.com/callback"
+
+LogoutUrl="https://apigw-auth-demo.auth.${AWS::Region}.amazoncognito.com"
+
 @resource(suffix="user-pool")
 def UserPool(attrs=["email"],
              minpasswordlength=8,
@@ -17,7 +21,18 @@ def UserPool(attrs=["email"],
 
 @resource(suffix="user-pool-client")
 def UserPoolClient(**kwargs):
-    props={}
+    userpool=ref("%s-user-pool" % kwargs["name"])
+    props={"UserPoolId": userpool,
+           "GenerateSecret": False,
+           "PreventUserExistenceErrors": "ENABLED",
+           "SupportedIdentityProviders": ["COGNITO"],
+           "CallbackURLs": [CallbackUrl],
+           "LogoutURLs": [LogoutUrl],
+           "AllowedOAuthFlowsUserPoolClient": True,
+           "AllowedOAuthFlows": ["code"],
+           "AllowedOAuthScopes": ["email",
+                                  "openid",
+                                  "profile"]}
     return "AWS::Cognito::UserPoolClient", props
 
 @resource(suffix="identity-pool")
@@ -40,14 +55,34 @@ def IdentityPoolUnauthRole(**kwargs):
     props={}
     return "AWS::IAM::Role", props
 
+@output(suffix="user-pool-id")
+def UserPoolId(**kwargs):
+    return ref("%s-user-pool" % kwargs["name"])
+
+@output(suffix="user-pool-client-id")
+def UserPoolClientId(**kwargs):
+    return ref("%s-user-pool-client" % kwargs["name"])
+
+@output(suffix="identity-pool-id")
+def IdentityPoolId(**kwargs):
+    return ref("%s-identity-pool" % kwargs["name"])
+
 def synth_userpool(template, **kwargs):
     template.update(Resources=[UserPool(**kwargs),
                                UserPoolClient(**kwargs),
                                IdentityPool(**kwargs),
                                IdentityPoolRoles(**kwargs),
                                IdentityPoolAuthRole(**kwargs),
-                               IdentityPoolUnauthRole(**kwargs)])
+                               IdentityPoolUnauthRole(**kwargs)],
+                    Outputs=[UserPoolId(**kwargs),
+                             UserPoolClientId(**kwargs),
+                             IdentityPoolId(**kwargs)])
 
 if __name__=="__main__":
-    pass
+    from pareto.template import Template
+    template=Template()
+    kwargs={"name": "hello-pool"}
+    synth_userpool(template, **kwargs)
+    print (template.yaml_repr)
+
 
