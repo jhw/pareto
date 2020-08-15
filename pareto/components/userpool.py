@@ -4,23 +4,26 @@ CallbackUrl="https://apigw-auth-demo.auth.${AWS::Region}.amazoncognito.com/callb
 
 LogoutUrl="https://apigw-auth-demo.auth.${AWS::Region}.amazoncognito.com"
 
+UserAttrs=["email"]
+
 @resource(suffix="user-pool")
-def UserPool(attrs=["email"],
+def UserPool(userattrs=UserAttrs,
              minpasswordlength=8,
              **kwargs):
     policies={"PasswordPolicy": {"MinimumLength": minpasswordlength}}
     schema=[{"AttributeDataType": "string",
              "Name": attr,
              "Required": True}
-            for attr in attrs]
+            for attr in userattrs]
     props={"Policies": policies,
-           "AutoVerifiedAttributes": attrs,
-           "UsernameAttributes": attrs,
+           "AutoVerifiedAttributes": userattrs,
+           "UsernameAttributes": userattrs,
            "Schema": schema}
     return "AWS::Cognito::UserPool", props
 
 @resource(suffix="user-pool-client")
-def UserPoolClient(**kwargs):
+def UserPoolClient(userattrs=UserAttrs,
+                   **kwargs):
     userpool=ref("%s-user-pool" % kwargs["name"])
     props={"UserPoolId": userpool,
            "GenerateSecret": False,
@@ -30,14 +33,19 @@ def UserPoolClient(**kwargs):
            "LogoutURLs": [LogoutUrl],
            "AllowedOAuthFlowsUserPoolClient": True,
            "AllowedOAuthFlows": ["code"],
-           "AllowedOAuthScopes": ["email",
-                                  "openid",
-                                  "profile"]}
+           "AllowedOAuthScopes": UserAttrs+["openid",
+                                            "profile"]}
     return "AWS::Cognito::UserPoolClient", props
 
 @resource(suffix="identity-pool")
 def IdentityPool(**kwargs):
-    props={}
+    client=ref("%s-user-pool-client" % kwargs["name"])
+    providername=fn_getatt("%s-user-pool" % kwargs["name"],
+                           "ProviderName")
+    provider={"ClientId": client,
+              "ProviderName": providername}
+    props={"CognitoIdentityProviders": [provider],
+           "AllowUnauthenticatedIdentities": True}
     return "AWS::Cognito::IdentityPool", props
 
 @resource(suffix="identity-pool-roles")
