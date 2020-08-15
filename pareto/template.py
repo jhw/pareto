@@ -145,6 +145,7 @@ class Template:
     @property
     def yaml_repr(self):
         yaml=ruamel.yaml.YAML()
+        yaml.representer.ignore_aliases = lambda *data: True
         yaml.preserve_quotes=True
         buf=io.StringIO()
         yaml.dump(self.render(), buf)

@@ -1,14 +1,13 @@
 ### short
 
-- cognito components
+- review userpool syntax line by line
+- add userpool to dsl
+- test userpool deployment
 
-- check cognito component syntax
-- create, test deployment
-
-- auth testing scripts
+- userpool create_user, test_login scripts
 
 - api authorizer
-- scripts to test api auth
+- scripts to test api authorised access
 
 - check for capitalisation of 2nd arg to fn_getatt
 
@@ -239,6 +238,8 @@
   
 ### done
 
+- ruamel is dumping references
+- cognito components
 - separate validate unique from validate refs
 - preprocessor is not validating against action names
 - layer reference validation
