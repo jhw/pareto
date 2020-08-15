@@ -1,6 +1,5 @@
 ### short
 
-- script to delete user
 - api authorizer
 - add userpool ref to api
 - test deployment
@@ -243,6 +242,7 @@
   
 ### done
 
+- script to delete user
 - script to list users
 - test removing unauthorised access role
 - test userpool deployment
