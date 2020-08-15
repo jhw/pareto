@@ -242,6 +242,7 @@
   
 ### done
 
+- script to list users
 - test removing unauthorised access role
 - test userpool deployment
 - add userpool to sole templates
