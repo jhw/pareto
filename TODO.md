@@ -1,7 +1,5 @@
 ### short
 
-- separate validate unique from validate refs
-
 - cognito components
 - api authorizer
 - auth testing scripts
@@ -233,6 +231,7 @@
   
 ### done
 
+- separate validate unique from validate refs
 - preprocessor is not validating against action names
 - layer reference validation
 - genericise reference checking

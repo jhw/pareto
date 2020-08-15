@@ -14,7 +14,19 @@ queue:
 - sqs:ReceiveMessage
 """)
 
-def validate(config):
+def validate_unique(config):
+    def filter_names(config):
+        names=[]
+        for groupkey in config["components"]:
+            for component in config["components"][groupkey]:
+                names.append(component["name"])
+        return names
+    names=filter_names(config)
+    unames=list(set(names))
+    if len(names)!=len(unames):
+        raise RuntimeError("component names are not unique")
+
+def validate_refs(config):
     def filter_names(config):
         return {singularise(key): [component["name"]
                                    for component in config["components"][key]]
@@ -65,7 +77,11 @@ def validate(config):
         for v in refs[k]:
             if v not in names[k]:
                 raise RuntimeError("bad %s %s ref" % (k, v))
-    
+
+def validate(config):
+    validate_unique(config)
+    validate_refs(config)
+            
 def assert_actions(fn):
     def wrapped(config):
         if "actions" in config["components"]:
