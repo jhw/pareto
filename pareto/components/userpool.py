@@ -1,6 +1,18 @@
+from pareto.components import *
+
 @resource(suffix="user-pool")
-def UserPool(**kwargs):
-    props={}
+def UserPool(attrs=["email"],
+             minpasswordlength=8,
+             **kwargs):
+    policies={"PasswordPolicy": {"MinimumLength": minpasswordlength}}
+    schema=[{"AttributeDataType": "string",
+             "Name": attr,
+             "Required": True}
+            for attr in attrs]
+    props={"Policies": policies,
+           "AutoVerifiedAttributes": attrs,
+           "UsernameAttributes": attrs,
+           "Schema": schema}
     return "AWS::Cognito::UserPool", props
 
 @resource(suffix="user-pool-client")
