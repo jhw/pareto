@@ -20,6 +20,8 @@ if __name__=="__main__":
           options:
           - dev
           - prod
+        - name: verbose
+          type: bool
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
@@ -35,8 +37,11 @@ if __name__=="__main__":
             return text+"".join([' '
                                  for i in range(n-len(text))]) if len(text) < n else text[:n]            
         for output in outputs:
+            if (not args["verbose"] and
+                re.search("arn", output["OutputKey"], re.I)!=None):
+                continue
             print ("%s\t%s" % (format_string(output["OutputKey"]),
-                              output["OutputValue"]))
+                               output["OutputValue"]))
     except ClientError as error:
         print (error)
     except RuntimeError as error:

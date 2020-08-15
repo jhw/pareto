@@ -10,7 +10,6 @@
 - preprocess templates prior to staging
   - no longer need to ignore staging field
 
-- pass ignore_arn term to list_outputs.py
 - pass search term to list_xxx functions
 - group iam permissions according to service
 - publish() script to push index.json to all websites
@@ -242,6 +241,7 @@
   
 ### done
 
+- pass ignore_arn term to list_outputs.py
 - script to delete user
 - script to list users
 - test removing unauthorised access role
