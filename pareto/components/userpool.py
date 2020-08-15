@@ -61,7 +61,28 @@ def IdentityPoolRoles(**kwargs):
 
 @resource(suffix="identity-pool-auth-role")
 def IdentityPoolAuthRole(**kwargs):
-    props={}
+    def assume_role_policy_doc(kwargs):
+        identitypool=ref("%s-identity-pool" % kwargs["name"])
+        condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": identitypool},
+                   "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}}
+        principal={"Federated": "cognito-identity.amazonaws.com"}
+        statement=[{"Action": "sts:AssumeRoleWithWebIdentity",
+                    "Effect": "Allow",
+                    "Condition": condition,
+                    "Principal": principal}]
+        return {"Statement": statement,
+                "Version": "2012-10-17"}
+    def policy(permissions=["mobileanalytics:PutEvents",
+                            "cognito-sync:*"]):           
+        statement=[{"Action": permission,
+                    "Effect": "Allow",
+                    "Resource": "*"}
+                   for permission in permissions]
+        return {"PolicyDocument": {"Statement": statement,
+                                   "Version": "2012-10-17"},
+                "PolicyName": random_id("inline-policy")}
+    props={"AssumeRolePolicyDocument": assume_role_policy_doc(kwargs)}
+    props["Policies"]=[policy()]
     return "AWS::IAM::Role", props
 
 @resource(suffix="identity-pool-unauth-role")
