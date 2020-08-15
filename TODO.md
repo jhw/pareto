@@ -1,9 +1,6 @@
 ### short
 
-- preprocessor is not validating against action names
-- layer reference validation
-
-- genericise reference checking
+- separate validate unique from validate refs
 
 - cognito components
 - api authorizer
@@ -236,6 +233,9 @@
   
 ### done
 
+- preprocessor is not validating against action names
+- layer reference validation
+- genericise reference checking
 - regex validation of x-www-form-urlencoded params
   - https://console.aws.amazon.com/support/home#/case/?displayId=7271517221&language=en
 - test deployment

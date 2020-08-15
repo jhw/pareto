@@ -30,9 +30,9 @@ def validate(config):
             return item["name"] if isinstance(item, dict) else item
         @listify        
         def add_refs(v, attr, refs):
-            refs.setdefault(attr, [])
-            refs[attr]+=[item_name(item)
-                         for item in v]
+            refs.setdefault(attr, set())
+            for item in v:
+                refs[attr].add(item_name(item))
         def filter_attrs(fn, reject=["staging"]):
             def wrapped(k, v, types, refs):
                 if k not in reject:
@@ -60,9 +60,11 @@ def validate(config):
                 filter_refs(component, names, refs)
         return refs
     names=filter_names(config)
-    print (names)
     refs=filter_refs(config, list(names.keys()))
-    print (refs)
+    for k in refs:
+        for v in refs[k]:
+            if v not in names[k]:
+                raise RuntimeError("bad %s %s ref" % (k, v))
     
 def assert_actions(fn):
     def wrapped(config):
