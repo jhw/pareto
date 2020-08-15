@@ -1,7 +1,5 @@
 ### short
 
-- callback, logout urls contain hardcoded apigw-auth-demo name
-
 - review userpool syntax line by line
 - add userpool to dsl
 - test userpool deployment
@@ -242,6 +240,7 @@
   
 ### done
 
+- callback, logout urls contain hardcoded apigw-auth-demo name
 - ruamel is dumping references
 - cognito components
 - separate validate unique from validate refs

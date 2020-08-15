@@ -1,8 +1,8 @@
 from pareto.components import *
 
-CallbackUrl="https://apigw-auth-demo.auth.${AWS::Region}.amazoncognito.com/callback"
+CallbackUrl="https://%s.auth.${AWS::Region}.amazoncognito.com/callback"
 
-LogoutUrl="https://apigw-auth-demo.auth.${AWS::Region}.amazoncognito.com"
+LogoutUrl="https://%s.auth.${AWS::Region}.amazoncognito.com"
 
 UserAttrs=["email"]
 
@@ -25,12 +25,14 @@ def UserPool(userattrs=UserAttrs,
 def UserPoolClient(userattrs=UserAttrs,
                    **kwargs):
     userpool=ref("%s-user-pool" % kwargs["name"])
+    callbackurl=CallbackUrl % resource_name(kwargs)
+    logouturl=LogoutUrl % resource_name(kwargs)
     props={"UserPoolId": userpool,
            "GenerateSecret": False,
            "PreventUserExistenceErrors": "ENABLED",
            "SupportedIdentityProviders": ["COGNITO"],
-           "CallbackURLs": [CallbackUrl],
-           "LogoutURLs": [LogoutUrl],
+           "CallbackURLs": [callbackurl],
+           "LogoutURLs": [logouturl],
            "AllowedOAuthFlowsUserPoolClient": True,
            "AllowedOAuthFlows": ["code"],
            "AllowedOAuthScopes": UserAttrs+["openid",
@@ -126,7 +128,9 @@ def synth_userpool(template, **kwargs):
 if __name__=="__main__":
     from pareto.template import Template
     template=Template()
-    kwargs={"name": "hello-pool"}
+    kwargs={"app": "pareto-demo",
+            "name": "hello-pool",
+            "stage": "dev"}
     synth_userpool(template, **kwargs)
     print (template.yaml_repr)
 
