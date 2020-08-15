@@ -24,6 +24,8 @@ if __name__=="__main__":
           options:
           - dev
           - prod
+        - name: term
+          type: str
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
@@ -34,13 +36,23 @@ if __name__=="__main__":
                       key=lambda x: x["Timestamp"])
         def lookup(event, attr, sz=32):
             return str(event[attr])[:sz] if attr in event else ""
+        def is_valid(event, term):
+            for attr in ["StackName",
+                         "LogicalResourceId",
+                         "PhysicalResourceId",
+                         "ResourceType"]:
+                if re.search(term, lookup(event, attr), re.I):
+                    return True
+            return False
         df=pd.DataFrame([{"timestamp": lookup(event, "Timestamp"),
                           "stack": lookup(event, "StackName"),
                           "logical_id": lookup(event, "LogicalResourceId"),
                           "physical_id": lookup(event, "PhysicalResourceId"),
                           "type": lookup(event, "ResourceType"),
                           "status": lookup(event, "ResourceStatus")}
-                         for event in events])
+                         for event in events
+                         if (args["term"]=="*" or
+                             is_valid(event, args["term"]))])
         pd.set_option('display.max_rows', df.shape[0]+1)
         print (df)
     except ClientError as error:
