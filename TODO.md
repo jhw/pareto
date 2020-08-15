@@ -1,10 +1,11 @@
 ### short
 
-- test removing unauthorised access role
-
-- userpool create_user, test_login scripts
+- script to create user
+- script to login user
 - api authorizer
-- scripts to test api authorised access
+- add userpool ref to api
+- test deployment
+- script to ping api
 
 ### medium
 
@@ -240,6 +241,7 @@
   
 ### done
 
+- test removing unauthorised access role
 - test userpool deployment
 - add userpool to sole templates
 - add userpool to dsl

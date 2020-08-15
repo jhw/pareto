@@ -47,16 +47,14 @@ def IdentityPool(**kwargs):
     provider={"ClientId": client,
               "ProviderName": providername}
     props={"CognitoIdentityProviders": [provider],
-           "AllowUnauthenticatedIdentities": True}
+           "AllowUnauthenticatedIdentities": False}
     return "AWS::Cognito::IdentityPool", props
 
 @resource(suffix="roles")
 def IdentityPoolRoles(**kwargs):
     identitypool=ref("%s-identity-pool" % kwargs["name"])
     authrole=fn_getatt("%s-auth-role" % kwargs["name"], "Arn")
-    unauthrole=fn_getatt("%s-unauth-role" % kwargs["name"], "Arn")
-    roles={"authenticated": authrole,
-           "unauthenticated": unauthrole}
+    roles={"authenticated": authrole}
     props={"IdentityPoolId": identitypool,
            "Roles": roles}
     return "AWS::Cognito::IdentityPoolRoleAttachment", props
@@ -95,13 +93,6 @@ def IdentityPoolAuthRole(**kwargs):
                                          "cognito-identity:*",
                                          "lambda:InvokeFunction"])
 
-@resource(suffix="unauth-role")
-def IdentityPoolUnauthRole(**kwargs):
-    return IdentityPoolRole(name=kwargs["name"],
-                            authtype="unauthenticated",
-                            permissions=["mobileanalytics:PutEvents",
-                                         "cognito-sync:*"])
-
 @output(suffix="user-pool-id")
 def UserPoolId(**kwargs):
     return ref("%s-user-pool" % kwargs["name"])
@@ -119,8 +110,7 @@ def synth_userpool(template, **kwargs):
                                UserPoolClient(**kwargs),
                                IdentityPool(**kwargs),
                                IdentityPoolRoles(**kwargs),
-                               IdentityPoolAuthRole(**kwargs),
-                               IdentityPoolUnauthRole(**kwargs)],
+                               IdentityPoolAuthRole(**kwargs)],
                     Outputs=[UserPoolId(**kwargs),
                              UserPoolClientId(**kwargs),
                              IdentityPoolId(**kwargs)])
