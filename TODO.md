@@ -1,8 +1,16 @@
 ### short
 
 - cognito components
-- api authorizer
+
+- check cognito component syntax
+- create, test deployment
+
 - auth testing scripts
+
+- api authorizer
+- scripts to test api auth
+
+- check for capitalisation of 2nd arg to fn_getatt
 
 ### medium
 
