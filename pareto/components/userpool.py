@@ -4,15 +4,20 @@ CallbackUrl="https://%s.auth.${AWS::Region}.amazoncognito.com/callback"
 
 LogoutUrl="https://%s.auth.${AWS::Region}.amazoncognito.com"
 
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolclient.html#cfn-cognito-userpoolclient-explicitauthflows
+
 """
-- one of these is required for boto3 admin login
-- suspect is ALLOW_ADMIN_USER_PASSWORD_AUTH
-- amplify login works without specifying any of these however
+- seems ALLOW_ADMIN_USER_PASSWORD_AUTH is required for boto3 admin login
+- but specifying that alone causes Cognito create failure
+- so specify all except *_USER_PASSWORD_* which feels insecure
+- default flows (ExplicitAuthFlows not set) work with JS
 """
 
 ExplicitAuthFlows=yaml.safe_load("""
 - ALLOW_ADMIN_USER_PASSWORD_AUTH
+# - ADMIN_USER_PASSWORD_AUTH
 - ALLOW_CUSTOM_AUTH
+# - ALLOW_USER_PASSWORD_AUTH
 - ALLOW_USER_SRP_AUTH
 - ALLOW_REFRESH_TOKEN_AUTH
 """)

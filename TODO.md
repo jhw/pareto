@@ -1,8 +1,6 @@
 ### short
 
-- try reducing list of ExplicitAuthFlows
-
-- script to ping api
+- script to ping (unauthorised) api
 - apigw authorizer
 - configure userpool auth from dsl
 - test deployment
@@ -10,6 +8,7 @@
 
 ### medium
 
+- amplify cognito web client vs standard client
 - how to enable apigw logs
 - iam deployment user
 - script to clean log groups
@@ -243,6 +242,7 @@
   
 ### done
 
+- try reducing list of ExplicitAuthFlows
 - adapt list_failures to lookup new event helpers
 - resource lookup helpers
 - likely needs custom attrs passing

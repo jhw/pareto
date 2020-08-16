@@ -3,7 +3,7 @@ from pareto.helpers.text import hungarorise, text_left
 class Outputs(dict):
 
     @classmethod
-    def initialise(self, stackname, cf, filterfn=lambda k: True):
+    def initialise(self, stackname, cf, filterfn=lambda k, v: True):
         outputs=Outputs()
         for stack in cf.describe_stacks()["Stacks"]:
             if (stack["StackName"].startswith(stackname) and
