@@ -2,7 +2,7 @@ from pareto.components import *
 
 from jsonschema import Draft7Validator
 
-Draft7Schema="http://json-schema.org/draft-07/schema#"
+Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}/%s"
 
 LambdaInvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
 
@@ -12,9 +12,6 @@ LambdaInvokeArn="arn:aws:apigateway:%s:lambda:path/2015-03-31/functions/${lambda
 
 ExecuteApiArn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name}/%s/%s"
 
-Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}/%s"
-
-AuthorizationHeader="method.request.header.Authorization"
 
 CorsHeaderPath="method.response.header.Access-Control-Allow-%s"
 
@@ -35,6 +32,10 @@ LogsPermissions=yaml.safe_load("""
 - logs:GetLogEvents
 - logs:FilterLogEvents
 """)
+
+AuthorizationHeader="method.request.header.Authorization"
+
+Draft7Schema="http://json-schema.org/draft-07/schema#"
 
 @resource(suffix="root")
 def ApiRoot(**kwargs):
@@ -154,6 +155,7 @@ def ApiModel(endpoint, **kwargs):
 
 def ApiAuthorizer(endpoint, **kwargs):
     suffix="%s-authorizer" % endpoint["name"]
+    @resource(suffix=suffix)
     def ApiAuthorizer(endpoint, **kwargs):
         root=ref("%s-root" % kwargs["name"])
         provider=ref("%s-user-pool-arn" % endpoint["userpool"])

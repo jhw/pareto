@@ -1,6 +1,5 @@
 ### short
 
-- authorizer return is messed up
 - method must ref authorizer
 
 - test deployment
@@ -242,6 +241,7 @@
   
 ### done
 
+- authorizer return is messed up
 - apigw authorizer
 - configure userpool auth from dsl
 - script to ping (unauthorised) api
