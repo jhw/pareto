@@ -1,7 +1,5 @@
 ### short
 
-- test removing authorizer name
-
 - modify ping_api to login user, use auth header
 
 ### pending
@@ -244,6 +242,7 @@
   
 ### done
 
+- test removing authorizer name
 - authorizer seems to require name
 - test deployment
 - method must ref authorizer
