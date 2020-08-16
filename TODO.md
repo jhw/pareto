@@ -1,8 +1,13 @@
 ### short
 
-- events, resources lookup helpers
+- adapt list_failures to lookup new event helpers
+  - likely needs custom attrs passing
 
-- try reducing ExplicitAuthFlows
+- resource lookup helpers
+
+- move format_text into text helpers
+
+- try reducing list of ExplicitAuthFlows
 
 - script to ping api
 - apigw authorizer
