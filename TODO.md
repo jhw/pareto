@@ -1,6 +1,9 @@
 ### short
 
-- script to login user
+```
+Auth flow not enabled for this client
+```
+
 - script to ping api
 - apigw authorizer
 - configure userpool auth from dsl
@@ -9,6 +12,7 @@
 
 ### medium
 
+- output helpers to be used by user/api scripts
 - how to enable apigw logs
 - iam deployment user
 - script to clean log groups
