@@ -41,6 +41,7 @@ components:
           params:
             - msg
           action: hello-get-fn
+          userpool: hello-pool
         - name: hello-post
           method: POST
           schema:

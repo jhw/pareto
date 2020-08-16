@@ -14,6 +14,8 @@ ExecuteApiArn="arn:aws:execute-api:%s:${AWS::AccountId}:${rest_api}/${stage_name
 
 Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}/%s"
 
+AuthorizationHeader="method.request.header.Authorization"
+
 CorsHeaderPath="method.response.header.Access-Control-Allow-%s"
 
 CorsHeaders=yaml.safe_load("""
@@ -149,6 +151,18 @@ def ApiModel(endpoint, **kwargs):
                "Schema": endpoint["schema"]}
         return "AWS::ApiGateway::Model", props
     return ApiModel(endpoint, **kwargs)
+
+def ApiAuthorizer(endpoint, **kwargs):
+    suffix="%s-authorizer" % endpoint["name"]
+    def ApiAuthorizer(endpoint, **kwargs):
+        root=ref("%s-root" % kwargs["name"])
+        provider=ref("%s-user-pool-arn" % endpoint["userpool"])
+        props={"IdentitySource": AuthorizationHeader,
+               "ProviderARNs": [provider],
+               "RestApiId": root,
+               "Type": "COGNITO_USER_POOLS"}
+        return "AWS::ApiGateway::Authorizer", props
+    return ApiAuthorizer(endpoint, **kwargs)
 
 """
 - creation/deletion of AWS::ApiGateway::Method can be a pain
@@ -294,6 +308,9 @@ def synth_api(template, **kwargs):
             template.update(Resources=ApiValidator(endpoint, **kwargs))
         if "schema" in endpoint:
             template.update(Resources=ApiModel(endpoint, **kwargs))
+        if "userpool" in endpoint:
+            template.update(Parameters=parameter("%s-user-pool-arn" % endpoint["userpool"]),
+                            Resources=ApiAuthorizer(endpoint, **kwargs))
                             
 if __name__=="__main__":
     pass

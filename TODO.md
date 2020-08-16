@@ -1,7 +1,8 @@
 ### short
 
-- apigw authorizer
-- configure userpool auth from dsl
+- authorizer return is messed up
+- method must ref authorizer
+
 - test deployment
 - modify script to login user, use auth header
 
@@ -241,6 +242,8 @@
   
 ### done
 
+- apigw authorizer
+- configure userpool auth from dsl
 - script to ping (unauthorised) api
 - try reducing list of ExplicitAuthFlows
 - adapt list_failures to lookup new event helpers

@@ -117,6 +117,14 @@ def IdentityPoolAuthRole(**kwargs):
 def UserPoolId(**kwargs):
     return ref("%s-user-pool" % kwargs["name"])
 
+"""
+- APIGW authorizer requires user pool ARN
+"""
+
+@output(suffix="user-pool-arn")
+def UserPoolArn(**kwargs):
+    return fn_getatt("%s-user-pool" % kwargs["name"], "Arn")
+
 @output(suffix="user-pool-client-id")
 def UserPoolClientId(**kwargs):
     return ref("%s-user-pool-client" % kwargs["name"])
@@ -132,6 +140,7 @@ def synth_userpool(template, **kwargs):
                                IdentityPoolRoles(**kwargs),
                                IdentityPoolAuthRole(**kwargs)],
                     Outputs=[UserPoolId(**kwargs),
+                             UserPoolArn(**kwargs),
                              UserPoolClientId(**kwargs),
                              IdentityPoolId(**kwargs)])
 
