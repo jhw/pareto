@@ -1,6 +1,5 @@
 ### short
 
-- script to ping (unauthorised) api
 - apigw authorizer
 - configure userpool auth from dsl
 - test deployment
@@ -242,6 +241,7 @@
   
 ### done
 
+- script to ping (unauthorised) api
 - try reducing list of ExplicitAuthFlows
 - adapt list_failures to lookup new event helpers
 - resource lookup helpers

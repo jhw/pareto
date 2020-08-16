@@ -2,6 +2,42 @@
 
 from pareto.scripts import *
 
+from pareto.helpers.text import hungarorise
+
+def validate_form_urlencoded(fn):
+    def is_form_urlencoded(payload):
+        return re.search("^(\\w+\\=\\w+\\&)*\\w+\\=\\w+$", payload)!=None
+    def wrapped(url, payload):
+        if is_form_urlencoded(payload):                
+            return fn(url, payload)
+        else:
+            raise RuntimeError("GET payload is invalid")
+    return wrapped
+
+@validate_form_urlencoded
+def http_get(url, payload):
+    return requests.get("%s?%s" % (url, payload))
+
+def validate_json(fn):
+    def is_json(payload):
+        try:
+            json.loads(payload)
+            return True
+        except:
+            return False
+    def wrapped(url, payload):
+        if is_json(payload):                
+            return fn(url, payload)
+        else:
+            raise RuntimeError("POST payload is invalid")
+    return wrapped
+
+@validate_json
+def http_post(url, payload):
+    return requests.post(url,
+                         headers={"Content-Type": "application/json"},
+                         data=payload)
+    
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
@@ -32,13 +68,22 @@ if __name__=="__main__":
         if args["api"] not in apis:
             raise RuntimeError("api not found")
         api=apis[args["api"]]
-        print (api)
         resources={resource["name"]: resource
                    for resource in api["resources"]}
         if args["resource"] not in resources:
             raise RuntimeError("resource not found")
         resource=resources[args["resource"]]
-        print (resource)
+        outputs=Outputs.initialise(stackname, CF)
+        url=outputs.lookup("%s-%s-url" % (api["name"],
+                                          resource["name"]))
+        httpfn=eval("http_%s" % resource["method"].lower())
+        resp=httpfn(url, args["payload"])
+        for attr in ["status_code",
+                     "headers",
+                     "text"]:
+            print ("%s => %s" % (hungarorise(attr),
+                                 getattr(resp, attr)))
+            print ()
     except ClientError as error:
         print (error)
     except RuntimeError as error:
