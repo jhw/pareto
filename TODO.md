@@ -1,7 +1,5 @@
 ### short
 
-- modify ping_api to login user, use auth header
-
 - publish() script to push index.json to all websites
 
 - separate script directories
@@ -249,6 +247,7 @@
   
 ### done
 
+- modify ping_api to login user, use auth header
 - test removing authorizer name
 - authorizer seems to require name
 - test deployment

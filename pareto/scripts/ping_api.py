@@ -4,6 +4,16 @@ from pareto.scripts import *
 
 from pareto.helpers.text import hungarorise
 
+def get_token(resource, outputs, args):
+    userpoolid=outputs.lookup("%s-user-pool-id" % resource["userpool"])
+    userpoolclientid=outputs.lookup("%s-user-pool-client-id" % resource["userpool"])
+    resp=CG.admin_initiate_auth(UserPoolId=userpoolid,
+                                ClientId=userpoolclientid,
+                                AuthFlow='ADMIN_NO_SRP_AUTH',
+                                AuthParameters={"USERNAME": args["email"],
+                                                "PASSWORD": args["password"]})
+    return resp["AuthenticationResult"]["IdToken"]
+
 def validate_get_payload(fn):
     def is_form_urlencoded(payload):
         return re.search("^(\\w+\\=\\w+\\&)*\\w+\\=\\w+$", payload)!=None
@@ -62,7 +72,7 @@ def http_post(url, headers, payload):
     return requests.post(url,
                          headers=headers,
                          data=payload)
-    
+
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
@@ -79,6 +89,10 @@ if __name__=="__main__":
         - name: resource
           type: str
         - name: payload
+          type: str
+        - name: email
+          type: email
+        - name: password
           type: str
         """)
         args=argsparse(sys.argv[1:], argsconfig)
@@ -101,10 +115,14 @@ if __name__=="__main__":
         outputs=Outputs.initialise(stackname, CF)
         url=outputs.lookup("%s-%s-url" % (api["name"],
                                           resource["name"]))
+        token=get_token(resource, outputs, args) if "userpool" in resource else None
+        if token:
+            print ("Token => %s" % token)
+            print()
         httpfn=eval("http_%s" % resource["method"].lower())
         resp=httpfn(url=url,
                     payload=args["payload"],
-                    token=None)
+                    token=token)
         for attr in ["status_code",
                      "headers",
                      "text"]:
