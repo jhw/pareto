@@ -1,4 +1,4 @@
-import datetime, boto3, json, logging, os, re, sys, time, unittest, yaml
+import datetime, boto3, json, logging, os, re, requests, sys, time, unittest, yaml
 
 from botocore.exceptions import ClientError, WaiterError
 
