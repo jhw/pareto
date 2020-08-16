@@ -4,6 +4,8 @@
 
 - try reducing ExplicitAuthFlows
 
+- events, resources lookup helpers
+
 - script to ping api
 - apigw authorizer
 - configure userpool auth from dsl
