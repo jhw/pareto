@@ -1,9 +1,5 @@
 ### short
 
-- adapt list_failures to lookup new event helpers
-
-- resource lookup helpers
-
 - try reducing list of ExplicitAuthFlows
 
 - script to ping api
@@ -247,6 +243,8 @@
   
 ### done
 
+- adapt list_failures to lookup new event helpers
+- resource lookup helpers
 - likely needs custom attrs passing
 - move format_text into text helpers
 - outputs to dump self
