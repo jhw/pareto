@@ -1,9 +1,11 @@
 ### short
 
-- api authorizer
-- add userpool ref to api
-- test deployment
+- ping api to test layer
 - script to ping api
+- apigw authorizer
+- configure userpool auth from dsl
+- test deployment
+- modify script to login user, use auth header
 
 ### medium
 
@@ -19,9 +21,6 @@
 - pinpoint
 
 ### pending
-
-- POST body validation x-www-form-urlencoded params
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7273562571&language=en
 
 ### v1.1
 
@@ -47,6 +46,9 @@
 
 ### thoughts
 
+- HTTP POST x-form-www-urlencoded handler
+  - too complex as doesn't seem to fit inside the lambda proxy / model integration
+  - just use JSON instead
 - preprocess templates prior to staging ?
   - not possible; just ignore staging field
 - script to login user ?
@@ -236,6 +238,8 @@
   
 ### done
 
+- POST body validation x-www-form-urlencoded params
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7273562571&language=en
 - pass search term to list_xxx functions
 - pass ignore_arn term to list_outputs.py
 - script to delete user
