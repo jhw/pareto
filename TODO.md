@@ -1,6 +1,6 @@
 ### short
 
-- ping api to test layer
+- script to login user
 - script to ping api
 - apigw authorizer
 - configure userpool auth from dsl
@@ -9,6 +9,10 @@
 
 ### medium
 
+- how to enable apigw logs
+- iam deployment user
+- script to clean log groups
+- pip dependency install to ignore lxml, pymorphy
 - group iam permissions according to service
 - publish() script to push index.json to all websites
 
@@ -20,15 +24,17 @@
 - cloudwatch alerts
 - pinpoint
 
-### pending
-
-### v1.1
-
 - lambda version -> redeploy without s3 key change ?
 
 - amplify change password
 - amplify self sign- up
 - amplify forgot password
+
+- stripe
+- webflow
+
+### v1.1
+
 - amplify federated login
 - amplify unauthenticated access
 
@@ -38,8 +44,6 @@
 - github actions
 - lambda xray
 - step functions
-- payments and stripe
-- webflow
 - fargate/ec2
 - appsync/graphql
 - topology charts
@@ -238,6 +242,7 @@
   
 ### done
 
+- ping api to test layer
 - POST body validation x-www-form-urlencoded params
   - https://console.aws.amazon.com/support/home#/case/?displayId=7273562571&language=en
 - pass search term to list_xxx functions
