@@ -1,8 +1,13 @@
 ### short
 
-- authorizer seems to require name
+- test removing authorizer name
 
 - modify ping_api to login user, use auth header
+
+### pending
+
+- pinpoint
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7278998251&language=en
 
 ### medium
 
@@ -20,7 +25,6 @@
 - route 53
 - google sheets upload
 - cloudwatch alerts
-- pinpoint
 
 - lambda version -> redeploy without s3 key change ?
 
@@ -240,6 +244,7 @@
   
 ### done
 
+- authorizer seems to require name
 - test deployment
 - method must ref authorizer
 - authorizer return is messed up
