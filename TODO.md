@@ -1,6 +1,7 @@
 ### short
 
-- output helpers to be used by user/api scripts
+- outputs to use new outputs helpers
+
 - try reducing ExplicitAuthFlows
 
 - script to ping api
@@ -243,6 +244,8 @@
   - not really required as this is about deployment not runtime
   
 ### done
+
+- output helpers to be used by user/api scripts
 
 ```
 Auth flow not enabled for this client
