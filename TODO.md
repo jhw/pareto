@@ -1,7 +1,5 @@
 ### short
 
-- publish() script to push index.json to all websites
-
 - check amplify cognito web client vs standard client
 
 ### pending
@@ -245,6 +243,7 @@
   
 ### done
 
+- publish() script to push index.json to all websites
 - separate script directories
 - modify ping_api to login user, use auth header
 - test removing authorizer name

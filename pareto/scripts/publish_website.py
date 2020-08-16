@@ -2,6 +2,8 @@
 
 from pareto.scripts import *
 
+from pareto.helpers.cloudformation.utils import resource_name
+
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
@@ -30,7 +32,11 @@ if __name__=="__main__":
         bucket=buckets[args["bucket"]]
         if "website" not in bucket:
             raise RuntimeError("bucket is not a website")
-        print (bucket)
+        bucket.update(config["globals"])        
+        print (S3.put_object(Bucket=resource_name(bucket),
+                             Key="index.json",
+                             Body=json.dumps({"hello": "world"}),
+                             ContentType="application/json"))
     except ClientError as error:
         print (error)
     except RuntimeError as error:
