@@ -46,7 +46,7 @@ class Events(list):
         list.__init__(self, events)
     
     def table_repr(self, attrs):
-        return pd.DataFrame([{attr: text_left(str(event.lookup(attr)))
+        return pd.DataFrame([{attr: text_left(event.lookup(attr))
                               for attr in attrs}
                              for event in self])
     

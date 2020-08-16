@@ -4,8 +4,6 @@
 
 - resource lookup helpers
 
-- remove all custom col names for pd.DataFrame
-
 - try reducing list of ExplicitAuthFlows
 
 - script to ping api

@@ -29,8 +29,15 @@ def pluralise(text):
     else:
         return "%ss" % text
 
+def stringify(fn):
+    def wrapped(text, **kwargs):
+        return fn(str(text), **kwargs)
+    return wrapped
+
+@stringify
 def text_left(text, n=32):
     return text+"".join([' ' for i in range(n-len(text))]) if len(text) < n else text[:n]            
-    
+
+@stringify
 def text_right(text, n=32):
     return ("".join([' ' for i in range(n-len(text))]))+text if len(text) < n else text[:n]            
