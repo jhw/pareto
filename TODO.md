@@ -1,5 +1,8 @@
 ### short
 
+- output helpers to be used by user/api scripts
+- try reducing ExplicitAuthFlows
+
 - script to ping api
 - apigw authorizer
 - configure userpool auth from dsl
@@ -8,8 +11,6 @@
 
 ### medium
 
-- try reducing ExplicitAuthFlows
-- output helpers to be used by user/api scripts
 - how to enable apigw logs
 - iam deployment user
 - script to clean log groups

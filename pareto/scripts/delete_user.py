@@ -2,17 +2,6 @@
 
 from pareto.scripts import *
 
-from pareto.helpers.text import hungarorise
-
-def fetch_outputs(stackname):
-    outputs=[]
-    for stack in CF.describe_stacks()["Stacks"]:
-        if (stack["StackName"].startswith(stackname) and
-            "Outputs" in stack):
-            outputs+=stack["Outputs"]
-    return {output["OutputKey"]: output["OutputValue"]
-            for output in outputs}
-
 if __name__=="__main__":
     try:
         init_stdout_logger(logging.INFO)
@@ -34,18 +23,15 @@ if __name__=="__main__":
         config["globals"]["stage"]=args.pop("stage")
         stackname="%s-%s" % (config["globals"]["app"],
                              config["globals"]["stage"])
-        outputs=fetch_outputs(stackname)
+        outputs=Outputs.initialise(stackname, CF)
         if "userpools" not in config["components"]:
             raise RuntimeError("no userpools found")
         userpools={userpool["name"]:userpool
-                for userpool in config["components"]["userpools"]}
+                   for userpool in config["components"]["userpools"]}
         if args["userpool"] not in userpools:
             raise RuntimeError("userpool not found")
         userpool=userpools[args["userpool"]]
-        userpoolkey="%sUserPoolId" % hungarorise(userpool["name"])
-        if userpoolkey not in outputs:
-            raise RuntimeError("user pool id not found")            
-        userpoolid=outputs[userpoolkey]
+        userpoolid=outputs.lookup("%s-user-pool-id" % userpool["name"])
         resp=CG.admin_delete_user(UserPoolId=userpoolid,
                                   Username=args["email"])
         print (yaml.safe_dump(resp, default_flow_style=False))

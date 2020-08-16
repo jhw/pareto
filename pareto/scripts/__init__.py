@@ -6,6 +6,8 @@ from botocore.exceptions import ClientError, ValidationError, WaiterError
 
 from pareto.scripts.helpers.argsparse import argsparse
 
+from pareto.scripts.helpers.outputs import Outputs
+
 S3=boto3.client("s3")
 CF=boto3.client("cloudformation")
 Logs=boto3.client("logs")
