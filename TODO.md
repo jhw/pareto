@@ -1,9 +1,8 @@
 ### short
 
-- method must ref authorizer
+- authorizer seems to require name
 
-- test deployment
-- modify script to login user, use auth header
+- modify ping_api to login user, use auth header
 
 ### medium
 
@@ -241,6 +240,8 @@
   
 ### done
 
+- test deployment
+- method must ref authorizer
 - authorizer return is messed up
 - apigw authorizer
 - configure userpool auth from dsl

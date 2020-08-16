@@ -153,13 +153,19 @@ def ApiModel(endpoint, **kwargs):
         return "AWS::ApiGateway::Model", props
     return ApiModel(endpoint, **kwargs)
 
+"""
+- docs say Name not required but seems to barf without it
+- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-authorizer.html#cfn-apigateway-authorizer-name
+"""
+
 def ApiAuthorizer(endpoint, **kwargs):
     suffix="%s-authorizer" % endpoint["name"]
     @resource(suffix=suffix)
     def ApiAuthorizer(endpoint, **kwargs):
         root=ref("%s-root" % kwargs["name"])
         provider=ref("%s-user-pool-arn" % endpoint["userpool"])
-        props={"IdentitySource": AuthorizationHeader,
+        props={"Name": random_id("authorizer"), # NB
+               "IdentitySource": AuthorizationHeader,
                "ProviderARNs": [provider],
                "RestApiId": root,
                "Type": "COGNITO_USER_POOLS"}
@@ -186,6 +192,9 @@ def ApiMethod(endpoint, **kwargs):
     def model_name(endpoint, kwargs):
         return "%s-%s-model" % (kwargs["name"],
                                 endpoint["name"])
+    def authorizer_name(endpoint, kwargs):
+        return "%s-%s-authorizer" % (kwargs["name"],
+                                     endpoint["name"])
     suffix="%s-method" % endpoint["name"]
     @resource(suffix=suffix)
     def ApiMethod(endpoint, **kwargs):
@@ -217,6 +226,11 @@ def ApiMethod(endpoint, **kwargs):
             models={"application/json": logical_id(model)}
             props["RequestModels"]=models
             depends.append(model)
+        if "userpool" in endpoint:
+            props["AuthorizationType"]="COGNITO_USER_POOLS" # override NONE
+            authorizer=authorizer_name(endpoint, kwargs)
+            props["AuthorizerId"]=ref(authorizer)
+            depends.append(authorizer)
         return "AWS::ApiGateway::Method", props, depends
     return ApiMethod(endpoint, **kwargs)
 
