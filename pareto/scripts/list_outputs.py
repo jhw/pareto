@@ -2,6 +2,12 @@
 
 from pareto.scripts import *
 
+"""
+    if (not args["verbose"] and
+                re.search("arn", output["OutputKey"], re.I)!=None):
+                continue
+"""
+
 if __name__=="__main__":
     try:
         argsconfig=yaml.safe_load("""
@@ -20,19 +26,13 @@ if __name__=="__main__":
         config["globals"]["stage"]=args.pop("stage")
         stackname="%s-%s" % (config["globals"]["app"],
                              config["globals"]["stage"])
-        outputs=sorted([{"OutputKey": k,
-                         "OutputValue": v}
-                        for k, v in Outputs.initialise(stackname, CF).items()],
-                       key=lambda x: x["OutputKey"])
-        def format_string(text, n=32):
-            return text+"".join([' '
-                                 for i in range(n-len(text))]) if len(text) < n else text[:n]            
-        for output in outputs:
-            if (not args["verbose"] and
-                re.search("arn", output["OutputKey"], re.I)!=None):
-                continue
-            print ("%s\t%s" % (format_string(output["OutputKey"]),
-                               output["OutputValue"]))
+        def filterfn(k, v):
+            return (args["verbose"] or
+                    re.search("arn", v, re.I)==None)
+        outputs=Outputs.initialise(stackname,
+                                   cf=CF,
+                                   filterfn=filterfn)
+        print (outputs.table_repr)
     except ClientError as error:
         print (error)
     except RuntimeError as error:

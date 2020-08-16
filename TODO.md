@@ -1,7 +1,5 @@
 ### short
 
-- outputs to dump self
-
 - events, resources lookup helpers
 
 - try reducing ExplicitAuthFlows
@@ -247,6 +245,7 @@
   
 ### done
 
+- outputs to dump self
 - outputs to use new outputs helpers
 - output helpers to be used by user/api scripts
 
