@@ -2,20 +2,24 @@
 
 - modify ping_api to login user, use auth header
 
+- publish() script to push index.json to all websites
+- check amplify cognito web client vs standard client
+
 ### pending
+
+- authorizer name
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
 - pinpoint
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278998251&language=en
 
 ### medium
 
-- amplify cognito web client vs standard client
 - how to enable apigw logs
 - iam deployment user
 - script to clean log groups
 - pip dependency install to ignore lxml, pymorphy
 - group iam permissions according to service
-- publish() script to push index.json to all websites
 
 - scaffold generator
 - targets

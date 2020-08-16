@@ -1,3 +1,14 @@
+### authorizer 16/8/20
+
+```
+2020-08-16 11:27:55.805000+00:00 :: pareto-demo-dev-Apis1-175QQYO1CZ04E :: HelloApiHelloGetAuthorizer :: AWS::ApiGateway::Authorizer :: 1 validation error detected: Value null at 'createAuthorizerInput.name' failed to satisfy constraint: Member must not be null (Service: AmazonApiGateway; Status Code: 400; Error Code: ValidationException; Request ID: 450dd7e5-2daa-482d-b9a1-f68403cccb90)
+2020-08-16 11:27:56.244000+00:00 :: pareto-demo-dev-Apis1-175QQYO1CZ04E :: HelloApiLogsRole :: AWS::IAM::Role :: Resource creation cancelled
+2020-08-16 11:27:56.925000+00:00 :: pareto-demo-dev-Apis1-175QQYO1CZ04E :: pareto-demo-dev-Apis1-175QQYO1CZ04E :: AWS::CloudFormation::Stack :: The following resource(s) failed to create: [HelloApiLogsRole, HelloApiHelloGetAuthorizer]. 
+2020-08-16 11:27:59.778000+00:00 :: pareto-demo-dev :: Apis1 :: AWS::CloudFormation::Stack :: Embedded stack arn:aws:cloudformation:eu-west-1:119552584133:stack/pareto-demo-dev-Apis1-175QQYO1CZ04E/838e1bd0-dfb3-11ea-b039-0a121e68abee was not successfully created: The following resource(s) failed to create: [HelloApiLogsRole, HelloApiHelloGetAuthorizer]. 
+2020-08-16 11:28:00.069000+00:00 :: pareto-demo-dev :: Misc1 :: AWS::CloudFormation::Stack :: Resource creation cancelled
+2020-08-16 11:28:00.677000+00:00 :: pareto-demo-dev :: pareto-demo-dev :: AWS::CloudFormation::Stack :: The following resource(s) failed to create: [Apis1, Misc1]. . Rollback requested by user.
+```
+
 ### services 15/8/20
 
 - could services and actions be merged ?
