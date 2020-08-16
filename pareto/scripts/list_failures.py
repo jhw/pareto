@@ -2,6 +2,8 @@
 
 from pareto.scripts import *
 
+from botocore.exceptions import ValidationError
+
 def fetch_events(stackname):
     stacknames=[stack["StackName"]
                 for stack in CF.describe_stacks()["Stacks"]
