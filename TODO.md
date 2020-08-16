@@ -1,10 +1,10 @@
 ### short
 
-- outputs to use new outputs helpers
-
-- try reducing ExplicitAuthFlows
+- outputs to dump self
 
 - events, resources lookup helpers
+
+- try reducing ExplicitAuthFlows
 
 - script to ping api
 - apigw authorizer
@@ -247,6 +247,7 @@
   
 ### done
 
+- outputs to use new outputs helpers
 - output helpers to be used by user/api scripts
 
 ```

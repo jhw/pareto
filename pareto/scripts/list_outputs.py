@@ -2,14 +2,6 @@
 
 from pareto.scripts import *
 
-def fetch_outputs(stackname):
-    outputs=[]
-    for stack in CF.describe_stacks()["Stacks"]:
-        if (stack["StackName"].startswith(stackname) and
-            "Outputs" in stack):
-            outputs+=stack["Outputs"]
-    return outputs
-
 if __name__=="__main__":
     try:
         argsconfig=yaml.safe_load("""
@@ -28,10 +20,9 @@ if __name__=="__main__":
         config["globals"]["stage"]=args.pop("stage")
         stackname="%s-%s" % (config["globals"]["app"],
                              config["globals"]["stage"])
-        """
-        - assuming every Output is guaranteed to have OutputKey, OutputValue
-        """
-        outputs=sorted(fetch_outputs(stackname),
+        outputs=sorted([{"OutputKey": k,
+                         "OutputValue": v}
+                        for k, v in Outputs.initialise(stackname, CF).items()],
                        key=lambda x: x["OutputKey"])
         def format_string(text, n=32):
             return text+"".join([' '
