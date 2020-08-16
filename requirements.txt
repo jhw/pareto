@@ -6,6 +6,7 @@ gitpython
 jsonschema
 git+https://github.com/spulec/moto
 pandas
+requests
 ruamel.yaml
 ### layer testing
 lxml
