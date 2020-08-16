@@ -3,7 +3,8 @@
 - modify ping_api to login user, use auth header
 
 - publish() script to push index.json to all websites
-- check amplify cognito web client vs standard client
+
+- separate script directories
 
 ### pending
 
@@ -14,6 +15,8 @@
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278998251&language=en
 
 ### medium
+
+- check amplify cognito web client vs standard client
 
 - how to enable apigw logs
 - iam deployment user
