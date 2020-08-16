@@ -4,6 +4,19 @@ CallbackUrl="https://%s.auth.${AWS::Region}.amazoncognito.com/callback"
 
 LogoutUrl="https://%s.auth.${AWS::Region}.amazoncognito.com"
 
+"""
+- one of these is required for boto3 admin login
+- suspect is ALLOW_ADMIN_USER_PASSWORD_AUTH
+- amplify login works without specifying any of these however
+"""
+
+ExplicitAuthFlows=yaml.safe_load("""
+- ALLOW_ADMIN_USER_PASSWORD_AUTH
+- ALLOW_CUSTOM_AUTH
+- ALLOW_USER_SRP_AUTH
+- ALLOW_REFRESH_TOKEN_AUTH
+""")
+
 UserAttrs=["email"]
 
 @resource(suffix="user-pool")
@@ -23,6 +36,7 @@ def UserPool(userattrs=UserAttrs,
 
 @resource(suffix="user-pool-client")
 def UserPoolClient(userattrs=UserAttrs,
+                   authflows=ExplicitAuthFlows,
                    **kwargs):
     userpool=ref("%s-user-pool" % kwargs["name"])
     callbackurl=CallbackUrl % resource_name(kwargs)
@@ -33,6 +47,7 @@ def UserPoolClient(userattrs=UserAttrs,
            "SupportedIdentityProviders": ["COGNITO"],
            "CallbackURLs": [callbackurl],
            "LogoutURLs": [logouturl],
+           "ExplicitAuthFlows": authflows,
            "AllowedOAuthFlowsUserPoolClient": True,
            "AllowedOAuthFlows": ["code"],
            "AllowedOAuthScopes": UserAttrs+["openid",

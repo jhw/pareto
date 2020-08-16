@@ -1,9 +1,5 @@
 ### short
 
-```
-Auth flow not enabled for this client
-```
-
 - script to ping api
 - apigw authorizer
 - configure userpool auth from dsl
@@ -12,6 +8,7 @@ Auth flow not enabled for this client
 
 ### medium
 
+- try reducing ExplicitAuthFlows
 - output helpers to be used by user/api scripts
 - how to enable apigw logs
 - iam deployment user
@@ -245,6 +242,10 @@ Auth flow not enabled for this client
   - not really required as this is about deployment not runtime
   
 ### done
+
+```
+Auth flow not enabled for this client
+```
 
 - ping api to test layer
 - POST body validation x-www-form-urlencoded params
