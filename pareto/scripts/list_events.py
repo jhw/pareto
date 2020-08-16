@@ -2,6 +2,17 @@
 
 from pareto.scripts import *
 
+from pareto.scripts.helpers.events import Events
+
+Attrs=yaml.safe_load("""
+- Timestamp
+# - StackName
+- LogicalResourceId
+- PhysicalResourceId
+- ResourceType
+- ResourceStatus
+""")
+
 if __name__=="__main__":
     try:
         argsconfig=yaml.safe_load("""
@@ -26,7 +37,7 @@ if __name__=="__main__":
         events=Events.initialise(stackname,
                                  cf=CF,
                                  filterfn=filterfn)
-        df=events.table_repr
+        df=events.table_repr(Attrs)
         pd.set_option('display.max_rows', df.shape[0]+1)
         print (df)
     except ClientError as error:

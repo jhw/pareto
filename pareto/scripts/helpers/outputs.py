@@ -1,7 +1,4 @@
-from pareto.helpers.text import hungarorise
-
-def format_text(text, n=32):
-    return text+"".join([' ' for i in range(n-len(text))]) if len(text) < n else text[:n]            
+from pareto.helpers.text import hungarorise, text_left
 
 class Outputs(dict):
 
@@ -28,7 +25,7 @@ class Outputs(dict):
 
     @property
     def table_repr(self):
-        return "\n".join(["%s\t%s" % (format_text(k), v)
+        return "\n".join(["%s\t%s" % (text_left(k), v)
                           for k, v in self.items()])
     
 if __name__=="__main__":

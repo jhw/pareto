@@ -28,3 +28,9 @@ def pluralise(text):
         return "%sies" % text[:-1]
     else:
         return "%ss" % text
+
+def text_left(text, n=32):
+    return text+"".join([' ' for i in range(n-len(text))]) if len(text) < n else text[:n]            
+    
+def text_right(text, n=32):
+    return ("".join([' ' for i in range(n-len(text))]))+text if len(text) < n else text[:n]            

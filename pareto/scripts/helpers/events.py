@@ -1,33 +1,22 @@
 from botocore.exceptions import ValidationError
 
+from pareto.helpers.text import text_left
+
 import pandas as pd
 
-import re, yaml
-
-DefaultAttrs=yaml.safe_load("""
-- Timestamp
-- StackName
-- LogicalResourceId
-- PhysicalResourceId
-- ResourceType
-- ResourceStatus
-- ResourceStatusReason
-""")
+import re
 
 class Event(dict):
 
     def __init__(self, event):
         dict.__init__(self, event)
 
-    def lookup(self, attr,
-               default=""):
+    def lookup(self, attr, default=""):
         return self[attr] if attr in self else default
         
-    def matches(self, term,
-                attrs=DefaultAttrs):
-        for attr in attrs:
-            if (attr in self and
-                re.search(term, str(self[attr]), re.I)!=None):
+    def matches(self, term):
+        for attr in self:
+            if re.search(term, str(self[attr]), re.I):
                 return True
         return False
         
@@ -56,10 +45,8 @@ class Events(list):
     def __init__(self, events):
         list.__init__(self, events)
     
-    @property
-    def table_repr(self,
-                   attrs=DefaultAttrs):
-        return pd.DataFrame([{attr: event.lookup(attr)
+    def table_repr(self, attrs):
+        return pd.DataFrame([{attr: text_left(str(event.lookup(attr)))
                               for attr in attrs}
                              for event in self])
     

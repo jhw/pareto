@@ -1,11 +1,10 @@
 ### short
 
 - adapt list_failures to lookup new event helpers
-  - likely needs custom attrs passing
 
 - resource lookup helpers
 
-- move format_text into text helpers
+- remove all custom col names for pd.DataFrame
 
 - try reducing list of ExplicitAuthFlows
 
@@ -250,6 +249,8 @@
   
 ### done
 
+- likely needs custom attrs passing
+- move format_text into text helpers
 - outputs to dump self
 - outputs to use new outputs helpers
 - output helpers to be used by user/api scripts

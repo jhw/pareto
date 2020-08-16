@@ -2,12 +2,6 @@
 
 from pareto.scripts import *
 
-"""
-    if (not args["verbose"] and
-                re.search("arn", output["OutputKey"], re.I)!=None):
-                continue
-"""
-
 if __name__=="__main__":
     try:
         argsconfig=yaml.safe_load("""
