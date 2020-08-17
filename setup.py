@@ -1,6 +1,7 @@
 """
 - https://stackoverflow.com/questions/50585246/pip-install-creates-only-the-dist-info-not-the-package
 - https://stackoverflow.com/questions/32688688/how-to-write-setup-py-to-include-a-git-repo-as-a-dependency
+- https://stackoverflow.com/questions/1612733/including-non-python-files-with-setup-py
 """
 
 import os, setuptools

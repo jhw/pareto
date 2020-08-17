@@ -3,6 +3,8 @@
 - moto dependency install
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
 
+- pip include non python files
+
 - check amplify cognito web client vs standard client
 
 ### pending
