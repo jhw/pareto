@@ -1,15 +1,16 @@
 ### short
 
+- pandas warnings
+- stop barfing if layers not included
 - schema updates not registering
+
 - add mapping to latest repo checking
 - force permissions to be required so u don't forget
 - check scripts args ordering
   - search_lambda_logs.py differs from ping_api.py
-- stop barfing if layers not included
 - abstract repo stuff as repo history
-- deploy_stack to check for lastet versions
+- deploy_stack to check for latest versions
 - rename Lambda as LambdaKey
-- pandas warnings
 - pip install private package
 - git dependencies install
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
@@ -19,9 +20,6 @@
 
 - authorizer name
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
-
-- pinpoint
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7278998251&language=en
 
 ### medium
 
@@ -37,6 +35,9 @@
 - route 53
 - google sheets upload
 - cloudwatch alerts
+
+- pinpoint
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7278998251&language=en
 
 - amplify change password
 - amplify self sign- up
