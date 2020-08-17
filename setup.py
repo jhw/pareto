@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pareto",
-    version="1.0.3",
+    version="1.0.4",
     author="jhw",
     author_email="justin.worrall@gmail.com",
     description="OTP for serverless",
@@ -24,11 +24,10 @@ setuptools.setup(
                       "boto3",
                       "gitpython",
                       "jsonschema",
-                      "git+https://github.com/spulec/moto",
                       "pandas",
                       "pareto",
                       "requests",
-                      "ruamel.yaml"]
+                      "ruamel.yaml"],
     include_package_data=True
 
 )
