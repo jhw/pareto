@@ -9,7 +9,7 @@ https://stackoverflow.com/questions/1612733/including-non-python-files-with-setu
     
 setuptools.setup(
     name="pareto",
-    version="0.0.1",
+    version="1.0.1",
     author="jhw",
     author_email="justin.worrall@gmail.com",
     description="Simple AWS Cloudformation CDK",
