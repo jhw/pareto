@@ -32,6 +32,7 @@ def add_lambda_staging(config):
     for action in filter_actions(config["components"]):
        add_staging(action, commits)
 
+@assert_layers
 def add_layer_staging(config):
     layers=Layers(config=config, s3=S3)
     for layer in config["components"]["layers"]:

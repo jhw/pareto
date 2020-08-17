@@ -35,9 +35,19 @@ def validate_bucket(config):
 def assert_actions(fn):
     def wrapped(*args, **kwargs):
         config=kwargs["config"] if "config" in kwargs else args[0]
-        if "actions" not in config["components"]:
+        if ("actions" not in config["components"] and
+            "services" not in config["components"]):
             raise RuntimeError("No actions found")
         return fn(*args, **kwargs)
+    return wrapped
+
+def assert_layers(fn):
+    def wrapped(*args, **kwargs):
+        config=kwargs["config"] if "config" in kwargs else args[0]
+        if "layers" in config["components"]:
+            return fn(*args, **kwargs)
+        else:
+            pass
     return wrapped
 
 """

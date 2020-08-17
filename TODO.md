@@ -1,7 +1,6 @@
 ### short
 
 - pandas warnings
-- stop barfing if layers not included
 - schema updates not registering
 
 - add mapping to latest repo checking
@@ -260,6 +259,7 @@
   
 ### done
 
+- stop barfing if layers not included
 - publish() script to push index.json to all websites
 - separate script directories
 - modify ping_api to login user, use auth header
