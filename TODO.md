@@ -1,11 +1,19 @@
 ### short
 
-- moto dependency install
+- schema updates not registering
+- add mapping to latest repo checking
+- force permissions to be required so u don't forget
+- check scripts args ordering
+  - search_lambda_logs.py differs from ping_api.py
+- stop barfing if layers not included
+- abstract repo stuff as repo history
+- deploy_stack to check for lastet versions
+- rename Lambda as LambdaKey
+- pandas warnings
+- pip install private package
+- git dependencies install
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
-
-- pip include non python files
-
-- check amplify cognito web client vs standard client
+- pip inclusion of non- python files
 
 ### pending
 
@@ -17,20 +25,18 @@
 
 ### medium
 
-- how to enable apigw logs
+- amplify cognito web client vs standard client
+
+- enable apigw logs
 - iam deployment user
 - script to clean log groups
-- pip dependency install to ignore lxml, pymorphy
 - group iam permissions according to service
 
-- scaffold generator
 - targets
 - cloudfront
 - route 53
 - google sheets upload
 - cloudwatch alerts
-
-- lambda version -> redeploy without s3 key change ?
 
 - amplify change password
 - amplify self sign- up
@@ -56,6 +62,11 @@
 
 ### thoughts
 
+- scaffold generator ?
+  - not convinced
+- lambda version -> redeploy without s3 key change ?
+  - absolutely no evidence this would work
+  - and also u wouldn't want to give up existing lambda names anyway
 - HTTP POST x-form-www-urlencoded handler
   - too complex as doesn't seem to fit inside the lambda proxy / model integration
   - just use JSON instead
