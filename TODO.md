@@ -1,7 +1,5 @@
 ### short
 
-- schema updates not registering
-
 - add mapping to latest repo checking
 - force permissions to be required so u don't forget
 - check scripts args ordering
@@ -15,6 +13,9 @@
 - pip inclusion of non- python files
 
 ### pending
+
+- schema updates not registering
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7282694321&language=en
 
 - authorizer name
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
