@@ -1,4 +1,3 @@
-### app
 awscli
 botocore
 boto3
@@ -8,6 +7,3 @@ git+https://github.com/spulec/moto
 pandas
 requests
 ruamel.yaml
-### layer testing
-lxml
-pymorphy2
