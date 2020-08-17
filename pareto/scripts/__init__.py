@@ -6,6 +6,14 @@ from pareto.scripts.helpers.outputs import Outputs
 
 from pareto.scripts.helpers.argsparse import argsparse
 
+"""
+- warnings because pandas is noisy
+"""
+
+import warnings
+
+warnings.simplefilter("ignore", UserWarning)
+
 import pandas as pd
 
 S3=boto3.client("s3")
