@@ -1,8 +1,7 @@
 ### short
 
-- json property ordering
-  - $schema
-  - template version
+- template OrderedDict
+- schema OrderedDict
 
 - pip inclusion of non- python files
 
