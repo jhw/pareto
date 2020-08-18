@@ -1,10 +1,10 @@
-from pareto.staging.lambdas import LambdaCommit, LambdaCommits
+from pareto.staging.lambdas import Lambda, Lambdas
 
 import boto3, datetime, unittest
 
 from moto import mock_s3
 
-class LambdaCommitTest(unittest.TestCase):
+class LambdaTest(unittest.TestCase):
 
     App="my-app"
     Name="hello-world"
@@ -14,17 +14,17 @@ class LambdaCommitTest(unittest.TestCase):
     Key="my-app/lambdas/hello-world/1970-12-20-19-30-00-ABCDEFGH.zip"
     
     def test_create_s3(self):
-        commit=LambdaCommit.create_s3(self.Key)
+        commit=Lambda.create_s3(self.Key)
         for attr in ["app", "name", "timestamp", "hexsha"]:
             self.assertEqual(commit[attr], getattr(self, attr.capitalize()))
 
     def test_str(self):
-        commit=LambdaCommit(**{attr: getattr(self, attr.capitalize())
+        commit=Lambda(**{attr: getattr(self, attr.capitalize())
                                for attr in ["app", "name", "timestamp", "hexsha"]})
         self.assertEqual(str(commit), self.Key)
 
 @mock_s3
-class LambdaCommitsTest(unittest.TestCase):
+class LambdasTest(unittest.TestCase):
 
     Config={"globals": {"app": "my-app",
                         "bucket": "foobar"}}
@@ -45,7 +45,7 @@ class LambdaCommitsTest(unittest.TestCase):
         
     def test_latest(self):
         bucketname=self.Config["globals"]["bucket"]
-        commits=LambdaCommits(self.Config, self.s3)
+        commits=Lambdas(self.Config, self.s3)
         latest=commits.latest
         for k, v in [("hello-world", "1970-12-20-19-31-00-IJKLMNOP.zip"),
                      ("hello-world-2", "1970-12-20-19-30-00-ABCDEFGH.zip")]:
@@ -54,7 +54,7 @@ class LambdaCommitsTest(unittest.TestCase):
 
     def test_groups(self):
         bucketname=self.Config["globals"]["bucket"]
-        commits=LambdaCommits(self.Config, self.s3)
+        commits=Lambdas(self.Config, self.s3)
         groups=commits.grouped
         for k, n in [("hello-world", 2),
                      ("hello-world-2", 1)]:

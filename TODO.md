@@ -1,5 +1,6 @@
 ### short
 
+- fix tests
 - rename Lambda as LambdaKey
 - pip install private package
 
