@@ -1,7 +1,5 @@
 ### short
 
-- deploy_stack to check for latest versions
-
 - pip inclusion of non- python files
 
 ### pending
@@ -251,6 +249,7 @@
   
 ### done
 
+- deploy_stack to check for latest versions
 - add live option to deploy lambdas
 - add mapping to latest repo checking
 - abstract repo stuff as repo history
