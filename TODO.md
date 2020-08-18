@@ -1,10 +1,17 @@
 ### short
 
-- test schema update/redeployment
-- check if authorizer name still required
+- method updates still not being registered :(
+
+- apigw extended logging
+
+- delete stack failed to clean s3 bucket
+
 - script to clean log groups
 
 ### pending
+
+- why is authorizer name required ?
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
 - cloudwatch dashboard parameter refs
   - https://console.aws.amazon.com/support/home#/case/?displayId=7285885771&language=en
@@ -250,6 +257,7 @@
   
 ### done
 
+- test schema update/redeployment
 <<<<<<< HEAD
 - deploy_stack to check for latest versions
 - add live option to deploy lambdas
