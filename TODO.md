@@ -1,18 +1,17 @@
 ### short
 
 - test schema update/redeployment
-
 - check if authorizer name still required
+- script to clean log groups
+
+### pending
+
+- cloudwatch dashboard parameter refs
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7285885771&language=en
 
 ### medium
 
-- support -> stage variables in dashboards
-
-- pip inclusion of non- python files
-
-- enable apigw logs
 - iam deployment user
-- script to clean log groups
 - group iam permissions according to service
 
 - targets
@@ -48,6 +47,10 @@
 
 ### thoughts
 
+- enable apigw logs
+  - don't see the point if you're not customising apigw highly
+- pip inclusion of non- python files ?
+  - not an issue for now  
 - force permissions to be required so u don't forget ?
   - think this is overkill
 - scaffold generator ?
