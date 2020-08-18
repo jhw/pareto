@@ -1,11 +1,8 @@
 ### short
 
-- pip install private package
-  - https://stackoverflow.com/questions/4830856/is-it-possible-to-use-pip-to-install-a-package-from-a-private-github-repository
-
-- abstract repo stuff as repo history
-- add mapping to latest repo checking
-- deploy_stack to check for latest versions
+- json property ordering
+  - $schema
+  - template version
 
 - pip inclusion of non- python files
 
@@ -256,6 +253,8 @@
   
 ### done
 
+- version
+- description
 - git dependencies install
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
 - rename Lambda as LambdaKey

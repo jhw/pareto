@@ -6,6 +6,8 @@ from pareto.helpers.cloudformation.utils import logical_id
 
 import io, json, re, ruamel.yaml
 
+TemplateVersion="2010-09-09"
+
 Metrics={"resources": (lambda t: len(t.Resources)/200),
          "outputs": (lambda t: len(t.Outputs)/60),
          "template_size": (lambda t: len(json.dumps(t.render()))/51200)}
@@ -95,6 +97,9 @@ class Template:
         struct={attr: getattr(self, attr)
                 for attr in self.Attrs
                 if attr!="Charts"}
+        struct["AWSTemplateFormatVersion"]=TemplateVersion
+        if self.name:
+            struct["Description"]=self.name
         if self.Charts!=[]:
             dash=Dashboard(**{"name": self.name,
                               "body": self.Charts})
