@@ -1,7 +1,5 @@
 ### short
 
-- move commit map s3 checking into commits
-
 - deploy_stack to check for latest versions
 
 - pip inclusion of non- python files
