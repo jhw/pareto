@@ -1,9 +1,29 @@
-from pareto.scripts import *
-
 from git import Repo
+
+def format_commits(fn):
+    def wrapped(*args, **kwargs):
+        commits=fn(*args, **kwargs)
+        if not commits.complete:
+            raise RuntimeError("latest commit map is incomplete (if you've moved lambdas to new directory, have changes been committed ?)")
+        return {k.split("/")[1].replace("_", "-"):v
+                for k, v in commits.items()}
+    return wrapped
 
 class CommitMap(dict):
 
+    @classmethod
+    @format_commits
+    def create(self,
+               config,
+               repo=Repo("."),
+               ignore=["test.py"]):
+        roots=["%s/%s" % (config["globals"]["src"], path)
+               for path in os.listdir(config["globals"]["src"])]
+        commits=CommitMap(roots=roots,
+                          ignore=ignore)
+        commits.populate(repo.iter_commits(repo.active_branch))
+        return commits
+    
     def __init__(self, roots, ignore):
         dict.__init__(self)
         self.roots=roots
@@ -59,38 +79,18 @@ class CommitMap(dict):
             self.update(c1, diffs)
             if self.complete:
                 break
-
-def format_commits(fn):
-    def wrapped(*args, **kwargs):
-        commits=fn(*args, **kwargs)
-        if not commits.complete:
-            raise RuntimeError("latest commit map is incomplete (if you've moved lambdas to new directory, has changed been committed ?)")
-        return {k.split("/")[1].replace("_", "-"):v
-                for k, v in commits.items()}
-    return wrapped
             
-@format_commits
-def latest_commits(config,
-                   repo=Repo("."),
-                   ignore=["test.py"]):
-    logging.info("filtering latest commits")
-    roots=["%s/%s" % (config["globals"]["src"], path)
-           for path in os.listdir(config["globals"]["src"])]
-    latest=CommitMap(roots=roots,
-                     ignore=ignore)
-    latest.populate(repo.iter_commits(repo.active_branch))
-    return latest
-
 if __name__=="__main__":
-    try:        
+    try:
+        from pareto.scripts import *
         init_stdout_logger(logging.INFO)
         argsconfig=yaml.safe_load("""
         - name: config
           type: file
         """)
         args=argsparse(sys.argv[1:], argsconfig)
-        config=args.pop("config")
-        print (latest_commits(config))
+        config=args.pop("config")        
+        print (CommitMap.create(config))
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
