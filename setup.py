@@ -30,22 +30,37 @@ def filter_pip_dependencies(root="requirements.txt"):
     return [row for row in open(root).read().split("\n")
             if (row!='' and
                 not row.startswith("git+"))]
-             
+
+"""
+- https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
+- https://stackoverflow.com/questions/23521345/python-pip-how-do-i-install-a-specific-version-of-a-git-repository-from-githu
+"""
+
+def filter_git_dependencies(root="requirements.txt"):
+    def format_entry(row):
+        stem=row.split("+")[1]
+        stem, branch = stem.split("@") if "@" in stem else stem, "master"
+        return "%s/tarball/%s" % (stem, branch)        
+    return [format_entry(row)
+            for row in open(root).read().split("\n")
+            if row.startswith("git+")]
+
 setuptools.setup(
     name="pareto",
-    version="1.0.6",
+    version="1.0.7",
     author="jhw",
     author_email="justin.worrall@gmail.com",
     description="OTP for serverless",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jhw/pareto",
-    packages=filter_packages("pareto"),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=filter_pip_dependencies()
+    packages=filter_packages("pareto"),
+    install_requires=filter_pip_dependencies(),
+    dependency_links=filter_git_dependencies()
 )
 

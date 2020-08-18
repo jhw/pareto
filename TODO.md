@@ -2,9 +2,6 @@
 
 - pip install private package
 
-- git dependencies install
-  - https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
-
 - abstract repo stuff as repo history
 - add mapping to latest repo checking
 - deploy_stack to check for latest versions
@@ -258,6 +255,8 @@
   
 ### done
 
+- git dependencies install
+  - https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
 - rename Lambda as LambdaKey
 - fix tests
 - check scripts args ordering
