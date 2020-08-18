@@ -1,6 +1,7 @@
 ### short
 
 - pip install private package
+  - https://stackoverflow.com/questions/4830856/is-it-possible-to-use-pip-to-install-a-package-from-a-private-github-repository
 
 - abstract repo stuff as repo history
 - add mapping to latest repo checking
