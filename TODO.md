@@ -1,22 +1,12 @@
 ### short
 
-- extend master template name
-
 - test schema update/redeployment
-
-- pip inclusion of non- python files
-
-### pending
-
-- schema updates not registering
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7282694321&language=en
-
-- authorizer name
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
 ### medium
 
 - support -> stage variables in dashboards
+- check if authorizer name still required
+- pip inclusion of non- python files
 
 - enable apigw logs
 - iam deployment user
@@ -255,6 +245,12 @@
   
 ### done
 
+- authorizer name
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
+- schema updates not registering
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7282694321&language=en
+- extend master template name ?
+  - simply not worth it
 - ruamel.yaml to auto- convert ordered dict to dict for rendering
 - schema OrderedDict
 - template OrderedDict
