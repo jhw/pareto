@@ -12,13 +12,6 @@ from pareto.helpers.text import underscore
 
 import zipfile
 
-def format_commits(fn):
-    def wrapped(*args, **kwargs):
-        commits=fn(*args, **kwargs)
-        return {k.split("/")[1].replace("_", "-"):v
-                for k, v in commits.items()}
-    return wrapped
-
 @assert_actions
 def add_staging(config, commits):
     logging.info("adding staging")
@@ -101,7 +94,7 @@ if __name__=="__main__":
         run_tests(config)
         commits=CommitMap.create(config)
         add_staging(config, commits)
-        push_lambdas(config)
+        # push_lambdas(config)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
