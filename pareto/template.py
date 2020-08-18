@@ -152,17 +152,23 @@ class Template:
         return json.dumps(self.render())
 
     """
-    - currently converting the root OrderedDict structure to dict()
-    - but OrderedDict children such as Model schema are not modified
+    - https://stackoverflow.com/questions/53874345/how-do-i-dump-an-ordereddict-out-as-a-yaml-file
     """
     
     @property
     def yaml_repr(self):
+        from ruamel.yaml.representer import RoundTripRepresenter
+        class MyRepresenter(RoundTripRepresenter):
+            pass
+        ruamel.yaml.add_representer(OrderedDict,
+                                    MyRepresenter.represent_dict, 
+                                    representer=MyRepresenter)
         yaml=ruamel.yaml.YAML()
-        yaml.representer.ignore_aliases = lambda *data: True
+        yaml.Representer=MyRepresenter
+        yaml.representer.ignore_aliases=lambda *data: True
         yaml.preserve_quotes=True
         buf=io.StringIO()
-        yaml.dump(dict(self.render()), buf)
+        yaml.dump(self.render(), buf)
         return buf.getvalue()
     
 if __name__=="__main__":

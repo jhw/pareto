@@ -62,8 +62,8 @@ if __name__=="__main__":
         add_lambda_staging(config)
         add_layer_staging(config)
         env=synth_env(config)
-        env.push(S3)
         if args["live"]:
+            env.push(S3)
             env.deploy(CF)
     except ClientError as error:
         logging.error(error)                      

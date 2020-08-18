@@ -2,8 +2,6 @@
 
 - extend master template name
 
-- ruamel.yaml to auto- convert ordered dict to dict for rendering
-
 - test schema update/redeployment
 
 - pip inclusion of non- python files
@@ -257,6 +255,7 @@
   
 ### done
 
+- ruamel.yaml to auto- convert ordered dict to dict for rendering
 - schema OrderedDict
 - template OrderedDict
 - version
