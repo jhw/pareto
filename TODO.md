@@ -1,5 +1,7 @@
 ### short
 
+- rename "non chart value"
+
 - pip install private package
   - https://stackoverflow.com/questions/4830856/is-it-possible-to-use-pip-to-install-a-package-from-a-private-github-repository
 
