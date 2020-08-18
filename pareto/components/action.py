@@ -18,7 +18,7 @@ def Action(concurrency=None,
     dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
     rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
     props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
-                    "S3Key": kwargs["staging"]["key"]},
+                    "S3Key": str(kwargs["staging"]["key"])}, # NB str()
            "FunctionName": resource_name(kwargs),
            "Handler": handler,
            "MemorySize": memory,
