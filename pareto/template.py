@@ -151,6 +151,11 @@ class Template:
     def json_repr(self):
         return json.dumps(self.render())
 
+    """
+    - currently converting the root OrderedDict structure to dict()
+    - but OrderedDict children such as Model schema are not modified
+    """
+    
     @property
     def yaml_repr(self):
         yaml=ruamel.yaml.YAML()

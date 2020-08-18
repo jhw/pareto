@@ -1,6 +1,6 @@
 ### short
 
-- schema OrderedDict
+- ruamel.yaml to auto- convert ordered dict to dict for rendering
 
 - test schema update/redeployment
 
@@ -15,6 +15,8 @@
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
 ### medium
+
+- support -> stage variables in dashboards
 
 - enable apigw logs
 - iam deployment user
@@ -253,6 +255,7 @@
   
 ### done
 
+- schema OrderedDict
 - template OrderedDict
 - version
 - description
