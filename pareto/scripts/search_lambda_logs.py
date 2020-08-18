@@ -11,13 +11,13 @@ if __name__=="__main__":
         argsconfig=yaml.safe_load("""
         - name: config
           type: file
-        - name: lambda
-          type: str
         - name: stage
           type: enum
           options:
           - dev
           - prod
+        - name: lambda
+          type: str
         - name: window
           type: int
         - name: query

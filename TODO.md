@@ -1,13 +1,11 @@
 ### short
 
-- add mapping to latest repo checking
-- force permissions to be required so u don't forget
-- check scripts args ordering
-  - search_lambda_logs.py differs from ping_api.py
-- abstract repo stuff as repo history
-- deploy_stack to check for latest versions
 - rename Lambda as LambdaKey
 - pip install private package
+
+- add mapping to latest repo checking
+- abstract repo stuff as repo history
+- deploy_stack to check for latest versions
 - git dependencies install
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
 - pip inclusion of non- python files
@@ -21,8 +19,6 @@
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
 ### medium
-
-- amplify cognito web client vs standard client
 
 - enable apigw logs
 - iam deployment user
@@ -62,6 +58,8 @@
 
 ### thoughts
 
+- force permissions to be required so u don't forget ?
+  - think this is overkill
 - scaffold generator ?
   - not convinced
 - lambda version -> redeploy without s3 key change ?
@@ -259,6 +257,9 @@
   
 ### done
 
+- check scripts args ordering
+  - search_lambda_logs.py differs from ping_api.py
+- amplify cognito web client vs standard client
 - pandas warnings
 - stop barfing if layers not included
 - publish() script to push index.json to all websites
