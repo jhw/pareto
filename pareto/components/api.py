@@ -1,5 +1,7 @@
 from pareto.components import *
 
+from collections import OrderedDict
+
 from jsonschema import Draft7Validator
 
 Url="https://${rest_api}.execute-api.%s.${AWS::URLSuffix}/${stage_name}/%s"
@@ -134,13 +136,16 @@ def ApiModel(endpoint, **kwargs):
                 raise RuntimeError("ValidationError: %s" % str(error))
             return fn(endpoint, **kwargs)
         return wrapped
-    def add_schema_metadata(fn):
+    def format_schema(fn):
         def wrapped(endpoint, **kwargs):
-            endpoint["schema"]["$schema"]=Draft7Schema
+            schema=OrderedDict()
+            schema["$schema"]=Draft7Schema
+            schema.update(endpoint["schema"])
+            endpoint["schema"]=schema
             return fn(endpoint, **kwargs)
         return wrapped
     @validate_schema
-    @add_schema_metadata
+    @format_schema
     @resource(suffix=suffix)
     def ApiModel(endpoint, **kwargs):
         root=ref("%s-root" % kwargs["name"])

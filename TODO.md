@@ -1,16 +1,14 @@
 ### short
 
-- pip inclusion of non- python files
+- test schema update/redeployment
 
-### pending
-
-- schema updates not registering
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7282694321&language=en
-
-- authorizer name
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
+- check if authorizer name still required
 
 ### medium
+
+- support -> stage variables in dashboards
+
+- pip inclusion of non- python files
 
 - enable apigw logs
 - iam deployment user
@@ -249,12 +247,26 @@
   
 ### done
 
+<<<<<<< HEAD
 - deploy_stack to check for latest versions
 - add live option to deploy lambdas
 - add mapping to latest repo checking
 - abstract repo stuff as repo history
 - pip install private package
   - https://stackoverflow.com/questions/4830856/is-it-possible-to-use-pip-to-install-a-package-from-a-private-github-repository
+=======
+- authorizer name
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
+- schema updates not registering
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7282694321&language=en
+- extend master template name ?
+  - simply not worth it
+- ruamel.yaml to auto- convert ordered dict to dict for rendering
+- schema OrderedDict
+- template OrderedDict
+- version
+- description
+>>>>>>> apigw-schema-updates
 - git dependencies install
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
 - rename Lambda as LambdaKey
