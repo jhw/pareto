@@ -1,5 +1,7 @@
 ### short
 
+- extend master template name
+
 - ruamel.yaml to auto- convert ordered dict to dict for rendering
 
 - test schema update/redeployment
