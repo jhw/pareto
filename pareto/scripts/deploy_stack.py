@@ -3,7 +3,10 @@
 from pareto.scripts import *
 
 from pareto.staging.lambdas import *
+
 from pareto.staging.layers import *
+
+from pareto.staging.commits import CommitMap
 
 from pareto.env import synth_env
 
@@ -26,7 +29,7 @@ def add_lambda_staging(config):
         else:
             if action["name"] not in latest:
                 raise RuntimeError("no deployables found for %s" % action["name"])
-            staging["key"]=str(latest[action["name"]])
+            staging["key"]=latest[action["name"]]
         action["staging"]=staging    
     commits=LambdaKeys(config=config, s3=S3)
     for action in filter_actions(config["components"]):
@@ -39,6 +42,14 @@ def add_layer_staging(config):
         if layer["name"] not in layers:
             raise RuntimeError("layer %s does not exist" % layer["name"])
         layer["staging"]=layers[layer["name"]]
+
+@assert_actions
+def check_latest(config):
+    commits=CommitMap.create(config)
+    for action in filter_actions(config["components"]):
+        print (action["name"],
+               commits[action["name"]][0],
+               action["staging"]["key"]["hexsha"])
         
 if __name__=="__main__":
     try:        
@@ -61,6 +72,7 @@ if __name__=="__main__":
         validate_bucket(config)
         add_lambda_staging(config)
         add_layer_staging(config)
+        check_latest(config)
         env=synth_env(config)
         env.push(S3)
         if args["live"]:
