@@ -1,13 +1,14 @@
 ### short
 
-- rename Lambda as LambdaKey
 - pip install private package
 
-- add mapping to latest repo checking
-- abstract repo stuff as repo history
-- deploy_stack to check for latest versions
 - git dependencies install
   - https://python-packaging.readthedocs.io/en/latest/dependencies.html#packages-not-on-pypi
+
+- abstract repo stuff as repo history
+- add mapping to latest repo checking
+- deploy_stack to check for latest versions
+
 - pip inclusion of non- python files
 
 ### pending
@@ -257,6 +258,7 @@
   
 ### done
 
+- rename Lambda as LambdaKey
 - fix tests
 - check scripts args ordering
   - search_lambda_logs.py differs from ping_api.py

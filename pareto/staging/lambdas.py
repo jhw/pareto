@@ -1,10 +1,10 @@
 import datetime, re
 
-class Lambda(dict):
+class LambdaKey(dict):
 
     @classmethod
     def create_s3(self, key):
-        commit=Lambda()
+        commit=LambdaKey()
         tokens=key.split("/")
         commit["app"]=tokens[0]
         commit["name"]=tokens[2]
@@ -27,7 +27,7 @@ class Lambda(dict):
                                             format_timestamp(self["timestamp"]),
                                             self["hexsha"])
     
-class Lambdas(list):
+class LambdaKeys(list):
 
     def __init__(self, config, s3):
         list.__init__(self)
@@ -36,7 +36,7 @@ class Lambdas(list):
                                  Prefix="%s/lambdas" % config["globals"]["app"])
         for struct in pages:
             if "Contents" in struct:
-                self+=[Lambda.create_s3(obj["Key"])
+                self+=[LambdaKey.create_s3(obj["Key"])
                        for obj in struct["Contents"]]
 
     @property

@@ -4,10 +4,10 @@ import unittest
 
 from pareto.scripts.helpers.profiles import toggle_aws_profile
 
-from tests.staging.lambdas import LambdaTest, LambdaTest
+from tests.staging.lambdas import LambdaKeyTest, LambdaKeysTest
 
-Tests=[LambdaTest,
-       LambdaTest]
+Tests=[LambdaKeyTest,
+       LambdaKeysTest]
 
 @toggle_aws_profile
 def run_tests(config):

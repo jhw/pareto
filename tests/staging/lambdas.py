@@ -1,10 +1,10 @@
-from pareto.staging.lambdas import Lambda, Lambdas
+from pareto.staging.lambdas import LambdaKey, LambdaKeys
 
 import boto3, datetime, unittest
 
 from moto import mock_s3
 
-class LambdaTest(unittest.TestCase):
+class LambdaKeyTest(unittest.TestCase):
 
     App="my-app"
     Name="hello-world"
@@ -14,17 +14,17 @@ class LambdaTest(unittest.TestCase):
     Key="my-app/lambdas/hello-world/1970-12-20-19-30-00-ABCDEFGH.zip"
     
     def test_create_s3(self):
-        commit=Lambda.create_s3(self.Key)
+        commit=LambdaKey.create_s3(self.Key)
         for attr in ["app", "name", "timestamp", "hexsha"]:
             self.assertEqual(commit[attr], getattr(self, attr.capitalize()))
 
     def test_str(self):
-        commit=Lambda(**{attr: getattr(self, attr.capitalize())
-                               for attr in ["app", "name", "timestamp", "hexsha"]})
+        commit=LambdaKey(**{attr: getattr(self, attr.capitalize())
+                            for attr in ["app", "name", "timestamp", "hexsha"]})
         self.assertEqual(str(commit), self.Key)
 
 @mock_s3
-class LambdasTest(unittest.TestCase):
+class LambdaKeysTest(unittest.TestCase):
 
     Config={"globals": {"app": "my-app",
                         "bucket": "foobar"}}
@@ -45,7 +45,7 @@ class LambdasTest(unittest.TestCase):
         
     def test_latest(self):
         bucketname=self.Config["globals"]["bucket"]
-        commits=Lambdas(self.Config, self.s3)
+        commits=LambdaKeys(self.Config, self.s3)
         latest=commits.latest
         for k, v in [("hello-world", "1970-12-20-19-31-00-IJKLMNOP.zip"),
                      ("hello-world-2", "1970-12-20-19-30-00-ABCDEFGH.zip")]:
@@ -54,7 +54,7 @@ class LambdasTest(unittest.TestCase):
 
     def test_groups(self):
         bucketname=self.Config["globals"]["bucket"]
-        commits=Lambdas(self.Config, self.s3)
+        commits=LambdaKeys(self.Config, self.s3)
         groups=commits.grouped
         for k, n in [("hello-world", 2),
                      ("hello-world-2", 1)]:
