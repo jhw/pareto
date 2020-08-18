@@ -1,14 +1,14 @@
 ### short
 
-- method updates still not being registered :(
-
 - apigw extended logging
-
 - delete stack failed to clean s3 bucket
-
 - script to clean log groups
+- group iam permissions according to service
 
 ### pending
+
+- method updates still not being registered :(
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7282694321&language=en
 
 - why is authorizer name required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
@@ -19,7 +19,6 @@
 ### medium
 
 - iam deployment user
-- group iam permissions according to service
 
 - targets
 - cloudfront
