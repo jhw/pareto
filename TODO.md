@@ -1,6 +1,5 @@
 ### short
 
-- fix tests
 - rename Lambda as LambdaKey
 - pip install private package
 
@@ -258,6 +257,7 @@
   
 ### done
 
+- fix tests
 - check scripts args ordering
   - search_lambda_logs.py differs from ping_api.py
 - amplify cognito web client vs standard client
