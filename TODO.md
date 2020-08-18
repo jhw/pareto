@@ -1,7 +1,8 @@
 ### short
 
-- template OrderedDict
 - schema OrderedDict
+
+- test schema update/redeployment
 
 - pip inclusion of non- python files
 
@@ -252,6 +253,7 @@
   
 ### done
 
+- template OrderedDict
 - version
 - description
 - git dependencies install

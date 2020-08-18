@@ -4,6 +4,8 @@
 
 from pareto.helpers.cloudformation.utils import logical_id
 
+from collections import OrderedDict
+
 import io, json, re, ruamel.yaml
 
 TemplateVersion="2010-09-09"
@@ -53,7 +55,7 @@ def Dashboard(**kwargs):
 
 class Template:
     
-    Attrs=["Parameters", "Resources", "Outputs", "Charts"]
+    Attrs=["Parameters", "Outputs", "Resources", "Charts"]
     
     def __init__(self, name=None):
         self.name=name
@@ -94,18 +96,20 @@ class Template:
                 getattr(self, k).append(v)                
 
     def render(self):
-        struct={attr: getattr(self, attr)
-                for attr in self.Attrs
-                if attr!="Charts"}
+        struct=OrderedDict()
         struct["AWSTemplateFormatVersion"]=TemplateVersion
         if self.name:
             struct["Description"]=self.name
+        for attr in self.Attrs:
+            if attr=="Charts":
+                continue
+            struct[attr]=getattr(self, attr)
         if self.Charts!=[]:
             dash=Dashboard(**{"name": self.name,
                               "body": self.Charts})
             struct["Resources"].update(dict([dash]))
         return struct
-            
+                
     @property
     def resource_ids(self):
         ids=[]
@@ -153,7 +157,7 @@ class Template:
         yaml.representer.ignore_aliases = lambda *data: True
         yaml.preserve_quotes=True
         buf=io.StringIO()
-        yaml.dump(self.render(), buf)
+        yaml.dump(dict(self.render()), buf)
         return buf.getvalue()
     
 if __name__=="__main__":
