@@ -4,11 +4,11 @@ from pareto.scripts import *
 
 from pareto.scripts.run_tests import run_tests
 
-from pareto.staging.lambdas import *
+from pareto.staging.lambdas import LambdaKey
+
+from pareto.staging.commits import CommitMap
 
 from pareto.helpers.text import underscore
-
-from git import Repo
 
 import zipfile
 
@@ -18,64 +18,6 @@ def format_commits(fn):
         return {k.split("/")[1].replace("_", "-"):v
                 for k, v in commits.items()}
     return wrapped
-
-@format_commits
-def latest_commits(config,
-                   repo=Repo("."),
-                   ignore=["test.py"]):
-    logging.info("filtering latest commits")
-    def diff_commits(c1, c0):
-        modified=[] 
-        for diff in c0.diff(c1):
-            if (diff.a_blob is not None and
-                diff.a_blob.path not in modified):
-                modified.append(diff.a_blob.path)        
-            if (diff.b_blob is not None and
-                diff.b_blob.path not in modified):
-                modified.append(diff.b_blob.path)        
-        return modified
-    class Latest(dict):
-        def __init__(self, roots, ignore):
-            dict.__init__(self)
-            self.roots=roots
-            self.ignore=ignore
-        def find_root(self, diff):
-            for root in self.roots:
-                if diff.startswith(root):
-                    return root
-            return None
-        def is_valid(self, diff):
-            for suffix in self.ignore:
-                if diff.endswith(suffix):
-                    return False
-            return True
-        def update(self, commit, diffs):
-            ts=commit.committed_datetime.strftime("%Y-%m-%d %H:%M:%S")
-            for diff in diffs:
-                if not self.is_valid(diff):
-                    continue
-                root=self.find_root(diff)
-                if (root and
-                    root not in self):
-                    self[root]=(commit.hexsha, ts)
-        @property
-        def complete(self):
-            return len(self)==len(self.roots)
-    commits=sorted(repo.iter_commits(repo.active_branch),
-                   key=lambda x: x.committed_datetime)
-    commits.reverse()
-    roots=["%s/%s" % (config["globals"]["src"], path)
-           for path in os.listdir(config["globals"]["src"])]
-    latest=Latest(roots=roots,
-                  ignore=ignore)
-    for c0, c1 in zip(commits[:-1], commits[1:]):
-        diffs=diff_commits(c1, c0)
-        latest.update(c1, diffs)
-        if latest.complete:
-            break
-    if not latest.complete:
-        raise RuntimeError("latest commit map is incomplete (if you've moved lambdas to new directory, has changed been committed ?)")
-    return latest
 
 @assert_actions
 def add_staging(config, commits):
@@ -157,7 +99,7 @@ if __name__=="__main__":
         config=args.pop("config")
         validate_bucket(config)
         run_tests(config)
-        commits=latest_commits(config)
+        commits=CommitMap.create(config)
         add_staging(config, commits)
         push_lambdas(config)
     except ClientError as error:

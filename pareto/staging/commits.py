@@ -1,5 +1,7 @@
 from git import Repo
 
+import os
+
 def format_commits(fn):
     def wrapped(*args, **kwargs):
         commits=fn(*args, **kwargs)
@@ -81,22 +83,4 @@ class CommitMap(dict):
                 break
             
 if __name__=="__main__":
-    try:
-        from pareto.scripts import *
-        init_stdout_logger(logging.INFO)
-        argsconfig=yaml.safe_load("""
-        - name: config
-          type: file
-        """)
-        args=argsparse(sys.argv[1:], argsconfig)
-        config=args.pop("config")        
-        print (CommitMap.create(config))
-    except ClientError as error:
-        logging.error(error)                      
-    except WaiterError as error:
-        logging.error(error)                      
-    except RuntimeError as error:
-        logging.error(error)                      
-
-
-        
+    pass
