@@ -1,7 +1,5 @@
 ### short
 
-- add live option to deploy lambdas
-
 - move commit map s3 checking into commits
 
 - deploy_stack to check for latest versions
@@ -255,6 +253,7 @@
   
 ### done
 
+- add live option to deploy lambdas
 - add mapping to latest repo checking
 - abstract repo stuff as repo history
 - pip install private package

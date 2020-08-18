@@ -87,6 +87,8 @@ if __name__=="__main__":
         argsconfig=yaml.safe_load("""
         - name: config
           type: file
+        - name: live
+          type: bool
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
@@ -94,7 +96,8 @@ if __name__=="__main__":
         run_tests(config)
         commits=CommitMap.create(config)
         add_staging(config, commits)
-        # push_lambdas(config)
+        if args["live"]:
+            push_lambdas(config)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
