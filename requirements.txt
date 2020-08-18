@@ -3,7 +3,7 @@ botocore
 boto3
 gitpython
 jsonschema
-git+https://github.com/spulec/moto
+moto
 pandas
 requests
 ruamel.yaml
