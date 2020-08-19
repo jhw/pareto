@@ -1,9 +1,8 @@
 ### short
 
-- apigw extended logging
-- delete stack failed to clean s3 bucket
-- script to clean log groups
-- group iam permissions according to service
+- monorepo
+
+- dashboard references
 
 ### pending
 
@@ -13,11 +12,13 @@
 - why is authorizer name required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
-- cloudwatch dashboard parameter refs
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7285885771&language=en
-
 ### medium
 
+- delete stack failed to clean s3 bucket
+
+- apigw extended logging
+- script to clean log groups
+- group iam permissions according to service
 - iam deployment user
 
 - targets
@@ -255,6 +256,9 @@
   - not really required as this is about deployment not runtime
   
 ### done
+
+- cloudwatch dashboard parameter refs
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7285885771&language=en
 
 - test schema update/redeployment
 <<<<<<< HEAD
