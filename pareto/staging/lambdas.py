@@ -7,7 +7,6 @@ class LambdaKey(dict):
         commit=LambdaKey()
         tokens=key.split("/")
         commit["app"]=tokens[0]
-        commit["name"]=tokens[2]
         tokens=tokens[-1].split(".")[0].split("-")
         commit["hexsha"]=tokens.pop()
         commit["timestamp"]=datetime.datetime(*[int(tok) for tok in tokens])
@@ -22,10 +21,9 @@ class LambdaKey(dict):
                 return value.strftime("%Y-%m-%d-%H-%M-%S")
             else:
                 return re.sub("\\W", "-", str(value))
-        return "%s/lambdas/%s/%s-%s.zip" % (self["app"],
-                                            self["name"],
-                                            format_timestamp(self["timestamp"]),
-                                            self["hexsha"])
+        return "%s/lambdas/%s-%s.zip" % (self["app"],
+                                         format_timestamp(self["timestamp"]),
+                                         self["hexsha"])
     
 class LambdaKeys(list):
 
@@ -38,22 +36,6 @@ class LambdaKeys(list):
             if "Contents" in struct:
                 self+=[LambdaKey.create_s3(obj["Key"])
                        for obj in struct["Contents"]]
-
-    @property
-    def grouped(self):
-        keys={}
-        for commit in self:
-            keys.setdefault(commit["name"], {})
-            keys[commit["name"]][commit["hexsha"]]=commit
-        return keys
-                
-    @property
-    def latest(self):
-        keys={}
-        for commit in sorted(self,
-                             key=lambda x: x["timestamp"]):
-            keys[commit["name"]]=commit
-        return keys
 
 if __name__=="__main__":
     pass

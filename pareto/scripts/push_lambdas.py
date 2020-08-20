@@ -28,11 +28,6 @@ def add_staging(config, commits):
 @assert_actions
 def push_lambdas(config):
     logging.info("pushing lambdas")
-    def validate_lambda(config, action):
-        path="%s/%s" % (config["globals"]["src"],
-                        underscore(action["name"]))
-        if not os.path.exists(path):
-            raise RuntimeError("%s does not exist" % path)
     def is_valid(filename, ignore=["test.py$",
                                    ".pyc$"]):
         for pat in ignore:
@@ -77,7 +72,6 @@ def push_lambdas(config):
                        action["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
     for action in config["components"]["actions"]:
-        validate_lambda(config, action)
         zfname=init_zipfile(config, action)
         push_lambda(action, zfname)
         
