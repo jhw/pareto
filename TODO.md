@@ -1,7 +1,6 @@
 ### short [monorepo]
 
-- script to init staging
-- pass staging instead of config["globals"]
+- unpack staging when passing around
 
 - check that app code exists
 - check that handler for each action exists
@@ -10,6 +9,7 @@
 
 - abstract apigw into common dict
 
+- check if you need underscore any more
 - commits to return dict rather than tuple
 
 - consider removing staging tests
@@ -269,6 +269,8 @@
   
 ### done
 
+- script to init staging
+- pass staging instead of config["globals"]
 - test lambdas push
 - lambdas are missing paths
 - push_lambdas.py to push a single deployable including root name

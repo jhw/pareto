@@ -8,10 +8,16 @@ from pareto.staging.lambdas import LambdaKey
 
 from pareto.staging.commits import CommitMap
 
-from pareto.helpers.text import underscore
-
 import zipfile
 
+def init_staging(config, commits):
+    staging={attr: config["globals"][attr]
+             for attr in ["app", "bucket"]}
+    staging["key"]=str(LambdaKey(app=staging["app"],
+                                 hexsha=commits[staging["app"]][0],
+                                 timestamp=commits[staging["app"]][1]))
+    return staging
+    
 @assert_actions
 def push_lambdas(config):
     logging.info("pushing lambdas")
@@ -23,7 +29,7 @@ def push_lambdas(config):
         return True
     def write_zipfile(config, zf):
         count=0
-        for root, dirs, files in os.walk(config["globals"]["app"]):
+        for root, dirs, files in os.walk(config["staging"]["app"]):
             for filename in files:
                 if is_valid_path(filename):
                     zf.write(os.path.join(root, filename))
@@ -31,7 +37,7 @@ def push_lambdas(config):
         if not count:
             raise RuntimeError("no files found in %s" % path)
     def init_zipfile(config):
-        tokens=["tmp"]+config["globals"]["key"].split("/")[-2:]
+        tokens=["tmp"]+config["staging"]["key"].split("/")[-2:]
         zfdir, zfname = "/".join(tokens[:-1]), "/".join(tokens)        
         if not os.path.exists(zfdir):
             os.makedirs(zfdir)
@@ -42,18 +48,18 @@ def push_lambdas(config):
     def check_exists(fn):
         def wrapped(config, zfname):
             try:
-                S3.head_object(Bucket=config["globals"]["bucket"],
-                               Key=config["globals"]["key"])
-                logging.warning("%s exists" % config["globals"]["key"])
+                S3.head_object(Bucket=config["staging"]["bucket"],
+                               Key=config["staging"]["key"])
+                logging.warning("%s exists" % config["staging"]["key"])
             except ClientError as error:
                 return fn(config, zfname)
         return wrapped
     @check_exists
     def push_lambda(config, zfname):
-        logging.info("pushing %s" % config["globals"]["key"])
+        logging.info("pushing %s" % config["staging"]["key"])
         S3.upload_file(zfname,
-                       config["globals"]["bucket"],
-                       config["globals"]["key"],
+                       config["staging"]["bucket"],
+                       config["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
     zfname=init_zipfile(config)
     push_lambda(config, zfname)
@@ -70,10 +76,7 @@ if __name__=="__main__":
         validate_bucket(config)
         run_tests(config)
         commits=CommitMap.create(roots=[config["globals"]["app"]])
-        appname=config["globals"]["app"]
-        config["globals"]["key"]=str(LambdaKey(app=appname,
-                                               hexsha=commits[appname][0],
-                                               timestamp=commits[appname][1]))
+        config["staging"]=init_staging(config, commits)
         push_lambdas(config)
     except ClientError as error:
         logging.error(error)                      
