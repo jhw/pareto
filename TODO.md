@@ -2,10 +2,14 @@
 
 - lambda logs script fails on lambda name check
 
+- remove wildcard staging import in scripts
+
+- split deploy_stack into stack generation, stack deployment
+- add latest check to deployment
+- add specific commit to deployment
+
 - consider if app name, lambda name should be underscored or assert checked
-- investigate wildcard importing into deploy_stack.py
-- add back ability to specify a particular lambda commit
-- add back deploy_stack.py latest commit checking
+
 - consider merging staging code back into scripts
 - consider removing staging tests
 
