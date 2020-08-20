@@ -1,8 +1,13 @@
 ### short [monorepo]
 
+- tests now broken with new package structure
+
+- revert sample lambdas to use demo name
+- no longer need to set classpath dynamically
+
 - push_lambdas.py to push a single deployable including root name
-- lambda staging to add a single reference at the config level
 - lambda handlers to reference app name, lambda name
+
 - commits to return dict rather than tuple
 - consider removing staging tests
 - check layer staging

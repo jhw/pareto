@@ -73,7 +73,7 @@ def push_lambdas(config):
                        ExtraArgs={'ContentType': 'application/zip'})
     for action in config["components"]["actions"]:
         zfname=init_zipfile(config, action)
-        push_lambda(action, zfname)
+        # push_lambda(action, zfname)
         
 if __name__=="__main__":
     try:        
@@ -90,6 +90,13 @@ if __name__=="__main__":
         run_tests(config)
         commits=CommitMap.create(roots=[config["globals"]["src"]])
         print (commits)
+        """
+        appname=config["globals"]["app"]
+        key=(LambdaKey(app=appname,
+                       hexsha=commits[appname][0],
+                       timestamp=commits[appname][1]))
+        print (key)
+        """
         """
         add_staging(config, commits)
         if args["live"]:

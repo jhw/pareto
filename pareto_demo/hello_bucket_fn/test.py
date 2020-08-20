@@ -3,7 +3,7 @@ import unittest
 class IndexTest(unittest.TestCase):
 
     def test_handler(self):
-        from hello_bucket_fn.index import handler
+        from pareto_demo.hello_bucket_fn.index import handler
         resp=handler({"hello": "world"}, None)
         self.assertTrue("hello" in resp)
 

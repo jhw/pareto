@@ -10,8 +10,9 @@ from pareto.scripts.helpers.profiles import toggle_aws_profile
 @assert_actions
 def run_tests(config):
     logging.info("running tests")
-    def index_test(action, klassname="IndexTest"):    
-        modname="%s.test" % underscore(action["name"])
+    def index_test(config, action, klassname="IndexTest"):    
+        modname="%s.%s.test" % (underscore(config["globals"]["app"]),
+                                underscore(action["name"]))
         try:
             mod=__import__(modname, fromlist=[klassname])
         except ModuleNotFoundError:
@@ -23,7 +24,7 @@ def run_tests(config):
         return klass
     if config["globals"]["src"] not in sys.path:
         sys.path.append(config["globals"]["src"])
-    klasses=[index_test(action)
+    klasses=[index_test(config, action)
              for action in config["components"]["actions"]]
     suite=unittest.TestSuite()
     for klass in klasses:
