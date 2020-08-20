@@ -2,6 +2,8 @@ from pareto.components import *
 
 from pareto.charts.action import ActionCharts
 
+from pareto.helpers.text import underscore
+
 DefaultPermissions=yaml.safe_load("""
 - logs:CreateLogGroup
 - logs:CreateLogStream
@@ -11,14 +13,16 @@ DefaultPermissions=yaml.safe_load("""
 
 @resource()
 def Action(concurrency=None,
-           handler="index.handler",
+           handlerpat="%s.%s.index.handler",
            memory=128,
            timeout=30,
            **kwargs):
     dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
     rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
+    handler=handlerpat % (kwargs["staging"]["app"],
+                          underscore(kwargs["name"]))
     props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
-                    "S3Key": str(kwargs["staging"]["key"])}, # NB str()
+                    "S3Key": kwargs["staging"]["key"]},
            "FunctionName": resource_name(kwargs),
            "Handler": handler,
            "MemorySize": memory,

@@ -16,20 +16,20 @@ def init_region(config):
         raise RuntimeError("region is not set in AWS profile")
     config["globals"]["region"]=region
 
-def filter_lambdas_key(config):
-    keys=LambdaKeys(config=config, s3=S3)
-    if keys==[]:
-        raise RuntimeError("no lambdas found")
-    return sorted([str(key)
-                   for key in keys])[-1]
-
 @assert_actions
 def add_lambda_staging(config):
     logging.info("adding lambda staging")
+    def filter_latest(config):
+        keys=LambdaKeys(config=config, s3=S3)
+        if keys==[]:
+            raise RuntimeError("no lambdas found")
+        return sorted([str(key)
+                       for key in keys])[-1]
     staging={attr: config["globals"][attr]
              for attr in ["app", "bucket"]}
-    staging["key"]=filter_lambdas_key(config)
-    config["staging"]=staging
+    staging["key"]=filter_latest(config)
+    for action in config["components"]["actions"]:
+        action["staging"]=staging
        
 @assert_layers
 def add_layer_staging(config):
@@ -61,12 +61,10 @@ if __name__=="__main__":
         validate_bucket(config)
         add_lambda_staging(config)
         add_layer_staging(config)
-        """
         env=synth_env(config)
         if args["live"]:
             env.push(S3)
             env.deploy(CF)
-        """
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

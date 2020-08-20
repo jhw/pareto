@@ -1,8 +1,7 @@
 ### short [monorepo]
 
-- refactor action handling of stacking
+- check staging.app is underscored everywhere
 
-- check stack generation
 - check stack deployment
 
 - investigate wildcard importing into deploy_stack.py
@@ -267,6 +266,8 @@
   
 ### done
 
+- check stack generation
+- add app to lambda staging
 - refactor deploy_stack.py so single lambda deployable is passed around in `staging` variable
 - commits to return dict rather than tuple
 - check handler function exists
