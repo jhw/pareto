@@ -2,18 +2,26 @@ import re
 
 def titleise(text):
     return " ".join([tok.capitalize()
-                     for tok in re.split("\\-|\\_", text)])
+                     for tok in re.split("\\-|\\_", text)
+                     if tok!=''])
 
 def labelise(text):
     return "-".join([tok.lower()
-                     for tok in re.split("\\s|\\_", text)])
+                     for tok in re.split("\\s|\\_", text)
+                     if tok!=''])
 
 def hungarorise(text):
     return "".join([tok.capitalize()
-                    for tok in re.split("\\-|\\_", text)])    
+                    for tok in re.split("\\-|\\_", text)
+                    if tok!=''])
 
 def underscore(text):
-    return text.replace("-", "_")
+    return "_".join([tok for tok in re.split("\\s|\\-", text)
+                     if tok!=''])
+                                    
+def hyphenate(text):
+    return "-".join([tok for tok in re.split("\\s|\\_", text)
+                     if tok!=''])
 
 def singularise(text):
     if text.endswith("ies"):

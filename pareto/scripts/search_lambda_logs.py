@@ -6,6 +6,8 @@
 
 from pareto.scripts import *
 
+from pareto.helpers.text import hyphenate
+
 if __name__=="__main__":
     try:
         argsconfig=yaml.safe_load("""
@@ -25,12 +27,10 @@ if __name__=="__main__":
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        """
-        lambdanames=[dirname.replace("_", "-")
-                     for dirname in os.listdir("lambda")]
+        lambdanames=[hyphenate(dirname)
+                     for dirname in os.listdir(config["globals"]["app"])]
         if args["lambda"] not in lambdanames:
             raise RuntimeError("lambda %s not found" % args["lambda"])
-        """
         loggroupname="/aws/lambda/%s-%s-%s" % (config["globals"]["app"],
                                                args["lambda"],
                                                args["stage"])

@@ -1,7 +1,5 @@
 ### short [monorepo]
 
-- lambda logs script fails on lambda name check
-
 - remove wildcard staging import in scripts
 
 - split deploy_stack into stack generation, stack deployment
@@ -268,6 +266,7 @@
   
 ### done
 
+- lambda logs script fails on lambda name check
 - lambda ping failing on bad import
   - https://stackoverflow.com/questions/35340921/aws-lambda-import-module-error-in-python
   - https://forums.aws.amazon.com/thread.jspa?messageID=927865
