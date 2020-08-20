@@ -21,25 +21,22 @@ def push_lambdas(config):
             if re.search(pat, filename)!=None:
                 return False
         return True
-    def write_zipfile(config, action, zf):
-        path="%s/%s" % (config["globals"]["app"],
-                        underscore(action["name"]))
+    def write_zipfile(config, zf):
         count=0
-        for root, dirs, files in os.walk(path):
+        for root, dirs, files in os.walk(config["globals"]["app"]):
             for filename in files:
                 if is_valid_path(filename):
-                    zf.write(os.path.join(root, filename),
-                             arcname=filename)
+                    zf.write(os.path.join(root, filename))
                     count+=1
         if not count:
             raise RuntimeError("no files found in %s" % path)
-    def init_zipfile(config, action):
-        tokens=["tmp"]+action["staging"]["key"].split("/")[-2:]
+    def init_zipfile(config):
+        tokens=["tmp"]+str(config["globals"]["key"]).split("/")[-2:]
         zfdir, zfname = "/".join(tokens[:-1]), "/".join(tokens)        
         if not os.path.exists(zfdir):
             os.makedirs(zfdir)
         zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-        write_zipfile(config, action, zf)
+        write_zipfile(config, zf)
         zf.close()
         return zfname
     def check_exists(fn):
@@ -58,9 +55,8 @@ def push_lambdas(config):
                        action["staging"]["bucket"],
                        action["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
-    for action in config["components"]["actions"]:
-        zfname=init_zipfile(config, action)
-        # push_lambda(action, zfname)
+    zfname=init_zipfile(config)
+    # push_lambda(action, zfname)
         
 if __name__=="__main__":
     try:        
@@ -78,8 +74,7 @@ if __name__=="__main__":
         config["globals"]["key"]=(LambdaKey(app=appname,
                                             hexsha=commits[appname][0],
                                             timestamp=commits[appname][1]))
-        print (config["globals"]["key"])
-        # push_lambdas(config)
+        push_lambdas(config)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

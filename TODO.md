@@ -1,7 +1,9 @@
 ### short [monorepo]
 
+- test lambdas push
+
 - add check that app code exists
-- push_lambdas.py to push a single deployable including root name
+
 - lambda handlers to reference app name, lambda name
 
 - commits to return dict rather than tuple
@@ -263,6 +265,8 @@
   
 ### done
 
+- lambdas are missing paths
+- push_lambdas.py to push a single deployable including root name
 - no longer need to set classpath dynamically
 - tests now broken with new package structure
 - revert sample lambdas to use demo name
