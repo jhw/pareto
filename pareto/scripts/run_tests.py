@@ -24,7 +24,7 @@ def run_tests(config):
     if config["globals"]["src"] not in sys.path:
         sys.path.append(config["globals"]["src"])
     klasses=[index_test(action)
-             for action in filter_actions(config["components"])]
+             for action in config["components"]["actions"]]
     suite=unittest.TestSuite()
     for klass in klasses:
         suite.addTest(unittest.makeSuite(klass))

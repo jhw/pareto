@@ -20,7 +20,7 @@ def add_staging(config, commits):
                              name=name,
                              hexsha=commits[name][0],
                              timestamp=commits[name][1]))
-    for action in filter_actions(config["components"]):
+    for action in config["components"]["actions"]:
         key=lambda_key(action["name"], commits)
         action["staging"]={"bucket": config["globals"]["bucket"],
                               "key": key}
@@ -76,7 +76,7 @@ def push_lambdas(config):
                        action["staging"]["bucket"],
                        action["staging"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
-    for action in filter_actions(config["components"]):
+    for action in config["components"]["actions"]:
         validate_lambda(config, action)
         zfname=init_zipfile(config, action)
         push_lambda(action, zfname)

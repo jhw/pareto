@@ -32,7 +32,7 @@ def add_lambda_staging(config):
             staging["key"]=latest[action["name"]]
         action["staging"]=staging    
     commits=LambdaKeys(config=config, s3=S3)
-    for action in filter_actions(config["components"]):
+    for action in config["components"]["actions"]:
        add_staging(action, commits)
 
 @assert_layers
@@ -56,7 +56,7 @@ def check_latest(config):
             if resp in options:
                 return options[resp]  
     commits=CommitMap.create(config)
-    for action in filter_actions(config["components"]):
+    for action in config["components"]["actions"]:
         if commits[action["name"]][0]!=action["staging"]["key"]["hexsha"]:
             resp=ask("%s has new commits - continue ? [y|n] " % action["name"])
             if not resp:

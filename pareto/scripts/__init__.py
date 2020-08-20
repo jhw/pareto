@@ -58,12 +58,5 @@ def assert_layers(fn):
             return fn(*args, **kwargs)
     return wrapped
 
-def filter_actions(components):
-    actions=[]
-    for attr in ["actions"]:
-        if attr in components:
-            actions+=components[attr]
-    return actions
-
 if __name__=="__main__":
     pass
