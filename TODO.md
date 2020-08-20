@@ -1,14 +1,18 @@
 ### short [monorepo]
 
-- test lambdas push
+- script to init staging
+- pass staging instead of config["globals"]
 
-- add check that app code exists
+- check that app code exists
+- check that handler for each action exists
 
 - lambda handlers to reference app name, lambda name
 
+- abstract apigw into common dict
+
 - commits to return dict rather than tuple
+
 - consider removing staging tests
-- check layer staging
 
 ### pending
 
@@ -265,6 +269,7 @@
   
 ### done
 
+- test lambdas push
 - lambdas are missing paths
 - push_lambdas.py to push a single deployable including root name
 - no longer need to set classpath dynamically

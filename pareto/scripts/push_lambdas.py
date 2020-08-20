@@ -31,7 +31,7 @@ def push_lambdas(config):
         if not count:
             raise RuntimeError("no files found in %s" % path)
     def init_zipfile(config):
-        tokens=["tmp"]+str(config["globals"]["key"]).split("/")[-2:]
+        tokens=["tmp"]+config["globals"]["key"].split("/")[-2:]
         zfdir, zfname = "/".join(tokens[:-1]), "/".join(tokens)        
         if not os.path.exists(zfdir):
             os.makedirs(zfdir)
@@ -40,23 +40,23 @@ def push_lambdas(config):
         zf.close()
         return zfname
     def check_exists(fn):
-        def wrapped(action, zfname):
+        def wrapped(config, zfname):
             try:
-                S3.head_object(Bucket=action["staging"]["bucket"],
-                               Key=action["staging"]["key"])
-                logging.warning("%s exists" % action["staging"]["key"])
+                S3.head_object(Bucket=config["globals"]["bucket"],
+                               Key=config["globals"]["key"])
+                logging.warning("%s exists" % config["globals"]["key"])
             except ClientError as error:
-                return fn(action, zfname)
+                return fn(config, zfname)
         return wrapped
     @check_exists
-    def push_lambda(action, zfname):
-        logging.info("pushing %s" % action["staging"]["key"])
+    def push_lambda(config, zfname):
+        logging.info("pushing %s" % config["globals"]["key"])
         S3.upload_file(zfname,
-                       action["staging"]["bucket"],
-                       action["staging"]["key"],
+                       config["globals"]["bucket"],
+                       config["globals"]["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
     zfname=init_zipfile(config)
-    # push_lambda(action, zfname)
+    push_lambda(config, zfname)
         
 if __name__=="__main__":
     try:        
@@ -71,9 +71,9 @@ if __name__=="__main__":
         run_tests(config)
         commits=CommitMap.create(roots=[config["globals"]["app"]])
         appname=config["globals"]["app"]
-        config["globals"]["key"]=(LambdaKey(app=appname,
-                                            hexsha=commits[appname][0],
-                                            timestamp=commits[appname][1]))
+        config["globals"]["key"]=str(LambdaKey(app=appname,
+                                               hexsha=commits[appname][0],
+                                               timestamp=commits[appname][1]))
         push_lambdas(config)
     except ClientError as error:
         logging.error(error)                      
