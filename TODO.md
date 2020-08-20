@@ -1,8 +1,13 @@
-### short
+### short [monorepo]
 
-- monorepo
-
-- dashboard references
+- remove services
+- remove lambda permissions
+- push_lambdas.py to push a single deployable including root name
+- lambda staging to add a single reference at the config level
+- lambda handlers to reference app name, lambda name
+- see if lambda staging code can be cleaned up
+- allow single global commit to be specified
+- check layer staging
 
 ### pending
 
@@ -13,6 +18,8 @@
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
 ### medium
+
+- dashboard references
 
 - delete stack failed to clean s3 bucket
 
