@@ -88,10 +88,13 @@ if __name__=="__main__":
         config=args.pop("config")
         validate_bucket(config)
         run_tests(config)
-        commits=CommitMap.create(config)
+        commits=CommitMap.create(roots=[config["globals"]["src"]])
+        print (commits)
+        """
         add_staging(config, commits)
         if args["live"]:
             push_lambdas(config)
+        """
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

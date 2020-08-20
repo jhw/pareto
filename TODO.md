@@ -3,7 +3,7 @@
 - push_lambdas.py to push a single deployable including root name
 - lambda staging to add a single reference at the config level
 - lambda handlers to reference app name, lambda name
-- allow single global commit to be specified
+- commits to return dict rather than tuple
 - consider removing staging tests
 - check layer staging
 
@@ -262,6 +262,7 @@
   
 ### done
 
+- allow single global commit to be specified
 - see if lambda staging code can be cleaned up
 - remove services
 - remove lambda permissions

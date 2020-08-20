@@ -1,7 +1,5 @@
 from git import Repo
 
-import os
-
 """
 - Symlinks/Remapper is an opportunity to override default paths for (eg) situations where you may be using symlinks (eg) in a gist (where directory structure not permitted, but pareto project structure requires lambdas to be in a (symlinked) directory
 - not ideal as currently requires u to clone push_lambdas.py but better than nothing 
@@ -12,26 +10,23 @@ Symlinks={}
 def Remapper(path, symlinks=Symlinks):
     return symlinks[path] if path in symlinks else path
 
-def format_commits(fn):
+def validate_commits(fn):
     def wrapped(*args, **kwargs):
         commits=fn(*args, **kwargs)
         if not commits.complete:
             raise RuntimeError("latest commit map is incomplete (if you've moved lambdas to new directory, have changes been committed ?)")
-        return {k.split("/")[1].replace("_", "-"):v
-                for k, v in commits.items()}
+        return commits
     return wrapped
 
 class CommitMap(dict):
 
     @classmethod
-    @format_commits
+    @validate_commits
     def create(self,
-               config,
+               roots,
                repo=Repo("."),
                mapfn=Remapper,
                ignore=["test.py"]):
-        roots=["%s/%s" % (config["globals"]["src"], path)
-               for path in os.listdir(config["globals"]["src"])]
         commits=CommitMap(roots=roots,
                           mapfn=mapfn,
                           ignore=ignore)
