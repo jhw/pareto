@@ -59,7 +59,8 @@ class CommitMap(dict):
             root=self.find_root(diff)
             if (root and
                 root not in self):
-                self[root]=(commit.hexsha, ts)
+                self[root]={"hexsha": commit.hexsha,
+                            "timestamp": ts}
         return self
 
     @property

@@ -15,9 +15,10 @@ import zipfile
 def init_staging(config, commits):
     staging={attr: config["globals"][attr]
              for attr in ["app", "bucket"]}
+    commit=commits[staging["app"]]
     staging["key"]=str(LambdaKey(app=staging["app"],
-                                 hexsha=commits[staging["app"]][0],
-                                 timestamp=commits[staging["app"]][1]))
+                                 hexsha=commit["hexsha"],
+                                 timestamp=commit["timestamp"]))
     return staging
     
 @assert_actions
