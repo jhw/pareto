@@ -13,23 +13,10 @@ from pareto.helpers.text import underscore
 import zipfile
 
 @assert_actions
-def add_staging(config, commits):
-    logging.info("adding staging")
-    def lambda_key(name, commits):
-        return str(LambdaKey(app=config["globals"]["app"],
-                             name=name,
-                             hexsha=commits[name][0],
-                             timestamp=commits[name][1]))
-    for action in config["components"]["actions"]:
-        key=lambda_key(action["name"], commits)
-        action["staging"]={"bucket": config["globals"]["bucket"],
-                              "key": key}
-
-@assert_actions
 def push_lambdas(config):
     logging.info("pushing lambdas")
-    def is_valid(filename, ignore=["test.py$",
-                                   ".pyc$"]):
+    def is_valid_path(filename, ignore=["test.py$",
+                                        ".pyc$"]):
         for pat in ignore:
             if re.search(pat, filename)!=None:
                 return False
@@ -40,7 +27,7 @@ def push_lambdas(config):
         count=0
         for root, dirs, files in os.walk(path):
             for filename in files:
-                if is_valid(filename):
+                if is_valid_path(filename):
                     zf.write(os.path.join(root, filename),
                              arcname=filename)
                     count+=1
@@ -81,27 +68,18 @@ if __name__=="__main__":
         argsconfig=yaml.safe_load("""
         - name: config
           type: file
-        - name: live
-          type: bool
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         validate_bucket(config)
         run_tests(config)
         commits=CommitMap.create(roots=[config["globals"]["app"]])
-        print (commits)
-        """
         appname=config["globals"]["app"]
-        key=(LambdaKey(app=appname,
-                       hexsha=commits[appname][0],
-                       timestamp=commits[appname][1]))
-        print (key)
-        """
-        """
-        add_staging(config, commits)
-        if args["live"]:
-            push_lambdas(config)
-        """
+        config["globals"]["key"]=(LambdaKey(app=appname,
+                                            hexsha=commits[appname][0],
+                                            timestamp=commits[appname][1]))
+        print (config["globals"]["key"])
+        # push_lambdas(config)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
