@@ -27,6 +27,13 @@ def push_lambdas(config):
             if re.search(pat, filename)!=None:
                 return False
         return True
+    def assert_lambdas(fn):
+        def wrapped(staging, zf):
+            if not os.path.exists(staging["app"]):
+                raise RuntimeError("lambdas not found")
+            return fn(staging, zf)
+        return wrapped
+    @assert_lambdas
     def write_zipfile(staging, zf):
         count=0
         for root, dirs, files in os.walk(staging["app"]):
@@ -45,7 +52,7 @@ def push_lambdas(config):
         write_zipfile(staging, zf)
         zf.close()
         return zfname
-    def check_exists(fn):
+    def assert_new(fn):
         def wrapped(staging, zfname):
             try:
                 S3.head_object(Bucket=staging["bucket"],
@@ -54,7 +61,7 @@ def push_lambdas(config):
             except ClientError as error:
                 return fn(staging, zfname)
         return wrapped
-    @check_exists
+    @assert_new
     def push_lambda(staging, zfname):
         logging.info("pushing %s" % staging["key"])
         S3.upload_file(zfname,

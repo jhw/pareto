@@ -1,7 +1,5 @@
 ### short [monorepo]
 
-- check that app code exists
-
 - check that handler for each action exists
 
 - refactor deploy_stack.py so single lambda deployable is passed around in `staging` variable
@@ -269,6 +267,7 @@
   
 ### done
 
+- check that app code exists
 - check if you need underscore any more
 - unpack staging when passing around
 - script to init staging
