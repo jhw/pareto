@@ -1,11 +1,14 @@
-### short [monorepo]
+### short [dashboard references]
 
-- strip down deploy stack
-
-- add latest check to deployment
-- add specific commit to deployment
-
-- ensure LambdaKey is only converted to str() at last minute
+- turn off component globals updating and see what breaks 
+- change resource_name to use AppName, StageName variables (fn::sub)
+- add dedicated chart resource_name which returns string pattern only
+- modify dash rendering to use fn::sub
+- initialise templates with AppName/StageName/StagingBucket/LambdaStagingKey
+- pass staging arg to template to determine if staging params required
+- env param mapping to reference master template params as well as outputs 
+- modify deploy_stack to use template args
+- remove stage slug from template push keys
 
 ### pending
 
@@ -14,11 +17,15 @@
 
 ### medium
 
-- dashboard references
+- refactor layer staging as per new lambdas
 
+- script to dump outputs for UI
+- rename non_chart_value as resource_value
+- ensure LambdaKey is only converted to str() at last minute
+- deploy_stack.py to check is latest
+- allow specific deploy commit to be specified in config
 - abstract apigw handling code into demo root
 - delete stack failed to clean s3 bucket
-
 - apigw extended logging
 - script to clean log groups
 - group iam permissions according to service
@@ -266,6 +273,7 @@
   
 ### done
 
+- strip down deploy stack
 - split deploy_stack into stack generation, stack deployment
 - underscore app name where u underscore lambda name
 - scripts/logs

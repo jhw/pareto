@@ -165,37 +165,6 @@ class Env(dict):
             synth_stack(master, **kwargs)
         return master
 
-    def push(self, s3):
-        def push(config, tempname, template, s3):
-            key="%s-%s/templates/%s.json" % (config["globals"]["app"],
-                                             config["globals"]["stage"],
-                                             tempname)
-            logging.info("pushing %s" % key)
-            s3.put_object(Bucket=config["globals"]["bucket"],
-                          Key=key,
-                          Body=template.json_repr.encode("utf-8"),
-                          ContentType='application/json')
-        for tempname, template in self.items():
-            if tempname==Master:
-                continue
-            push(self.config, tempname, template, s3)
-    
-    def deploy(self, cf):
-        logging.info("deploying stack")
-        def stack_exists(stackname):
-            stacknames=[stack["StackName"]
-                        for stack in cf.describe_stacks()["Stacks"]]
-            return stackname in stacknames
-        stackname="%s-%s" % (self.config["globals"]["app"],
-                             self.config["globals"]["stage"])
-        action="update" if stack_exists(stackname) else "create"
-        fn=getattr(cf, "%s_stack" % action)
-        fn(StackName=stackname,
-           TemplateBody=self[Master].json_repr,
-           Capabilities=["CAPABILITY_IAM"])
-        waiter=cf.get_waiter("stack_%s_complete" % action)
-        waiter.wait(StackName=stackname)
-
     def dump_yaml(self, timestamp):
         for tempname, template in self.items():
             tokens=["tmp", "env", timestamp, "yaml", "%s.yaml" % tempname]

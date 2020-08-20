@@ -2,41 +2,68 @@
 
 from pareto.scripts import *
 
-from pareto.staging.lambdas import LambdaKeys
+import os
 
-from pareto.staging.layers import Layers
+Master="master.json"
 
-from pareto.staging.commits import CommitMap
+def assert_master(fn):
+    def wrapped(config, dirname, *args, **kwargs):
+        if Master not in os.listdir(dirname):
+            raise RuntimeError("%s not found in %s" % (Master,
+                                                       dirname))
+        return fn(config, dirname, *args, **kwargs)
+    return fn
 
-from pareto.env import synth_env
+def push_templates(config, dirname, s3):
+    def push(config, filename, s3):
+        key="%s-%s/templates/%s" % (config["globals"]["app"],
+                                    config["globals"]["stage"],
+                                    filename.split("/")[-1])
+        logging.info("pushing %s to %s" % (filename, key))
+        s3.upload_file(filename,
+                       config["globals"]["bucket"],
+                       key,
+                       ExtraArgs={'ContentType': 'application/json'})
+    for filename in os.listdir(dirname):
+        absfilename="%s/%s" % (dirname, filename)
+        push(config, absfilename, s3)
 
-def init_region(config):
-    region=boto3.session.Session().region_name
-    if region in ['', None]:
-        raise RuntimeError("region is not set in AWS profile")
-    config["globals"]["region"]=region
+@assert_master
+def deploy_master(config, dirname, cf):
+    logging.info("deploying master template")
+    def stack_exists(stackname):
+        stacknames=[stack["StackName"]
+                    for stack in cf.describe_stacks()["Stacks"]]
+        return stackname in stacknames
+    stackname="%s-%s" % (config["globals"]["app"],
+                         config["globals"]["stage"])
+    action="update" if stack_exists(stackname) else "create"
+    body=open("%s/%s" % (dirname, Master)).read()
+    fn=getattr(cf, "%s_stack" % action)
+    fn(StackName=stackname,
+       TemplateBody=body,
+       Capabilities=["CAPABILITY_IAM"])
+    waiter=cf.get_waiter("stack_%s_complete" % action)
+    waiter.wait(StackName=stackname)
 
-@assert_actions
-def add_lambda_staging(config):
-    def filter_latest(config):
-        keys=LambdaKeys(config=config, s3=S3)
-        if keys==[]:
-            raise RuntimeError("no lambdas found")
-        return sorted([str(key)
-                       for key in keys])[-1]
-    staging={attr: config["globals"][attr]
-             for attr in ["app", "bucket"]}
-    staging["key"]=filter_latest(config)
-    for action in config["components"]["actions"]:
-        action["staging"]=staging
-       
-@assert_layers
-def add_layer_staging(config):
-    layers=Layers(config=config, s3=S3)
-    for layer in config["components"]["layers"]:
-        if layer["name"] not in layers:
-            raise RuntimeError("layer %s does not exist" % layer["name"])
-        layer["staging"]=layers[layer["name"]]
+def assert_root(fn):
+    def wrapped(root):
+        if not os.path.exists(root):
+            raise RuntimeError("%s does not exist" % root)
+        return fn(root)
+    return wrapped
+
+def assert_templates(fn):
+    def wrapped(root):
+        if []==os.listdir(root):
+            raise RuntimeError("%s has no templates" % root)
+        return fn(root)
+    return wrapped
+            
+@assert_root
+@assert_templates
+def latest_templates(root):
+    return "%s/%s/json" % (root, sorted(os.listdir(root))[-1])
 
 if __name__=="__main__":
     try:        
@@ -49,20 +76,14 @@ if __name__=="__main__":
           options:
           - dev
           - prod
-        - name: live
-          type: bool
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         config["globals"]["stage"]=args.pop("stage")
-        init_region(config)    
-        validate_bucket(config)
-        add_lambda_staging(config)
-        add_layer_staging(config)
-        env=synth_env(config)
-        if args["live"]:
-            env.push(S3)
-            env.deploy(CF)
+        dirname=latest_templates("tmp/env")
+        logging.info("template source %s" % dirname)
+        push_templates(config, dirname, S3)
+        deploy_master(config, dirname, CF)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
