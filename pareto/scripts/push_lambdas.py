@@ -28,28 +28,28 @@ def push_lambdas(config):
                 return False
         return True
     def assert_lambdas(fn):
-        def wrapped(staging, zf):
-            if not os.path.exists(staging["app"]):
+        def wrapped(config, zf):
+            if not os.path.exists(config["staging"]["app"]):
                 raise RuntimeError("lambdas not found")
-            return fn(staging, zf)
+            return fn(config, zf)
         return wrapped
     @assert_lambdas
-    def write_zipfile(staging, zf):
+    def write_zipfile(config, zf):
         count=0
-        for root, dirs, files in os.walk(staging["app"]):
+        for root, dirs, files in os.walk(config["staging"]["app"]):
             for filename in files:
                 if is_valid_path(filename):
                     zf.write(os.path.join(root, filename))
                     count+=1
         if not count:
             raise RuntimeError("no files found in %s" % path)
-    def init_zipfile(staging):
-        tokens=["tmp"]+staging["key"].split("/")[-2:]
+    def init_zipfile(config):
+        tokens=["tmp"]+config["staging"]["key"].split("/")[-2:]
         zfdir, zfname = "/".join(tokens[:-1]), "/".join(tokens)        
         if not os.path.exists(zfdir):
             os.makedirs(zfdir)
         zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-        write_zipfile(staging, zf)
+        write_zipfile(config, zf)
         zf.close()
         return zfname
     def assert_new(fn):
@@ -68,7 +68,7 @@ def push_lambdas(config):
                        staging["bucket"],
                        staging["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
-    zfname=init_zipfile(config["staging"])
+    zfname=init_zipfile(config)
     push_lambda(config["staging"], zfname)
         
 if __name__=="__main__":
