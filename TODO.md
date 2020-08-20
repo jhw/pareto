@@ -1,9 +1,11 @@
 ### short [monorepo]
 
-- split deploy_stack into stack generation, stack deployment
+- strip down deploy stack
 
 - add latest check to deployment
 - add specific commit to deployment
+
+- ensure LambdaKey is only converted to str() at last minute
 
 ### pending
 
@@ -264,6 +266,7 @@
   
 ### done
 
+- split deploy_stack into stack generation, stack deployment
 - underscore app name where u underscore lambda name
 - scripts/logs
 - lambda logs script fails on lambda name check
