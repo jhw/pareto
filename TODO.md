@@ -1,13 +1,12 @@
 ### short [monorepo]
 
-- check handler function in code
+- commits to return dict rather than tuple
 
 - refactor deploy_stack.py so single lambda deployable is passed around in `staging` variable
 
 - lambda handlers to reference app name, lambda name
 
-- abstract apigw into common dict
-- commits to return dict rather than tuple
+- abstract apigw handling code into demo root
 - consider removing staging tests
 
 ### pending
@@ -265,6 +264,7 @@
   
 ### done
 
+- check handler function exists
 - check that handler for each action exists
 - check that app code exists
 - check if you need underscore any more

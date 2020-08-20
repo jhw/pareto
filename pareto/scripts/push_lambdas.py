@@ -36,16 +36,21 @@ def push_lambdas(config):
             return fn(config, zf)
         return wrapped
     def assert_actions(fn):
+        def assert_action(config, action):
+            args=[config["staging"]["app"],
+                  underscore(action["name"])]
+            if not os.path.exists("%s/%s" % tuple(args)):
+                raise RuntimeError("no code found for %s" % action["name"])
+            for mod in ["index.py", "test.py"]:
+                if not os.path.exists("%s/%s/%s" % tuple(args+[mod])):
+                    raise RuntimeError("%s must include %s" % (action["name"],
+                                                               mod))
+            index=open("%s/%s/index.py" % tuple(args)).read()
+            if "def handler(" not in index:
+                raise RuntimeError("handler not found in %s index.py" % action["name"])
         def wrapped(config, zf):
             for action in config["components"]["actions"]:
-                args=[config["staging"]["app"],
-                      underscore(action["name"])]
-                if not os.path.exists("%s/%s" % tuple(args)):
-                    raise RuntimeError("no code found for %s" % action["name"])
-                for mod in ["index.py", "test.py"]:
-                    if not os.path.exists("%s/%s/%s" % tuple(args+[mod])):
-                        raise RuntimeError("%s must include %s" % (action["name"],
-                                                                   mod))
+                assert_action(config, action)
             return fn(config, zf)
         return wrapped
     @assert_lambdas
