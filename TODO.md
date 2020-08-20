@@ -1,6 +1,6 @@
 ### short [monorepo]
 
-- remove wildcard staging import in scripts
+- scripts/logs
 
 - split deploy_stack into stack generation, stack deployment
 - add latest check to deployment

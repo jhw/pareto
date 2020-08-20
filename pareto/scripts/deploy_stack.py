@@ -2,9 +2,9 @@
 
 from pareto.scripts import *
 
-from pareto.staging.lambdas import *
+from pareto.staging.lambdas import LambdaKeys
 
-from pareto.staging.layers import *
+from pareto.staging.layers import Layers
 
 from pareto.staging.commits import CommitMap
 
