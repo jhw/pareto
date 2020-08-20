@@ -23,7 +23,6 @@ def init_staging(config, commits):
     
 @assert_actions
 def push_lambdas(config):
-    logging.info("pushing lambdas")
     def is_valid_path(filename, ignore=["test.py$",
                                         ".pyc$"]):
         for pat in ignore:

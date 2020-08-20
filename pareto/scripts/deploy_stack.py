@@ -18,7 +18,6 @@ def init_region(config):
 
 @assert_actions
 def add_lambda_staging(config):
-    logging.info("adding lambda staging")
     def filter_latest(config):
         keys=LambdaKeys(config=config, s3=S3)
         if keys==[]:
@@ -33,7 +32,6 @@ def add_lambda_staging(config):
        
 @assert_layers
 def add_layer_staging(config):
-    logging.info("adding layer staging")
     layers=Layers(config=config, s3=S3)
     for layer in config["components"]["layers"]:
         if layer["name"] not in layers:
