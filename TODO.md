@@ -1,8 +1,5 @@
 ### short [monorepo]
 
-- tests now broken with new package structure
-
-- revert sample lambdas to use demo name
 - no longer need to set classpath dynamically
 
 - push_lambdas.py to push a single deployable including root name
@@ -267,6 +264,8 @@
   
 ### done
 
+- tests now broken with new package structure
+- revert sample lambdas to use demo name
 - allow single global commit to be specified
 - see if lambda staging code can be cleaned up
 - remove services

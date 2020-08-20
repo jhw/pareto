@@ -1,6 +1,6 @@
 ---
 globals:
-  app: pareto-demo
+  app: demo
   src: demo
   bucket: wol-deployments
   runtime: "3.7"
