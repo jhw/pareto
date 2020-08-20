@@ -37,7 +37,7 @@ def push_lambdas(config):
         return wrapped
     def assert_actions(fn):
         def assert_action(config, action):
-            args=[config["staging"]["app"],
+            args=[underscore(config["staging"]["app"]),
                   underscore(action["name"])]
             if not os.path.exists("%s/%s" % tuple(args)):
                 raise RuntimeError("no code found for %s" % action["name"])

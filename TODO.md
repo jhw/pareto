@@ -1,13 +1,9 @@
 ### short [monorepo]
 
 - split deploy_stack into stack generation, stack deployment
+
 - add latest check to deployment
 - add specific commit to deployment
-
-- consider if app name, lambda name should be underscored or assert checked
-
-- consider merging staging code back into scripts
-- consider removing staging tests
 
 ### pending
 
@@ -61,6 +57,10 @@
 
 ### thoughts
 
+- consider merging staging code back into scripts ?
+  - err no
+- consider removing staging tests ?
+  - err no
 - enable apigw logs
   - don't see the point if you're not customising apigw highly
 - pip inclusion of non- python files ?
@@ -264,6 +264,7 @@
   
 ### done
 
+- underscore app name where u underscore lambda name
 - scripts/logs
 - lambda logs script fails on lambda name check
 - lambda ping failing on bad import
