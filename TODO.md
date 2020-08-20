@@ -1,5 +1,6 @@
 ### short [monorepo]
 
+- add check that app code exists
 - push_lambdas.py to push a single deployable including root name
 - lambda handlers to reference app name, lambda name
 

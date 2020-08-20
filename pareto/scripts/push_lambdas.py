@@ -35,7 +35,7 @@ def push_lambdas(config):
                 return False
         return True
     def write_zipfile(config, action, zf):
-        path="%s/%s" % (config["globals"]["src"],
+        path="%s/%s" % (config["globals"]["app"],
                         underscore(action["name"]))
         count=0
         for root, dirs, files in os.walk(path):
@@ -88,7 +88,7 @@ if __name__=="__main__":
         config=args.pop("config")
         validate_bucket(config)
         run_tests(config)
-        commits=CommitMap.create(roots=[config["globals"]["src"]])
+        commits=CommitMap.create(roots=[config["globals"]["app"]])
         print (commits)
         """
         appname=config["globals"]["app"]
