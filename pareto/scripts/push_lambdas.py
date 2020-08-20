@@ -8,6 +8,8 @@ from pareto.staging.lambdas import LambdaKey
 
 from pareto.staging.commits import CommitMap
 
+from pareto.helpers.text import underscore
+
 import zipfile
 
 def init_staging(config, commits):
@@ -33,7 +35,21 @@ def push_lambdas(config):
                 raise RuntimeError("lambdas not found")
             return fn(config, zf)
         return wrapped
+    def assert_actions(fn):
+        def wrapped(config, zf):
+            for action in config["components"]["actions"]:
+                args=[config["staging"]["app"],
+                      underscore(action["name"])]
+                if not os.path.exists("%s/%s" % tuple(args)):
+                    raise RuntimeError("no code found for %s" % action["name"])
+                for mod in ["index.py", "test.py"]:
+                    if not os.path.exists("%s/%s/%s" % tuple(args+[mod])):
+                        raise RuntimeError("%s must include %s" % (action["name"],
+                                                                   mod))
+            return fn(config, zf)
+        return wrapped
     @assert_lambdas
+    @assert_actions
     def write_zipfile(config, zf):
         count=0
         for root, dirs, files in os.walk(config["staging"]["app"]):
