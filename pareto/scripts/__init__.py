@@ -40,13 +40,15 @@ def validate_bucket(config):
     if config["globals"]["bucket"] not in bucketnames:
         raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
 
+"""
+- actions are mandatory
+"""
+    
 def assert_actions(fn):
     def wrapped(*args, **kwargs):
         config=kwargs["config"] if "config" in kwargs else args[0]
-        if ("actions" not in config["components"] and
-            "services" not in config["components"]):
-            raise RuntimeError("No actions found")
-        return fn(*args, **kwargs)
+        if "actions" in config["components"]:
+            return fn(*args, **kwargs)
     return wrapped
 
 def assert_layers(fn):
@@ -54,18 +56,11 @@ def assert_layers(fn):
         config=kwargs["config"] if "config" in kwargs else args[0]
         if "layers" in config["components"]:
             return fn(*args, **kwargs)
-        else:
-            pass
     return wrapped
-
-"""
-- because services are also actions
-- for now, keep referring to all lambdas as actions since lambda is a protected keyword
-"""
 
 def filter_actions(components):
     actions=[]
-    for attr in ["actions", "services"]:
+    for attr in ["actions"]:
         if attr in components:
             actions+=components[attr]
     return actions

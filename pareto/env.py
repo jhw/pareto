@@ -6,7 +6,6 @@ from pareto.components.bucket import synth_bucket
 from pareto.components.layer import synth_layer
 from pareto.components.queue import synth_queue
 from pareto.components.secret import synth_secret
-from pareto.components.service import synth_service
 from pareto.components.stack import synth_stack
 from pareto.components.table import synth_table
 from pareto.components.timer import synth_timer
@@ -20,15 +19,9 @@ import datetime, logging, os
 
 Master="master"
 
-"""
-- services need to be separate from actions as action permissions to execute services assume service arns imported as parameters 
-- layers need to be separate from actions else circular dependency error
-"""
-
 def TemplateMapper(groupkey,
                    dedicated=["layers",
                               "actions",
-                              "services",
                               "apis",
                               "userpools"],
                    default="misc"):

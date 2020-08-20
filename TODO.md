@@ -2,6 +2,7 @@
 
 - remove services
 - remove lambda permissions
+- remove filter_actions
 - push_lambdas.py to push a single deployable including root name
 - lambda staging to add a single reference at the config level
 - lambda handlers to reference app name, lambda name
