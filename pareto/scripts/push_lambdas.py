@@ -27,42 +27,42 @@ def push_lambdas(config):
             if re.search(pat, filename)!=None:
                 return False
         return True
-    def write_zipfile(config, zf):
+    def write_zipfile(staging, zf):
         count=0
-        for root, dirs, files in os.walk(config["staging"]["app"]):
+        for root, dirs, files in os.walk(staging["app"]):
             for filename in files:
                 if is_valid_path(filename):
                     zf.write(os.path.join(root, filename))
                     count+=1
         if not count:
             raise RuntimeError("no files found in %s" % path)
-    def init_zipfile(config):
-        tokens=["tmp"]+config["staging"]["key"].split("/")[-2:]
+    def init_zipfile(staging):
+        tokens=["tmp"]+staging["key"].split("/")[-2:]
         zfdir, zfname = "/".join(tokens[:-1]), "/".join(tokens)        
         if not os.path.exists(zfdir):
             os.makedirs(zfdir)
         zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-        write_zipfile(config, zf)
+        write_zipfile(staging, zf)
         zf.close()
         return zfname
     def check_exists(fn):
-        def wrapped(config, zfname):
+        def wrapped(staging, zfname):
             try:
-                S3.head_object(Bucket=config["staging"]["bucket"],
-                               Key=config["staging"]["key"])
-                logging.warning("%s exists" % config["staging"]["key"])
+                S3.head_object(Bucket=staging["bucket"],
+                               Key=staging["key"])
+                logging.warning("%s exists" % staging["key"])
             except ClientError as error:
-                return fn(config, zfname)
+                return fn(staging, zfname)
         return wrapped
     @check_exists
-    def push_lambda(config, zfname):
-        logging.info("pushing %s" % config["staging"]["key"])
+    def push_lambda(staging, zfname):
+        logging.info("pushing %s" % staging["key"])
         S3.upload_file(zfname,
-                       config["staging"]["bucket"],
-                       config["staging"]["key"],
+                       staging["bucket"],
+                       staging["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
-    zfname=init_zipfile(config)
-    push_lambda(config, zfname)
+    zfname=init_zipfile(config["staging"])
+    push_lambda(config["staging"], zfname)
         
 if __name__=="__main__":
     try:        

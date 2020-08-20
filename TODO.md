@@ -1,8 +1,7 @@
 ### short [monorepo]
 
-- unpack staging when passing around
-
 - check that app code exists
+
 - check that handler for each action exists
 
 - refactor deploy_stack.py so single lambda deployable is passed around in `staging` variable
@@ -11,7 +10,6 @@
 
 - abstract apigw into common dict
 
-- check if you need underscore any more
 - commits to return dict rather than tuple
 
 - consider removing staging tests
@@ -271,6 +269,8 @@
   
 ### done
 
+- check if you need underscore any more
+- unpack staging when passing around
 - script to init staging
 - pass staging instead of config["globals"]
 - test lambdas push
