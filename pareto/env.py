@@ -196,16 +196,29 @@ class Env(dict):
         waiter=cf.get_waiter("stack_%s_complete" % action)
         waiter.wait(StackName=stackname)
 
-    def dump(self, timestamp):
+    def dump_yaml(self, timestamp):
         for tempname, template in self.items():
-            tokens=["tmp", "env", timestamp, "%s.yaml" % tempname]
+            tokens=["tmp", "env", timestamp, "yaml", "%s.yaml" % tempname]
             dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
             if not os.path.exists(dirname):
                 os.makedirs(dirname)
             with open(filename, 'w') as f:
                 f.write(template.yaml_repr)
+        return self
+
+    def dump_json(self, timestamp):
+        for tempname, template in self.items():
+            tokens=["tmp", "env", timestamp, "json", "%s.json" % tempname]
+            dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
+            if not os.path.exists(dirname):
+                os.makedirs(dirname)
+            with open(filename, 'w') as f:
+                f.write(template.json_repr)
         return self 
 
+    def dump(self, timestamp):
+        return self.dump_yaml(timestamp).dump_json(timestamp)
+    
 """
 - first dumping to get output prior to validation, second to get any post- validation changes (master, dashboards)
 """
