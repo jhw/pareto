@@ -1,11 +1,15 @@
 ### short [monorepo]
 
-- refactor deploy_stack.py so single lambda deployable is passed around in `staging` variable
+- refactor action handling of stacking
 
-- lambda handlers to reference app name, lambda name
+- check stack generation
+- check stack deployment
 
+- investigate wildcard importing into deploy_stack.py
 - abstract apigw handling code into demo root
-
+- add back ability to specify a particular lambda commit
+- add back deploy_stack.py latest commit checking
+- consider merging staging code back into scripts
 - consider removing staging tests
 
 ### pending
@@ -263,6 +267,7 @@
   
 ### done
 
+- refactor deploy_stack.py so single lambda deployable is passed around in `staging` variable
 - commits to return dict rather than tuple
 - check handler function exists
 - check that handler for each action exists

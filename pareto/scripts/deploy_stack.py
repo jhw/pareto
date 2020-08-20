@@ -16,25 +16,21 @@ def init_region(config):
         raise RuntimeError("region is not set in AWS profile")
     config["globals"]["region"]=region
 
+def filter_lambdas_key(config):
+    keys=LambdaKeys(config=config, s3=S3)
+    if keys==[]:
+        raise RuntimeError("no lambdas found")
+    return sorted([str(key)
+                   for key in keys])[-1]
+
 @assert_actions
 def add_lambda_staging(config):
     logging.info("adding lambda staging")
-    def add_staging(action, commits):
-        groups, latest = commits.grouped, commits.latest
-        staging={"bucket": config["globals"]["bucket"]}
-        if "commit" in action: 
-            if action["commit"] not in groups[action["name"]]:
-                raise RuntimeError("commit %s not found for %s" % (action["commit"], action["name"]))
-            staging["key"]=str(groups[action["name"]][action["commit"]])
-        else:
-            if action["name"] not in latest:
-                raise RuntimeError("no deployables found for %s" % action["name"])
-            staging["key"]=latest[action["name"]]
-        action["staging"]=staging    
-    commits=LambdaKeys(config=config, s3=S3)
-    for action in config["components"]["actions"]:
-       add_staging(action, commits)
-
+    staging={attr: config["globals"][attr]
+             for attr in ["app", "bucket"]}
+    staging["key"]=filter_lambdas_key(config)
+    config["staging"]=staging
+       
 @assert_layers
 def add_layer_staging(config):
     logging.info("adding layer staging")
@@ -44,24 +40,6 @@ def add_layer_staging(config):
             raise RuntimeError("layer %s does not exist" % layer["name"])
         layer["staging"]=layers[layer["name"]]
 
-@assert_actions
-def check_latest(config):
-    logging.info("checking latest commits")
-    def ask(msg,
-            prompt=">>>",
-            options={"y": True,
-                     "n": False}):
-        while True:
-            resp=input("%s %s" % (prompt, msg))
-            if resp in options:
-                return options[resp]  
-    commits=CommitMap.create(config)
-    for action in config["components"]["actions"]:
-        if commits[action["name"]][0]!=action["staging"]["key"]["hexsha"]:
-            resp=ask("%s has new commits - continue ? [y|n] " % action["name"])
-            if not resp:
-                raise RuntimeError("exited on user request")
-        
 if __name__=="__main__":
     try:        
         init_stdout_logger(logging.INFO)
@@ -83,11 +61,12 @@ if __name__=="__main__":
         validate_bucket(config)
         add_lambda_staging(config)
         add_layer_staging(config)
-        check_latest(config)
+        """
         env=synth_env(config)
         if args["live"]:
             env.push(S3)
             env.deploy(CF)
+        """
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
