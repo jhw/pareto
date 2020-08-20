@@ -1,9 +1,8 @@
 ### short [monorepo]
 
-- check staging.app is underscored everywhere
-
 - check stack deployment
 
+- consider if app name, lambda name should be underscored or assert checked
 - investigate wildcard importing into deploy_stack.py
 - abstract apigw handling code into demo root
 - add back ability to specify a particular lambda commit
