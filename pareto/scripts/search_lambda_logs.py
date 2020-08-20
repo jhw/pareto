@@ -25,10 +25,12 @@ if __name__=="__main__":
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
+        """
         lambdanames=[dirname.replace("_", "-")
                      for dirname in os.listdir("lambda")]
         if args["lambda"] not in lambdanames:
             raise RuntimeError("lambda %s not found" % args["lambda"])
+        """
         loggroupname="/aws/lambda/%s-%s-%s" % (config["globals"]["app"],
                                                args["lambda"],
                                                args["stage"])

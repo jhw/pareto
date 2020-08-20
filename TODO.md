@@ -1,19 +1,15 @@
 ### short [monorepo]
 
-- check stack deployment
+- lambda logs script fails on lambda name check
 
 - consider if app name, lambda name should be underscored or assert checked
 - investigate wildcard importing into deploy_stack.py
-- abstract apigw handling code into demo root
 - add back ability to specify a particular lambda commit
 - add back deploy_stack.py latest commit checking
 - consider merging staging code back into scripts
 - consider removing staging tests
 
 ### pending
-
-- method updates still not being registered :(
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7282694321&language=en
 
 - why is authorizer name required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
@@ -22,6 +18,7 @@
 
 - dashboard references
 
+- abstract apigw handling code into demo root
 - delete stack failed to clean s3 bucket
 
 - apigw extended logging
@@ -34,6 +31,8 @@
 - route 53
 - google sheets upload
 - cloudwatch alerts
+
+- apigw2 [stage auto deploy]
 
 - pinpoint
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278998251&language=en
@@ -265,6 +264,12 @@
   
 ### done
 
+- lambda ping failing on bad import
+  - https://stackoverflow.com/questions/35340921/aws-lambda-import-module-error-in-python
+  - https://forums.aws.amazon.com/thread.jspa?messageID=927865
+- check stack deployment
+- method updates still not being registered :(
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7282694321&language=en
 - check stack generation
 - add app to lambda staging
 - refactor deploy_stack.py so single lambda deployable is passed around in `staging` variable

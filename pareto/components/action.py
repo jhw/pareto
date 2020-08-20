@@ -13,7 +13,7 @@ DefaultPermissions=yaml.safe_load("""
 
 @resource()
 def Action(concurrency=None,
-           handlerpat="%s.%s.index.handler",
+           handlerpat="%s/%s/index.handler", # NB
            memory=128,
            timeout=30,
            **kwargs):
