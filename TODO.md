@@ -5,6 +5,8 @@
 - check that app code exists
 - check that handler for each action exists
 
+- refactor deploy_stack.py so single lambda deployable is passed around in `staging` variable
+
 - lambda handlers to reference app name, lambda name
 
 - abstract apigw into common dict
