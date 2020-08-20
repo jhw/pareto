@@ -1,7 +1,5 @@
 ### short [monorepo]
 
-- scripts/logs
-
 - split deploy_stack into stack generation, stack deployment
 - add latest check to deployment
 - add specific commit to deployment
@@ -266,6 +264,7 @@
   
 ### done
 
+- scripts/logs
 - lambda logs script fails on lambda name check
 - lambda ping failing on bad import
   - https://stackoverflow.com/questions/35340921/aws-lambda-import-module-error-in-python
