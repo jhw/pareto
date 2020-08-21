@@ -2,22 +2,7 @@
 
 from pareto.scripts import *
 
-from pareto.staging.layers import Layers
-
 from pareto.env import synth_env
-
-def init_staging(config):
-    return {}
-    
-@assert_actions
-def add_lambda_staging(config):
-    for action in config["components"]["actions"]:
-        action["staging"]=init_staging(config)
-       
-@assert_layers
-def add_layer_staging(config):
-    for layer in config["components"]["layers"]:
-        layer["staging"]=init_staging(config)
 
 if __name__=="__main__":
     try:        
@@ -28,14 +13,7 @@ if __name__=="__main__":
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        validate_bucket(config)
-        add_lambda_staging(config)
-        add_layer_staging(config)
         synth_env(config)
-    except ClientError as error:
-        logging.error(error)                      
-    except WaiterError as error:
-        logging.error(error)                      
     except RuntimeError as error:
         logging.error(error)                      
 

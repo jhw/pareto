@@ -1,10 +1,7 @@
 ### short [dashboard-refs]
 
-- remove init_region
-
-- remove validate_bucket
-
-- remove staging dicts
+- check assert_actions, assert_layers
+- check staging
 
 - refactor region as parameter
 
@@ -77,6 +74,8 @@
 
 ### thoughts
 
+- remove validate_bucket ?
+  - no; layer and lambda push still rely on it
 - consider merging staging code back into scripts ?
   - err no
 - consider removing staging tests ?
@@ -284,6 +283,8 @@
   
 ### done
 
+- remove staging dicts
+- remove init_region
 - remove stage from synth_templates args
 - refactor stage as parameter
 - refactor app as parameter

@@ -40,10 +40,6 @@ def validate_bucket(config):
     if config["globals"]["bucket"] not in bucketnames:
         raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
 
-"""
-- actions are mandatory
-"""
-    
 def assert_actions(fn):
     def wrapped(*args, **kwargs):
         config=kwargs["config"] if "config" in kwargs else args[0]
