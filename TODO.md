@@ -1,7 +1,15 @@
 ### short [dashboard-refs]
 
-- refactor bucket variable as parameter
-- remove layers temporarily as not sure how they will fit in ?
+- refactor lambda staging key as parameter
+
+- refactor layer staging keys are parameters
+  - allow multiple parameters for now
+
+- refactor app as parameter
+- refactor stage as parameter
+- refactor region as parameter
+
+- eliminate staging dicts
 
 - add dedicated chart resource_name which returns string pattern only
 - modify dash rendering to use fn::sub
@@ -11,6 +19,8 @@
 - modify deploy_stack to use template args
 - remove stage slug from template push keys
 
+- move s3 key lookup staging code into deploy_stack.py
+- extend deploy_stack.py to marshall parameters required for template
 - build_layer dependent on globals.runtime
 
 ### pending
@@ -275,6 +285,7 @@
   
 ### done
 
+- refactor bucket variable as parameter
 - refactor runtime variable as parameter
 - extended staging variables
 - dedicated layer staging variable

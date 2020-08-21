@@ -3,7 +3,7 @@ from pareto.components import *
 @resource(suffix="layer")
 def Layer(**kwargs):
     content={"S3Key": str(kwargs["staging"]["key"]),
-             "S3Bucket": kwargs["staging"]["bucket"]}
+             "S3Bucket": ref("staging-bucket")}
     props={"Content": content,
            "CompatibleRuntimes": [ref("python-runtime-version")]}
     return "AWS::Lambda::LayerVersion", props

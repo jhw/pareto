@@ -21,7 +21,7 @@ def Action(concurrency=None,
     rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
     handler=handlerpat % (kwargs["staging"]["app"],
                           underscore(kwargs["name"]))
-    props={"Code": {"S3Bucket": kwargs["staging"]["bucket"],
+    props={"Code": {"S3Bucket": ref("staging-bucket"),
                     "S3Key": kwargs["staging"]["key"]},
            "FunctionName": resource_name(kwargs),
            "Handler": handler,
