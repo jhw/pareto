@@ -1,6 +1,5 @@
 ### short [dashboard-refs]
 
-- stop master being updated with globals
 - separate params, outputs classes
 
 - modify dash rendering to use fn::sub
@@ -9,6 +8,9 @@
 - filter param requirements not fulfilled by outputs on a per- template basis
 - add these params as stack params (minus outputs prefix)
 - join these non- output params and add them as master stack params
+
+- remove globals entirely ?
+  - then u have to pass to script every time
 
 - fn::sub local reference checks
 - add back env validation
@@ -280,6 +282,7 @@
   
 ### done
 
+- stop master being updated with globals
 - replace cognito ${AWS::Region}
 - runtime version parameter
 - rename python-runtime as runtime
