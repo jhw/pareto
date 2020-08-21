@@ -2,11 +2,7 @@
 
 from pareto.scripts import *
 
-from pareto.staging.lambdas import LambdaKeys
-
 from pareto.staging.layers import Layers
-
-from pareto.staging.commits import CommitMap
 
 from pareto.env import synth_env
 
@@ -22,14 +18,7 @@ def init_staging(config, attrs=["app"]):
     
 @assert_actions
 def add_lambda_staging(config):
-    def filter_latest(config):
-        keys=LambdaKeys(config=config, s3=S3)
-        if keys==[]:
-            raise RuntimeError("no lambdas found")
-        return sorted([str(key)
-                       for key in keys])[-1]
     staging=init_staging(config)
-    # staging["key"]=filter_latest(config)
     for action in config["components"]["actions"]:
         action["staging"]=staging
        
