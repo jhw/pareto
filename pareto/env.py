@@ -137,7 +137,7 @@ class Env(dict):
             params=Params.create(self)
             outputs.cross_validate(params)
         def validate_inner(self):
-            for tempname, template in self.items():
+            for template in self.values():
                 template.validate()
         validate_outer(self)
         validate_inner(self)
