@@ -1,6 +1,6 @@
 ### short [dashboard-refs]
 
-- refactor region as parameter
+- apigw stage name
 
 - add dedicated chart resource_name which returns string pattern only
 - modify dash rendering to use fn::sub

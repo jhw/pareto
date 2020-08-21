@@ -21,7 +21,7 @@ metrics:
   - Resource
   - {name}
   - stat: Sum
-region: {region}
+region: "${{region}}"
 stacked: false
 title: {title}
 view: timeSeries
@@ -40,7 +40,7 @@ metrics:
   - stat: Average
 - - '...'
   - stat: Maximum
-region: {region}
+region: ${{region}}
 stacked: false
 title: {title}
 view: timeSeries
@@ -69,9 +69,9 @@ metrics:
 - - expression: 100 - 100 * errors / MAX([errors, invocations])
     id: availability
     label: Success rate (%)
-    region: {region}
+    region: ${{region}}
     yAxis: right
-region: {region}
+region: ${{region}}
 stacked: false
 title: {title}
 view: timeSeries
@@ -87,7 +87,6 @@ Charts={"invocations": InvocationsChart,
 def ActionCharts(charts=Charts, **kwargs):
     def init_chart(key, chart, kwargs):
         chartkwargs={"name": resource_name(kwargs),
-                     "region": kwargs["region"],
                      "title": titleise("%s-%s" % (kwargs["name"], key))}
         return yaml.safe_load(chart.format(**chartkwargs))
     return [init_chart(key, chart, kwargs)
