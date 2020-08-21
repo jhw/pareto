@@ -1,7 +1,5 @@
 ### short [dashboard-refs]
 
-- runtime version parameter
-
 - replace cognito ${AWS::Region}
 
 - add all parameters to master template
@@ -281,6 +279,7 @@
   
 ### done
 
+- runtime version parameter
 - rename python-runtime as runtime
 - refactor timer params as per layer params
 - layer parameters

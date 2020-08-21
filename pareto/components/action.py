@@ -16,6 +16,7 @@ ParamNames=yaml.safe_load("""
 - stage-name
 - staging-bucket
 - lambda-staging-key
+- runtime-version
 """)
  
 @resource()

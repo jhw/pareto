@@ -2,6 +2,7 @@ from pareto.components import *
 
 ParamNames=yaml.safe_load("""
 - staging-bucket
+- runtime-version
 """)
 
 @resource(suffix="layer")
