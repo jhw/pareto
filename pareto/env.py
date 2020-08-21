@@ -33,14 +33,14 @@ class Refs(list):
         list.__init__(self)
 
     def cross_validate(self, refs):
-        attrs, errors = dict(self), []
+        attrs, errors = dict(self), set()
         for attr, tempname in refs:
             if attr not in attrs:
-                errors.append("%s not found" % attr)
+                errors.add("%s not found" % attr)
             elif attrs[attr]==tempname:
-                errors.append("%s can't be both parameter and output in same template")
-        if errors!=[]:
-            raise RuntimeError(", ".join(errors))
+                errors.add("%s can't be both parameter and output in same template")
+        if len(errors)!=0:
+            raise RuntimeError(", ".join(list(errors)))
 
 class Params(Refs):
 
@@ -138,10 +138,7 @@ class Env(dict):
             outputs.cross_validate(params)
         def validate_inner(self):
             for tempname, template in self.items():
-                resourceids=template.resource_ids
-                for ref in template.resource_refs:
-                    if ref not in resourceids:
-                        raise RuntimeError("bad reference to %s in %s template" % (ref, tempname))
+                template.validate()
         validate_outer(self)
         validate_inner(self)
         return self
@@ -191,15 +188,10 @@ class Env(dict):
         logging.info("dumping to tmp/env/%s" % timestamp)
         return self.dump_yaml(timestamp).dump_json(timestamp)
     
-"""
-- first dumping to get output prior to validation, second to get any post- validation changes (master, dashboards)
-"""
-    
 @preprocess
 def synth_env(config):
     ts=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-    # return Env.create(config).synth_master().dump(ts).validate()
-    return Env.create(config).synth_master().dump(ts)
+    return Env.create(config).synth_master().dump(ts).validate()
 
 if __name__=="__main__":
     pass

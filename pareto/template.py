@@ -152,6 +152,14 @@ class Template:
         filter_refs(self.render(), refs)
         return list(refs)
 
+    def validate(self):
+        def validate_resources(self):
+            resourceids=self.resource_ids
+            for ref in self.resource_refs:
+                if ref not in resourceids:
+                    raise RuntimeError("bad reference to %s in %s template" % (ref, self.name))
+        validate_resources(self)
+    
     @property
     def metrics(self, metrics=Metrics):
         return {metrickey: metricfn(self)

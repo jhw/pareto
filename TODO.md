@@ -8,7 +8,6 @@
   - then u have to pass to script every time
 
 - fn::sub local reference checks
-- add back env validation
 - check for unwanted parameter imports
 - remove setting of `config["globals"]["stage"]` in all scripts
 - add back template/dashboard name
@@ -277,6 +276,7 @@
   
 ### done
 
+- add back env validation
 - iterate over dash params
 - modify dash rendering to use fn::sub
 - separate params, outputs classes
