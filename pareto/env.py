@@ -29,22 +29,6 @@ def TemplateMapper(groupkey,
 
 class Refs(list):
 
-    @classmethod
-    def filter_params(self, env):
-        return self.create(env, "Parameters")
-
-    @classmethod
-    def filter_outputs(self, env):
-        return self.create(env, "Outputs")
-
-    @classmethod
-    def create(self, env, attr):
-        refs=Refs()
-        for tempname, template in env.items():
-            refs+=[(key, tempname)                   
-                   for key in getattr(template, attr)]
-        return refs
-
     def __init__(self):
         list.__init__(self)
 
@@ -58,13 +42,39 @@ class Refs(list):
         if errors!=[]:
             raise RuntimeError(", ".join(errors))
 
-    def output_parameters(self, attrs):
+class Params(Refs):
+
+    @classmethod
+    def create(self, env, attr="Parameters"):
+        params=Params()
+        for tempname, template in env.items():
+            params+=[(key, tempname)                   
+                     for key in getattr(template, attr)]
+        return params
+    
+    def __init__(self):
+        Refs.__init__(self)
+
+class Outputs(Refs):
+
+    @classmethod
+    def create(self, env, attr="Outputs"):
+        outputs=Outputs()
+        for tempname, template in env.items():
+            outputs+=[(key, tempname)                   
+                     for key in getattr(template, attr)]
+        return outputs
+    
+    def __init__(self):
+        Refs.__init__(self)
+
+    def nested_params(self, template):
         refs=dict(self)
         return {attr: {"Fn::GetAtt": [logical_id(refs[attr]),
                                       "Outputs.%s" %  attr]}
-                for attr in attrs
-                if attr in refs} # NB added in case part of params
-            
+                for attr in template.Parameters
+                if attr in refs}
+        
 class Env(dict):
 
     @classmethod
@@ -123,8 +133,8 @@ class Env(dict):
     
     def validate(self):
         def validate_outer(self):
-            outputs=Refs.filter_outputs(self)
-            params=Refs.filter_params(self)
+            outputs=Outputs.create(self)
+            params=Params.create(self)
             outputs.cross_validate(params)
         def validate_inner(self):
             for tempname, template in self.items():
@@ -149,10 +159,9 @@ class Env(dict):
     @attach(Master)
     def synth_master(self):
         master=Template(name=Master)
-        outputs=Refs.filter_outputs(self)
+        outputs=Outputs.create(self)
         for tempname, template in self.items():
-            paramnames=list(template.Parameters.keys())
-            params=outputs.output_parameters(paramnames)
+            params=outputs.nested_params(template)
             kwargs={"name": tempname,
                     "params": params}
             synth_stack(master, **kwargs)
