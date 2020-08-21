@@ -1,6 +1,5 @@
 ### short [dashboard-refs]
 
-- cognito url refs are messed up
 - bucket source arn is messed up
 - dashboard name refs are messed up
 
@@ -285,6 +284,7 @@
   
 ### done
 
+- cognito url refs are messed up
 - examine outputted templates
 - stack region
 - apigw region ref
