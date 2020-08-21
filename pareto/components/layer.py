@@ -1,5 +1,9 @@
 from pareto.components import *
 
+ParamNames=yaml.safe_load("""
+- staging-bucket
+""")
+
 @resource(suffix="layer")
 def Layer(**kwargs):
     content={"S3Key": ref("%s-layer-staging-key" % kwargs["name"]),
@@ -13,7 +17,9 @@ def LayerArn(**kwargs):
     return ref("%s-layer" % kwargs["name"])
 
 def synth_layer(template, **kwargs):
-    template.update(Resources=Layer(**kwargs),
+    template.update(Parameters=[parameter(paramname)
+                                for paramname in ParamNames],
+                    Resources=Layer(**kwargs),
                     Outputs=LayerArn(**kwargs))
 
 if __name__=="__main__":
