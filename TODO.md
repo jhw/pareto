@@ -1,7 +1,5 @@
 ### short [dashboard-refs]
 
-- iterate over dash params
-
 - filter param requirements not fulfilled by outputs on a per- template basis
 - add these params as stack params (minus outputs prefix)
 - join these non- output params and add them as master stack params
@@ -279,6 +277,7 @@
   
 ### done
 
+- iterate over dash params
 - modify dash rendering to use fn::sub
 - separate params, outputs classes
 - stop master being updated with globals
