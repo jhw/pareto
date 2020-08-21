@@ -161,7 +161,8 @@ class Template:
     def validate_string_refs(self):
         def filter_refs(element):
             return list(set([ref[2:-1]
-                             for ref in re.findall("\\$\\{\\w+\\}", element[0])]))
+                             for ref in re.findall("\\$\\{\\w+\\}", element[0])
+                             if "AWS::" not in ref]))
         def filter_keys(element):
             return list(element[1].keys())
         def to_string(values):

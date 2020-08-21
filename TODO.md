@@ -1,6 +1,8 @@
 ### short [dashboard-refs]
 
-- check for parameters not required
+- pass rendered tree to template validation to avoid re- rendering
+
+- check for superfluous parameters
 
 - complete deploy_stack.py
 
@@ -12,6 +14,7 @@
   - then u have to pass to script every time
 
 - use of direct inline refs when using fn_sub (`${AppName}` not `${app_name}`)
+
 - consider single layer
 
 ### pending
