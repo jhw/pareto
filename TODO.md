@@ -1,6 +1,6 @@
 ### short [dashboard-refs]
 
-- apigw region ref
+- stack region
 
 - add dedicated chart resource_name which returns string pattern only
 - modify dash rendering to use fn::sub
@@ -280,6 +280,7 @@
   
 ### done
 
+- apigw region ref
 - apigw stage name ref
 - remove staging dicts
 - remove init_region
