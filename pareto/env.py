@@ -68,19 +68,31 @@ class Outputs(Refs):
     def __init__(self):
         Refs.__init__(self)
 
-    def nested_params(self, template):
+    def exported_attrs(self, template):
         refs=dict(self)
         return {attr: {"Fn::GetAtt": [logical_id(refs[attr]),
                                       "Outputs.%s" %  attr]}
                 for attr in template.Parameters
                 if attr in refs}
     
-    def not_found(self, template):
+    def unlocated_refs(self, template):
         refs=dict(self)
         return {attr: {"Ref": attr}
                 for attr in template.Parameters
                 if attr not in refs}
-        
+
+    def unlocated_params(self, template):
+        refs=dict(self)
+        return {attr: {"Type": "String"}
+                for attr in template.Parameters
+                if attr not in refs}
+
+    def stack_params(self, template):
+        params={}
+        params.update(self.exported_attrs(template))
+        params.update(self.unlocated_refs(template))
+        return params
+    
 class Env(dict):
 
     @classmethod
@@ -159,16 +171,33 @@ class Env(dict):
             return wrapped
         return decorator
 
+    def master_params(fn):
+        def listify(fn):
+            def wrapped(self):
+                return [(k, v)
+                        for k, v in fn(self).items()]
+            return wrapped
+        @listify
+        def filter_params(self):
+            outputs, params = Outputs.create(self), {}
+            for template in self.values():
+                params.update(outputs.unlocated_params(template))
+            return params
+        def wrapped(self):
+            master=fn(self)
+            master.update(Parameters=filter_params(self))
+            return master
+        return wrapped
+
     @attach(Master)
+    @master_params
     def synth_master(self):
         master=Template(name=Master)
         outputs=Outputs.create(self)
         for tempname, template in self.items():
-            params={}
-            params.update(outputs.nested_params(template))
-            params.update(outputs.not_found(template))
+            stackparams=outputs.stack_params(template)
             kwargs={"name": tempname,
-                    "params": params}
+                    "params": stackparams}
             synth_stack(master, **kwargs)
         return master
 

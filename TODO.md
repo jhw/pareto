@@ -1,6 +1,6 @@
 ### short [dashboard-refs]
 
-- join these non- output params and add them as master stack params
+- env validation failing
 
 - fn::sub local reference checks
 - check for parameters not required
@@ -17,7 +17,7 @@
 
 ### pending
 
-- why is authorizer name required ?
+- why is authorizer name- required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
 ### medium
@@ -276,6 +276,8 @@
   
 ### done
 
+- master parameter types are incorrect
+- join these non- output params and add them as master stack params
 - filter param requirements not fulfilled by outputs on a per- template basis
 - add these params as stack params (minus outputs prefix)
 - add back env validation
