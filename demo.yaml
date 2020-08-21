@@ -2,7 +2,6 @@
 globals:
   app: demo
   bucket: wol-deployments
-  runtime: "3.7"
 components:
   secrets:
     - name: foo

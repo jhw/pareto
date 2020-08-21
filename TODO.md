@@ -1,6 +1,8 @@
 ### short [dashboard-refs]
 
-- all staging variables should be replaced by refs to parameters :-)
+- refactor runtime variable as parameter
+- refactor bucket variable as parameter
+- remove layers temporarily as not sure how they will fit in ?
 
 - add dedicated chart resource_name which returns string pattern only
 - modify dash rendering to use fn::sub
@@ -10,7 +12,7 @@
 - modify deploy_stack to use template args
 - remove stage slug from template push keys
 
-- harmonise init_staging used by push_lambdas.py, synth_templates.py
+- build_layer dependent on globals.runtime
 
 ### pending
 
