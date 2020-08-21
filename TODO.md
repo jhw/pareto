@@ -1,16 +1,18 @@
 ### short [dashboard-refs]
 
+- complete deploy_stack.py
+
 - fn::sub local reference checks
 - check for parameters not required
 
 - add back template/dashboard name
-- extend deploy_stack.py to marshall parameters required for template
 
 - refactor build_layer.py so not dependant on globals
 - remove setting of `config["globals"]["stage"]` in all scripts
 - remove globals entirely ?
   - then u have to pass to script every time
 
+- use of direct inline refs when using fn_sub (`${AppName}` not `${app_name}`)
 - consider single layer
 
 ### pending
@@ -20,7 +22,6 @@
 
 ### medium
 
-- use of direct inline refs when using fn_sub (`${AppName}` not `${app_name}`)
 - script to dump outputs for UI
 - ensure LambdaKey is only converted to str() at last minute
 - abstract apigw decorator into demo root
