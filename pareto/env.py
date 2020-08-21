@@ -186,6 +186,7 @@ class Env(dict):
         return self 
 
     def dump(self, timestamp):
+        logging.info("dumping to tmp/env/%s" % timestamp)
         return self.dump_yaml(timestamp).dump_json(timestamp)
     
 """

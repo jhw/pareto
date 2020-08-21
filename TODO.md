@@ -1,7 +1,5 @@
 ### short [dashboard-refs]
 
-- rename non_chart_value as resource_value
-
 - turn off component globals updating and see what breaks 
 - change resource_name to use AppName, StageName variables (fn::sub)
 - add dedicated chart resource_name which returns string pattern only
@@ -274,6 +272,7 @@
   
 ### done
 
+- rename non_chart_value as resource_value
 - move validation to end of synth process
 - strip down deploy stack
 - split deploy_stack into stack generation, stack deployment
