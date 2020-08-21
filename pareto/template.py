@@ -121,14 +121,14 @@ class Template:
         return struct
                 
     @property
-    def resource_ids(self):
+    def logical_ids(self):
         ids=[]
         for attr in ["Resources", "Parameters"]:
             ids+=getattr(self, attr).keys()
         return ids
     
     @property
-    def resource_refs(self):
+    def logical_id_refs(self):
         def is_ref(key, element):
             return (key=="Ref" and
                     type(element)==str)
@@ -152,13 +152,38 @@ class Template:
         filter_refs(self.render(), refs)
         return list(refs)
 
+    def validate_logical_ids(self):
+        ids=self.logical_ids
+        for ref in self.logical_id_refs:
+            if ref not in ids:
+                raise RuntimeError("bad reference to %s in %s template" % (ref, self.name))
+
+    def validate_string_refs(self):
+        def filter_refs(element):
+            return list(set([ref[2:-1]
+                             for ref in re.findall("\\$\\{\\w+\\}", element[0])]))
+        def filter_keys(element):
+            return list(element[1].keys())
+        def to_string(values):
+            return "/".join(sorted(values))
+        def iterparse(element):
+            if isinstance(element, list):
+                for subelement in element:
+                    iterparse(subelement)
+            elif isinstance(element, dict):
+                for key, subelement in element.items():
+                    if key=="Fn::Sub":
+                        refs=to_string(filter_refs(subelement))
+                        keys=to_string(filter_keys(subelement))
+                        if refs!=keys:
+                            raise RuntimeError("fn::sub ref mismatch in template %s - %s vs %s" % (self.name, refs, keys))
+                    else:
+                        iterparse(subelement)
+        iterparse(self.render())
+            
     def validate(self):
-        def validate_resources(self):
-            resourceids=self.resource_ids
-            for ref in self.resource_refs:
-                if ref not in resourceids:
-                    raise RuntimeError("bad reference to %s in %s template" % (ref, self.name))
-        validate_resources(self)
+        self.validate_logical_ids()
+        self.validate_string_refs()
     
     @property
     def metrics(self, metrics=Metrics):

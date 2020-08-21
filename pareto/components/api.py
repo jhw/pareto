@@ -14,7 +14,6 @@ LambdaInvokeArn="arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/$
 
 ExecuteApiArn="arn:aws:execute-api:${region}:${AWS::AccountId}:${rest_api}/${stage_name}/%s/%s"
 
-
 CorsHeaderPath="method.response.header.Access-Control-Allow-%s"
 
 CorsHeaders=yaml.safe_load("""

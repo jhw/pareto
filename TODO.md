@@ -1,6 +1,5 @@
 ### short [dashboard-refs]
 
-- fn::sub local reference checks
 - check for parameters not required
 
 - complete deploy_stack.py
@@ -278,6 +277,7 @@
   
 ### done
 
+- fn::sub local reference checks
 - env validation failing
 - master parameter types are incorrect
 - join these non- output params and add them as master stack params
