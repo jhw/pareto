@@ -1,9 +1,9 @@
 ### short [dashboard-refs]
 
-- complete deploy_stack.py
-
 - fn::sub local reference checks
 - check for parameters not required
+
+- complete deploy_stack.py
 
 - add back template/dashboard name
 
@@ -16,6 +16,9 @@
 - consider single layer
 
 ### pending
+
+- API GW v1 vs v2
+  - https://theburningmonk.slack.com/archives/GPM681W2K/p1598037249026700
 
 - why is authorizer name- required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
