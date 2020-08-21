@@ -1,14 +1,14 @@
 from pareto.components import *
 
-TemplateUrl="https://s3.%s.amazonaws.com/%s/%s-%s/templates/%s.json"
+TemplateUrl="https://s3.${region}.amazonaws.com/${staging_bucket}/${app_name}-${stage_name}/templates/%s.json"
 
 @resource()
 def Stack(**kwargs):
-    url=TemplateUrl % (kwargs["region"],
-                       kwargs["bucket"],
-                       kwargs["app"],
-                       kwargs["stage"],
-                       kwargs["name"])
+    url=fn_sub(TemplateUrl % kwargs["name"],
+               {"region": ref("region"),
+                "staging_bucket": ref("staging-bucket"),
+                "app_name": ref("app_name"),
+                "stage_name": ref("stage_name")})
     props={"TemplateURL": url}
     if ("params" in kwargs and
         kwargs["params"]!={}):

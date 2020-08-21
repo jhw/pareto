@@ -1,8 +1,9 @@
 ### short [dashboard-refs]
 
-- stack region
+- dashboard name refs are messed up
+- cognito url refs are messed up
+- bucket source arn is messed up
 
-- add dedicated chart resource_name which returns string pattern only
 - modify dash rendering to use fn::sub
 - initialise templates with AppName/StageName/StagingBucket/LambdaStagingKey
 - pass staging arg to template to determine if staging params required
@@ -10,6 +11,8 @@
 - modify deploy_stack to use template args
 - remove stage slug from template push keys
 
+- add back env validation
+- see if u can use inline parameter refs when u use fn::sub
 - remove setting of `config["globals"]["stage"]` in all scripts
 - add back template/dashboard name
 - move s3 key lookup staging code into deploy_stack.py
@@ -280,6 +283,8 @@
   
 ### done
 
+- examine outputted templates
+- stack region
 - apigw region ref
 - apigw stage name ref
 - remove staging dicts
