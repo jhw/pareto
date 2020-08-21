@@ -4,6 +4,11 @@ PermissionArn="arn:aws:s3:::${resource_name}"
 
 WebsitePolicyArn="arn:aws:s3:::${bucket_name}/*"
 
+ParamNames=yaml.safe_load("""
+- app-name
+- stage-name
+""")
+
 @resource()
 def Bucket(**kwargs):
     def website_config(index="index.json"):
@@ -66,7 +71,9 @@ def BucketWebsitePolicy(**kwargs):
     return "AWS::S3::BucketPolicy", props
 
 def synth_bucket(template, **kwargs):
-    template.update(Resources=Bucket(**kwargs))
+    template.update(Parameters=[parameter(paramname)
+                                for paramname in ParamNames],
+                    Resources=Bucket(**kwargs))
     if "actions" in kwargs:
         for action in kwargs["actions"]:
             template.update(Parameters=parameter("%s-arn" % action["name"]),
