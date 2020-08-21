@@ -4,20 +4,20 @@
 - bucket source arn is messed up
 - dashboard name refs are messed up
 
-- modify dash rendering to use fn::sub
-- initialise templates with AppName/StageName/StagingBucket/LambdaStagingKey
-- pass staging arg to template to determine if staging params required
-- env param mapping to reference master template params as well as outputs 
-- modify deploy_stack to use template args
 - remove stage slug from template push keys
 
+- components to add the parameters they require
+- add all parameters to master template
+- stack params mapping to reference master params as well as outputs
+
+- modify dash rendering to use fn::sub
+- fn::sub local reference checks
 - add back env validation
 - see if u can use inline parameter refs when u use fn::sub
   - you may not want this as you won't get ref checking
   - but then maybe ref checking needs to be extended to include inline string refs
 - remove setting of `config["globals"]["stage"]` in all scripts
 - add back template/dashboard name
-- move s3 key lookup staging code into deploy_stack.py
 - extend deploy_stack.py to marshall parameters required for template
 - build_layer dependent on globals.runtime
 
