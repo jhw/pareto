@@ -147,12 +147,4 @@ def synth_userpool(template, **kwargs):
                              IdentityPoolId(**kwargs)])
 
 if __name__=="__main__":
-    from pareto.template import Template
-    template=Template()
-    kwargs={"app": "pareto-demo",
-            "name": "hello-pool",
-            "stage": "dev"}
-    synth_userpool(template, **kwargs)
-    print (template.yaml_repr)
-
-
+    pass

@@ -1,11 +1,11 @@
 ### short [dashboard-refs]
 
-- dashboard name refs are messed up
 - check usage of resource_name in components
 
 - remove stage slug from template push keys
 
 - components to add the parameters they require
+
 - add all parameters to master template
 - stack params mapping to reference master params as well as outputs
 
@@ -284,6 +284,7 @@
   
 ### done
 
+- dashboard name refs are messed up
 - bucket source arn is messed up
 - cognito url refs are messed up
 - examine outputted templates

@@ -1,4 +1,6 @@
-from pareto.components import titleise, resource_name
+from pareto.charts import *
+
+from pareto.components import titleise
 
 import re, yaml
 
