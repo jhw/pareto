@@ -6,6 +6,11 @@ int: N
 float: N
 """)
 
+ParamNames=yaml.safe_load("""
+- app-name
+- stage-name
+""")
+
 @resource()
 def Table(stream={"type": "NEW_IMAGE"},
           **kwargs):        
@@ -50,7 +55,9 @@ def TableMapping(**kwargs):
     return "AWS::Lambda::EventSourceMapping", props
 
 def synth_table(template, **kwargs):
-    template.update(Resources=Table(**kwargs))
+    template.update(Parameters=[parameter(paramname)
+                                for paramname in ParamNames],
+                    Resources=Table(**kwargs))
     if "action" in kwargs:
         template.update(Parameters=parameter("%s-arn" % kwargs["action"]),
                         Resources=TableMapping(**kwargs))

@@ -1,6 +1,7 @@
 ### short [dashboard-refs]
 
-- components to add the parameters they require
+- layer parameters
+- replace cognito ${AWS::Region}
 
 - add all parameters to master template
 - stack params mapping to reference master params as well as outputs
@@ -278,6 +279,7 @@
   
 ### done
 
+- components to add the parameters they require
 - remove stage slug from template push keys
 - check usage of resource_name in components
 - fix queue name

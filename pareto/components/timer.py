@@ -1,5 +1,10 @@
 from pareto.components import *
 
+ParamNames=yaml.safe_load("""
+- app-name
+- stage-name
+""")
+
 @resource()
 def Timer(**kwargs):
     action={"Id": resource_name(kwargs),
@@ -21,7 +26,9 @@ def ActionPermission(**kwargs):
     return "AWS::Lambda::Permission", props
 
 def synth_timer(template, **kwargs):
-    template.update(Parameters=parameter("%s-arn" % kwargs["action"]),
+    parameters=[parameter(paramname)
+                for paramname in ParamNames+["%s-arn" % kwargs["action"]]]
+    template.update(Parameters=parameters,
                     Resources=[Timer(**kwargs),
                                ActionPermission(**kwargs)])
 

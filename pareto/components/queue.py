@@ -2,6 +2,11 @@ from pareto.components import *
 
 QueueName="${resource_name}.fifo"
 
+ParamNames=yaml.safe_load("""
+- app-name
+- stage-name
+""")
+
 @resource()
 def Queue(**kwargs):
     queuename=fn_sub(QueueName,
@@ -20,7 +25,9 @@ def QueueMapping(batch=1, **kwargs):
     return "AWS::Lambda::EventSourceMapping", props
 
 def synth_queue(template, **kwargs):
-    template.update(Resources=Queue(**kwargs))
+    template.update(Parameters=[parameter(paramname)
+                                for paramname in ParamNames],
+                    Resources=Queue(**kwargs))
     if "action" in kwargs:
         template.update(Parameters=parameter("%s-arn" % kwargs["action"]),
                         Resources=QueueMapping(**kwargs))

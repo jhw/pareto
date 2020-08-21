@@ -22,6 +22,11 @@ ExplicitAuthFlows=yaml.safe_load("""
 - ALLOW_REFRESH_TOKEN_AUTH
 """)
 
+ParamNames=yaml.safe_load("""
+- app-name
+- stage-name
+""")
+
 UserAttrs=["email"]
 
 @resource(suffix="user-pool")
@@ -136,7 +141,9 @@ def IdentityPoolId(**kwargs):
     return ref("%s-identity-pool" % kwargs["name"])
 
 def synth_userpool(template, **kwargs):
-    template.update(Resources=[UserPool(**kwargs),
+    template.update(Parameters=[parameter(paramname)
+                                for paramname in ParamNames],
+                    Resources=[UserPool(**kwargs),
                                UserPoolClient(**kwargs),
                                IdentityPool(**kwargs),
                                IdentityPoolRoles(**kwargs),
