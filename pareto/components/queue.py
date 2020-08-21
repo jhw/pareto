@@ -1,8 +1,12 @@
 from pareto.components import *
 
+QueueName="${resource_name}.fifo"
+
 @resource()
-def Queue(**kwargs):        
-    props={"QueueName": "%s.fifo" % resource_name(kwargs),
+def Queue(**kwargs):
+    queuename=fn_sub(QueueName,
+                     {"resource_name": resource_name(kwargs)})
+    props={"QueueName": queuename,
            "FifoQueue": True}
     return "AWS::SQS::Queue", props
 
