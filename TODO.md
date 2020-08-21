@@ -1,18 +1,18 @@
 ### short [dashboard-refs]
 
-- filter param requirements not fulfilled by outputs on a per- template basis
-- add these params as stack params (minus outputs prefix)
 - join these non- output params and add them as master stack params
 
+- fn::sub local reference checks
+- check for parameters not required
+
+- add back template/dashboard name
+- extend deploy_stack.py to marshall parameters required for template
+
+- refactor build_layer.py so not dependant on globals
+- remove setting of `config["globals"]["stage"]` in all scripts
 - remove globals entirely ?
   - then u have to pass to script every time
 
-- fn::sub local reference checks
-- check for unwanted parameter imports
-- remove setting of `config["globals"]["stage"]` in all scripts
-- add back template/dashboard name
-- extend deploy_stack.py to marshall parameters required for template
-- refactor build_layer.py so not dependant on globals
 - consider single layer
 
 ### pending
@@ -276,6 +276,8 @@
   
 ### done
 
+- filter param requirements not fulfilled by outputs on a per- template basis
+- add these params as stack params (minus outputs prefix)
 - add back env validation
 - iterate over dash params
 - modify dash rendering to use fn::sub

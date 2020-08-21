@@ -74,6 +74,12 @@ class Outputs(Refs):
                                       "Outputs.%s" %  attr]}
                 for attr in template.Parameters
                 if attr in refs}
+    
+    def not_found(self, template):
+        refs=dict(self)
+        return {attr: {"Ref": attr}
+                for attr in template.Parameters
+                if attr not in refs}
         
 class Env(dict):
 
@@ -158,7 +164,9 @@ class Env(dict):
         master=Template(name=Master)
         outputs=Outputs.create(self)
         for tempname, template in self.items():
-            params=outputs.nested_params(template)
+            params={}
+            params.update(outputs.nested_params(template))
+            params.update(outputs.not_found(template))
             kwargs={"name": tempname,
                     "params": params}
             synth_stack(master, **kwargs)
