@@ -1,7 +1,7 @@
 ### short [dashboard-refs]
 
-- turn off component globals updating and see what breaks 
-- change resource_name to use AppName, StageName variables (fn::sub)
+- dedicated layer staging variable
+
 - add dedicated chart resource_name which returns string pattern only
 - modify dash rendering to use fn::sub
 - initialise templates with AppName/StageName/StagingBucket/LambdaStagingKey
@@ -272,6 +272,8 @@
   
 ### done
 
+- turn off component globals updating and see what breaks 
+- change resource_name to use AppName, StageName variables (fn::sub)
 - rename non_chart_value as resource_value
 - move validation to end of synth process
 - strip down deploy stack

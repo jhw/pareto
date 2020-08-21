@@ -71,7 +71,6 @@ class Env(dict):
         env=Env(config)
         for groupkey, components in config["components"].items():
             for component in components:
-                component.update(env.config["globals"]) # NB
                 env.add_component(groupkey, component)
         return env
     
