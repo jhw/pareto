@@ -1,32 +1,28 @@
 ### short [dashboard-refs]
 
-- remove stage slug from template push keys
-
 - components to add the parameters they require
 
 - add all parameters to master template
 - stack params mapping to reference master params as well as outputs
-
 - modify dash rendering to use fn::sub
 - fn::sub local reference checks
 - add back env validation
-- see if u can use inline parameter refs when u use fn::sub
-  - you may not want this as you won't get ref checking
-  - but then maybe ref checking needs to be extended to include inline string refs
+- check for unwanted parameter imports
 - remove setting of `config["globals"]["stage"]` in all scripts
 - add back template/dashboard name
 - extend deploy_stack.py to marshall parameters required for template
-- build_layer dependent on globals.runtime
+- refactor build_layer.py so not dependant on globals
 
 ### pending
+
+- single layer ?
 
 - why is authorizer name required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
 ### medium
 
-- refactor layer staging as per new lambdas
-
+- use of direct inline refs when using fn_sub (`${AppName}` not `${app_name}`)
 - script to dump outputs for UI
 - ensure LambdaKey is only converted to str() at last minute
 - deploy_stack.py to check is latest
@@ -282,6 +278,7 @@
   
 ### done
 
+- remove stage slug from template push keys
 - check usage of resource_name in components
 - fix queue name
 - dashboard name refs are messed up

@@ -16,9 +16,8 @@ def assert_master(fn):
 
 def push_templates(config, dirname, s3):
     def push(config, filename, s3):
-        key="%s-%s/templates/%s" % (config["globals"]["app"],
-                                    config["globals"]["stage"],
-                                    filename.split("/")[-1])
+        key="%s/templates/%s" % (config["globals"]["app"],
+                                 filename.split("/")[-1])
         logging.info("pushing %s to %s" % (filename, key))
         s3.upload_file(filename,
                        config["globals"]["bucket"],
