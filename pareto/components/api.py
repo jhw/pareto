@@ -35,6 +35,12 @@ LogsPermissions=yaml.safe_load("""
 - logs:FilterLogEvents
 """)
 
+ParamNames=yaml.safe_load("""
+- app-name
+- stage-name
+- region
+""")
+
 AuthorizationHeader="method.request.header.Authorization"
 
 Draft7Schema="http://json-schema.org/draft-07/schema#"
@@ -313,7 +319,9 @@ def ApiUrl(endpoint, **kwargs):
     return ApiUrl(endpoint, **kwargs)
 
 def synth_api(template, **kwargs):
-    template.update(Resources=[ApiRoot(**kwargs),
+    template.update(Parameters=[parameter(paramname)
+                                for paramname in ParamNames],
+                    Resources=[ApiRoot(**kwargs),
                                ApiAccount(**kwargs),
                                ApiLogsRole(**kwargs),
                                ApiDeployment(**kwargs),
