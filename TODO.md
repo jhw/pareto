@@ -1,7 +1,8 @@
 ### short [dashboard-refs]
 
-- refactor app as parameter
+- remove stage from synth_templates args
 - refactor stage as parameter
+
 - refactor region as parameter
 
 - eliminate staging dicts
@@ -280,6 +281,7 @@
   
 ### done
 
+- refactor app as parameter
 - refactor layer staging keys are parameters
 - clean up lambda staging code
 - refactor lambda staging key as parameter

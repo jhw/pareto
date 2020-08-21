@@ -12,9 +12,8 @@ def init_region(config):
         raise RuntimeError("region is not set in AWS profile")
     config["globals"]["region"]=region
 
-def init_staging(config, attrs=["app"]):
-    return {attr: config["globals"][attr]
-            for attr in attrs}
+def init_staging(config):
+    return {}
     
 @assert_actions
 def add_lambda_staging(config):

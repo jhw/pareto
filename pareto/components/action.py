@@ -13,14 +13,14 @@ DefaultPermissions=yaml.safe_load("""
 
 @resource()
 def Action(concurrency=None,
-           handlerpat="%s/%s/index.handler", # NB
+           handlerpat="${app_name}/%s/index.handler", # NB
            memory=128,
            timeout=30,
            **kwargs):
     dlqarn=fn_getatt("%s-dead-letter-queue" % kwargs["name"], "Arn")
     rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
-    handler=handlerpat % (kwargs["staging"]["app"],
-                          underscore(kwargs["name"]))
+    handler=fn_sub(handlerpat % underscore(kwargs["name"]),
+                   {"app_name": ref("app-name")})
     props={"Code": {"S3Bucket": ref("staging-bucket"),
                     "S3Key": ref("lambda-staging-key")},
            "FunctionName": resource_name(kwargs),
