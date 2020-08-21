@@ -1,10 +1,12 @@
 ### short [dashboard-refs]
 
-- replace cognito ${AWS::Region}
-
-- add all parameters to master template
-- stack params mapping to reference master params as well as outputs
 - modify dash rendering to use fn::sub
+
+- check env harvests params from each template
+- filter param requirements not fulfilled by outputs on a per- template basis
+- add these params as stack params (minus outputs prefix)
+- join these non- output params and add them as master stack params
+
 - fn::sub local reference checks
 - add back env validation
 - check for unwanted parameter imports
@@ -16,8 +18,6 @@
 
 ### pending
 
-- single layer ?
-
 - why is authorizer name required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
@@ -26,9 +26,7 @@
 - use of direct inline refs when using fn_sub (`${AppName}` not `${app_name}`)
 - script to dump outputs for UI
 - ensure LambdaKey is only converted to str() at last minute
-- deploy_stack.py to check is latest
-- allow specific deploy commit to be specified in config
-- abstract apigw handling code into demo root
+- abstract apigw decorator into demo root
 - delete stack failed to clean s3 bucket
 - apigw extended logging
 - script to clean log groups
@@ -279,6 +277,7 @@
   
 ### done
 
+- replace cognito ${AWS::Region}
 - runtime version parameter
 - rename python-runtime as runtime
 - refactor timer params as per layer params

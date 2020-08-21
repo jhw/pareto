@@ -1,8 +1,8 @@
 from pareto.components import *
 
-CallbackUrl="https://${resource_name}.auth.${AWS::Region}.amazoncognito.com/callback"
+CallbackUrl="https://${resource_name}.auth.${region}.amazoncognito.com/callback"
 
-LogoutUrl="https://${resource_name}.auth.${AWS::Region}.amazoncognito.com"
+LogoutUrl="https://${resource_name}.auth.${region}.amazoncognito.com"
 
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolclient.html#cfn-cognito-userpoolclient-explicitauthflows
 
@@ -25,6 +25,7 @@ ExplicitAuthFlows=yaml.safe_load("""
 ParamNames=yaml.safe_load("""
 - app-name
 - stage-name
+- region
 """)
 
 UserAttrs=["email"]
@@ -50,9 +51,11 @@ def UserPoolClient(userattrs=UserAttrs,
                    **kwargs):
     userpool=ref("%s-user-pool" % kwargs["name"])
     callbackurl=fn_sub(CallbackUrl,
-                       {"resource_name": resource_name(kwargs)})
+                       {"resource_name": resource_name(kwargs),
+                        "region": ref("region")})
     logouturl=fn_sub(LogoutUrl,
-                     {"resource_name": resource_name(kwargs)})
+                     {"resource_name": resource_name(kwargs),
+                      "region": ref("region")})
     props={"UserPoolId": userpool,
            "GenerateSecret": False,
            "PreventUserExistenceErrors": "ENABLED",
