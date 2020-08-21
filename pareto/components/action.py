@@ -11,6 +11,13 @@ DefaultPermissions=yaml.safe_load("""
 - sqs:SendMessage # dead letter queue
 """)
 
+ParamNames=yaml.safe_load("""
+- app-name
+- stage-name
+- staging-bucket
+- lambda-staging-key
+""")
+ 
 @resource()
 def Action(concurrency=None,
            handlerpat="${app_name}/%s/index.handler", # NB
@@ -97,7 +104,9 @@ def ActionArn(**kwargs):
     return fn_getatt(kwargs["name"], "Arn")
 
 def synth_action(template, **kwargs):
-    template.update(Resources=[Action(**kwargs),
+    template.update(Parameters=[parameter(paramname)
+                                for paramname in ParamNames],
+                    Resources=[Action(**kwargs),
                                ActionRole(**kwargs),
                                ActionDeadLetterQueue(**kwargs),
                                ActionVersion(**kwargs),

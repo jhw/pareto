@@ -62,7 +62,8 @@ class Refs(list):
         refs=dict(self)
         return {attr: {"Fn::GetAtt": [logical_id(refs[attr]),
                                       "Outputs.%s" %  attr]}
-                for attr in attrs}
+                for attr in attrs
+                if attr in refs} # NB added in case part of params
             
 class Env(dict):
 
