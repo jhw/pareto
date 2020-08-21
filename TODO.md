@@ -1,6 +1,8 @@
 ### short [dashboard-refs]
 
-- layer staging key
+- refactor timer params as per layer params
+- rename python-runtime as runtime
+- runtime version parameter
 
 - replace cognito ${AWS::Region}
 
@@ -14,6 +16,7 @@
 - add back template/dashboard name
 - extend deploy_stack.py to marshall parameters required for template
 - refactor build_layer.py so not dependant on globals
+- consider single layer
 
 ### pending
 

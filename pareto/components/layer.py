@@ -17,8 +17,9 @@ def LayerArn(**kwargs):
     return ref("%s-layer" % kwargs["name"])
 
 def synth_layer(template, **kwargs):
+    paramnames=ParamNames+["%s-layer-staging-key" % kwargs["name"]]
     template.update(Parameters=[parameter(paramname)
-                                for paramname in ParamNames],
+                                for paramname in paramnames],
                     Resources=Layer(**kwargs),
                     Outputs=LayerArn(**kwargs))
 
