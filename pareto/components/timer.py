@@ -26,9 +26,9 @@ def ActionPermission(**kwargs):
     return "AWS::Lambda::Permission", props
 
 def synth_timer(template, **kwargs):
-    parameters=[parameter(paramname)
-                for paramname in ParamNames+["%s-arn" % kwargs["action"]]]
-    template.update(Parameters=parameters,
+    paramnames=ParamNames+["%s-arn" % kwargs["action"]]
+    template.update(Parameters=[parameter(paramname)
+                                for paramname in paramnames],
                     Resources=[Timer(**kwargs),
                                ActionPermission(**kwargs)])
 

@@ -1,6 +1,5 @@
 ### short [dashboard-refs]
 
-- refactor timer params as per layer params
 - rename python-runtime as runtime
 - runtime version parameter
 
@@ -283,6 +282,7 @@
   
 ### done
 
+- refactor timer params as per layer params
 - layer parameters
 - components to add the parameters they require
 - remove stage slug from template push keys
