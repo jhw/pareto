@@ -6,12 +6,6 @@ from pareto.staging.layers import Layers
 
 from pareto.env import synth_env
 
-def init_region(config):
-    region=boto3.session.Session().region_name
-    if region in ['', None]:
-        raise RuntimeError("region is not set in AWS profile")
-    config["globals"]["region"]=region
-
 def init_staging(config):
     return {}
     
@@ -34,7 +28,6 @@ if __name__=="__main__":
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        init_region(config)    
         validate_bucket(config)
         add_lambda_staging(config)
         add_layer_staging(config)

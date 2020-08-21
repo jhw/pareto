@@ -2,9 +2,11 @@
 
 - remove init_region
 
-- refactor region as parameter
+- remove validate_bucket
 
-- eliminate staging dicts
+- remove staging dicts
+
+- refactor region as parameter
 
 - add dedicated chart resource_name which returns string pattern only
 - modify dash rendering to use fn::sub
