@@ -31,15 +31,9 @@ if __name__=="__main__":
         argsconfig=yaml.safe_load("""
         - name: config
           type: file
-        - name: stage
-          type: enum
-          options:
-          - dev
-          - prod
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        config["globals"]["stage"]=args.pop("stage")
         init_region(config)    
         validate_bucket(config)
         add_lambda_staging(config)

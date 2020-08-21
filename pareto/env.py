@@ -90,11 +90,6 @@ class Env(dict):
         return "%s-%i" % (templatefn(groupkey),
                          self.count[groupkey])
         
-    def template_name(self, tempkey):
-        return "%s-%s-%s" % (self.config["globals"]["app"],
-                             tempkey,
-                             self.config["globals"]["stage"])
-
     def check_metrics(fn):
         def is_valid(template):
             # print (template.metrics)
@@ -113,7 +108,7 @@ class Env(dict):
         def wrapped(self, groupkey, component):
             tempkey=self.template_key(groupkey)
             if tempkey not in self:
-                tempname=self.template_name(tempkey)
+                tempname=random_id("template") # TEMP
                 self[tempkey]=Template(name=tempname)
             return fn(self, groupkey, component)
         return wrapped

@@ -1,7 +1,6 @@
 ### short [dashboard-refs]
 
-- remove stage from synth_templates args
-- refactor stage as parameter
+- remove init_region
 
 - refactor region as parameter
 
@@ -15,6 +14,8 @@
 - modify deploy_stack to use template args
 - remove stage slug from template push keys
 
+- remove setting of `config["globals"]["stage"]` in all scripts
+- add back template/dashboard name
 - move s3 key lookup staging code into deploy_stack.py
 - extend deploy_stack.py to marshall parameters required for template
 - build_layer dependent on globals.runtime
@@ -281,6 +282,8 @@
   
 ### done
 
+- remove stage from synth_templates args
+- refactor stage as parameter
 - refactor app as parameter
 - refactor layer staging keys are parameters
 - clean up lambda staging code
