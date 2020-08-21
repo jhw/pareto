@@ -1,6 +1,6 @@
 ### short [dashboard-refs]
 
-- refactor lambda staging key as parameter
+- clean up lambda staging code
 
 - refactor layer staging keys are parameters
   - allow multiple parameters for now
@@ -285,6 +285,7 @@
   
 ### done
 
+- refactor lambda staging key as parameter
 - refactor bucket variable as parameter
 - refactor runtime variable as parameter
 - extended staging variables

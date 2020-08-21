@@ -29,7 +29,7 @@ def add_lambda_staging(config):
         return sorted([str(key)
                        for key in keys])[-1]
     staging=init_staging(config)
-    staging["key"]=filter_latest(config)
+    # staging["key"]=filter_latest(config)
     for action in config["components"]["actions"]:
         action["staging"]=staging
        

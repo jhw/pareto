@@ -22,7 +22,7 @@ def Action(concurrency=None,
     handler=handlerpat % (kwargs["staging"]["app"],
                           underscore(kwargs["name"]))
     props={"Code": {"S3Bucket": ref("staging-bucket"),
-                    "S3Key": kwargs["staging"]["key"]},
+                    "S3Key": ref("lambda-staging-key")},
            "FunctionName": resource_name(kwargs),
            "Handler": handler,
            "MemorySize": memory,
