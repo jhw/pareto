@@ -1,8 +1,5 @@
 ### short [dashboard-refs]
 
-- check assert_actions, assert_layers
-- check staging
-
 - refactor region as parameter
 
 - add dedicated chart resource_name which returns string pattern only
