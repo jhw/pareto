@@ -1,7 +1,7 @@
 ### short [dashboard-refs]
 
-- bucket source arn is messed up
 - dashboard name refs are messed up
+- check usage of resource_name in components
 
 - remove stage slug from template push keys
 
@@ -284,6 +284,7 @@
   
 ### done
 
+- bucket source arn is messed up
 - cognito url refs are messed up
 - examine outputted templates
 - stack region

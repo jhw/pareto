@@ -1,6 +1,6 @@
 from pareto.components import *
 
-PermissionArn="arn:aws:s3:::%s"
+PermissionArn="arn:aws:s3:::${resource_name}"
 
 WebsitePolicyArn="arn:aws:s3:::${bucket_name}/*"
 
@@ -35,7 +35,8 @@ def ActionPermission(action, **kwargs):
     suffix="%s-permission" % action["name"]
     @resource(suffix=suffix)
     def ActionPermission(action, **kwargs):
-        source=PermissionArn % resource_name(kwargs)
+        source=fn_sub(PermissionArn,
+                      {"resource_name": resource_name(kwargs)})
         target=ref("%s-arn" % action["name"])
         props={"Action": "lambda:InvokeFunction",
                "FunctionName": target,
