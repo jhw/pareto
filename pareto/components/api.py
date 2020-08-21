@@ -89,7 +89,7 @@ def ApiStage(**kwargs):
     deployment=ref("%s-deployment" % kwargs["name"])
     props={"DeploymentId": deployment,
            "RestApiId": root,           
-           "StageName": kwargs["stage"]}
+           "StageName": ref("stage-name")}
     return "AWS::ApiGateway::Stage", props
 
 def ApiResource(endpoint, **kwargs):
