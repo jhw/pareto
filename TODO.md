@@ -1,4 +1,7 @@
-### short [dashboard references]
+### short [dashboard-refs]
+
+- rename non_chart_value as resource_value
+- move validation to end of synth process
 
 - turn off component globals updating and see what breaks 
 - change resource_name to use AppName, StageName variables (fn::sub)
@@ -20,7 +23,6 @@
 - refactor layer staging as per new lambdas
 
 - script to dump outputs for UI
-- rename non_chart_value as resource_value
 - ensure LambdaKey is only converted to str() at last minute
 - deploy_stack.py to check is latest
 - allow specific deploy commit to be specified in config
