@@ -195,7 +195,7 @@ class Env(dict):
 @preprocess
 def synth_env(config):
     ts=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-    return Env.create(config).dump(ts).validate().synth_master().dump(ts)
+    return Env.create(config).synth_master().dump(ts).validate()
 
 if __name__=="__main__":
     pass

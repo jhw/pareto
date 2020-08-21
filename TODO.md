@@ -1,7 +1,6 @@
 ### short [dashboard-refs]
 
 - rename non_chart_value as resource_value
-- move validation to end of synth process
 
 - turn off component globals updating and see what breaks 
 - change resource_name to use AppName, StageName variables (fn::sub)
@@ -275,6 +274,7 @@
   
 ### done
 
+- move validation to end of synth process
 - strip down deploy stack
 - split deploy_stack into stack generation, stack deployment
 - underscore app name where u underscore lambda name
