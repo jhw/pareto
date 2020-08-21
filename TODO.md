@@ -1,6 +1,5 @@
 ### short [dashboard-refs]
 
-- refactor runtime variable as parameter
 - refactor bucket variable as parameter
 - remove layers temporarily as not sure how they will fit in ?
 
@@ -276,6 +275,7 @@
   
 ### done
 
+- refactor runtime variable as parameter
 - extended staging variables
 - dedicated layer staging variable
 - turn off component globals updating and see what breaks 
