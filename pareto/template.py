@@ -119,16 +119,14 @@ class Template:
                               "body": self.Charts})
             struct["Resources"].update(dict([dash]))
         return struct
-                
-    @property
-    def logical_ids(self):
+
+    def filter_logical_ids(self, struct, attrs):
         ids=[]
-        for attr in ["Resources", "Parameters"]:
-            ids+=getattr(self, attr).keys()
+        for attr in attrs:
+            ids+=struct[attr].keys()
         return ids
     
-    @property
-    def logical_id_refs(self):
+    def filter_logical_id_refs(self, struct):
         def is_ref(key, element):
             return (key=="Ref" and
                     type(element)==str)
@@ -149,16 +147,27 @@ class Template:
                     else:
                         filter_refs(subelement, refs)
         refs=set()
-        filter_refs(self.render(), refs)
+        filter_refs(struct, refs)
         return list(refs)
 
-    def validate_logical_ids(self):
-        ids=self.logical_ids
-        for ref in self.logical_id_refs:
+    def validate_params(self, struct):
+        ids=self.filter_logical_ids(struct,
+                                    ["Parameters"])
+        refs=self.filter_logical_id_refs(struct)
+        for id in ids:
+            if id not in refs:
+                raise RuntimeError("%s template has unused parameter" % (self.name, id))
+    
+    def validate_logical_ids(self, struct):
+        ids=self.filter_logical_ids(struct,
+                                    ["Parameters",
+                                     "Resources"])
+        refs=self.filter_logical_id_refs(struct)
+        for ref in refs:
             if ref not in ids:
                 raise RuntimeError("bad reference to %s in %s template" % (ref, self.name))
 
-    def validate_string_refs(self):
+    def validate_string_refs(self, struct):
         def filter_refs(element):
             return list(set([ref[2:-1]
                              for ref in re.findall("\\$\\{\\w+\\}", element[0])
@@ -180,11 +189,12 @@ class Template:
                             raise RuntimeError("fn::sub ref mismatch in template %s - %s vs %s" % (self.name, refs, keys))
                     else:
                         iterparse(subelement)
-        iterparse(self.render())
-            
+        iterparse(struct)
+        
     def validate(self):
-        self.validate_logical_ids()
-        self.validate_string_refs()
+        struct=self.render()
+        self.validate_logical_ids(struct)
+        self.validate_string_refs(struct)
     
     @property
     def metrics(self, metrics=Metrics):

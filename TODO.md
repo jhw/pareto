@@ -1,21 +1,17 @@
 ### short [dashboard-refs]
 
-- pass rendered tree to template validation to avoid re- rendering
-
-- check for superfluous parameters
-
 - complete deploy_stack.py
+- test
+
+- refactor build_layer.py so not dependant on globals
+
+- refactor references to globals in scripts
+
+- test use of direct inline refs (`${AppName}` not `${app_name}`)
 
 - add back template/dashboard name
 
-- refactor build_layer.py so not dependant on globals
-- remove setting of `config["globals"]["stage"]` in all scripts
-- remove globals entirely ?
-  - then u have to pass to script every time
-
-- use of direct inline refs when using fn_sub (`${AppName}` not `${app_name}`)
-
-- consider single layer
+- single layer
 
 ### pending
 
@@ -280,6 +276,8 @@
   
 ### done
 
+- pass rendered tree to template validation to avoid re- rendering
+- check for superfluous parameters
 - fn::sub local reference checks
 - env validation failing
 - master parameter types are incorrect
