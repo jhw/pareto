@@ -27,35 +27,7 @@ def TemplateMapper(groupkey,
                    default="misc"):
     return groupkey if groupkey in dedicated else default
 
-class Refs(list):
-
-    def __init__(self):
-        list.__init__(self)
-
-    def cross_validate(self, refs):
-        attrs, errors = dict(self), set()
-        for attr, tempname in refs:
-            if attr not in attrs:
-                errors.add("%s not found" % attr)
-            elif attrs[attr]==tempname:
-                errors.add("%s can't be both parameter and output in same template")
-        if len(errors)!=0:
-            raise RuntimeError(", ".join(list(errors)))
-
-class Params(Refs):
-
-    @classmethod
-    def create(self, env, attr="Parameters"):
-        params=Params()
-        for tempname, template in env.items():
-            params+=[(key, tempname)                   
-                     for key in getattr(template, attr)]
-        return params
-    
-    def __init__(self):
-        Refs.__init__(self)
-
-class Outputs(Refs):
+class Outputs(list):
 
     @classmethod
     def create(self, env, attr="Outputs"):
@@ -66,7 +38,7 @@ class Outputs(Refs):
         return outputs
     
     def __init__(self):
-        Refs.__init__(self)
+        list.__init__(self)
 
     def exported_attrs(self, template):
         refs=dict(self)
@@ -150,15 +122,8 @@ class Env(dict):
         synthfn(template, **component)
     
     def validate(self):
-        def validate_outer(self):
-            outputs=Outputs.create(self)
-            params=Params.create(self)
-            outputs.cross_validate(params)
-        def validate_inner(self):
-            for template in self.values():
-                template.validate()
-        validate_outer(self)
-        validate_inner(self)
+        for template in self.values():
+            template.validate()
         return self
         
     def attach(key):

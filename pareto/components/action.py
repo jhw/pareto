@@ -17,6 +17,7 @@ ParamNames=yaml.safe_load("""
 - staging-bucket
 - lambda-staging-key
 - runtime-version
+- region # required by charts
 """)
  
 @resource()

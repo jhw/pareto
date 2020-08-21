@@ -1,7 +1,5 @@
 ### short [dashboard-refs]
 
-- env validation failing
-
 - fn::sub local reference checks
 - check for parameters not required
 
@@ -276,6 +274,7 @@
   
 ### done
 
+- env validation failing
 - master parameter types are incorrect
 - join these non- output params and add them as master stack params
 - filter param requirements not fulfilled by outputs on a per- template basis
