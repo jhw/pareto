@@ -1,6 +1,6 @@
 ### short [dashboard-refs]
 
-- dedicated layer staging variable
+- all staging variables should be replaced by refs to parameters :-)
 
 - add dedicated chart resource_name which returns string pattern only
 - modify dash rendering to use fn::sub
@@ -9,6 +9,8 @@
 - env param mapping to reference master template params as well as outputs 
 - modify deploy_stack to use template args
 - remove stage slug from template push keys
+
+- harmonise init_staging used by push_lambdas.py, synth_templates.py
 
 ### pending
 
@@ -272,6 +274,8 @@
   
 ### done
 
+- extended staging variables
+- dedicated layer staging variable
 - turn off component globals updating and see what breaks 
 - change resource_name to use AppName, StageName variables (fn::sub)
 - rename non_chart_value as resource_value

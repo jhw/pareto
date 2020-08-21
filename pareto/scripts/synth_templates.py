@@ -16,6 +16,10 @@ def init_region(config):
         raise RuntimeError("region is not set in AWS profile")
     config["globals"]["region"]=region
 
+def init_staging(config, attrs=["app", "bucket", "runtime"]):
+    return {attr: config["globals"][attr]
+            for attr in attrs}
+    
 @assert_actions
 def add_lambda_staging(config):
     def filter_latest(config):
@@ -24,8 +28,7 @@ def add_lambda_staging(config):
             raise RuntimeError("no lambdas found")
         return sorted([str(key)
                        for key in keys])[-1]
-    staging={attr: config["globals"][attr]
-             for attr in ["app", "bucket"]}
+    staging=init_staging(config)
     staging["key"]=filter_latest(config)
     for action in config["components"]["actions"]:
         action["staging"]=staging
@@ -36,7 +39,9 @@ def add_layer_staging(config):
     for layer in config["components"]["layers"]:
         if layer["name"] not in layers:
             raise RuntimeError("layer %s does not exist" % layer["name"])
-        layer["staging"]=layers[layer["name"]]
+        staging=init_staging(config)
+        staging["key"]=layers[layer["name"]]
+        layer["staging"]=staging
 
 if __name__=="__main__":
     try:        
