@@ -2,7 +2,7 @@
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
 """
 
-from pareto.helpers.cloudformation.utils import logical_id
+from pareto.helpers.cloudformation.utils import logical_id, fn_sub, ref
 
 from collections import OrderedDict
 
@@ -13,6 +13,7 @@ TemplateVersion="2010-09-09"
 Metrics={"resources": (lambda t: len(t.Resources)/200),
          "outputs": (lambda t: len(t.Outputs)/60),
          "template_size": (lambda t: len(json.dumps(t.render()))/51200)}
+
 
 """
 - a simplified version of @resource from components/__init__.py as dash is a special case and you can't seem to importr from nested package without circularity
@@ -49,8 +50,12 @@ def Dashboard(**kwargs):
             x=0 # NB reset
         return {"widgets": widgets}
     layout=grid_layout(kwargs["body"])
+    body=fn_sub(json.dumps(layout),
+                {"app_name": ref("app-name"),
+                 "stage_name": ref("stage-name"),
+                 "region": ref("region")})
     props={"DashboardName": kwargs["name"],
-           "DashboardBody": json.dumps(layout)}
+           "DashboardBody": body}
     return "AWS::CloudWatch::Dashboard", props
 
 class Template:

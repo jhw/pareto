@@ -1,6 +1,6 @@
 ### short [dashboard-refs]
 
-- modify dash rendering to use fn::sub
+- iterate over dash params
 
 - filter param requirements not fulfilled by outputs on a per- template basis
 - add these params as stack params (minus outputs prefix)
@@ -279,6 +279,7 @@
   
 ### done
 
+- modify dash rendering to use fn::sub
 - separate params, outputs classes
 - stop master being updated with globals
 - replace cognito ${AWS::Region}
