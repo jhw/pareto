@@ -1,8 +1,8 @@
 ### short [dashboard-refs]
 
-- dashboard name refs are messed up
 - cognito url refs are messed up
 - bucket source arn is messed up
+- dashboard name refs are messed up
 
 - modify dash rendering to use fn::sub
 - initialise templates with AppName/StageName/StagingBucket/LambdaStagingKey
@@ -13,6 +13,8 @@
 
 - add back env validation
 - see if u can use inline parameter refs when u use fn::sub
+  - you may not want this as you won't get ref checking
+  - but then maybe ref checking needs to be extended to include inline string refs
 - remove setting of `config["globals"]["stage"]` in all scripts
 - add back template/dashboard name
 - move s3 key lookup staging code into deploy_stack.py
