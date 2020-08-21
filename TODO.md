@@ -1,10 +1,5 @@
 ### short [dashboard-refs]
 
-- clean up lambda staging code
-
-- refactor layer staging keys are parameters
-  - allow multiple parameters for now
-
 - refactor app as parameter
 - refactor stage as parameter
 - refactor region as parameter
@@ -285,6 +280,8 @@
   
 ### done
 
+- refactor layer staging keys are parameters
+- clean up lambda staging code
 - refactor lambda staging key as parameter
 - refactor bucket variable as parameter
 - refactor runtime variable as parameter

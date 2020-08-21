@@ -18,19 +18,13 @@ def init_staging(config, attrs=["app"]):
     
 @assert_actions
 def add_lambda_staging(config):
-    staging=init_staging(config)
     for action in config["components"]["actions"]:
-        action["staging"]=staging
+        action["staging"]=init_staging(config)
        
 @assert_layers
 def add_layer_staging(config):
-    layers=Layers(config=config, s3=S3)
     for layer in config["components"]["layers"]:
-        if layer["name"] not in layers:
-            raise RuntimeError("layer %s does not exist" % layer["name"])
-        staging=init_staging(config)
-        staging["key"]=layers[layer["name"]]
-        layer["staging"]=staging
+        layer["staging"]=init_staging(config)
 
 if __name__=="__main__":
     try:        

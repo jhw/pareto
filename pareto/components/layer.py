@@ -2,7 +2,7 @@ from pareto.components import *
 
 @resource(suffix="layer")
 def Layer(**kwargs):
-    content={"S3Key": str(kwargs["staging"]["key"]),
+    content={"S3Key": ref("%s-layer-staging-key" % kwargs["name"]),
              "S3Bucket": ref("staging-bucket")}
     props={"Content": content,
            "CompatibleRuntimes": [ref("python-runtime-version")]}
