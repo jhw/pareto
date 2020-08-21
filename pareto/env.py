@@ -93,7 +93,6 @@ class Env(dict):
         
     def check_metrics(fn):
         def is_valid(template):
-            # print (template.metrics)
             return max(template.metrics.values()) < 1
         def wrapped(self, groupkey, component):
             tempkey=self.template_key(groupkey)
@@ -156,7 +155,6 @@ class Env(dict):
             params=outputs.output_parameters(paramnames)
             kwargs={"name": tempname,
                     "params": params}
-            kwargs.update(self.config["globals"])
             synth_stack(master, **kwargs)
         return master
 

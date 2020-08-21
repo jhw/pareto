@@ -1,5 +1,8 @@
 ### short [dashboard-refs]
 
+- stop master being updated with globals
+- separate params, outputs classes
+
 - modify dash rendering to use fn::sub
 
 - check env harvests params from each template
