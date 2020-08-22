@@ -35,9 +35,7 @@ def Dashboard(**kwargs):
             y+=height
             x=0 # NB reset
         return {"widgets": widgets}
-    name=fn_sub("${app_name}-%s-${stage_name}" % kwargs["name"],
-                {"app_name": ref("app-name"),
-                 "stage_name": ref("stage-name")})
+    name=resource_name({"name": kwargs["name"]})
     layout=grid_layout(kwargs["body"])    
     body=fn_sub(json.dumps(layout),
                 {underscore(param): ref(param)

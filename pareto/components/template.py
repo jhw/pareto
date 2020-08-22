@@ -21,14 +21,14 @@ class Template:
     
     Attrs=["Parameters", "Outputs", "Resources", "Charts"]
     
-    def __init__(self, name=None):
+    def __init__(self, name):
         self.name=name
         def default_value(k):
             return [] if k=="Charts" else {}
         for attr in self.Attrs:
             setattr(self, attr, default_value(attr))
 
-    def clone(self, name=None):
+    def clone(self, name):
         template=Template(name)
         def clone(v):
             return list(v) if isinstance(v, list) else dict(v)

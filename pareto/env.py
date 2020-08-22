@@ -96,7 +96,8 @@ class Env(dict):
             return max(template.metrics.values()) < 1
         def wrapped(self, groupkey, component):
             tempkey=self.template_key(groupkey)
-            template=self[tempkey].clone() if tempkey in self else Template()
+            clonename=random_id("cloned-template")
+            template=self[tempkey].clone(clonename) if tempkey in self else Template(clonename)
             synthfn=eval("synth_%s" % groupkey[:-1])                
             synthfn(template, **component)
             if not is_valid(template):
