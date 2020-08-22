@@ -25,17 +25,5 @@ class LambdaKey(dict):
                                          format_timestamp(self["timestamp"]),
                                          self["hexsha"])
     
-class LambdaKeys(list):
-
-    def __init__(self, config, s3):
-        list.__init__(self)
-        paginator=s3.get_paginator("list_objects_v2")
-        pages=paginator.paginate(Bucket=config["globals"]["bucket"],
-                                 Prefix="%s/lambdas" % config["globals"]["app"])
-        for struct in pages:
-            if "Contents" in struct:
-                self+=[LambdaKey.create_s3(obj["Key"])
-                       for obj in struct["Contents"]]
-
 if __name__=="__main__":
     pass

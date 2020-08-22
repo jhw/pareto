@@ -1,8 +1,5 @@
 ### short [dashboard-refs]
 
-- rename tmp/env as tmp/templates
-- move layer, lambda staging code into script
-
 - check where lambdas are staged to in tmp
 
 - test project name with hypen
@@ -275,6 +272,8 @@
   
 ### done
 
+- rename tmp/env as tmp/templates
+- move layer, lambda staging code into script
 - template name should be temp name not group name ("secrets")
 - dash name should use standard resource_name
 - move template into components and separate dash
