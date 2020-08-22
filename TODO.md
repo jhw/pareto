@@ -1,4 +1,4 @@
-### short [dashboard-refs]
+### short
 
 - local template dump to be zipped
 - test project name with hypen
@@ -16,8 +16,6 @@
 
 ### medium
 
-- direct inline refs (`${AppName}` not `${app_name}`)
-
 - delete stack failed to clean s3 bucket
 - apigw extended logging
 - iam deployment user
@@ -27,6 +25,8 @@
 - route 53
 - google sheets upload
 - cloudwatch alerts
+
+- burningmonk recommended alerts
 
 - apigw2 [stage auto deploy]
 
@@ -45,7 +45,6 @@
 - amplify federated login
 - amplify unauthenticated access
 
-- chrome extension
 - eventbridge
 - ci pipeline
 - github actions
@@ -57,6 +56,8 @@
 
 ### thoughts
 
+- direct inline refs (`${AppName}` not `${app_name}`) ?
+  - no; is less transparent; and would likely be more troublesome to implement ref checking
 - single layer ?
   - think at this point it's better to have optionality of multiple
 - remove validate_bucket ?
