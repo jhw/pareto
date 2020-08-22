@@ -1,11 +1,11 @@
 ### short [dashboard-refs]
 
-- lambdas to be staged in tmp/lambdas
 - test project name with hypen
 - test 3.8 layer build
 - script to dump outputs for UI
 - abstract apigw decorator into demo root
 - group iam permissions according to service
+- script to clean log groups
 
 ### pending
 
@@ -21,7 +21,6 @@
 
 - delete stack failed to clean s3 bucket
 - apigw extended logging
-- script to clean log groups
 - iam deployment user
 
 - targets
@@ -270,6 +269,7 @@
   
 ### done
 
+- lambdas to be staged in tmp/lambdas
 - test template redployment [dashboard error]
 - test template deployment
 - print layer keys, lambda keys
