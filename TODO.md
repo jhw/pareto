@@ -1,11 +1,13 @@
 ### short [dashboard-refs]
 
-- complete deploy_stack.py
-- test
+- rename tmp/env as tmp/templates
+- move layer, lambda staging code into script
+
+- check where lambdas are staged to in tmp
 
 - test project name with hypen
 
-- test 3.8 layer buld
+- test 3.8 layer build
 
 - direct inline refs (`${AppName}` not `${app_name}`)
 

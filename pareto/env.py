@@ -166,9 +166,9 @@ class Env(dict):
             synth_stack(master, **kwargs)
         return master
 
-    def dump_yaml(self, timestamp):
+    def dump_yaml(self, root, timestamp):
         for tempname, template in self.items():
-            tokens=["tmp", "env", timestamp, "yaml", "%s.yaml" % tempname]
+            tokens=[root, timestamp, "yaml", "%s.yaml" % tempname]
             dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
             if not os.path.exists(dirname):
                 os.makedirs(dirname)
@@ -176,9 +176,9 @@ class Env(dict):
                 f.write(template.yaml_repr)
         return self
 
-    def dump_json(self, timestamp):
+    def dump_json(self, root, timestamp):
         for tempname, template in self.items():
-            tokens=["tmp", "env", timestamp, "json", "%s.json" % tempname]
+            tokens=[root, timestamp, "json", "%s.json" % tempname]
             dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
             if not os.path.exists(dirname):
                 os.makedirs(dirname)
@@ -186,9 +186,9 @@ class Env(dict):
                 f.write(template.json_repr)
         return self 
 
-    def dump(self, timestamp):
+    def dump(self, timestamp, root="tmp/templates"):
         logging.info("dumping to tmp/env/%s" % timestamp)
-        return self.dump_yaml(timestamp).dump_json(timestamp)
+        return self.dump_yaml(root, timestamp).dump_json(root, timestamp)
     
 @preprocess
 def synth_env(config):
