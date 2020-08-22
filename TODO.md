@@ -7,9 +7,6 @@
 
 ### pending
 
-- API GW v1 vs v2
-  - https://theburningmonk.slack.com/archives/GPM681W2K/p1598037249026700
-
 - why is authorizer name- required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
@@ -151,6 +148,8 @@
   
 ### done
 
+- API GW v1 vs v2
+  - https://theburningmonk.slack.com/archives/GPM681W2K/p1598037249026700
 - test project name with hypen
 - abstract apigw decorator into demo root
 - python 3.8 upgrade
