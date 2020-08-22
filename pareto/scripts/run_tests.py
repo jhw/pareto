@@ -11,7 +11,7 @@ from pareto.scripts.helpers.profiles import toggle_aws_profile
 def run_tests(config):
     logging.info("running tests")
     def index_test(config, action, klassname="IndexTest"):    
-        modname="%s.%s.test" % (underscore(config["globals"]["app"]),
+        modname="%s.%s.test" % (config["globals"]["app"],
                                 underscore(action["name"]))
         try:
             mod=__import__(modname, fromlist=[klassname])
