@@ -2,6 +2,8 @@
 
 from pareto.scripts import *
 
+from pareto.scripts.helpers.resources import Resources
+
 def empty_bucket(bucketname):
     try:
         paginator=S3.get_paginator("list_objects_v2")
@@ -28,7 +30,7 @@ def detach_policies(rolename):
             
 def delete_stack(stackname):
     logging.info("deleting stack %s" % stackname)
-    resources=CF.describe_stack_resources(StackName=stackname)["StackResources"]
+    resources=Resources.initialise(stackname, cf=CF)
     for resource in resources:
         if resource["ResourceType"]=="AWS::S3::Bucket":
             empty_bucket(resource["PhysicalResourceId"])

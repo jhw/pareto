@@ -1,9 +1,10 @@
 ### short
 
+- delete stack failed to clean s3 bucket
+
 - single IAM role to be used by action, apigw, userpool etc
 
 - local template dump to be zipped
-- script to dump outputs for UI
 - script to clean log groups
 
 ### pending
@@ -13,7 +14,6 @@
 
 ### medium
 
-- delete stack failed to clean s3 bucket
 - apigw extended logging
 - iam deployment user
 
@@ -53,6 +53,8 @@
 
 ### thoughts
 
+- script to dump outputs for UI
+  - just don't think it's worth it; you can easily grab existing output
 - direct inline refs (`${AppName}` not `${app_name}`) ?
   - no; is less transparent; and would likely be more troublesome to implement ref checking
 - single layer ?
