@@ -1,12 +1,12 @@
 ### short [dashboard-refs]
 
+- check globals refs
 - add back template/dashboard name
-- refactor build_layer.py so not dependant on globals
 - complete deploy_stack.py
 - test
 
-- refactor references to globals in scripts
-- test use of direct inline refs (`${AppName}` not `${app_name}`)
+- test 3.8 layer buld
+- direct inline refs (`${AppName}` not `${app_name}`)
 - single layer
 
 ### pending
@@ -271,6 +271,8 @@
   
 ### done
 
+- format runtime refs
+- refactor build_layer.py so not dependant on globals
 - pass rendered tree to template validation to avoid re- rendering
 - check for superfluous parameters
 - fn::sub local reference checks

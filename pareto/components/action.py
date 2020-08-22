@@ -37,7 +37,8 @@ def Action(concurrency=None,
            "MemorySize": memory,
            "DeadLetterConfig": {"TargetArn": dlqarn},                   
            "Role": rolearn,
-           "Runtime": ref("runtime-version"),
+           "Runtime": fn_sub("python${version}",
+                             {"version": ref("runtime-version")}),
            "Timeout": timeout}
     if "layers" in kwargs:
         props["Layers"]=[ref("%s-layer-arn" % layername)

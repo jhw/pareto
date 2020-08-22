@@ -10,7 +10,8 @@ def Layer(**kwargs):
     content={"S3Key": ref("%s-layer-staging-key" % kwargs["name"]),
              "S3Bucket": ref("staging-bucket")}
     props={"Content": content,
-           "CompatibleRuntimes": [ref("runtime-version")]}
+           "CompatibleRuntimes": [fn_sub("python${version}",
+                                         {"version": ref("runtime-version")})]}
     return "AWS::Lambda::LayerVersion", props
     
 @output(suffix="layer-arn")
