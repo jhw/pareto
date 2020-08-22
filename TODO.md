@@ -1,7 +1,10 @@
 ### short [dashboard-refs]
 
+- python 3.8 upgrade
+  - https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html
+  - where to specify image ?
+
 - test project name with hypen
-- test 3.8 layer build
 - script to dump outputs for UI
 - abstract apigw decorator into demo root
 - group iam permissions according to service

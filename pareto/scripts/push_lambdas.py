@@ -24,7 +24,8 @@ def init_staging(config, commits):
 @assert_actions
 def push_lambdas(config):
     def is_valid_path(filename, ignore=["test.py$",
-                                        ".pyc$"]):
+                                        ".pyc$",
+                                        "__pycache__"]):
         for pat in ignore:
             if re.search(pat, filename)!=None:
                 return False

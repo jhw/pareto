@@ -16,6 +16,13 @@ Statement:
 Version: '2012-10-17'
 """)
 
+"""
+- https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html
+- image affects python versions available
+"""
+
+DockerImage="aws/codebuild/standard:4.0"
+
 def layer_project_name(config, pkg):
     return "%s-%s-layer" % (config["globals"]["app"],
                             pkg["name"])
@@ -131,7 +138,7 @@ def assert_role(fn):
 @assert_role
 def init_project(config, layer, rolearn,
                  env={"type": "LINUX_CONTAINER",
-                      "image": "aws/codebuild/standard:2.0",
+                      "image": DockerImage,
                       "computeType": "BUILD_GENERAL1_SMALL"},
                  maxtries=20,
                  wait=3):
