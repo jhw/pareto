@@ -167,11 +167,14 @@ class Template:
             if ref not in ids:
                 raise RuntimeError("bad reference to %s in %s template" % (ref, self.name))
 
+    """
+    - \\w+ will match `foo_bar` but not `Foo::Bar`
+    """
+            
     def validate_string_refs(self, struct):
         def filter_refs(element):
             return list(set([ref[2:-1]
-                             for ref in re.findall("\\$\\{\\w+\\}", element[0])
-                             if "AWS::" not in ref]))
+                             for ref in re.findall("\\$\\{\\w+\\}", element[0])]))
         def filter_keys(element):
             return list(element[1].keys())
         def to_string(values):
@@ -185,6 +188,7 @@ class Template:
                     if key=="Fn::Sub":
                         refs=to_string(filter_refs(subelement))
                         keys=to_string(filter_keys(subelement))
+                        # print ("%s :: %s" % (refs, keys))
                         if refs!=keys:
                             raise RuntimeError("fn::sub ref mismatch in template %s - %s vs %s" % (self.name, refs, keys))
                     else:
