@@ -109,9 +109,7 @@ class Env(dict):
         def wrapped(self, groupkey, component):
             tempkey=self.template_key(groupkey)
             if tempkey not in self:
-                tempname="%s-%i" % (groupkey,
-                                    self.count[groupkey])
-                self[tempkey]=Template(name=tempname)
+                self[tempkey]=Template(name=tempkey)
             return fn(self, groupkey, component)
         return wrapped
 
