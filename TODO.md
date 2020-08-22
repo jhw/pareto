@@ -1,10 +1,15 @@
 ### short [dashboard-refs]
 
-- add back template/dashboard name
+- dash name should use standard resource_name
+- template name should be temp name not group name ("secrets")
+
 - complete deploy_stack.py
 - test
 
+- test project name with hypen
+
 - test 3.8 layer buld
+
 - direct inline refs (`${AppName}` not `${app_name}`)
 
 ### pending
@@ -271,6 +276,7 @@
   
 ### done
 
+- add back template/dashboard name
 - check globals refs
 - format runtime refs
 - refactor build_layer.py so not dependant on globals

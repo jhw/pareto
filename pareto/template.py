@@ -21,12 +21,7 @@ Metrics={"parameters": (lambda t: len(t.Parameters)/60),
          "outputs": (lambda t: len(t.Outputs)/60),
          "template_size": (lambda t: len(json.dumps(t.render()))/51200)}
 
-"""
-- a simplified version of @resource from components/__init__.py as dash is a special case and you can't seem to importr from nested package without circularity
-- to maintain consistency with how non- dash components are treated
-"""
-
-def resource(fn):
+def dash_resource(fn):
     def wrapped(**kwargs):
         component={k:v for k, v in zip(["Type", "Properties"],
                                        fn(**kwargs))}
@@ -34,7 +29,7 @@ def resource(fn):
                 component)
     return wrapped
 
-@resource
+@dash_resource
 def Dashboard(**kwargs):
     def grid_layout(charts,
                     pagewidth=24,
@@ -55,11 +50,14 @@ def Dashboard(**kwargs):
             y+=height
             x=0 # NB reset
         return {"widgets": widgets}
-    layout=grid_layout(kwargs["body"])
+    name=fn_sub("${app_name}-%s-${stage_name}" % kwargs["name"],
+                {"app_name": ref("app-name"),
+                 "stage_name": ref("stage-name")})
+    layout=grid_layout(kwargs["body"])    
     body=fn_sub(json.dumps(layout),
                 {underscore(param): ref(param)
                  for param in DashParamNames})
-    props={"DashboardName": kwargs["name"],
+    props={"DashboardName": name,
            "DashboardBody": body}
     return "AWS::CloudWatch::Dashboard", props
 

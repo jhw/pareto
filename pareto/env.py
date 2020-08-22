@@ -108,7 +108,8 @@ class Env(dict):
         def wrapped(self, groupkey, component):
             tempkey=self.template_key(groupkey)
             if tempkey not in self:
-                tempname=random_id("template") # TEMP
+                tempname="%s-%i" % (groupkey,
+                                    self.count[groupkey])
                 self[tempkey]=Template(name=tempname)
             return fn(self, groupkey, component)
         return wrapped
