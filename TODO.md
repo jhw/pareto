@@ -6,7 +6,6 @@
 
 - test 3.8 layer buld
 - direct inline refs (`${AppName}` not `${app_name}`)
-- single layer
 
 ### pending
 
@@ -61,6 +60,8 @@
 
 ### thoughts
 
+- single layer ?
+  - think at this point it's better to have optionality of multiple
 - remove validate_bucket ?
   - no; layer and lambda push still rely on it
 - consider merging staging code back into scripts ?
