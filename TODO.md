@@ -1,7 +1,6 @@
 ### short
 
 - local template dump to be zipped
-- test project name with hypen
 - script to dump outputs for UI
 - group iam permissions according to service
 - script to clean log groups
@@ -152,6 +151,7 @@
   
 ### done
 
+- test project name with hypen
 - abstract apigw decorator into demo root
 - python 3.8 upgrade
   - https://docs.aws.amazon.com/codebuild/latest/userguide/build-env-ref-available.html

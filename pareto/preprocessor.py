@@ -1,6 +1,6 @@
 from pareto.helpers.text import singularise
 
-import yaml
+import re, yaml
 
 LookbackPermissions=yaml.safe_load("""
 table:
@@ -18,6 +18,10 @@ IgnoreAttrs=yaml.safe_load("""
 - staging # because contains `bucket
 """)
 
+def validate_app(config):
+    if not re.search("^\\w+$", config["globals"]["app"]):
+        raise RuntimeError("app name is invalid (no hypens, underscores)")
+    
 def validate_unique(config):
     def filter_names(config):
         names=[]
@@ -83,6 +87,7 @@ def validate_refs(config):
                 raise RuntimeError("bad %s %s ref" % (k, v))
 
 def validate(config):
+    validate_app(config)
     validate_unique(config)
     validate_refs(config)
             
