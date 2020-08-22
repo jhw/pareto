@@ -108,6 +108,7 @@ def deploy_master(config, staging, tempdir, cf):
         params={"AppName": config["globals"]["app"],
                 "StageName": config["globals"]["stage"],
                 "StagingBucket": config["globals"]["bucket"],
+                "RuntimeVersion": config["globals"]["runtime"],
                 "Region": config["globals"]["region"],
                 "LambdaStagingKey": staging["lambdas"]}
         for k, v in staging["layers"].items():
@@ -122,8 +123,6 @@ def deploy_master(config, staging, tempdir, cf):
     action="update" if stack_exists(stackname) else "create"
     body=open("%s/%s" % (tempdir, Master)).read()
     params=init_params(config, staging)
-    # add lambda, layer staging args
-    """
     fn=getattr(cf, "%s_stack" % action)
     fn(StackName=stackname,
        Parameters=format_params(params),
@@ -131,8 +130,6 @@ def deploy_master(config, staging, tempdir, cf):
        Capabilities=["CAPABILITY_IAM"])
     waiter=cf.get_waiter("stack_%s_complete" % action)
     waiter.wait(StackName=stackname)
-    """
-    print (params)
 
 if __name__=="__main__":
     try:        

@@ -1,7 +1,5 @@
 ### short [dashboard-refs]
 
-- test template deployment
-
 - lambdas to be staged in tmp/lambdas
 
 - test project name with hypen
@@ -274,6 +272,8 @@
   
 ### done
 
+- test template redployment [dashboard error]
+- test template deployment
 - print layer keys, lambda keys
 - add deployment variables
 - rename tmp/env as tmp/templates
