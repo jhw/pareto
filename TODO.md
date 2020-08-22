@@ -1,8 +1,9 @@
 ### short
 
+- single IAM role to be used by action, apigw, userpool etc
+
 - local template dump to be zipped
 - script to dump outputs for UI
-- group iam permissions according to service
 - script to clean log groups
 
 ### pending
@@ -148,6 +149,7 @@
   
 ### done
 
+- group iam permissions according to service
 - API GW v1 vs v2
   - https://theburningmonk.slack.com/archives/GPM681W2K/p1598037249026700
 - test project name with hypen
