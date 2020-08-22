@@ -1,12 +1,11 @@
 ### short [dashboard-refs]
 
 - lambdas to be staged in tmp/lambdas
-
 - test project name with hypen
-
 - test 3.8 layer build
-
-- direct inline refs (`${AppName}` not `${app_name}`)
+- script to dump outputs for UI
+- abstract apigw decorator into demo root
+- group iam permissions according to service
 
 ### pending
 
@@ -18,12 +17,11 @@
 
 ### medium
 
-- script to dump outputs for UI
-- abstract apigw decorator into demo root
+- direct inline refs (`${AppName}` not `${app_name}`)
+
 - delete stack failed to clean s3 bucket
 - apigw extended logging
 - script to clean log groups
-- group iam permissions according to service
 - iam deployment user
 
 - targets
