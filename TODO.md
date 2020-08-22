@@ -1,6 +1,8 @@
 ### short [dashboard-refs]
 
-- check where lambdas are staged to in tmp
+- test template deployment
+
+- lambdas to be staged in tmp/lambdas
 
 - test project name with hypen
 
@@ -272,6 +274,8 @@
   
 ### done
 
+- print layer keys, lambda keys
+- add deployment variables
 - rename tmp/env as tmp/templates
 - move layer, lambda staging code into script
 - template name should be temp name not group name ("secrets")

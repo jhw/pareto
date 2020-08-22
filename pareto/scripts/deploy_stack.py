@@ -2,6 +2,8 @@
 
 from pareto.scripts import *
 
+from pareto.helpers.text import hungarorise
+
 from pareto.staging.lambdas import LambdaKey
 
 import os
@@ -20,10 +22,18 @@ class LambdaKeys(list):
                 self+=[LambdaKey.create_s3(obj["Key"])
                        for obj in struct["Contents"]]
 
+    def validate(self):
+        return len(self) > 0
+                
+    @property
+    def latest(self):
+        return sorted(self, key=lambda x: x["timestamp"])[-1]
+        
 class LayerKeys(dict):
 
     def __init__(self, config, s3):
         dict.__init__(self)
+        self.config=config
         paginator=s3.get_paginator("list_objects_v2")
         pages=paginator.paginate(Bucket=config["globals"]["bucket"],
                                  Prefix="%s/layers" % config["globals"]["app"])
@@ -34,6 +44,19 @@ class LayerKeys(dict):
                 self.update({filter_name(obj["Key"]):obj["Key"]
                              for obj in struct["Contents"]})
 
+    def validate(self):
+        if "layers" in self.config["components"]:
+            for layer in self.config["components"]["layers"]:
+                if layer["name"] not in self:
+                    raise RuntimeError("no %s layer found" % layer["name"])
+
+def init_staging(config, s3=S3):
+    lambdas, layers = LambdaKeys(config, s3), LayerKeys(config, s3)
+    lambdas.validate()
+    layers.validate()
+    return {"lambdas": str(lambdas.latest), # NB str()
+            "layers": layers}
+                
 def assert_template_root(fn):
     def wrapped(root):
         if not os.path.exists(root):
@@ -75,22 +98,41 @@ def assert_master(fn):
     return fn
 
 @assert_master
-def deploy_master(config, dirname, cf):
+def deploy_master(config, staging, tempdir, cf):
     logging.info("deploying master template")
     def stack_exists(stackname):
         stacknames=[stack["StackName"]
                     for stack in cf.describe_stacks()["Stacks"]]
         return stackname in stacknames
+    def init_params(config, staging):
+        params={"AppName": config["globals"]["app"],
+                "StageName": config["globals"]["stage"],
+                "StagingBucket": config["globals"]["bucket"],
+                "Region": config["globals"]["region"],
+                "LambdaStagingKey": staging["lambdas"]}
+        for k, v in staging["layers"].items():
+            params["%sLayerStagingKey" % hungarorise(k)]=v
+        return params
+    def format_params(params):
+        return [{"ParameterKey": k,
+                 "ParameterValue": v}
+                for k, v in params.items()]
     stackname="%s-%s" % (config["globals"]["app"],
                          config["globals"]["stage"])
     action="update" if stack_exists(stackname) else "create"
-    body=open("%s/%s" % (dirname, Master)).read()
+    body=open("%s/%s" % (tempdir, Master)).read()
+    params=init_params(config, staging)
+    # add lambda, layer staging args
+    """
     fn=getattr(cf, "%s_stack" % action)
     fn(StackName=stackname,
+       Parameters=format_params(params),
        TemplateBody=body,
        Capabilities=["CAPABILITY_IAM"])
     waiter=cf.get_waiter("stack_%s_complete" % action)
     waiter.wait(StackName=stackname)
+    """
+    print (params)
 
 if __name__=="__main__":
     try:        
@@ -107,10 +149,11 @@ if __name__=="__main__":
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         config["globals"]["stage"]=args.pop("stage")
-        dirname=latest_templates(root="tmp/templates")
-        logging.info("template source %s" % dirname)
-        push_templates(config, dirname, S3)
-        # deploy_master(config, dirname, CF)
+        staging=init_staging(config)
+        tempdir=latest_templates(root="tmp/templates")
+        logging.info("template source %s" % tempdir)
+        push_templates(config, tempdir, S3)
+        deploy_master(config, staging, tempdir, CF)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
