@@ -1,6 +1,6 @@
 from pareto.helpers.cloudformation.utils import *
 
-import json, yaml
+import json, re, yaml
 
 def parameter(name, type_="String"):
     return (logical_id(name), {"Type": type_})

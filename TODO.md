@@ -1,7 +1,6 @@
 ### short [dashboard-refs]
 
 - dash name should use standard resource_name
-- move template into components and separate dash
 - template name should be temp name not group name ("secrets")
 
 - complete deploy_stack.py
@@ -277,6 +276,7 @@
   
 ### done
 
+- move template into components and separate dash
 - add back template/dashboard name
 - check globals refs
 - format runtime refs

@@ -1,16 +1,12 @@
-from pareto.helpers.cloudformation.utils import *
+from pareto.components import *
+
+from pareto.components.dashboard import Dashboard
 
 from collections import OrderedDict
 
-import io, json, re, ruamel.yaml, yaml
+import io, ruamel.yaml
 
 TemplateVersion="2010-09-09"
-
-DashParamNames=yaml.safe_load("""
-- app-name
-- stage-name
-- region
-""")
 
 """
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
@@ -20,46 +16,6 @@ Metrics={"parameters": (lambda t: len(t.Parameters)/60),
          "resources": (lambda t: len(t.Resources)/200),
          "outputs": (lambda t: len(t.Outputs)/60),
          "template_size": (lambda t: len(json.dumps(t.render()))/51200)}
-
-def dash_resource(fn):
-    def wrapped(**kwargs):
-        component={k:v for k, v in zip(["Type", "Properties"],
-                                       fn(**kwargs))}
-        return (logical_id("%s-dash" % kwargs["name"]),
-                component)
-    return wrapped
-
-@dash_resource
-def Dashboard(**kwargs):
-    def grid_layout(charts,
-                    pagewidth=24,
-                    heightratio=0.75):
-        x, y, widgets = 0, 0, []
-        for row in charts:
-            width=int(pagewidth/len(row))
-            height=int(heightratio*width)
-            for chart in row:
-                widget={"type": "metric",
-                        "x": x,
-                        "y": y,
-                        "width": width,
-                        "height": height,
-                        "properties": chart}
-                widgets.append(widget)
-                x+=width
-            y+=height
-            x=0 # NB reset
-        return {"widgets": widgets}
-    name=fn_sub("${app_name}-%s-${stage_name}" % kwargs["name"],
-                {"app_name": ref("app-name"),
-                 "stage_name": ref("stage-name")})
-    layout=grid_layout(kwargs["body"])    
-    body=fn_sub(json.dumps(layout),
-                {underscore(param): ref(param)
-                 for param in DashParamNames})
-    props={"DashboardName": name,
-           "DashboardBody": body}
-    return "AWS::CloudWatch::Dashboard", props
 
 class Template:
     

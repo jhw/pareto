@@ -13,7 +13,7 @@ from pareto.components.userpool import synth_userpool
 
 from pareto.preprocessor import preprocess
 
-from pareto.template import Template
+from pareto.components.template import Template
 
 import datetime, logging, os
 
