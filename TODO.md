@@ -1,18 +1,15 @@
 ### short
 
-- delete stack failed to clean s3 bucket
-
 - single IAM role to be used by action, apigw, userpool etc
-
+- scripts to dump and manage iam roles
 - local template dump to be zipped
-- script to clean log groups
 
 ### pending
 
 - why is authorizer name- required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 
-### medium
+### medium 
 
 - apigw extended logging
 - iam deployment user
@@ -151,6 +148,8 @@
   
 ### done
 
+- script to clean log groups
+- delete stack failed to clean s3 bucket
 - group iam permissions according to service
 - API GW v1 vs v2
   - https://theburningmonk.slack.com/archives/GPM681W2K/p1598037249026700
