@@ -1,6 +1,5 @@
 ### short [dashboard-refs]
 
-- check globals refs
 - add back template/dashboard name
 - complete deploy_stack.py
 - test
@@ -271,6 +270,7 @@
   
 ### done
 
+- check globals refs
 - format runtime refs
 - refactor build_layer.py so not dependant on globals
 - pass rendered tree to template validation to avoid re- rendering
