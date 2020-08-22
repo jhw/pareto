@@ -1,16 +1,12 @@
 ### short [dashboard-refs]
 
+- add back template/dashboard name
+- refactor build_layer.py so not dependant on globals
 - complete deploy_stack.py
 - test
 
-- refactor build_layer.py so not dependant on globals
-
 - refactor references to globals in scripts
-
 - test use of direct inline refs (`${AppName}` not `${app_name}`)
-
-- add back template/dashboard name
-
 - single layer
 
 ### pending
@@ -24,7 +20,6 @@
 ### medium
 
 - script to dump outputs for UI
-- ensure LambdaKey is only converted to str() at last minute
 - abstract apigw decorator into demo root
 - delete stack failed to clean s3 bucket
 - apigw extended logging
