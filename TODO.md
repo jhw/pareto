@@ -1,17 +1,5 @@
 ### short
 
-
-```
-(env) justin@justin-XPS-13-9360:~/work/gists/6837674b1424a26108a8686876d63ba7$ python pareto/scripts/list_outputs.py forbears.yaml dev true
-{'FbApiFbPostUrl': 'https://rufnq71qi6.execute-api.eu-west-1.amazonaws.com/dev/fb-post', 'FbApiFbGetUrl': 'https://rufnq71qi6.execute-api.eu-west-1.amazonaws.com/dev/fb-get', 'FbGetActionArn': 'arn:aws:lambda:eu-west-1:119552584133:function:forbears-fb-get-action-dev', 'FbPostActionArn': 'arn:aws:lambda:eu-west-1:119552584133:function:forbears-fb-post-action-dev'}
-FbApiFbPostUrl                  	https://rufnq71qi6.execute-api.eu-west-1.amazonaws.com/dev/fb-post
-FbApiFbGetUrl                   	https://rufnq71qi6.execute-api.eu-west-1.amazonaws.com/dev/fb-get
-FbGetActionArn                  	arn:aws:lambda:eu-west-1:119552584133:function:forbears-fb-get-action-dev
-FbPostActionArn                 	arn:aws:lambda:eu-west-1:119552584133:function:forbears-fb-post-action-dev
-```
-
-- push lambda symlink rewriting is still far too complex
-
 ### pending
 
 - why is authorizer name- required ?
@@ -23,6 +11,8 @@ FbPostActionArn                 	arn:aws:lambda:eu-west-1:119552584133:function:
 - scripts to dump and manage iam roles
 - apigw extended logging
 - iam deployment user
+
+- push lambda symlink rewriting is still far too complex
 
 - amplify change password
 - amplify self sign- up

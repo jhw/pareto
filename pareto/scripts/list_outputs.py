@@ -26,7 +26,6 @@ if __name__=="__main__":
         outputs=Outputs.initialise(stackname,
                                    cf=CF,
                                    filterfn=filterfn)
-        print (outputs)
         print (outputs.table_repr)
     except ClientError as error:
         print (error)
