@@ -1,33 +1,29 @@
-### short
+### short [gists]
 
-- cognito to have admin login option
-- test replacing NO_SRP_XXX with newer option
+- eventbridge
+- cloudfront+route53
+- pinpoint
 
-- sqs:sendMessage permission to target dead letter queue
-  - check lookback permissions don't require send message
-
-- sqs, lookback permissions to target parent
-
-- deploy_stack.py to allow deployment other than latest
-- apigw extended logging
-- cloudwatch alerts
-- pinpoint gist
-
-### pending
+- ec2 components
 
 ### medium 
 
+- cognito to have admin login option
+- test replacing NO_SRP_XXX with newer option
+- sqs:sendMessage permission to target dead letter queue
+  - check lookback permissions don't require send message
+- sqs, lookback permissions to target parent
+- deploy_stack.py to allow deployment other than latest
+- apigw extended logging
 - scripts to dump and manage iam roles
 - iam deployment user
-
 - push lambda symlink rewriting is still far too complex
 
 - amplify change password
 - amplify self sign- up
 - amplify forgot password
 
-- cloudfront + route53
-- apigw POST upload limits
+- cloudwatch alerts
 - apigw2
 - google sheets upload
 - burningmonk alerts
@@ -39,12 +35,11 @@
 - amplify federated login
 - amplify unauthenticated access
 
-- eventbridge
+- apigw POST upload limits
+- appsync
 - ci pipeline
 - github actions
-- ec2
 - fargate
-- appsync
 - topology charts
 
 ### thoughts
