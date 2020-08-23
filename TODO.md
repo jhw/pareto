@@ -2,6 +2,8 @@
 
 - push from zipped file
 
+- tag 1.1.0
+
 ### pending
 
 - why is authorizer name- required ?
@@ -9,29 +11,24 @@
 
 ### medium 
 
+- deploy_stack.py to allow deployment other than latest
 - scripts to dump and manage iam roles
 - apigw extended logging
 - iam deployment user
-
-- targets
-- cloudfront
-- route 53
-- google sheets upload
-- cloudwatch alerts
-
-- burningmonk recommended alerts
-
-- apigw2 [stage auto deploy]
-
-- pinpoint
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7278998251&language=en
 
 - amplify change password
 - amplify self sign- up
 - amplify forgot password
 
-- stripe
+- pinpoint
+- apigw2
+- targets
+- cloudfront + route53
+- google sheets upload
+- cloudwatch alerts
+- burningmonk alerts
 - webflow
+- stripe
 
 ### v1.1
 
@@ -41,10 +38,9 @@
 - eventbridge
 - ci pipeline
 - github actions
-- lambda xray
-- step functions
-- fargate/ec2
-- appsync/graphql
+- ec2
+- fargate
+- appsync
 - topology charts
 
 ### thoughts
