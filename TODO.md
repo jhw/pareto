@@ -1,7 +1,5 @@
 ### short
 
-- push from zipped file
-
 - tag 1.1.0
 
 ### pending
@@ -143,6 +141,7 @@
   
 ### done
 
+- push from zipped file
 - local template dump to be zipped
 - single IAM role to be used by action, apigw, userpool etc
 - add back iam wildcards validation
