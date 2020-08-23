@@ -1,5 +1,7 @@
 from pareto.components import *
 
+from pareto.components.role import IAMRole
+
 from collections import OrderedDict
 
 from jsonschema import Draft7Validator
@@ -59,23 +61,9 @@ def ApiAccount(**kwargs):
 
 @resource(suffix="logs-role")
 def ApiLogsRole(**kwargs):
-    def assume_role_policy_doc():
-        statement=[{"Action": "sts:AssumeRole",
-                    "Effect": "Allow",
-                    "Principal": {"Service": "apigateway.amazonaws.com"}}]
-        return {"Statement": statement,
-                "Version": "2012-10-17"}
-    def policy(permissions=LogsPermissions):            
-        statement=[{"Action": permission,
-                    "Effect": "Allow",
-                    "Resource": "*"}
-                   for permission in sorted(permissions)]
-        return {"PolicyDocument": {"Statement": statement,
-                                   "Version": "2012-10-17"},
-                "PolicyName": random_id("inline-policy")}
-    props={"AssumeRolePolicyDocument": assume_role_policy_doc()}
-    props["Policies"]=[policy()]
-    return "AWS::IAM::Role", props
+    rolekwargs={"permissions": LogsPermissions}
+    return IAMRole(service="apigateway.amazonaws.com",
+                   **rolekwargs)
 
 @resource(suffix="deployment")
 def ApiDeployment(**kwargs):

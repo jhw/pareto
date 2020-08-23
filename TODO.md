@@ -1,7 +1,6 @@
 ### short
 
 - single IAM role to be used by action, apigw, userpool etc
-- scripts to dump and manage iam roles
 - local template dump to be zipped
 
 ### pending
@@ -11,6 +10,8 @@
 
 ### medium 
 
+- add back iam wildcards validation
+- scripts to dump and manage iam roles
 - apigw extended logging
 - iam deployment user
 

@@ -10,8 +10,8 @@ def IAMRole(service,
         return {"Statement": statement,
                 "Version": "2012-10-17"}    
     def default_permissions(fn):
-        def wrapped(action):
-            permissions=set(action["permissions"]) if "permissions" in action else set()
+        def wrapped(kwargs):
+            permissions=set(kwargs["permissions"]) if "permissions" in kwargs else set()
             permissions.update(defaults)
             return fn(list(permissions))
         return wrapped
