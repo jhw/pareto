@@ -13,7 +13,7 @@ from pareto.components.template import Template
 from pareto.components.timer import synth_timer
 from pareto.components.userpool import synth_userpool
 
-import datetime, logging, os
+import datetime, logging, os, zipfile
 
 Master="master"
 
@@ -164,34 +164,30 @@ class Env(dict):
             synth_stack(master, **kwargs)
         return master
 
-    def dump_yaml(self, root, timestamp):
+    def assert_root(fn):
+        def wrapped(self, root):
+            if not os.path.exists(root):
+                os.makedirs(root)
+            return fn(self, root)
+        return wrapped
+    
+    @assert_root
+    def dump(self, root):
+        ts=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
+        zfname="%s/%s.zip" % (root, ts)
+        logging.info("dumping to %s" % zfname)
+        zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
         for tempname, template in self.items():
-            tokens=[root, timestamp, "yaml", "%s.yaml" % tempname]
-            dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
-            if not os.path.exists(dirname):
-                os.makedirs(dirname)
-            with open(filename, 'w') as f:
-                f.write(template.yaml_repr)
+            for attr in ["json", "yaml"]:
+                filename="%s.%s" % (tempname, attr)
+                prop=getattr(template, "%s_repr" % attr)
+                zf.writestr(filename, prop)
+        zf.close()
         return self
-
-    def dump_json(self, root, timestamp):
-        for tempname, template in self.items():
-            tokens=[root, timestamp, "json", "%s.json" % tempname]
-            dirname, filename = "/".join(tokens[:-1]), "/".join(tokens)
-            if not os.path.exists(dirname):
-                os.makedirs(dirname)
-            with open(filename, 'w') as f:
-                f.write(template.json_repr)
-        return self 
-
-    def dump(self, timestamp, root="tmp/templates"):
-        logging.info("dumping to tmp/env/%s" % timestamp)
-        return self.dump_yaml(root, timestamp).dump_json(root, timestamp)
     
 @preprocess
 def synth_env(config):
-    ts=datetime.datetime.utcnow().strftime("%Y-%m-%d-%H-%M-%S")
-    return Env.create(config).synth_master().dump(ts).validate()
+    return Env.create(config).synth_master().dump("tmp/templates").validate()
 
 if __name__=="__main__":
     pass

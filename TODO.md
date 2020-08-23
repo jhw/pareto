@@ -1,6 +1,6 @@
 ### short
 
-- local template dump to be zipped
+- push from zipped file
 
 ### pending
 
@@ -147,6 +147,7 @@
   
 ### done
 
+- local template dump to be zipped
 - single IAM role to be used by action, apigw, userpool etc
 - add back iam wildcards validation
 - script to clean log groups
