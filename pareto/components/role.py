@@ -1,14 +1,15 @@
 from pareto.components import *
 
-def IAMRole(service,
+def DefaultRolePolicyDoc(service):
+    statement=[{"Action": "sts:AssumeRole",
+                "Effect": "Allow",
+                "Principal": {"Service": service}}]
+    return {"Statement": statement,
+            "Version": "2012-10-17"}
+
+def IAMRole(rolepolicyfn,            
             defaults=[],
             **kwargs):
-    def role_policy_doc(service):
-        statement=[{"Action": "sts:AssumeRole",
-                    "Effect": "Allow",
-                    "Principal": {"Service": service}}]
-        return {"Statement": statement,
-                "Version": "2012-10-17"}    
     def default_permissions(fn):
         def wrapped(kwargs):
             permissions=set(kwargs["permissions"]) if "permissions" in kwargs else set()
@@ -45,6 +46,6 @@ def IAMRole(service,
         return {"PolicyDocument": {"Statement": statement,
                                    "Version": "2012-10-17"},
                 "PolicyName": random_id("inline-policy")}
-    props={"AssumeRolePolicyDocument": role_policy_doc(service)}
+    props={"AssumeRolePolicyDocument": rolepolicyfn()}
     props["Policies"]=[policy(kwargs)]
     return "AWS::IAM::Role", props

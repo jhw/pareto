@@ -1,6 +1,6 @@
 from pareto.components import *
 
-from pareto.components.role import IAMRole
+from pareto.components.role import IAMRole, DefaultRolePolicyDoc
 
 from collections import OrderedDict
 
@@ -61,8 +61,10 @@ def ApiAccount(**kwargs):
 
 @resource(suffix="logs-role")
 def ApiLogsRole(**kwargs):
-    rolekwargs={"permissions": LogsPermissions}
-    return IAMRole(service="apigateway.amazonaws.com",
+    def role_policy_doc():
+        return DefaultRolePolicyDoc("apigateway.amazonaws.com")
+    rolekwargs={"permissions": LogsPermissions}    
+    return IAMRole(rolepolicyfn=role_policy_doc,
                    **rolekwargs)
 
 @resource(suffix="deployment")

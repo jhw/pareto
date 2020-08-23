@@ -1,6 +1,6 @@
 from pareto.components import *
 
-from pareto.components.role import IAMRole
+from pareto.components.role import IAMRole, DefaultRolePolicyDoc
 
 from pareto.charts.action import ActionCharts
 
@@ -69,7 +69,9 @@ def ActionEventConfig(retries=0,
 
 @resource(suffix="role")
 def ActionRole(**kwargs):
-    return IAMRole(service="lambda.amazonaws.com",
+    def role_policy_doc():
+        return DefaultRolePolicyDoc("lambda.amazonaws.com")
+    return IAMRole(rolepolicyfn=role_policy_doc,
                    defaults=DefaultPermissions,
                    **kwargs)
 
