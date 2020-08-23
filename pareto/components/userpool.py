@@ -1,5 +1,7 @@
 from pareto.components import *
 
+from pareto.components.role import IAMRole
+
 CallbackUrl="https://${resource_name}.auth.${region}.amazoncognito.com/callback"
 
 LogoutUrl="https://${resource_name}.auth.${region}.amazoncognito.com"
@@ -89,31 +91,25 @@ def IdentityPoolRoles(**kwargs):
            "Roles": roles}
     return "AWS::Cognito::IdentityPoolRoleAttachment", props
 
-def IdentityPoolRole(name, authtype, permissions):
-    def assume_role_policy_doc(name, authtype):
-        identitypool=ref("%s-identity-pool" % name)
-        condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": identitypool},
-                   "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": authtype}}
-        principal={"Federated": "cognito-identity.amazonaws.com"}
-        statement=[{"Action": "sts:AssumeRoleWithWebIdentity",
-                    "Effect": "Allow",
-                    "Condition": condition,
-                    "Principal": principal}]
-        return {"Statement": statement,
-                "Version": "2012-10-17"}
-    def policy(permissions):
-        statement=[{"Action": permission,
-                    "Effect": "Allow",
-                    "Resource": "*"}
-                   for permission in permissions]
-        return {"PolicyDocument": {"Statement": statement,
-                                   "Version": "2012-10-17"},
-                "PolicyName": random_id("inline-policy")}
-    props={"AssumeRolePolicyDocument": assume_role_policy_doc(name,
-                                                              authtype)}
-    props["Policies"]=[policy(permissions)]
-    return "AWS::IAM::Role", props
+def CognitoRolePolicyDoc(name, authtype):
+    identitypool=ref("%s-identity-pool" % name)
+    condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": identitypool},
+               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": authtype}}
+    principal={"Federated": "cognito-identity.amazonaws.com"}
+    statement=[{"Action": "sts:AssumeRoleWithWebIdentity",
+                "Effect": "Allow",
+                "Condition": condition,
+                "Principal": principal}]
+    return {"Statement": statement,
+            "Version": "2012-10-17"}
     
+def IdentityPoolRole(name, authtype, permissions):
+    def role_policy_doc():
+        return CognitoRolePolicyDoc(name, authtype)
+    rolekwargs={"permissions": permissions}
+    return IAMRole(rolepolicyfn=role_policy_doc,
+                   **rolekwargs)
+
 @resource(suffix="auth-role")
 def IdentityPoolAuthRole(**kwargs):
     return IdentityPoolRole(name=kwargs["name"],
