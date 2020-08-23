@@ -7,24 +7,30 @@ def DefaultRolePolicyDoc(service):
     return {"Statement": statement,
             "Version": "2012-10-17"}
 
-def IAMRole(rolepolicyfn,            
+def IAMRole(rolepolicyfn,        
             defaults=[],
+            wildcards=False,
             **kwargs):
-    def default_permissions(fn):
-        def wrapped(kwargs):
-            permissions=set(kwargs["permissions"]) if "permissions" in kwargs else set()
-            permissions.update(defaults)
-            return fn(list(permissions))
-        return wrapped
-    def assert_permissions(fn):
-        def wrapped(permissions):
-            wildcards=[permission
-                       for permission in permissions
-                       if permission.endswith(":*")]
-            if wildcards!=[]:
-                raise RuntimeError("IAM wildcards detected - %s" % ", ".join(wildcards))
-            return fn(permissions)
-        return wrapped
+    def default_permissions(defaults):
+        def decorator(fn):
+            def wrapped(kwargs):
+                permissions=set(kwargs["permissions"]) if "permissions" in kwargs else set()
+                permissions.update(defaults)
+                return fn(list(permissions))
+            return wrapped
+        return decorator
+    def assert_permissions(allow):
+        def decorator(fn):
+            def wrapped(permissions):
+                if not allow:
+                    wildcards=[permission
+                               for permission in permissions
+                               if permission.endswith(":*")]
+                    if wildcards!=[]:
+                        raise RuntimeError("IAM wildcards detected - %s" % ", ".join(wildcards))
+                return fn(permissions)
+            return wrapped
+        return decorator
     def group_permissions(fn):
         def wrapped(permissions):
             groups={}
@@ -35,8 +41,8 @@ def IAMRole(rolepolicyfn,
             return fn([sorted(group)
                        for group in groups.values()])
         return wrapped
-    @default_permissions
-    # @assert_permissions
+    @default_permissions(defaults)
+    @assert_permissions(wildcards)
     @group_permissions
     def policy(groups):
         statement=[{"Action": permissions,

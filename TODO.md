@@ -1,9 +1,5 @@
 ### short
 
-- single IAM role to be used by action, apigw, userpool etc
-
-- add back iam wildcards validation
-
 - local template dump to be zipped
 
 ### pending
@@ -151,6 +147,8 @@
   
 ### done
 
+- single IAM role to be used by action, apigw, userpool etc
+- add back iam wildcards validation
 - script to clean log groups
 - delete stack failed to clean s3 bucket
 - group iam permissions according to service

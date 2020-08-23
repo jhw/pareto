@@ -108,6 +108,7 @@ def IdentityPoolRole(name, authtype, permissions):
         return CognitoRolePolicyDoc(name, authtype)
     rolekwargs={"permissions": permissions}
     return IAMRole(rolepolicyfn=role_policy_doc,
+                   wildcards=True,
                    **rolekwargs)
 
 @resource(suffix="auth-role")
