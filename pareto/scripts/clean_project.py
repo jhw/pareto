@@ -40,7 +40,7 @@ def clean_codebuild(config):
     print ("--- codebuild ---")
     for projectname in CB.list_projects()["projects"]:
         if not projectname.startswith(config["globals"]["app"]):
-            continie
+            continue
         print ("deleting project %s" % projectname)
         CB.delete_project(name=projectname)
                 
