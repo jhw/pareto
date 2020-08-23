@@ -6,7 +6,7 @@ from pareto.helpers.text import hungarorise
 
 from pareto.staging.lambdas import LambdaKey
 
-import os
+import os, zipfile
 
 Master="master.json"
 
@@ -71,23 +71,25 @@ def assert_templates(fn):
         return fn(root)
     return wrapped
 
-def push_templates(config, dirname, s3):
-    def push(config, filename, s3):
-        key="%s/templates/%s" % (config["globals"]["app"],
-                                 filename.split("/")[-1])
-        logging.info("pushing %s to %s" % (filename, key))
-        s3.upload_file(filename,
-                       config["globals"]["bucket"],
-                       key,
-                       ExtraArgs={'ContentType': 'application/json'})
-    for filename in os.listdir(dirname):
-        absfilename="%s/%s" % (dirname, filename)
-        push(config, absfilename, s3)
-
 @assert_template_root
 @assert_templates
 def latest_templates(root):
-    return "%s/%s/json" % (root, sorted(os.listdir(root))[-1])
+    return "%s/%s" % (root, sorted(os.listdir(root))[-1])
+
+def push_templates(config, zf, s3):
+    def push(config, zf, item, s3):
+        key="%s/templates/%s" % (config["globals"]["app"],
+                                 item.filename)
+        body=zf.open(item.filename).read()
+        logging.info("pushing %s to %s" % (item.filename, key))
+        s3.put_object(Bucket=config["globals"]["bucket"],
+                      Key=key,
+                      Body=body,
+                      ContentType="application/json")
+    for item in zf.infolist():
+        if not item.filename.endswith(".json"):
+            continue
+        push(config, zf, item, s3)
 
 def assert_master(fn):
     def wrapped(config, dirname, *args, **kwargs):
@@ -147,10 +149,11 @@ if __name__=="__main__":
         config=args.pop("config")
         config["globals"]["stage"]=args.pop("stage")
         staging=init_staging(config)
-        tempdir=latest_templates(root="tmp/templates")
-        logging.info("template source %s" % tempdir)
-        push_templates(config, tempdir, S3)
-        deploy_master(config, staging, tempdir, CF)
+        zfname=latest_templates(root="tmp/templates")
+        logging.info("template source %s" % zfname)
+        zf=zipfile.ZipFile(zfname)
+        push_templates(config, zf, S3)
+        # deploy_master(config, staging, tempdir, CF)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
