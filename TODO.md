@@ -1,6 +1,5 @@
 ### short
 
-- resolve authorizer name support case
 - cognito to have admin login option
 - test replacing NO_SRP_XXX with newer option
 
@@ -144,6 +143,7 @@
   
 ### done
 
+- resolve authorizer name support case
 - why is authorizer name- required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 - push from zipped file
