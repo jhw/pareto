@@ -2,7 +2,7 @@
 
 from pareto.scripts import *
 
-from pareto.env import synth_env
+from pareto.components.env import synth_env
 
 if __name__=="__main__":
     try:        
