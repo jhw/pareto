@@ -1,15 +1,19 @@
 ### short
 
-### pending
+- resolve authorizer name support case
+- cognito to have admin login option
+- test replacing NO_SRP_XXX with newer option
 
-- why is authorizer name- required ?
-  - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
+- deploy_stack.py to allow deployment other than latest
+- apigw extended logging
+- cloudwatch alerts
+- pinpoint gist
+
+### pending
 
 ### medium 
 
-- deploy_stack.py to allow deployment other than latest
 - scripts to dump and manage iam roles
-- apigw extended logging
 - iam deployment user
 
 - push lambda symlink rewriting is still far too complex
@@ -18,12 +22,11 @@
 - amplify self sign- up
 - amplify forgot password
 
-- pinpoint
+- cloudfront + route53
+- apigw POST upload limits
 - apigw2
 - targets
-- cloudfront + route53
 - google sheets upload
-- cloudwatch alerts
 - burningmonk alerts
 - webflow
 - stripe
@@ -141,6 +144,8 @@
   
 ### done
 
+- why is authorizer name- required ?
+  - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
 - push from zipped file
 - local template dump to be zipped
 - single IAM role to be used by action, apigw, userpool etc
