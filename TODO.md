@@ -3,6 +3,11 @@
 - cognito to have admin login option
 - test replacing NO_SRP_XXX with newer option
 
+- sqs:sendMessage permission to target dead letter queue
+  - check lookback permissions don't require send message
+
+- sqs, lookback permissions to target parent
+
 - deploy_stack.py to allow deployment other than latest
 - apigw extended logging
 - cloudwatch alerts
@@ -24,7 +29,6 @@
 - cloudfront + route53
 - apigw POST upload limits
 - apigw2
-- targets
 - google sheets upload
 - burningmonk alerts
 - webflow
