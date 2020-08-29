@@ -21,7 +21,9 @@ ParamNames=yaml.safe_load("""
 - runtime-version
 - region # required by charts
 """)
- 
+
+MaxRetries=3
+
 @resource()
 def Action(concurrency=None,
            handlerpat="${app_name}/%s/index.handler", # NB
@@ -59,8 +61,8 @@ def ActionVersion(**kwargs):
     return "AWS::Lambda::Version", props
 
 @resource(suffix="event-config")
-def ActionEventConfig(retries=0,
-                        **kwargs):
+def ActionEventConfig(retries=MaxRetries,
+                      **kwargs):
     qualifier=fn_getatt("%s-version" % kwargs["name"], "Version")
     props={"FunctionName": ref(kwargs["name"]),
            "Qualifier": qualifier,
