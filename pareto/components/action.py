@@ -22,7 +22,7 @@ ParamNames=yaml.safe_load("""
 - region # required by charts
 """)
 
-MaxRetries=3
+MaxRetries=2 # 2 is max
 
 @resource()
 def Action(concurrency=None,
