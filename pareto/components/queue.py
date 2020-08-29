@@ -1,7 +1,5 @@
 from pareto.components import *
 
-QueueName="${resource_name}.fifo"
-
 ParamNames=yaml.safe_load("""
 - app-name
 - stage-name
@@ -9,10 +7,7 @@ ParamNames=yaml.safe_load("""
 
 @resource()
 def Queue(**kwargs):
-    queuename=fn_sub(QueueName,
-                     {"resource_name": resource_name(kwargs)})
-    props={"QueueName": queuename,
-           "FifoQueue": True}
+    props={"QueueName": resource_name(kwargs)}
     return "AWS::SQS::Queue", props
 
 @resource(suffix="mapping")
