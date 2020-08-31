@@ -20,8 +20,6 @@ components:
     - name: hello-get-fn
       layers:
         - hello-layer
-      services:
-        - hello-service-fn
     - name: hello-post-fn
     - name: hello-bucket-fn
       permissions:

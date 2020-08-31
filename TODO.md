@@ -1,13 +1,34 @@
 ### short [gists]
 
-- eventbridge
-- cloudfront+route53
-- pinpoint
+- remove services reference from demo.yaml
 
-- ec2 components
+- replace ${region} with ${AWS::Region}
+- all components to export references
+- dash to substitute function references rather than rebuild names
+- replace instances of resource name used as refs
+- remove all resource names
+
+- add env variables to demo.yaml
+- actions to define env variables as resource references
+
+- component parameters to be defined dynamically based on refs lookup
+
+- examine why dynamically importing test classes fails to pick up mocks
 
 ### medium 
 
+- logging script to aggregate messages from all streams
+- extend s3 website cors options to HEAD|OPTIONS|GET
+- override action retries
+- override bucket index
+- rename bucket index as root
+- allow ping_api.py to pass blank parameters
+- add optional sqs fifo support
+- all "" as scripts wildcard option in addition to "*"
+- deploy_stack.py no longer warns if lambdas are latest
+
+- cloudfront+route53
+- pinpoint
 - cognito to have admin login option
 - test replacing NO_SRP_XXX with newer option
 - sqs:sendMessage permission to target dead letter queue
@@ -19,22 +40,14 @@
 - iam deployment user
 - push lambda symlink rewriting is still far too complex
 
-- amplify change password
-- amplify self sign- up
-- amplify forgot password
-
 - cloudwatch alerts
-- apigw2
-- google sheets upload
 - burningmonk alerts
-- webflow
-- stripe
+- apigw2
 
 ### v1.1
 
-- amplify federated login
-- amplify unauthenticated access
-
+- eventbridge
+- ec2 components
 - apigw POST upload limits
 - appsync
 - ci pipeline
@@ -44,6 +57,8 @@
 
 ### thoughts
 
+- preprocessor to expand single layer into multiple layers and bind to actions ?
+  - over-  optimisation
 - script to dump outputs for UI
   - just don't think it's worth it; you can easily grab existing output
 - direct inline refs (`${AppName}` not `${app_name}`) ?
