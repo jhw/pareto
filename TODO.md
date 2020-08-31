@@ -1,7 +1,5 @@
 ### short [gists]
 
-- remove services reference from demo.yaml
-
 - replace ${region} with ${AWS::Region}
 - all components to export references
 - dash to substitute function references rather than rebuild names
