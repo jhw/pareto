@@ -23,7 +23,7 @@ metrics:
   - Resource
   - {name}
   - stat: Sum
-region: "${{region}}"
+region: "${{AWS::Region}}"
 stacked: false
 title: {title}
 view: timeSeries
@@ -42,7 +42,7 @@ metrics:
   - stat: Average
 - - '...'
   - stat: Maximum
-region: ${{region}}
+region: ${{AWS::Region}}
 stacked: false
 title: {title}
 view: timeSeries
@@ -71,9 +71,9 @@ metrics:
 - - expression: 100 - 100 * errors / MAX([errors, invocations])
     id: availability
     label: Success rate (%)
-    region: ${{region}}
+    region: ${{AWS::Region}}
     yAxis: right
-region: ${{region}}
+region: ${{AWS::Region}}
 stacked: false
 title: {title}
 view: timeSeries
@@ -97,6 +97,5 @@ def ActionCharts(charts=Charts, **kwargs):
 if __name__=="__main__":
     kwargs={"app": "hello",
             "name": "foobar",
-            "stage": "dev",
-            "region": "eu-west-1"}
+            "stage": "dev"}
     print (ActionCharts(**kwargs))

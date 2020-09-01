@@ -19,7 +19,6 @@ ParamNames=yaml.safe_load("""
 - staging-bucket
 - lambda-staging-key
 - runtime-version
-- region # required by charts
 """)
 
 MaxRetries=2 # 2 is max

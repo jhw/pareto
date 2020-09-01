@@ -112,7 +112,6 @@ def deploy_master(config, staging, zf, cf):
                 "StageName": config["globals"]["stage"],
                 "StagingBucket": config["globals"]["bucket"],
                 "RuntimeVersion": config["globals"]["runtime"],
-                "Region": config["globals"]["region"],
                 "LambdaStagingKey": staging["lambdas"]}
         for k, v in staging["layers"].items():
             params["%sLayerStagingKey" % hungarorise(k)]=v

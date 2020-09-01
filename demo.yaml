@@ -3,7 +3,6 @@ globals:
   app: demo
   bucket: wol-deployments
   runtime: "3.8"
-  region: eu-west-1
 components:
   secrets:
     - name: foo

@@ -6,15 +6,15 @@ from collections import OrderedDict
 
 from jsonschema import Draft7Validator
 
-Url="https://${rest_api}.execute-api.${region}.${AWS::URLSuffix}/${stage_name}/%s"
+Url="https://${rest_api}.execute-api.${AWS::Region}.${AWS::URLSuffix}/${stage_name}/%s"
 
-LambdaInvokeArn="arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
+LambdaInvokeArn="arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambda_arn}/invocations"
 
 """
 - https://docs.aws.amazon.com/apigateway/latest/developerguide/arn-format-reference.html
 """
 
-ExecuteApiArn="arn:aws:execute-api:${region}:${AWS::AccountId}:${rest_api}/${stage_name}/%s/%s"
+ExecuteApiArn="arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${rest_api}/${stage_name}/%s/%s"
 
 CorsHeaderPath="method.response.header.Access-Control-Allow-%s"
 
@@ -39,7 +39,6 @@ LogsPermissions=yaml.safe_load("""
 ParamNames=yaml.safe_load("""
 - app-name
 - stage-name
-- region
 """)
 
 AuthorizationHeader="method.request.header.Authorization"
@@ -200,8 +199,7 @@ def ApiMethod(endpoint, **kwargs):
     def ApiMethod(endpoint, **kwargs):
         target=ref("%s-arn" % endpoint["action"])
         uri=fn_sub(LambdaInvokeArn,
-                   {"region": ref("region"),
-                    "lambda_arn": target})
+                   {"lambda_arn": target})
         integration={"Uri": uri,
                      "IntegrationHttpMethod": "POST",
                      "Type": "AWS_PROXY"}
@@ -284,8 +282,7 @@ def ActionPermission(endpoint, **kwargs):
         stage=ref("%s-stage" % kwargs["name"])
         source=fn_sub(ExecuteApiArn % (endpoint["method"],
                                        endpoint["name"]),
-                      {"region": ref("region"),
-                       "rest_api": root,
+                      {"rest_api": root,
                        "stage_name": stage})
         target=ref("%s-arn" % endpoint["action"])
         props={"Action": "lambda:InvokeFunction",
@@ -302,8 +299,7 @@ def ApiUrl(endpoint, **kwargs):
         root=ref("%s-root" % kwargs["name"])
         stage=ref("%s-stage" % kwargs["name"])
         return fn_sub(Url % endpoint["name"],
-                      {"region": ref("region"),
-                       "rest_api": root,
+                      {"rest_api": root,
                        "stage_name": stage})
     return ApiUrl(endpoint, **kwargs)
 

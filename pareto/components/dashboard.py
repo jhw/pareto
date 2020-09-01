@@ -3,7 +3,6 @@ from pareto.components import *
 ParamNames=yaml.safe_load("""
 - app-name
 - stage-name
-- region
 """)
 
 def dash_resource(fn):
