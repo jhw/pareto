@@ -1,3 +1,9 @@
+### lambda env variables
+
+- put aside complete removal of names unless you can solve circular ref issue
+- pass app_name, stage_name values to lambda
+- then u can have a resource_name helper function in srp/__init__.py which takes (local) resource name and returns (global) resource name by inserting into app_name, stage_name (looked up from os)
+
 ### authorizer 16/8/20
 
 ```

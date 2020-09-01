@@ -1,20 +1,19 @@
 ### short
 
-- replace ${region} with ${AWS::Region}
-- all components to export references
-- add env variables to demo.yaml and check covered by preprocessor
-- add lambda env variables
-- actions to define env variables as resource references
+- app_name, stage_name lambda env variables
+
+- new tagged version
+- replace srp context stuff with resource_name helper [notes]
+
+- isolate env circular reference issues
 
 ### medium 
 
-- dash to substitute function references rather than rebuild names
-- replace instances of resource name used as refs
-- remove all resource names
-- component parameters to be defined dynamically based on refs lookup
 - examine why dynamically importing test classes fails to pick up mocks
 
+- component parameters to be defined dynamically based on refs lookup
 - logging script to aggregate messages from all streams
+
 - extend s3 website cors options to HEAD|OPTIONS|GET
 - override action retries
 - override bucket index
@@ -154,6 +153,7 @@
   
 ### done
 
+- replace ${region} with ${AWS::Region}
 - resolve authorizer name support case
 - why is authorizer name- required ?
   - https://console.aws.amazon.com/support/home#/case/?displayId=7278988241&language=en
