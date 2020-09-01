@@ -15,6 +15,11 @@ def hungarorise(text):
                     for tok in re.split("\\-|\\_", text)
                     if tok!=''])
 
+def allcaps(text):
+    return "_".join([tok.upper()
+                     for tok in re.split("\\-|\\_", text)
+                     if tok!=''])
+    
 def underscore(text):
     return "_".join([tok for tok in re.split("\\s|\\-", text)
                      if tok!=''])

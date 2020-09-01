@@ -4,7 +4,7 @@ from pareto.components.role import IAMRole, DefaultRolePolicyDoc
 
 from pareto.charts.action import ActionCharts
 
-from pareto.helpers.text import underscore
+from pareto.helpers.text import underscore, allcaps
 
 DefaultPermissions=yaml.safe_load("""
 - logs:CreateLogGroup
@@ -35,11 +35,15 @@ def Action(concurrency=None,
                    {"app_name": ref("app-name")})
     props={"Code": {"S3Bucket": ref("staging-bucket"),
                     "S3Key": ref("lambda-staging-key")},
+           "Environment": {"Variables": {allcaps(attr): ref(attr)
+                                         for attr in ["app-name",
+                                                      "stage-name"]}},
            "FunctionName": resource_name(kwargs),
            "Handler": handler,
            "MemorySize": memory,
            "DeadLetterConfig": {"TargetArn": dlqarn},                   
            "Role": rolearn,
+           
            "Runtime": fn_sub("python${version}",
                              {"version": ref("runtime-version")}),
            "Timeout": timeout}

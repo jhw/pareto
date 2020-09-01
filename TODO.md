@@ -1,7 +1,5 @@
 ### short
 
-- app_name, stage_name lambda env variables
-
 - new tagged version
 - replace srp context stuff with resource_name helper [notes]
 
@@ -153,6 +151,7 @@
   
 ### done
 
+- app_name, stage_name lambda env variables
 - replace ${region} with ${AWS::Region}
 - resolve authorizer name support case
 - why is authorizer name- required ?
