@@ -21,7 +21,6 @@ def init_staging(config, commits):
                                  timestamp=commit["timestamp"]))
     return staging
     
-@assert_actions
 def push_lambdas(s3, config):
     def is_valid_path(filename, ignore=["test.py$",
                                         ".pyc$",

@@ -33,19 +33,5 @@ def validate_bucket(config, s3=boto3.client("s3")):
     if config["globals"]["bucket"] not in bucketnames:
         raise RuntimeError("bucket %s does not exist" % config["globals"]["bucket"])
 
-def assert_actions(fn):
-    def wrapped(*args, **kwargs):
-        config=kwargs["config"] if "config" in kwargs else args[0]
-        if "actions" in config["components"]:
-            return fn(*args, **kwargs)
-    return wrapped
-
-def assert_layers(fn):
-    def wrapped(*args, **kwargs):
-        config=kwargs["config"] if "config" in kwargs else args[0]
-        if "layers" in config["components"]:
-            return fn(*args, **kwargs)
-    return wrapped
-
 if __name__=="__main__":
     pass

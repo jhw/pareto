@@ -1,3 +1,32 @@
+### list of script
+
+-rwxr-xr-x 1 justin justin  542 Sep  2 20:40 list_stacks.py
+-rwxr-xr-x 1 justin justin 1273 Sep  2 20:40 list_events.py
+-rwxr-xr-x 1 justin justin 1306 Sep  2 20:40 list_resources.py
+-rwxr-xr-x 1 justin justin 1027 Sep  2 20:40 list_outputs.py
+-rwxr-xr-x 1 justin justin 1276 Sep  2 20:40 list_failures.py
+-rwxr-xr-x 1 justin justin 1364 Sep  2 20:41 search_layers.py
+-rwxr-xr-x 1 justin justin 1696 Sep  2 20:40 search_lambdas.py
+-rwxr-xr-x 1 justin justin  795 Sep  2 20:40 list_artifacts.py
+-rwxr-xr-x 1 justin justin  445 Sep  2 20:41 dump_log_groups.py
+-rwxr-xr-x 1 justin justin  619 Sep  2 20:41 delete_log_groups.py
+-rwxr-xr-x 1 justin justin 1864 Sep  2 20:40 create_user.py
+-rwxr-xr-x 1 justin justin 1516 Sep  2 20:40 delete_user.py
+-rwxr-xr-x 1 justin justin 1388 Sep  2 20:40 list_users.py
+-rwxr-xr-x 1 justin justin 1878 Sep  2 20:40 login_user.py
+-rwxr-xr-x 1 justin justin 4620 Sep  2 20:40 ping_api.py
+-rwxr-xr-x 1 justin justin 1591 Sep  2 20:40 publish_website.py
+-rwxr-xr-x 1 justin justin 2537 Sep  2 20:40 delete_stack.py
+-rwxr-xr-x 1 justin justin 2507 Sep  2 20:40 clean_project.py
+-rwxr-xr-x 1 justin justin 9242 Sep  2 20:40 build_layer.py
+-rwxr-xr-x 1 justin justin 1880 Sep  2 18:03 run_tests.py
+-rwxr-xr-x 1 justin justin 4403 Sep  2 20:40 push_lambdas.py
+
+---
+
+-rwxr-xr-x 1 justin justin  481 Aug 23 07:42 synth_templates.py
+-rwxr-xr-x 1 justin justin 5734 Sep  2 20:40 deploy_stack.py
+
 ### lambda env variables
 
 - put aside complete removal of names unless you can solve circular ref issue

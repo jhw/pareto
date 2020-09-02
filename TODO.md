@@ -2,6 +2,9 @@
 
 - remove boto3 global clients
 
+- add back assert_actions
+- consider if u really need dummy AWS account toggling
+
 ### medium 
 
 - component parameters to be defined dynamically based on refs lookup
