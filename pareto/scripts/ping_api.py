@@ -4,10 +4,10 @@ from pareto.scripts import *
 
 from pareto.helpers.text import hungarorise
 
-def get_token(resource, outputs, args):
+def get_token(cg, resource, outputs, args):
     userpoolid=outputs.lookup("%s-user-pool-id" % resource["userpool"])
     userpoolclientid=outputs.lookup("%s-user-pool-client-id" % resource["userpool"])
-    resp=CG.admin_initiate_auth(UserPoolId=userpoolid,
+    resp=cg.admin_initiate_auth(UserPoolId=userpoolid,
                                 ClientId=userpoolclientid,
                                 AuthFlow='ADMIN_NO_SRP_AUTH',
                                 AuthParameters={"USERNAME": args["email"],
@@ -112,10 +112,12 @@ if __name__=="__main__":
         if args["resource"] not in resources:
             raise RuntimeError("resource not found")
         resource=resources[args["resource"]]
-        outputs=Outputs.initialise(stackname, CF)
+        cf=boto3.client("cloudformation")
+        outputs=Outputs.initialise(stackname, cf)
         url=outputs.lookup("%s-%s-url" % (api["name"],
                                           resource["name"]))
-        token=get_token(resource, outputs, args) if "userpool" in resource else None
+        cg=boto3.client("cognito-idp")
+        token=get_token(cg, resource, outputs, args) if "userpool" in resource else None
         if token:
             print ("Token => %s" % token)
             print()

@@ -4,7 +4,8 @@ from pareto.scripts import *
 
 if __name__=="__main__":
     try:
-        stacks=CF.describe_stacks()["Stacks"]
+        cf=boto3.client("cloudformation")
+        stacks=cf.describe_stacks()["Stacks"]
         df=pd.DataFrame([{"name": stack["StackName"],
                           "status": stack["StackStatus"]}
                          for stack in stacks])

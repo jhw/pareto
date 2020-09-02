@@ -28,15 +28,15 @@ def detach_policies(iam, rolename):
         if error.response["Error"]["Code"] not in ["NoSuchEntity"]:
             raise error
             
-def delete_stack(s3, iam, stackname):
+def delete_stack(s3, iam, cf, stackname):
     logging.info("deleting stack %s" % stackname)
-    resources=Resources.initialise(stackname, cf=CF)
+    resources=Resources.initialise(stackname, cf)
     for resource in resources:
         if resource["ResourceType"]=="AWS::S3::Bucket":
             empty_bucket(s3, resource["PhysicalResourceId"])
         if resource["ResourceType"]=="AWS::IAM::Role":
             detach_policies(iam, resource["PhysicalResourceId"])
-    CF.delete_stack(StackName=stackname)
+    cf.delete_stack(StackName=stackname)
 
 if __name__=="__main__":
     try:
@@ -57,8 +57,8 @@ if __name__=="__main__":
                              config["globals"]["stage"])
         s3=boto3.client("s3")
         iam=boto3.client("iam")
-        delete_stack(s3, iam, stackname)
         cf=boto3.client("cloudformation")
+        delete_stack(s3, iam, cf, stackname)
         waiter=cf.get_waiter("stack_delete_complete")
         waiter.wait(StackName=stackname)
     except ClientError as error:

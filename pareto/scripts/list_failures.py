@@ -31,7 +31,7 @@ if __name__=="__main__":
         def filterfn(event):
             return event.matches("fail")
         events=Events.initialise(stackname,
-                                 cf=CF,
+                                 cf=boto3.client("cloudformation"),
                                  filterfn=filterfn)
         formatstr=" :: ".join(["%s" for i in range(len(Attrs))])
         for event in events:            

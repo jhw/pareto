@@ -24,7 +24,7 @@ if __name__=="__main__":
             return (args["verbose"] or
                     re.search("arn", v, re.I)==None)
         outputs=Outputs.initialise(stackname,
-                                   cf=CF,
+                                   cf=boto3.client("cloudformation"),
                                    filterfn=filterfn)
         print (outputs.table_repr)
     except ClientError as error:

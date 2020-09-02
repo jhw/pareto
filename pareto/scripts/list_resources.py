@@ -35,8 +35,8 @@ if __name__=="__main__":
             return (args["term"]=="*" or
                     resource.matches(args["term"]))
         resources=Resources.initialise(stackname,
-                                 cf=CF,
-                                 filterfn=filterfn)
+                                       cf=boto3.client("cloudformation"),
+                                       filterfn=filterfn)
         df=resources.table_repr(Attrs)
         pd.set_option('display.max_rows', df.shape[0]+1)
         print (df)

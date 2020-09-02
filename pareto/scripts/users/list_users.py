@@ -28,9 +28,10 @@ if __name__=="__main__":
         if args["userpool"] not in userpools:
             raise RuntimeError("userpool not found")
         userpool=userpools[args["userpool"]]
-        outputs=Outputs.initialise(stackname, CF)
-        userpoolid=outputs.lookup("%s-user-pool-id" % userpool["name"]) 
-        resp=CG.list_users(UserPoolId=userpoolid)
+        outputs=Outputs.initialise(stackname, boto3.client("cloudformation"))
+        userpoolid=outputs.lookup("%s-user-pool-id" % userpool["name"])
+        cg=boto3.client("cognito-idp")
+        resp=cg.list_users(UserPoolId=userpoolid)
         print (yaml.safe_dump(resp["Users"],
                               default_flow_style=False))
     except RuntimeError as error:
