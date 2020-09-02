@@ -1,13 +1,11 @@
 ### short
 
-- examine why dynamically importing test classes fails to pick up mocks
-
-- component parameters to be defined dynamically based on refs lookup
-
-- logging script to aggregate messages from all streams
+- remove boto3 global clients
 
 ### medium 
 
+- component parameters to be defined dynamically based on refs lookup
+- logging script to aggregate messages from all streams
 - isolate env circular reference issues
 
 - include setup.py non- python files config [see weeblog]
@@ -150,6 +148,7 @@
   
 ### done
 
+- examine why dynamically importing test classes fails to pick up mocks
 - new tagged version
 - replace srp context stuff with resource_name helper [notes]
 - app_name, stage_name lambda env variables
