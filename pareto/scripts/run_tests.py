@@ -4,9 +4,6 @@ from pareto.scripts import *
 
 from pareto.helpers.text import underscore
 
-from pareto.scripts.helpers.profiles import toggle_aws_profile
-
-@toggle_aws_profile
 def run_tests(config):
     logging.info("running tests")
     def index_test(config, action, klassname="IndexTest"):    

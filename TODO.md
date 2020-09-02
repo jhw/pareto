@@ -1,7 +1,6 @@
 ### short
 
 - add back assert_actions
-- consider if u really need dummy AWS account toggling
 - include setup.py non- python files config [see weeblog]
 - extend s3 website cors options to HEAD|OPTIONS|GET
 - override action retries
@@ -148,6 +147,7 @@
   
 ### done
 
+- consider if u really need dummy AWS account toggling
 - remove boto3 global clients
 - examine why dynamically importing test classes fails to pick up mocks
 - new tagged version

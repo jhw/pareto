@@ -2,8 +2,6 @@
 
 from pareto.scripts import *
 
-from pareto.scripts.run_tests import run_tests
-
 from pareto.staging.lambdas import LambdaKey
 
 from pareto.staging.commits import CommitMap
@@ -103,7 +101,6 @@ if __name__=="__main__":
         config=args.pop("config")
         s3=boto3.client("s3")
         validate_bucket(config, s3)
-        run_tests(config)
         commits=CommitMap.create(roots=[config["globals"]["app"]])
         config["staging"]=init_staging(config, commits)
         push_lambdas(s3, config)
