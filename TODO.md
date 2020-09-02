@@ -1,17 +1,16 @@
 ### short
 
-- new tagged version
-- replace srp context stuff with resource_name helper [notes]
-
-- isolate env circular reference issues
-
-### medium 
-
 - examine why dynamically importing test classes fails to pick up mocks
 
 - component parameters to be defined dynamically based on refs lookup
+
 - logging script to aggregate messages from all streams
 
+### medium 
+
+- isolate env circular reference issues
+
+- include setup.py non- python files config [see weeblog]
 - extend s3 website cors options to HEAD|OPTIONS|GET
 - override action retries
 - override bucket index
@@ -151,6 +150,8 @@
   
 ### done
 
+- new tagged version
+- replace srp context stuff with resource_name helper [notes]
 - app_name, stage_name lambda env variables
 - replace ${region} with ${AWS::Region}
 - resolve authorizer name support case
