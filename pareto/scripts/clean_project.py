@@ -2,19 +2,20 @@
 
 from pareto.scripts import *
 
-def clean_s3(config):
+def clean_s3(s3, config):
     print ("--- s3 ---")
-    paginator=S3.get_paginator("list_objects_v2")
+    paginator=s3.get_paginator("list_objects_v2")
     pages=paginator.paginate(Bucket=config["globals"]["bucket"],
                              Prefix=config["globals"]["app"])
     for struct in pages:
         if "Contents" in struct:
             for obj in struct["Contents"]:                    
                 print ("deleting file %s" % obj["Key"])
-                S3.delete_object(Bucket=config["globals"]["bucket"],
+                s3.delete_object(Bucket=config["globals"]["bucket"],
                                  Key=obj["Key"])                    
 
-def clean_iam(config,
+def clean_iam(iam,
+              config,
               suffixes=["admin-role"]):
     print ("--- iam ---")
     def is_valid_suffix(rolename, suffixes):
@@ -23,26 +24,26 @@ def clean_iam(config,
                 return True
         return False
     def delete_policies(role):
-        for policy in IAM.list_attached_role_policies(RoleName=role["RoleName"])["AttachedPolicies"]:
+        for policy in iam.list_attached_role_policies(RoleName=role["RoleName"])["AttachedPolicies"]:
             print ("detaching/deleting policy %s" % policy["PolicyName"])
-            IAM.detach_role_policy(RoleName=role["RoleName"],
+            iam.detach_role_policy(RoleName=role["RoleName"],
                                    PolicyArn=policy["PolicyArn"])
-            IAM.delete_policy(PolicyArn=policy["PolicyArn"])
-    for role in IAM.list_roles()["Roles"]:
+            iam.delete_policy(PolicyArn=policy["PolicyArn"])
+    for role in iam.list_roles()["Roles"]:
         if not (role["RoleName"].startswith(config["globals"]["app"]) and
                 is_valid_suffix(role["RoleName"], suffixes)):
             continue
         delete_policies(role)
         print ("deleting role %s" % role["RoleName"])
-        IAM.delete_role(RoleName=role["RoleName"])
+        iam.delete_role(RoleName=role["RoleName"])
 
-def clean_codebuild(config):
+def clean_codebuild(cb, config):
     print ("--- codebuild ---")
-    for projectname in CB.list_projects()["projects"]:
+    for projectname in cb.list_projects()["projects"]:
         if not projectname.startswith(config["globals"]["app"]):
             continue
         print ("deleting project %s" % projectname)
-        CB.delete_project(name=projectname)
+        cb.delete_project(name=projectname)
                 
 if __name__=="__main__":
     try:
@@ -52,10 +53,12 @@ if __name__=="__main__":
           type: file
         """)
         args=argsparse(sys.argv[1:], argsconfig)
-        for fn in [clean_s3,
-                   clean_iam,
-                   clean_codebuild]:
-            fn(args["config"])
+        for service in ["s3",
+                        "iam",
+                        "codebuild"]:            
+            fn=eval("clean_%s" % service)
+            client=boto3.client(service)
+            fn(client, args["config"])
     except ClientError as error:
         print (error)
     except RuntimeError as error:
