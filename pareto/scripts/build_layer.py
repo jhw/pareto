@@ -74,7 +74,7 @@ def init_build_spec(config, layer,
 def reset_project(fn,
                   maxtries=10,
                   wait=1):
-    def wrapped(cb, config, layer):
+    def wrapped(cb, iam, config, layer):
         projectname=layer_project_name(config, layer)
         for i in range(maxtries):
             projects=cb.list_projects()["projects"]
@@ -83,7 +83,7 @@ def reset_project(fn,
                 cb.delete_project(name=projectname)
                 time.sleep(wait)
             else:
-                return fn(cb, config, layer)
+                return fn(cb, iam, config, layer)
         projects=cb.list_projects()["projects"]
         if projectname in projects:
             raise RuntimeError("%s already exists" % projectname)
@@ -98,45 +98,46 @@ def assert_role(fn):
         return "%s-admin-role" % config["globals"]["app"]
     def policy_name(rolename):
         return "%s-policy" % rolename
-    def create_role(rolename,
+    def create_role(iam,
+                    rolename,
                     permissions=["codebuild:*",
                                  "s3:*",
                                  "logs:*"],
                     rolepolicydoc=RolePolicyDoc):
-        role=IAM.create_role(RoleName=rolename,
+        role=iam.create_role(RoleName=rolename,
                              AssumeRolePolicyDocument=json.dumps(rolepolicydoc))
         policydoc={"Statement": [{"Action": permission,
                                   "Effect": "Allow",
                                   "Resource": "*"}
                                  for permission in permissions],
                    "Version": "2012-10-17"}
-        policy=IAM.create_policy(PolicyName=policy_name(rolename),
+        policy=iam.create_policy(PolicyName=policy_name(rolename),
                                  PolicyDocument=json.dumps(policydoc))
         logging.info("waiting for policy creation ..")
-        waiter=IAM.get_waiter("policy_exists")
+        waiter=iam.get_waiter("policy_exists")
         waiter.wait(PolicyArn=policy["Policy"]["Arn"])
-        IAM.attach_role_policy(RoleName=rolename,
+        iam.attach_role_policy(RoleName=rolename,
                                PolicyArn=policy["Policy"]["Arn"])
         return role["Role"]["Arn"]
-    def wrapped(cb, config, layer):
+    def wrapped(cb, iam, config, layer):
         rolename=admin_role_name(config)
         rolearns={role["RoleName"]:role["Arn"]
-                  for role in IAM.list_roles()["Roles"]}
+                  for role in iam.list_roles()["Roles"]}
         if rolename in rolearns:
             logging.info("admin role exists")
             rolearn=rolearns[rolename]
         else:
             logging.warning("creating admin role")
-            rolearn=create_role(rolename)
+            rolearn=create_role(iam, rolename)
             logging.info("waiting for role creation ..")
-            waiter=IAM.get_waiter("role_exists")
+            waiter=iam.get_waiter("role_exists")
             waiter.wait(RoleName=rolename)
-        return fn(cb, config, layer, rolearn)
+        return fn(cb, iam, config, layer, rolearn)
     return wrapped
 
 @reset_project
 @assert_role
-def init_project(cb, config, layer, rolearn,
+def init_project(cb, iam, config, layer, rolearn,
                  env={"type": "LINUX_CONTAINER",
                       "image": DockerImage,
                       "computeType": "BUILD_GENERAL1_SMALL"},
@@ -220,7 +221,8 @@ if __name__=="__main__":
             raise RuntimeError("layer not found")
         layer=layers[args["layer"]]
         cb=boto3.client("codebuild")
-        init_project(cb, config, layer)
+        iam=boto3.client("iam")
+        init_project(cb, iam, config, layer)
         run_project(cb, config, layer)
     except ClientError as error:
         logging.error(str(error))
