@@ -31,7 +31,8 @@ if __name__=="__main__":
                 "interleaved": True}
         if args["query"]!="*":
             kwargs["filterPattern"]=args["query"]
-        events=Logs.filter_log_events(**kwargs)["events"]        
+        logs=boto3.client("logs")
+        events=logs.filter_log_events(**kwargs)["events"]        
         for event in sorted(events,
                             key=lambda x: x["timestamp"]):
             print (re.sub("\\r|\\n", "", event["message"]))

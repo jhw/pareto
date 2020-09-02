@@ -4,7 +4,8 @@ from pareto.scripts import *
 
 if __name__=="__main__":
     try:
-        paginator=Logs.get_paginator('describe_log_groups')
+        logs=boto3.client("logs")
+        paginator=logs.get_paginator('describe_log_groups')
         for page in paginator.paginate():
             for group in page["logGroups"]:
                 print (group["logGroupName"])
