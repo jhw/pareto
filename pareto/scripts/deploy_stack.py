@@ -50,7 +50,7 @@ class LayerKeys(dict):
                 if layer["name"] not in self:
                     raise RuntimeError("no %s layer found" % layer["name"])
 
-def init_staging(config, s3=S3):
+def init_staging(config, s3):
     lambdas, layers = LambdaKeys(config, s3), LayerKeys(config, s3)
     lambdas.validate()
     layers.validate()
@@ -148,12 +148,14 @@ if __name__=="__main__":
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
         config["globals"]["stage"]=args.pop("stage")
-        staging=init_staging(config)
+        s3=boto3.client("s3")
+        staging=init_staging(config, s3)
         zfname=latest_zipfile(root="tmp/templates")
         logging.info("template source %s" % zfname)
         zf=zipfile.ZipFile(zfname)
-        push_templates(config, zf, S3)
-        deploy_master(config, staging, zf, CF)
+        push_templates(config, zf, s3)
+        cf=boto3.client("cloudformation")
+        deploy_master(config, staging, zf, cf)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:

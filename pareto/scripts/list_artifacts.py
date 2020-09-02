@@ -2,8 +2,8 @@
 
 from pareto.scripts import *
 
-def list_s3(config):
-    paginator=S3.get_paginator("list_objects_v2")
+def list_s3(s3, config):
+    paginator=s3.get_paginator("list_objects_v2")
     pages=paginator.paginate(Bucket=config["globals"]["bucket"],
                              Prefix=config["globals"]["app"])
     for struct in pages:
@@ -19,7 +19,7 @@ if __name__=="__main__":
           type: file
         """)
         args=argsparse(sys.argv[1:], argsconfig)
-        list_s3(args["config"])
+        list_s3(boto3.client("s3"), args["config"])
     except ClientError as error:
         print (error)
     except RuntimeError as error:

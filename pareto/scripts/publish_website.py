@@ -33,7 +33,8 @@ if __name__=="__main__":
         bucketname="%s-%s-%s" % (config["globals"]["app"],
                                  bucket["name"],
                                  config["globals"]["stage"])
-        print (S3.put_object(Bucket=bucketname,
+        s3=boto3.client("s3")
+        print (s3.put_object(Bucket=bucketname,
                              Key="index.json",
                              Body=json.dumps({"hello": "world"}),
                              ContentType="application/json"))

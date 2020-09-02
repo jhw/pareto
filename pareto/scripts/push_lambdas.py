@@ -22,7 +22,7 @@ def init_staging(config, commits):
     return staging
     
 @assert_actions
-def push_lambdas(config):
+def push_lambdas(s3, config):
     def is_valid_path(filename, ignore=["test.py$",
                                         ".pyc$",
                                         "__pycache__"]):
@@ -75,23 +75,23 @@ def push_lambdas(config):
         zf.close()
         return zfname
     def assert_new(fn):
-        def wrapped(staging, zfname):
+        def wrapped(s3, staging, zfname):
             try:
-                S3.head_object(Bucket=staging["bucket"],
+                s3.head_object(Bucket=staging["bucket"],
                                Key=staging["key"])
                 logging.warning("%s exists" % staging["key"])
             except ClientError as error:
-                return fn(staging, zfname)
+                return fn(s3, staging, zfname)
         return wrapped
     @assert_new
-    def push_lambda(staging, zfname):
+    def push_lambda(s3, staging, zfname):
         logging.info("pushing %s" % staging["key"])
-        S3.upload_file(zfname,
+        s3.upload_file(zfname,
                        staging["bucket"],
                        staging["key"],
                        ExtraArgs={'ContentType': 'application/zip'})
     zfname=init_zipfile(config)
-    push_lambda(config["staging"], zfname)
+    push_lambda(s3, config["staging"], zfname)
         
 if __name__=="__main__":
     try:        
@@ -106,7 +106,7 @@ if __name__=="__main__":
         run_tests(config)
         commits=CommitMap.create(roots=[config["globals"]["app"]])
         config["staging"]=init_staging(config, commits)
-        push_lambdas(config)
+        push_lambdas(boto3.client("s3"), config)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
