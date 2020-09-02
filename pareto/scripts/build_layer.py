@@ -74,17 +74,17 @@ def init_build_spec(config, layer,
 def reset_project(fn,
                   maxtries=10,
                   wait=1):
-    def wrapped(config, layer):
+    def wrapped(cb, config, layer):
         projectname=layer_project_name(config, layer)
         for i in range(maxtries):
-            projects=CB.list_projects()["projects"]
+            projects=cb.list_projects()["projects"]
             if projectname in projects:
                 logging.warning("project exists; deleting ..")
-                CB.delete_project(name=projectname)
+                cb.delete_project(name=projectname)
                 time.sleep(wait)
             else:
-                return fn(config, layer)
-        projects=CB.list_projects()["projects"]
+                return fn(cb, config, layer)
+        projects=cb.list_projects()["projects"]
         if projectname in projects:
             raise RuntimeError("%s already exists" % projectname)
     return wrapped
@@ -118,7 +118,7 @@ def assert_role(fn):
         IAM.attach_role_policy(RoleName=rolename,
                                PolicyArn=policy["Policy"]["Arn"])
         return role["Role"]["Arn"]
-    def wrapped(config, layer):
+    def wrapped(cb, config, layer):
         rolename=admin_role_name(config)
         rolearns={role["RoleName"]:role["Arn"]
                   for role in IAM.list_roles()["Roles"]}
@@ -131,12 +131,12 @@ def assert_role(fn):
             logging.info("waiting for role creation ..")
             waiter=IAM.get_waiter("role_exists")
             waiter.wait(RoleName=rolename)
-        return fn(config, layer, rolearn)
+        return fn(cb, config, layer, rolearn)
     return wrapped
 
 @reset_project
 @assert_role
-def init_project(config, layer, rolearn,
+def init_project(cb, config, layer, rolearn,
                  env={"type": "LINUX_CONTAINER",
                       "image": DockerImage,
                       "computeType": "BUILD_GENERAL1_SMALL"},
@@ -164,7 +164,7 @@ def init_project(config, layer, rolearn,
     for i in range(maxtries):
         try:
             logging.info("trying to create project [%i/%i]" % (i+1, maxtries))
-            project=CB.create_project(name=projectname,
+            project=cb.create_project(name=projectname,
                                       source=source,
                                       artifacts=artifacts,
                                       environment=env,
@@ -175,24 +175,24 @@ def init_project(config, layer, rolearn,
             time.sleep(wait)
     raise RuntimeError("couldn't create codebuild project")
                           
-def run_project(config, layer,
+def run_project(cb, config, layer,
                 wait=3,
                 maxtries=100,
                 exitcodes=["SUCCEEDED",
                            "FAILED",
                            "STOPPED"]):
     logging.info("running project")
-    def get_build(projectname):
-        resp=CB.list_builds_for_project(projectName=projectname)
+    def get_build(cb, projectname):
+        resp=cb.list_builds_for_project(projectName=projectname)
         if ("ids" not in resp or
             resp["ids"]==[]):
             raise RuntimeError("no build ids found")
-        return CB.batch_get_builds(ids=resp["ids"])["builds"].pop()
+        return cb.batch_get_builds(ids=resp["ids"])["builds"].pop()
     projectname=layer_project_name(config, layer)    
-    CB.start_build(projectName=projectname)
+    cb.start_build(projectName=projectname)
     for i in range(maxtries):
         time.sleep(wait)
-        build=get_build(projectname)
+        build=get_build(cb, projectname)
         logging.info("%i/%i\t%s\t%s" % (1+i,
                                         maxtries,
                                         build["currentPhase"],
@@ -219,8 +219,9 @@ if __name__=="__main__":
         if args["layer"] not in layers:
             raise RuntimeError("layer not found")
         layer=layers[args["layer"]]
-        init_project(config, layer)
-        run_project(config, layer)
+        cb=boto3.client("codebuild")
+        init_project(cb, config, layer)
+        run_project(cb, config, layer)
     except ClientError as error:
         logging.error(str(error))
     except RuntimeError as error:
