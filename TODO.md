@@ -1,16 +1,7 @@
 ### short
 
-- remove boto3 global clients
-
 - add back assert_actions
 - consider if u really need dummy AWS account toggling
-
-### medium 
-
-- component parameters to be defined dynamically based on refs lookup
-- logging script to aggregate messages from all streams
-- isolate env circular reference issues
-
 - include setup.py non- python files config [see weeblog]
 - extend s3 website cors options to HEAD|OPTIONS|GET
 - override action retries
@@ -20,6 +11,12 @@
 - add optional sqs fifo support
 - all "" as scripts wildcard option in addition to "*"
 - deploy_stack.py no longer warns if lambdas are latest
+
+### medium 
+
+- component parameters to be defined dynamically based on refs lookup
+- logging script to aggregate messages from all streams
+- isolate env circular reference issues
 
 - cloudfront+route53
 - pinpoint
@@ -151,6 +148,7 @@
   
 ### done
 
+- remove boto3 global clients
 - examine why dynamically importing test classes fails to pick up mocks
 - new tagged version
 - replace srp context stuff with resource_name helper [notes]

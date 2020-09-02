@@ -21,11 +21,10 @@
 -rwxr-xr-x 1 justin justin 9242 Sep  2 20:40 build_layer.py
 -rwxr-xr-x 1 justin justin 1880 Sep  2 18:03 run_tests.py
 -rwxr-xr-x 1 justin justin 4403 Sep  2 20:40 push_lambdas.py
-
----
-
 -rwxr-xr-x 1 justin justin  481 Aug 23 07:42 synth_templates.py
 -rwxr-xr-x 1 justin justin 5734 Sep  2 20:40 deploy_stack.py
+
+---
 
 ### lambda env variables
 
