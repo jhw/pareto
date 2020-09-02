@@ -27,7 +27,7 @@ def init_stdout_logger(level):
     handler.setFormatter(formatter)
     root.addHandler(handler)    
 
-def validate_bucket(config, s3=boto3.client("s3")):
+def validate_bucket(config, s3):
     bucketnames=[bucket["Name"]
                  for bucket in s3.list_buckets()["Buckets"]]
     if config["globals"]["bucket"] not in bucketnames:

@@ -212,7 +212,7 @@ if __name__=="__main__":
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        validate_bucket(config)
+        validate_bucket(config, boto3.client("s3"))
         if "layers" not in config["components"]:
             raise RuntimeError("no layers found")
         layers={layer["name"]:layer

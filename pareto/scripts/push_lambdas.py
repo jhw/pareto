@@ -101,11 +101,12 @@ if __name__=="__main__":
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
-        validate_bucket(config)
+        s3=boto3.client("s3")
+        validate_bucket(config, s3)
         run_tests(config)
         commits=CommitMap.create(roots=[config["globals"]["app"]])
         config["staging"]=init_staging(config, commits)
-        push_lambdas(boto3.client("s3"), config)
+        push_lambdas(s3, config)
     except ClientError as error:
         logging.error(error)                      
     except WaiterError as error:
