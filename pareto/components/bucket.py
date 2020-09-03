@@ -12,7 +12,9 @@ ParamNames=yaml.safe_load("""
 @resource()
 def Bucket(**kwargs):
     def website_config(index="index.json"):
-        corsrules=[{"AllowedMethods": ["GET"],
+        corsrules=[{"AllowedMethods": ["HEAD",
+                                       "OPTIONS",
+                                       "GET"],
                     "AllowedOrigins": ["*"]}]
         corsconfig={"CorsRules": corsrules}
         websiteconfig={"IndexDocument": index}

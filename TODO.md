@@ -2,7 +2,6 @@
 
 - add back assert_actions
 - include setup.py non- python files config [see weeblog]
-- extend s3 website cors options to HEAD|OPTIONS|GET
 - override action retries
 - override bucket index
 - rename bucket index as root
@@ -147,6 +146,7 @@
   
 ### done
 
+- extend s3 website cors options to HEAD|OPTIONS|GET
 - consider if u really need dummy AWS account toggling
 - remove boto3 global clients
 - examine why dynamically importing test classes fails to pick up mocks
