@@ -19,6 +19,7 @@ components:
     - name: hello-get-fn
       layers:
         - hello-layer
+      retries: 0
     - name: hello-post-fn
     - name: hello-bucket-fn
       permissions:

@@ -1,7 +1,6 @@
 ### short
 
 - add back assert_actions
-- override action retries
 - allow ping_api.py to pass blank parameters
 - add optional sqs fifo support
 - all "" as scripts wildcard option in addition to "*"
@@ -143,6 +142,7 @@
   
 ### done
 
+- override action retries
 - override bucket index
 - rename bucket index as root
 - include setup.py non- python files config [see weeblog]
