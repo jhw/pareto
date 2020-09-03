@@ -45,7 +45,11 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    # packages=setuptools.find_packages(),
     packages=filter_packages("pareto"),
-    install_requires=filter_pip_dependencies()
+    install_requires=filter_pip_dependencies(),
+    # https://stackoverflow.com/a/57932258/124179
+    setup_requires=['setuptools_scm'],
+    include_package_data=True
 )
 
