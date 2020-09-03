@@ -1,6 +1,5 @@
 ### short
 
-- allow ping_api.py to pass blank parameters
 - all "" as scripts wildcard option in addition to "*"
 
 ### medium 
@@ -140,6 +139,7 @@
   
 ### done
 
+- allow ping_api.py to pass blank parameters
 - test removal of table, queue, bucket etc on synth_templates
 - add back assert_actions
 - override action retries

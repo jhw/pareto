@@ -18,8 +18,9 @@ def validate_get_payload(fn):
     def is_form_urlencoded(payload):
         return re.search("^(\\w+\\=\\w+\\&)*\\w+\\=\\w+$", payload)!=None
     def wrapped(url, payload, token):
-        if is_form_urlencoded(payload):                
-            return fn(url="%s?%s" % (url, payload),
+        if is_form_urlencoded(payload):
+            modurl="%s?%s" % (url, payload) if payload!='' else url
+            return fn(url=modurl,
                       token=token)
         else:
             raise RuntimeError("GET payload is invalid")
