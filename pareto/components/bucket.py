@@ -14,7 +14,6 @@ def Bucket(**kwargs):
     def website_config(root="index.json",
                        **kwargs):
         corsrules=[{"AllowedMethods": ["HEAD",
-                                       "OPTIONS",
                                        "GET"],
                     "AllowedOrigins": ["*"]}]
         corsconfig={"CorsRules": corsrules}
