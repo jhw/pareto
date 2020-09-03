@@ -32,7 +32,7 @@ if __name__=="__main__":
         stackname="%s-%s" % (config["globals"]["app"],
                              config["globals"]["stage"])
         def filterfn(event):
-            return (args["term"]=="*" or
+            return (args["term"] in ["*", ""] or
                     event.matches(args["term"]))
         events=Events.initialise(stackname,
                                  cf=boto3.client("cloudformation"),

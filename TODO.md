@@ -1,16 +1,16 @@
 ### short
 
-- all "" as scripts wildcard option in addition to "*"
+- logging script to aggregate messages from all streams
 
-### medium 
+- test for moto- mocked class followed by non- mocked boto3 call
 
 - component parameters to be defined dynamically based on refs lookup
-- logging script to aggregate messages from all streams
+
+### medium 
 
 - isolate env circular reference issues
   - does s3 event source require a name ?
 
-- test for moto- mocked class followed by non- mocked boto3 call
 - github to preserve chmod 755 status
 - cognito to have admin login option
 - test replacing NO_SRP_XXX with newer option
@@ -20,12 +20,11 @@
 - deploy_stack.py to allow deployment other than latest
 - apigw extended logging
 - scripts to dump and manage iam roles
-- iam deployment user
 
 - cloudfront+route53
 - pinpoint
-- cloudwatch alerts
-- burningmonk alerts
+- cloudwatch alert components
+- burningmonk alerts review
 
 ### v1.1
 
@@ -41,6 +40,8 @@
 
 ### thoughts
 
+- iam deployment user ?
+  - just don't see the point given the range of stuff i need/want to do
 - preprocessor to expand single layer into multiple layers and bind to actions ?
   - over-  optimisation
 - script to dump outputs for UI
@@ -141,6 +142,7 @@
   
 ### done
 
+- all "" as scripts wildcard option in addition to "*"
 - allow ping_api.py to pass blank parameters
 - test removal of table, queue, bucket etc on synth_templates
 - add back assert_actions

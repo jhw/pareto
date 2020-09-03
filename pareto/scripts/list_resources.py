@@ -32,7 +32,7 @@ if __name__=="__main__":
         stackname="%s-%s" % (config["globals"]["app"],
                              config["globals"]["stage"])
         def filterfn(resource):
-            return (args["term"]=="*" or
+            return (args["term"] in ["*", ""] or
                     resource.matches(args["term"]))
         resources=Resources.initialise(stackname,
                                        cf=boto3.client("cloudformation"),

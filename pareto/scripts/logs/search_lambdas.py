@@ -38,7 +38,7 @@ if __name__=="__main__":
         kwargs={"logGroupName": loggroupname,
                 "startTime": starttime,
                 "interleaved": True}
-        if args["query"]!="*":
+        if args["query"] not in ["*", ""]:
             kwargs["filterPattern"]=args["query"]
         logs=boto3.client("logs")
         events=logs.filter_log_events(**kwargs)["events"]        
