@@ -10,6 +10,8 @@
 - isolate env circular reference issues
   - does s3 event source require a name ?
 
+- test for moto- mocked class followed by non- mocked boto3 call
+- github to preserve chmod 755 status
 - cognito to have admin login option
 - test replacing NO_SRP_XXX with newer option
 - sqs:sendMessage permission to target dead letter queue
