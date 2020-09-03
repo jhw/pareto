@@ -2,8 +2,6 @@
 
 - add back assert_actions
 - override action retries
-- override bucket index
-- rename bucket index as root
 - allow ping_api.py to pass blank parameters
 - add optional sqs fifo support
 - all "" as scripts wildcard option in addition to "*"
@@ -145,6 +143,8 @@
   
 ### done
 
+- override bucket index
+- rename bucket index as root
 - include setup.py non- python files config [see weeblog]
 - extend s3 website cors options to HEAD|OPTIONS|GET
 - consider if u really need dummy AWS account toggling

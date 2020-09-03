@@ -11,13 +11,14 @@ ParamNames=yaml.safe_load("""
 
 @resource()
 def Bucket(**kwargs):
-    def website_config(index="index.json"):
+    def website_config(root="index.json",
+                       **kwargs):
         corsrules=[{"AllowedMethods": ["HEAD",
                                        "OPTIONS",
                                        "GET"],
                     "AllowedOrigins": ["*"]}]
         corsconfig={"CorsRules": corsrules}
-        websiteconfig={"IndexDocument": index}
+        websiteconfig={"IndexDocument": root}
         return {"AccessControl": "PublicRead",
                 "CorsConfiguration": corsconfig,
                 "WebsiteConfiguration": websiteconfig}
@@ -30,7 +31,7 @@ def Bucket(**kwargs):
                 "Filter": {"S3Key": {"Rules": rules}}}
     props={"BucketName": resource_name(kwargs)}
     if "website" in kwargs and kwargs["website"]:
-        props.update(website_config())
+        props.update(website_config(**kwargs))
     if "actions" in kwargs:
         lambdaconfig=[lambda_config(action)
                       for action in kwargs["actions"]]

@@ -53,6 +53,7 @@ components:
         - name: hello-bucket-fn
           path: foobar
       website: true
+      root: index.html
   queues:
     - name: hello-queue
       batch: 1
