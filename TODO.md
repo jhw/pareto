@@ -1,19 +1,18 @@
 ### short
 
 - add back assert_actions
+- test removal of table, queue, bucket etc on synth_templates
 - allow ping_api.py to pass blank parameters
-- add optional sqs fifo support
 - all "" as scripts wildcard option in addition to "*"
-- deploy_stack.py no longer warns if lambdas are latest
 
 ### medium 
 
 - component parameters to be defined dynamically based on refs lookup
 - logging script to aggregate messages from all streams
-- isolate env circular reference issues
 
-- cloudfront+route53
-- pinpoint
+- isolate env circular reference issues
+  - does s3 event source require a name ?
+
 - cognito to have admin login option
 - test replacing NO_SRP_XXX with newer option
 - sqs:sendMessage permission to target dead letter queue
@@ -23,17 +22,18 @@
 - apigw extended logging
 - scripts to dump and manage iam roles
 - iam deployment user
-- push lambda symlink rewriting is still far too complex
 
+- cloudfront+route53
+- pinpoint
 - cloudwatch alerts
 - burningmonk alerts
-- apigw2
 
 ### v1.1
 
+- apigw2
+- sqs fifo
 - eventbridge
-- ec2 components
-- apigw POST upload limits
+- ec2/vpc/subnet
 - appsync
 - ci pipeline
 - github actions
