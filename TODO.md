@@ -1,6 +1,5 @@
 ### short
 
-- test removal of table, queue, bucket etc on synth_templates
 - allow ping_api.py to pass blank parameters
 - all "" as scripts wildcard option in addition to "*"
 
@@ -141,6 +140,7 @@
   
 ### done
 
+- test removal of table, queue, bucket etc on synth_templates
 - add back assert_actions
 - override action retries
 - override bucket index
