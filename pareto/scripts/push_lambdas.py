@@ -18,7 +18,15 @@ def init_staging(config, commits):
                                  hexsha=commit["hexsha"],
                                  timestamp=commit["timestamp"]))
     return staging
-    
+
+def assert_actions(fn):
+    def wrapped(s3, config):
+        if "actions" not in config["components"]:
+            raise RuntimeError("no actions found")
+        return fn(s3, config)
+    return wrapped
+
+@assert_actions
 def push_lambdas(s3, config):
     def is_valid_path(filename, ignore=["test.py$",
                                         ".pyc$",

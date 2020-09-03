@@ -4,6 +4,14 @@ from pareto.scripts import *
 
 from pareto.helpers.text import underscore
 
+def assert_actions(fn):
+    def wrapped(config):
+        if "actions" not in config["components"]:
+            raise RuntimeError("no actions found")
+        return fn(config)
+    return wrapped
+
+@assert_actions
 def run_tests(config):
     logging.info("running tests")
     def index_test(config, action, klassname="IndexTest"):    
