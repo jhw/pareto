@@ -14,8 +14,8 @@ def Bucket(**kwargs):
     def website_config(root="index.json",
                        **kwargs):
         corsrules=[{"AllowedMethods": ["HEAD",
-                                       "GET"]
-                    "AllowedHeaders"; ["*"],
+                                       "GET"],
+                    "AllowedHeaders": ["*"],
                     "AllowedOrigins": ["*"]}]
         corsconfig={"CorsRules": corsrules}
         websiteconfig={"IndexDocument": root}
