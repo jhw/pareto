@@ -20,6 +20,8 @@ components:
       layers:
         - hello-layer
       retries: 0
+      env:
+        google_application_credentials: "path/to/creds.json"
     - name: hello-post-fn
     - name: hello-bucket-fn
       permissions:

@@ -33,17 +33,20 @@ def Action(concurrency=None,
     rolearn=fn_getatt("%s-role" % kwargs["name"], "Arn")
     handler=fn_sub(handlerpat % underscore(kwargs["name"]),
                    {"app_name": ref("app-name")})
+    envvars={allcaps(attr): ref(attr)
+             for attr in ["app-name",
+                          "stage-name"]}
+    if "env" in kwargs:
+        for k, v in kwargs["env"].items():
+            envvars[allcaps(k)]=v
     props={"Code": {"S3Bucket": ref("staging-bucket"),
                     "S3Key": ref("lambda-staging-key")},
-           "Environment": {"Variables": {allcaps(attr): ref(attr)
-                                         for attr in ["app-name",
-                                                      "stage-name"]}},
+           "Environment": {"Variables": envvars},
            "FunctionName": resource_name(kwargs),
            "Handler": handler,
            "MemorySize": memory,
            "DeadLetterConfig": {"TargetArn": dlqarn},                   
-           "Role": rolearn,
-           
+           "Role": rolearn,           
            "Runtime": fn_sub("python${version}",
                              {"version": ref("runtime-version")}),
            "Timeout": timeout}
