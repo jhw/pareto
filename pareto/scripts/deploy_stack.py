@@ -31,9 +31,15 @@ class LambdaKeys(list):
         
 class LayerKeys(dict):
 
+    """
+    - NB only want those layers specified in config
+    """
+    
     def __init__(self, config, s3):
         dict.__init__(self)
         self.config=config
+        layernames=[layer["name"]
+                    for layer in config["components"]["layers"]] if "layers" in config["components"] else []
         paginator=s3.get_paginator("list_objects_v2")
         pages=paginator.paginate(Bucket=config["globals"]["bucket"],
                                  Prefix="%s/layers" % config["globals"]["app"])
@@ -42,7 +48,8 @@ class LayerKeys(dict):
         for struct in pages:
             if "Contents" in struct:
                 self.update({filter_name(obj["Key"]):obj["Key"]
-                             for obj in struct["Contents"]})
+                             for obj in struct["Contents"]
+                             if filter_name(obj["Key"]) in layernames})
 
     def validate(self):
         if "layers" in self.config["components"]:

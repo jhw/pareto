@@ -1,10 +1,9 @@
 ### short
 
-- test deployment with multiple layers
-
 - add random id to apigw deployment to ensure stage redeploys
 - update new cloudformation limits
-- deploy_stack to filter lambdas, layers
+- new git tag
+- test on slow russian pareto
 
 ### medium 
 
@@ -13,6 +12,8 @@ ERROR: After October 2020 you may experience errors when installing or updating 
 
 We recommend you use --use-feature=2020-resolver to test your packages with the new resolver before it becomes the default.
 ```
+
+- improve layer filtering in pareto/scripts/deploy_stack.py ?
 
 - logging script to aggregate messages from all streams
 - test for moto- mocked class followed by non- mocked boto3 call
@@ -152,6 +153,8 @@ We recommend you use --use-feature=2020-resolver to test your packages with the 
   
 ### done
 
+- test deployment with multiple layers
+- deploy_stack to filter lambdas, layers
 - add repo support for layers
 - all "" as scripts wildcard option in addition to "*"
 - allow ping_api.py to pass blank parameters
