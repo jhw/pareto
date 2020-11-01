@@ -12,10 +12,10 @@ TemplateVersion="2010-09-09"
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
 """
 
-Metrics={"parameters": (lambda t: len(t.Parameters)/60),
-         "resources": (lambda t: len(t.Resources)/200),
-         "outputs": (lambda t: len(t.Outputs)/60),
-         "template_size": (lambda t: len(json.dumps(t.render()))/51200)}
+Metrics={"parameters": (lambda t: len(t.Parameters)/200),
+         "resources": (lambda t: len(t.Resources)/500),
+         "outputs": (lambda t: len(t.Outputs)/200),
+         "template_size": (lambda t: len(json.dumps(t.render()))/1000000)}
 
 class Template:
     

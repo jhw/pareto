@@ -13,6 +13,9 @@ ERROR: After October 2020 you may experience errors when installing or updating 
 We recommend you use --use-feature=2020-resolver to test your packages with the new resolver before it becomes the default.
 ```
 
+- separate size limit for main template vs s3 nested templates
+  - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
+
 - improve layer filtering in pareto/scripts/deploy_stack.py ?
 
 - logging script to aggregate messages from all streams
