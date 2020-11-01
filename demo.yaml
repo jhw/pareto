@@ -10,15 +10,20 @@ components:
   userpools:
     - name: hello-pool
   layers:
-    - name: hello-layer
+    - name: hello-layer-2
       packages:
         - name: lxml
         - name: pymorphy2
           version: "0.8"
+        - name: readability
+          repo:
+            host: github
+            owner: jhw
+          version: "1.0.1"
   actions:
     - name: hello-get-fn
       layers:
-        - hello-layer
+        - hello-layer-2
       retries: 0
       env:
         google_application_credentials: "path/to/creds.json"

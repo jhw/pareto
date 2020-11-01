@@ -38,8 +38,19 @@ def init_build_spec(config, layer,
         commands=["mkdir -p build/python",
                   "pip install --upgrade pip"]
         for package in layer["packages"]:
-            source="%s==%s" % (package["name"],
-                               package["version"]) if "version" in package else package["name"]
+            if "repo" in package:
+                host=package["repo"]["host"]
+                if not host.endswith(".com"):
+                    host+=".com"
+                source="git+https://%s/%s/%s" % (host,
+                                                 package["repo"]["owner"],
+                                                 package["name"])
+                if "version" in package:
+                    source+="@%s" % package["version"]
+            else:
+                source=package["name"]
+                if "version" in package:
+                    source+="==%s" % package["version"]
             commands.append("pip install --upgrade --target build/python %s" % source)
         return {"runtime-versions": rtversions,
                 "commands": commands}

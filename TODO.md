@@ -1,12 +1,22 @@
 ### short
 
-- logging script to aggregate messages from all streams
+- test deployment with multiple layers
 
-- test for moto- mocked class followed by non- mocked boto3 call
-
-- component parameters to be defined dynamically based on refs lookup
+- add random id to apigw deployment to ensure stage redeploys
+- update new cloudformation limits
+- deploy_stack to filter lambdas, layers
 
 ### medium 
+
+```
+ERROR: After October 2020 you may experience errors when installing or updating packages. This is because pip will change the way that it resolves dependency conflicts.
+
+We recommend you use --use-feature=2020-resolver to test your packages with the new resolver before it becomes the default.
+```
+
+- logging script to aggregate messages from all streams
+- test for moto- mocked class followed by non- mocked boto3 call
+- component parameters to be defined dynamically based on refs lookup
 
 - isolate env circular reference issues
   - does s3 event source require a name ?
@@ -142,6 +152,7 @@
   
 ### done
 
+- add repo support for layers
 - all "" as scripts wildcard option in addition to "*"
 - allow ping_api.py to pass blank parameters
 - test removal of table, queue, bucket etc on synth_templates
