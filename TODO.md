@@ -1,11 +1,11 @@
 ### short
 
-- add random id to apigw deployment to ensure stage redeploys
-- update new cloudformation limits
 - new git tag
 - test on slow russian pareto
 
 ### medium 
+
+- how to force APIGW stage deployment on change ?
 
 ```
 ERROR: After October 2020 you may experience errors when installing or updating packages. This is because pip will change the way that it resolves dependency conflicts.
@@ -156,6 +156,7 @@ We recommend you use --use-feature=2020-resolver to test your packages with the 
   
 ### done
 
+- update new cloudformation limits
 - test deployment with multiple layers
 - deploy_stack to filter lambdas, layers
 - add repo support for layers
