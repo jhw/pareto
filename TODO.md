@@ -1,8 +1,5 @@
 ### short
 
-- new git tag
-- test on slow russian pareto
-
 ### medium 
 
 - how to force APIGW stage deployment on change ?
