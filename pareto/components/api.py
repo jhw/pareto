@@ -16,7 +16,9 @@ LambdaInvokeArn="arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functi
 
 ExecuteApiArn="arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${rest_api}/${stage_name}/%s/%s"
 
-CorsHeaderPath="method.response.header.Access-Control-Allow-%s"
+CorsMethodHeader="method.response.header.Access-Control-Allow-%s"
+
+CorsGatewayHeader="gatewayresponse.header.Access-Control-Allow-%s"
 
 CorsHeaders=yaml.safe_load("""
 - Content-Type
@@ -86,6 +88,26 @@ def ApiStage(**kwargs):
            "StageName": ref("stage-name")}
     return "AWS::ApiGateway::Stage", props
 
+"""
+- https://serverless-stack.com/chapters/handle-api-gateway-cors-errors.html
+- otherwise a server error can manifest itself as a CORS error
+"""
+
+def ApiCorsDefault(code,**kwargs):
+    suffix="cors-default-%s" % code
+    @resource(suffix=suffix)
+    def ApiCorsDefault(code, **kwargs):        
+        root=ref("%s-root" % kwargs["name"])
+        resptype="DEFAULT_%s" % code
+        params={CorsGatewayHeader % k.capitalize(): "'%s'" % v # NB "'"
+                for k, v in [("headers", "*"),
+                             ("origin", "*")]}
+        props={"RestApiId": root,
+               "ResponseType": resptype,
+               "ResponseParameters": params}
+        return "AWS::ApiGateway::GatewayResponse", props
+    return ApiCorsDefault(code, **kwargs)
+    
 def ApiResource(endpoint, **kwargs):
     suffix="%s-resource" % endpoint["name"]
     @resource(suffix=suffix)
@@ -238,7 +260,7 @@ def ApiCorsOptions(endpoint, **kwargs):
     @resource(suffix=suffix)
     def ApiCorsOptions(endpoint, **kwargs):
         def init_integration_response(endpoint):
-            params={CorsHeaderPath % k.capitalize(): "'%s'" % v # NB "'"
+            params={CorsMethodHeader % k.capitalize(): "'%s'" % v # NB "'"
                     for k, v in [("headers", ",".join(CorsHeaders)),
                                  ("methods", "%s,OPTIONS" % endpoint["method"]),
                                  ("origin", "*")]}
@@ -254,7 +276,7 @@ def ApiCorsOptions(endpoint, **kwargs):
                     "RequestTemplates": templates,
                     "Type": "MOCK"}
         def init_response():
-            params={CorsHeaderPath % k.capitalize(): False
+            params={CorsMethodHeader % k.capitalize(): False
                     for k in ["headers", "methods", "origin"]}
             models={"application/json": "Empty"}
             return {"StatusCode": 200,
@@ -311,6 +333,8 @@ def synth_api(template, **kwargs):
                                ApiLogsRole(**kwargs),
                                ApiDeployment(**kwargs),
                                ApiStage(**kwargs)])
+    template.update(Resources=[ApiCorsDefault(code, **kwargs)
+                               for code in ["4XX", "5XX"]])
     for endpoint in kwargs["resources"]:
         template.update(Parameters=parameter("%s-arn" % endpoint["action"]),
                         Resources=[ApiResource(endpoint, **kwargs),

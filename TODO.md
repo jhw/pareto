@@ -1,14 +1,8 @@
 ### short
 
+- consider dynamic apigw stage names
+
 ### medium 
-
-- how to force APIGW stage deployment on change ?
-
-```
-ERROR: After October 2020 you may experience errors when installing or updating packages. This is because pip will change the way that it resolves dependency conflicts.
-
-We recommend you use --use-feature=2020-resolver to test your packages with the new resolver before it becomes the default.
-```
 
 - separate size limit for main template vs s3 nested templates
   - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
@@ -153,6 +147,7 @@ We recommend you use --use-feature=2020-resolver to test your packages with the 
   
 ### done
 
+- add apigw default 4/5xx cors resources
 - update new cloudformation limits
 - test deployment with multiple layers
 - deploy_stack to filter lambdas, layers
