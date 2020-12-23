@@ -40,7 +40,6 @@ LogsPermissions=yaml.safe_load("""
 
 ParamNames=yaml.safe_load("""
 - app-name
-- stage-name
 """)
 
 AuthorizationHeader="method.request.header.Authorization"
@@ -85,7 +84,7 @@ def ApiStage(**kwargs):
     deployment=ref("%s-deployment" % kwargs["name"])
     props={"DeploymentId": deployment,
            "RestApiId": root,           
-           "StageName": ref("stage-name")}
+           "StageName": kwargs["version"]}
     return "AWS::ApiGateway::Stage", props
 
 """

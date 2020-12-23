@@ -1,7 +1,5 @@
 ### short
 
-- consider dynamic apigw stage names
-
 ### medium 
 
 - separate size limit for main template vs s3 nested templates
@@ -147,6 +145,7 @@
   
 ### done
 
+- consider dynamic apigw stage names
 - add apigw default 4/5xx cors resources
 - update new cloudformation limits
 - test deployment with multiple layers

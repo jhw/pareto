@@ -38,6 +38,7 @@ components:
     - name: hello-queue-fn
   apis:
     - name: hello-api
+      version: "1-0-0"
       resources:
         - name: hello-get
           method: GET
