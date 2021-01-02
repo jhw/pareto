@@ -1,3 +1,13 @@
+### separate charts 2/1/21
+
+- problem is you are bundling charts into dashboards on a per- component basis
+- but it feels like you want them on an aggregated basis
+- current approach means a) charts for a particular component type may get split and b) you can never see charts from two different component types on the same dash
+- problem is that template model is too strict
+- you sensibly aggregate charts differently to other resources, as they need rendering differently
+- but there is no way to output two templates from an initial single template, unless you include some kind of expansion method which would separate charts off into a new template with a new suffixed name
+- but you still want to pass template to the different component models, because they have to work in terms of params/resources/outputs etc
+
 ### list of script
 
 -rwxr-xr-x 1 justin justin  542 Sep  2 20:40 list_stacks.py

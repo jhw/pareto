@@ -35,7 +35,10 @@ class Template:
         for attr in self.Attrs:
             setattr(template, attr, clone(getattr(self, attr)))
         return template
-            
+
+    def expand(self):
+        return [self]
+
     def assert_keywords(fn):
         def wrapped(self, **kwargs):
             for k in kwargs:

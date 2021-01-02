@@ -30,8 +30,8 @@ class Outputs(list):
     @classmethod
     def create(self, env, attr="Outputs"):
         outputs=Outputs()
-        for tempname, template in env.items():
-            outputs+=[(key, tempname)                   
+        for template in env.values():
+            outputs+=[(key, template.name)                   
                      for key in getattr(template, attr)]
         return outputs
     
@@ -134,6 +134,13 @@ class Env(dict):
             return wrapped
         return decorator
 
+    def expand(self):
+        env=Env(self.config)
+        for parent in self.values():
+            for template in parent.expand():
+                env[template.name]=template
+        return env
+            
     def master_params(fn):
         def listify(fn):
             def wrapped(self):
@@ -157,9 +164,9 @@ class Env(dict):
     def synth_master(self):
         master=Template(name=Master)
         outputs=Outputs.create(self)
-        for tempname, template in self.items():
+        for template in self.values():
             stackparams=outputs.stack_params(template)
-            kwargs={"name": tempname,
+            kwargs={"name": template.name,
                     "params": stackparams}
             synth_stack(master, **kwargs)
         return master
@@ -177,9 +184,9 @@ class Env(dict):
         zfname="%s/%s.zip" % (root, ts)
         logging.info("dumping to %s" % zfname)
         zf=zipfile.ZipFile(zfname, 'w', zipfile.ZIP_DEFLATED)
-        for tempname, template in self.items():
+        for template in self.values():
             for attr in ["json", "yaml"]:
-                filename="%s.%s" % (tempname, attr)
+                filename="%s.%s" % (template.name, attr)
                 prop=getattr(template, "%s_repr" % attr)
                 zf.writestr(filename, prop)
         zf.close()
@@ -187,7 +194,7 @@ class Env(dict):
     
 @preprocess
 def synth_env(config):
-    return Env.create(config).synth_master().dump("tmp/templates").validate()
+    return Env.create(config).expand().synth_master().dump("tmp/templates").validate()
 
 if __name__=="__main__":
     pass
