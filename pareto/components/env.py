@@ -88,18 +88,20 @@ class Env(dict):
     def template_key(self, groupkey, templatefn=TemplateMapper):
         return "%s-%i" % (templatefn(groupkey),
                          self.count[groupkey])
-        
+
     def check_metrics(fn):
         def is_valid(template):
             return max(template.metrics.values()) < 1
         def wrapped(self, groupkey, component):
             tempkey=self.template_key(groupkey)
             clonename=random_id("cloned-template")
-            template=self[tempkey].clone(clonename) if tempkey in self else Template(clonename)
+            parent=self[tempkey].clone(clonename) if tempkey in self else Template(clonename)
             synthfn=eval("synth_%s" % groupkey[:-1])                
-            synthfn(template, **component)
-            if not is_valid(template):
-                self.count[groupkey]+=1
+            synthfn(parent, **component)
+            for child in parent.fragment():
+                if not is_valid(child):
+                    self.count[groupkey]+=1
+                    break
             return fn(self, groupkey, component)
         return wrapped
     
@@ -134,11 +136,11 @@ class Env(dict):
             return wrapped
         return decorator
 
-    def expand(self):
+    def fragment(self):
         env=Env(self.config)
-        for parent in self.values():
-            for template in parent.expand():
-                env[template.name]=template
+        for parent in self.values():            
+            for child in parent.fragment():
+                env[child.name]=child
         return env
             
     def master_params(fn):
@@ -194,7 +196,7 @@ class Env(dict):
     
 @preprocess
 def synth_env(config):
-    return Env.create(config).expand().synth_master().dump("tmp/templates").validate()
+    return Env.create(config).fragment().synth_master().dump("tmp/templates").validate()
 
 if __name__=="__main__":
     pass

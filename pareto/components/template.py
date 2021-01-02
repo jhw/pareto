@@ -8,6 +8,10 @@ import io, ruamel.yaml
 
 TemplateVersion="2010-09-09"
 
+Parameters, Outputs, Resources, Charts = "Parameters", "Outputs", "Resources", "Charts"
+
+AppName, StageName = "AppName", "StageName"
+
 """
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
 """
@@ -17,9 +21,12 @@ Metrics={"parameters": (lambda t: len(t.Parameters)/200),
          "outputs": (lambda t: len(t.Outputs)/200),
          "template_size": (lambda t: len(json.dumps(t.render()))/1000000)}
 
+def clone_attr(v):
+    return list(v) if isinstance(v, list) else dict(v)
+
 class Template:
     
-    Attrs=["Parameters", "Outputs", "Resources", "Charts"]
+    Attrs=[Parameters, Outputs, Resources, Charts]
     
     def __init__(self, name):
         self.name=name
@@ -30,14 +37,28 @@ class Template:
 
     def clone(self, name):
         template=Template(name)
-        def clone(v):
-            return list(v) if isinstance(v, list) else dict(v)
         for attr in self.Attrs:
-            setattr(template, attr, clone(getattr(self, attr)))
+            setattr(template, attr, clone_attr(getattr(self, attr)))
         return template
 
-    def expand(self):
-        return [self]
+    def fragment(self):
+        def charts_name(name):
+            tokens=name.split("-")
+            return "-".join(tokens[:-1]+["charts"]+[tokens[-1]])
+        charts=Template(charts_name(self.name))
+        noncharts=Template(self.name)
+        for attr in self.Attrs:
+            if attr==Parameters:
+                setattr(noncharts, attr, clone_attr(getattr(self, attr)))
+                setattr(charts, attr, {k: v for k, v in clone_attr(getattr(self, attr)).items() if k in [AppName, StageName]})
+            elif attr==Charts:
+                setattr(charts, attr, clone_attr(getattr(self, attr)))
+            else: # Resources, Outputs
+                setattr(noncharts, attr, clone_attr(getattr(self, attr)))
+        templates=[noncharts]
+        if len(charts.Charts) > 0:
+            templates.append(charts)
+        return templates
 
     def assert_keywords(fn):
         def wrapped(self, **kwargs):

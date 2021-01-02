@@ -1,22 +1,21 @@
 ### short
 
-- separate charts
+- check deployment works
+
+### medium
+
 - replace dlqs with destinations
 
-### medium 
+### thoughts
 
 - separate size limit for main template vs s3 nested templates
   - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
-
 - improve layer filtering in pareto/scripts/deploy_stack.py ?
-
 - logging script to aggregate messages from all streams
 - test for moto- mocked class followed by non- mocked boto3 call
 - component parameters to be defined dynamically based on refs lookup
-
 - isolate env circular reference issues
   - does s3 event source require a name ?
-
 - github to preserve chmod 755 status
 - cognito to have admin login option
 - test replacing NO_SRP_XXX with newer option
@@ -26,14 +25,10 @@
 - deploy_stack.py to allow deployment other than latest
 - apigw extended logging
 - scripts to dump and manage iam roles
-
 - cloudfront+route53
 - pinpoint
 - cloudwatch alert components
 - burningmonk alerts review
-
-### v1.1
-
 - apigw2
 - sqs fifo
 - eventbridge
@@ -43,8 +38,6 @@
 - github actions
 - fargate
 - topology charts
-
-### thoughts
 
 - iam deployment user ?
   - just don't see the point given the range of stuff i need/want to do
@@ -148,6 +141,8 @@
   
 ### done
 
+- ensure template fragmenting is done prior to template size checking
+- restrict parameters being passed charts
 - consider dynamic apigw stage names
 - add apigw default 4/5xx cors resources
 - update new cloudformation limits
