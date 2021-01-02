@@ -1,5 +1,8 @@
 ### short
 
+- separate charts
+- replace dlqs with destinations
+
 ### medium 
 
 - separate size limit for main template vs s3 nested templates
