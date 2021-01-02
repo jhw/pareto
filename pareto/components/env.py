@@ -18,10 +18,12 @@ import datetime, logging, os, zipfile
 Master="master"
 
 def TemplateMapper(groupkey,
-                   dedicated=["layers",
-                              "actions",
+                   dedicated=["actions",
                               "apis",
-                              "userpools"],
+                              "userpools",
+                              "tables",
+                              "buckets",
+                              "queues"],
                    default="misc"):
     return groupkey if groupkey in dedicated else default
 

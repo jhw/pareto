@@ -1,7 +1,5 @@
 ### short
 
-- check deployment works
-
 ### medium
 
 - replace dlqs with destinations
@@ -141,6 +139,7 @@
   
 ### done
 
+- check deployment works
 - ensure template fragmenting is done prior to template size checking
 - restrict parameters being passed charts
 - consider dynamic apigw stage names
