@@ -1,11 +1,14 @@
 ### short
 
-- setup.py should use config.yaml
-  - should contain template groups
+- remove identity pool
+- separate web and server pools
+- investigate why layers requires separate template
+- apigw metrics and charts
+- replace dlqs with destinations
 
 ### medium
 
-- replace dlqs with destinations
+- eventbridge
 
 ### thoughts
 

@@ -17,8 +17,13 @@ import datetime, logging, os, zipfile
 
 Master="master"
 
+"""
+- layers *must* be in a separate template else u will get a circularity error (why?)
+"""
+
 def TemplateMapper(groupkey,
-                   dedicated=["actions",
+                   dedicated=["layers",
+                              "actions",
                               "apis",
                               "userpools",
                               "tables",
