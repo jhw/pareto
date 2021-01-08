@@ -58,7 +58,6 @@ def UserPoolClient(userattrs=UserAttrs,
     props={"UserPoolId": userpool,
            "GenerateSecret": False,
            "PreventUserExistenceErrors": "ENABLED",
-           "SupportedIdentityProviders": ["COGNITO"],
            "CallbackURLs": [callbackurl],
            "LogoutURLs": [logouturl],
            "ExplicitAuthFlows": authflows,
@@ -67,55 +66,6 @@ def UserPoolClient(userattrs=UserAttrs,
            "AllowedOAuthScopes": UserAttrs+["openid",
                                             "profile"]}
     return "AWS::Cognito::UserPoolClient", props
-
-@resource(suffix="identity-pool")
-def IdentityPool(**kwargs):
-    client=ref("%s-user-pool-client" % kwargs["name"])
-    providername=fn_getatt("%s-user-pool" % kwargs["name"],
-                           "ProviderName")
-    provider={"ClientId": client,
-              "ProviderName": providername}
-    props={"CognitoIdentityProviders": [provider],
-           "AllowUnauthenticatedIdentities": False}
-    return "AWS::Cognito::IdentityPool", props
-
-@resource(suffix="roles")
-def IdentityPoolRoles(**kwargs):
-    identitypool=ref("%s-identity-pool" % kwargs["name"])
-    authrole=fn_getatt("%s-auth-role" % kwargs["name"], "Arn")
-    roles={"authenticated": authrole}
-    props={"IdentityPoolId": identitypool,
-           "Roles": roles}
-    return "AWS::Cognito::IdentityPoolRoleAttachment", props
-
-def CognitoRolePolicyDoc(name, authtype):
-    identitypool=ref("%s-identity-pool" % name)
-    condition={"StringEquals": {"cognito-identity.amazonaws.com:aud": identitypool},
-               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": authtype}}
-    principal={"Federated": "cognito-identity.amazonaws.com"}
-    statement=[{"Action": "sts:AssumeRoleWithWebIdentity",
-                "Effect": "Allow",
-                "Condition": condition,
-                "Principal": principal}]
-    return {"Statement": statement,
-            "Version": "2012-10-17"}
-    
-def IdentityPoolRole(name, authtype, permissions):
-    def role_policy_doc():
-        return CognitoRolePolicyDoc(name, authtype)
-    rolekwargs={"permissions": permissions}
-    return IAMRole(rolepolicyfn=role_policy_doc,
-                   wildcards=True,
-                   **rolekwargs)
-
-@resource(suffix="auth-role")
-def IdentityPoolAuthRole(**kwargs):
-    return IdentityPoolRole(name=kwargs["name"],
-                            authtype="authenticated",
-                            permissions=["mobileanalytics:PutEvents",
-                                         "cognito-sync:*",
-                                         "cognito-identity:*",
-                                         "lambda:InvokeFunction"])
 
 @output(suffix="user-pool-id")
 def UserPoolId(**kwargs):
@@ -133,22 +83,14 @@ def UserPoolArn(**kwargs):
 def UserPoolClientId(**kwargs):
     return ref("%s-user-pool-client" % kwargs["name"])
 
-@output(suffix="identity-pool-id")
-def IdentityPoolId(**kwargs):
-    return ref("%s-identity-pool" % kwargs["name"])
-
 def synth_userpool(template, **kwargs):
     template.update(Parameters=[parameter(paramname)
                                 for paramname in ParamNames],
                     Resources=[UserPool(**kwargs),
-                               UserPoolClient(**kwargs),
-                               IdentityPool(**kwargs),
-                               IdentityPoolRoles(**kwargs),
-                               IdentityPoolAuthRole(**kwargs)],
+                               UserPoolClient(**kwargs)],
                     Outputs=[UserPoolId(**kwargs),
                              UserPoolArn(**kwargs),
-                             UserPoolClientId(**kwargs),
-                             IdentityPoolId(**kwargs)])
+                             UserPoolClientId(**kwargs)])
 
 if __name__=="__main__":
     pass
