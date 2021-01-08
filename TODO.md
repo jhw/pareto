@@ -1,11 +1,12 @@
 ### short [cognitp]
 
 - separate web, server user pool clients
-- test removing Cognito URLs
+- refactor user pool as per yancui
 - cognito send email, change password 
 
 ### medium
 
+- separate "container" from template
 - investigate why layers requires separate template
 - apigw metrics and charts
 - replace dlqs with destinations
@@ -146,6 +147,7 @@
   
 ### done
 
+- test removing Cognito URLs
 - remove identity pool
 - check deployment works
 - ensure template fragmenting is done prior to template size checking
