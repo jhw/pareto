@@ -2,10 +2,6 @@ from pareto.components import *
 
 from pareto.components.role import IAMRole
 
-CallbackUrl="https://${resource_name}.auth.${AWS::Region}.amazoncognito.com/callback"
-
-LogoutUrl="https://${resource_name}.auth.${AWS::Region}.amazoncognito.com"
-
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolclient.html#cfn-cognito-userpoolclient-explicitauthflows
 
 """
@@ -51,20 +47,9 @@ def UserPoolClient(userattrs=UserAttrs,
                    authflows=ExplicitAuthFlows,
                    **kwargs):
     userpool=ref("%s-user-pool" % kwargs["name"])
-    callbackurl=fn_sub(CallbackUrl,
-                       {"resource_name": resource_name(kwargs)})
-    logouturl=fn_sub(LogoutUrl,
-                     {"resource_name": resource_name(kwargs)})
     props={"UserPoolId": userpool,
-           "GenerateSecret": False,
            "PreventUserExistenceErrors": "ENABLED",
-           "CallbackURLs": [callbackurl],
-           "LogoutURLs": [logouturl],
-           "ExplicitAuthFlows": authflows,
-           "AllowedOAuthFlowsUserPoolClient": True,
-           "AllowedOAuthFlows": ["code"],
-           "AllowedOAuthScopes": UserAttrs+["openid",
-                                            "profile"]}
+           "ExplicitAuthFlows": authflows}
     return "AWS::Cognito::UserPoolClient", props
 
 @output(suffix="user-pool-id")
