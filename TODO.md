@@ -1,13 +1,14 @@
-### short
+### short [cognitp]
 
-- remove identity pool
-- separate web and server pools
-- investigate why layers requires separate template
-- apigw metrics and charts
-- replace dlqs with destinations
+- separate web, server user pool clients
+- test removing Cognito URLs
+- cognito send email, change password 
 
 ### medium
 
+- investigate why layers requires separate template
+- apigw metrics and charts
+- replace dlqs with destinations
 - eventbridge
 
 ### thoughts
@@ -145,6 +146,7 @@
   
 ### done
 
+- remove identity pool
 - check deployment works
 - ensure template fragmenting is done prior to template size checking
 - restrict parameters being passed charts
