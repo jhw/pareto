@@ -34,7 +34,7 @@ if __name__=="__main__":
         userpool=userpools[args["userpool"]]
         outputs=Outputs.initialise(stackname, boto3.client("cloudformation"))
         userpoolid=outputs.lookup("%s-user-pool-id" % userpool["name"])
-        userpoolclientid=outputs.lookup("%s-user-pool-client-id" % userpool["name"])
+        userpoolclientid=outputs.lookup("%s-user-pool-admin-client-id" % userpool["name"])
         cg=boto3.client("cognito-idp")
         resp=cg.admin_initiate_auth(UserPoolId=userpoolid,
                                     ClientId=userpoolclientid,

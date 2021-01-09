@@ -1,10 +1,9 @@
-### short [cognitp]
-
-- separate web, server user pool clients
-- refactor user pool as per yancui
-- cognito send email, change password 
+### short
 
 ### medium
+
+- refactor user pool attributes as per yancui
+- cognito send email, change password 
 
 - separate "container" from template
 - investigate why layers requires separate template
@@ -147,6 +146,9 @@
   
 ### done
 
+- refactor user scripts to target admin user pool client
+- test user management
+- separate web, server user pool clients
 - test removing Cognito URLs
 - remove identity pool
 - check deployment works
