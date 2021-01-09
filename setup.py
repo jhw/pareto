@@ -33,7 +33,7 @@ def filter_pip_dependencies(root="requirements.txt"):
 
 setuptools.setup(
     name="pareto",
-    version="1.1.20",
+    version="1.1.20-separate-user-pool-clients",
     author="jhw",
     author_email="justin.worrall@gmail.com",
     description="OTP for serverless",
