@@ -6,6 +6,12 @@
 
 ### medium
 
+- replace name references with arns
+  - but how can lambda then look up a table name ?
+  - maybe its just functions you can remove names from ?
+  - if you remove (eg) table name, what name is auto allocated ?
+    - is it human- resolvable ?
+  
 - cf templates for every component type
 - separate "container" from template
 - apigw metrics and charts
