@@ -1,12 +1,13 @@
 ### short
 
-### medium
-
-- refactor user pool attributes as per yancui
 - cognito send email, change password 
 
+- refactor user pool attributes as per yancui
+
+### medium
+
+- cf templates for every component type
 - separate "container" from template
-- investigate why layers requires separate template
 - apigw metrics and charts
 - replace dlqs with destinations
 - eventbridge
@@ -36,7 +37,6 @@
 - burningmonk alerts review
 - apigw2
 - sqs fifo
-- eventbridge
 - ec2/vpc/subnet
 - appsync
 - ci pipeline
