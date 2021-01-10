@@ -1,9 +1,8 @@
 ### short
 
-- test inline lambdas
-
+- support for multiple email cases
+- test inline userpool lambdas
 - support for self- sign up workflow
-
 - support for register workflow
   - self- signup without password
 
