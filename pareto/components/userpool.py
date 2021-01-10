@@ -12,10 +12,10 @@ ParamNames=yaml.safe_load("""
 
 UserAttrs=["email"]
 
-AdminSignUpEmailLambda="""def handler(event, context):
+AdminCreateUserEmailTemplate="""def handler(event, context):
   if event["triggerSource"]=="CustomMessage_AdminCreateUser":
-    event["response"]["emailSubject"]="Welcome to {service}!"
-    event["response"]["emailMessage"]="Your username is "+event["request"]["usernameParameter"]+" and your temporary password is "+event["request"]["codeParameter"]
+    event["response"]["emailSubject"]="{subject}"
+    event["response"]["emailMessage"]="{message}".format(username=None, password=None)
   return event
 """
 
@@ -48,8 +48,8 @@ def UserPoolAdminSignupFunction(handler="index.handler",
                                 memory=128,
                                 timeout=30,
                                 **kwargs):
+    code=AdminCreateUserEmailTemplate.format(**kwargs["email"])
     rolearn=fn_getatt("%s-user-pool-admin-signup-role" % kwargs["name"], "Arn")
-    code=AdminSignUpEmailLambda.format(service=kwargs["email"]["service_name"])
     props={"Code": {"ZipFile": code},
            "Handler": handler,
            "MemorySize": memory,
