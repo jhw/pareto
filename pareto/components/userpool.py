@@ -15,7 +15,7 @@ UserAttrs=["email"]
 AdminCreateUserEmailTemplate="""def handler(event, context):
   if event["triggerSource"]=="CustomMessage_AdminCreateUser":
     event["response"]["emailSubject"]="{subject}"
-    event["response"]["emailMessage"]="{message}".format(username=None, password=None)
+    event["response"]["emailMessage"]="{message}".format(username=event["request"]["usernameParameter"], password=event["request"]["codeParameter"])
   return event
 """
 

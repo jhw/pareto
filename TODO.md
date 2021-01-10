@@ -2,6 +2,12 @@
 
 - configurable email messaging
 
+- test inline lambdas
+
+- support for self- sign up workflow
+- support for register workflow
+  - self- signup without password
+
 ### medium
 
 - refactor user pool attributes as per yancui
