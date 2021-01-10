@@ -1,10 +1,9 @@
 ### short
 
-- configurable email messaging
-
 - test inline lambdas
 
 - support for self- sign up workflow
+
 - support for register workflow
   - self- signup without password
 
@@ -160,6 +159,8 @@
   - conventions should be that all tests are in index.py
   
 ### done
+
+- configurable email messaging
 
 ```
 An error occurred (UserLambdaValidationException) when calling the AdminCreateUser operation: CustomMessage failed with error Syntax error in module 'index': expected an indented block (index.py, line 2).
