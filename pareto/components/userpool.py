@@ -13,10 +13,10 @@ ParamNames=yaml.safe_load("""
 UserAttrs=["email"]
 
 AdminSignUpEmailLambda="""def handler(event, context):
-if event["triggerSource"]=="CustomMessage_AdminCreateUser":
-  event["response"]["emailSubject"]="Welcome to {service}!"
-  event["response"]["emailMessage"]="Your username is "+event["request"]["usernameParameter"]+" and your temporary password is "+event["request"]["codeParameter"]
-return event
+  if event["triggerSource"]=="CustomMessage_AdminCreateUser":
+    event["response"]["emailSubject"]="Welcome to {service}!"
+    event["response"]["emailMessage"]="Your username is "+event["request"]["usernameParameter"]+" and your temporary password is "+event["request"]["codeParameter"]
+  return event
 """
 
 DefaultPermissions=yaml.safe_load("""
