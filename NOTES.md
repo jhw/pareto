@@ -1,3 +1,13 @@
+### multiple sign up flows 10/1/21
+
+- https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-custom-message
+- CustomMessage_SignUp, CustomMessage_AdminCreateUser
+- different templates for each
+- A custom message Lambda function with the CustomMessage_AdminCreateUser trigger returns a user name and verification code and so the request must include both request.usernameParameter and request.codeParameter.
+- they could share a role but need separate permissions (because different function targets)
+- therefore need to abstract code which creates function, role, permission into something which can take respective arguments, plus suffix
+- can apply similar logic to user pools
+
 ### separate charts 2/1/21
 
 - problem is you are bundling charts into dashboards on a per- component basis
