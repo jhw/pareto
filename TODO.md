@@ -1,8 +1,8 @@
 ### short
 
-- test deployment
 - update client user functions
-- test on demo
+
+- test user creation -> was email received ?
 
 ### medium
 
@@ -154,6 +154,7 @@
   
 ### done
 
+- test deployment
 - bind function to pool somewhere
 - cognito send email, change password 
 - refactor user scripts to target admin user pool client
