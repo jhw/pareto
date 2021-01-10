@@ -1,8 +1,6 @@
 ### short
 
-- fix email lambda indentation
-
-- why doesn't admin-create-user accept take user-pool-client-id ?
+- configurable email messaging
 
 ### medium
 
@@ -13,15 +11,18 @@
   - maybe its just functions you can remove names from ?
   - if you remove (eg) table name, what name is auto allocated ?
     - is it human- resolvable ?
-  
+
+- clean up pareto scripts
 - cf templates for every component type
 - separate "container" from template
+
 - apigw metrics and charts
 - replace dlqs with destinations
 - eventbridge
 
 ### thoughts
 
+- why doesn't admin-create-user accept take user-pool-client-id ?
 - separate size limit for main template vs s3 nested templates
   - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html
 - improve layer filtering in pareto/scripts/deploy_stack.py ?
@@ -158,6 +159,7 @@
 An error occurred (UserLambdaValidationException) when calling the AdminCreateUser operation: CustomMessage failed with error Syntax error in module 'index': expected an indented block (index.py, line 2).
 ```
 
+- fix email lambda indentation
 - test user creation -> was email received ?
 - update client user functions
 - test deployment
