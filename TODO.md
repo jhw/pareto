@@ -1,10 +1,12 @@
 ### short
 
-- cognito send email, change password 
-
-- refactor user pool attributes as per yancui
+- bind function to pool somewhere
+- update user functions
+- test on demo
 
 ### medium
+
+- refactor user pool attributes as per yancui
 
 - replace name references with arns
   - but how can lambda then look up a table name ?
@@ -152,6 +154,7 @@
   
 ### done
 
+- cognito send email, change password 
 - refactor user scripts to target admin user pool client
 - test user management
 - separate web, server user pool clients
