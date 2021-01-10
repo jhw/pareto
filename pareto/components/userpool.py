@@ -25,17 +25,6 @@ DefaultPermissions=yaml.safe_load("""
 - logs:PutLogEvents                                          
 """)
 
-"""
-  MyUserPool:
-    Type: AWS::Cognito::UserPool
-    Properties:
-      LambdaConfig:
-        CustomMessage:
-          Fn::GetAtt:
-            - MyCustomEmailFunction
-            - Arn
-"""
-
 @resource(suffix="user-pool")
 def UserPool(userattrs=UserAttrs,
              minpasswordlength=8,
