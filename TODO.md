@@ -1,7 +1,5 @@
 ### short
 
-- update client user functions
-
 - test user creation -> was email received ?
 
 - why doesn't admin-create-user accept take user-pool-client-id ?
@@ -156,6 +154,7 @@
   
 ### done
 
+- update client user functions
 - test deployment
 - bind function to pool somewhere
 - cognito send email, change password 
