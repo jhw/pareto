@@ -1,8 +1,8 @@
 ### short
 
-- support for multiple email cases
-- test inline userpool lambdas
 - support for self- sign up workflow
+  - https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-custom-message
+- test inline userpool lambdas
 - support for register workflow
   - self- signup without password
 
