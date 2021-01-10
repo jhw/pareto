@@ -1,6 +1,8 @@
 ### short
 
-- test user creation -> was email received ?
+```
+An error occurred (UserLambdaValidationException) when calling the AdminCreateUser operation: CustomMessage failed with error Syntax error in module 'index': expected an indented block (index.py, line 2).
+```
 
 - why doesn't admin-create-user accept take user-pool-client-id ?
 
@@ -154,6 +156,7 @@
   
 ### done
 
+- test user creation -> was email received ?
 - update client user functions
 - test deployment
 - bind function to pool somewhere
