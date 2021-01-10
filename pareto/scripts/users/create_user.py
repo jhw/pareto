@@ -17,8 +17,6 @@ if __name__=="__main__":
           type: str
         - name: email
           type: email
-        - name: password
-          type: str
         """)
         args=argsparse(sys.argv[1:], argsconfig)
         config=args.pop("config")
@@ -34,14 +32,10 @@ if __name__=="__main__":
         userpool=userpools[args["userpool"]]
         outputs=Outputs.initialise(stackname, boto3.client("cloudformation"))
         userpoolid=outputs.lookup("%s-user-pool-id" % userpool["name"])
-        userpoolclientid=outputs.lookup("%s-user-pool-admin-client-id" % userpool["name"])
         cg=boto3.client("cognito-idp")
-        resp=cg.sign_up(ClientId=userpoolclientid,
-                        Username=args["email"],
-                        Password=args["password"])
-        print (yaml.safe_dump(resp, default_flow_style=False))
-        resp=cg.admin_confirm_sign_up(UserPoolId=userpoolid,
-                                      Username=args["email"])
+        resp=cg.admin_create_user(UserPoolId=userpoolid,
+                                  Username=args["email"],
+                                  DesiredDeliveryMediums=["EMAIL"])
         print (yaml.safe_dump(resp, default_flow_style=False))
     except ClientError as error:
         print (error)

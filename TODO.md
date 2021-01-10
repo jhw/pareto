@@ -4,6 +4,8 @@
 
 - test user creation -> was email received ?
 
+- why doesn't admin-create-user accept take user-pool-client-id ?
+
 ### medium
 
 - refactor user pool attributes as per yancui
