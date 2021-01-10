@@ -1,7 +1,7 @@
 ### short
 
-- bind function to pool somewhere
-- update user functions
+- test deployment
+- update client user functions
 - test on demo
 
 ### medium
@@ -154,6 +154,7 @@
   
 ### done
 
+- bind function to pool somewhere
 - cognito send email, change password 
 - refactor user scripts to target admin user pool client
 - test user management

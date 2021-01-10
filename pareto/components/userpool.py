@@ -25,16 +25,30 @@ DefaultPermissions=yaml.safe_load("""
 - logs:PutLogEvents                                          
 """)
 
+"""
+  MyUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      LambdaConfig:
+        CustomMessage:
+          Fn::GetAtt:
+            - MyCustomEmailFunction
+            - Arn
+"""
+
 @resource(suffix="user-pool")
 def UserPool(userattrs=UserAttrs,
              minpasswordlength=8,
              **kwargs):
-    policies={"PasswordPolicy": {"MinimumLength": minpasswordlength}}
+    policies={"PasswordPolicy": {"MinimumLength": minpasswordlength}}    
     schema=[{"AttributeDataType": "String",
              "Name": attr,
              "Required": True}
             for attr in userattrs]
+    funcarn=fn_getatt("%s-user-pool-admin-signup-function" % kwargs["name"], "Arn")
+    lambdaconf={"CustomMessage": funcarn}
     props={"Policies": policies,
+           "LambdaConfig": lambdaconf,
            "AutoVerifiedAttributes": userattrs,
            "UsernameAttributes": userattrs,
            "Schema": schema}
