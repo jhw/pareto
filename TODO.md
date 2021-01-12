@@ -1,12 +1,14 @@
 ### short
 
-- support for self- sign up workflow
-  - https://docs.aws.amazon.com/cognito/latest/developerguide/user-pool-lambda-custom-message
-- test inline userpool lambdas
-- support for register workflow
-  - self- signup without password
+- test admin user email
+- add support for standard sign in
+- script to sign in user
+  - but don't admin confirm
+- test standard sign up
 
 ### medium
+
+- test sign up with auto generated pwd
 
 - refactor user pool attributes as per yancui
 
