@@ -1,7 +1,6 @@
 ### short
 
 - single function to generate user pool client
-- test sign up with auto generated pwd
 - refactor user pool attributes as per yancui
 
 ### medium
@@ -155,6 +154,7 @@
   
 ### done
 
+- test sign up with auto generated pwd
 - single function for pool client creation
 - script to sign up
   - but no admin confirmation
