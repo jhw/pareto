@@ -12,10 +12,13 @@ ParamNames=yaml.safe_load("""
 
 UserAttrs=["email"]
 
-AdminCreateUserEmailTemplate="""def handler(event, context):
-  if event["triggerSource"]=="CustomMessage_AdminCreateUser":
+CustomMessageEmailTemplate="""def handler(event, context):
+  if event["triggerSource"]=="CustomMessage_SignUp":
     event["response"]["emailSubject"]="{subject}"
-    event["response"]["emailMessage"]="{message}".format(username=event["request"]["usernameParameter"], password=event["request"]["codeParameter"])
+    event["response"]["emailMessage"]="{sign_up_message}".format(code=event["request"]["codeParameter"])
+  elif event["triggerSource"]=="CustomMessage_AdminCreateUser":
+    event["response"]["emailSubject"]="{subject}"
+    event["response"]["emailMessage"]="{admin_create_user_message}".format(username=event["request"]["usernameParameter"], password=event["request"]["codeParameter"])
   return event
 """
 
@@ -34,7 +37,7 @@ def UserPool(userattrs=UserAttrs,
              "Name": attr,
              "Required": True}
             for attr in userattrs]
-    funcarn=fn_getatt("%s-user-pool-admin-signup-function" % kwargs["name"], "Arn")
+    funcarn=fn_getatt("%s-custom-message-function" % kwargs["name"], "Arn")
     lambdaconf={"CustomMessage": funcarn}
     props={"Policies": policies,
            "LambdaConfig": lambdaconf,
@@ -43,87 +46,62 @@ def UserPool(userattrs=UserAttrs,
            "Schema": schema}
     return "AWS::Cognito::UserPool", props
 
-def UserPoolFunction(suffix, template, attr, **kwargs):
-    @resource(suffix=suffix)
-    def UserPoolFunction(tenplate,
-                         attr,
-                         handler="index.handler",
-                         memory=128,
-                         timeout=30,
-                         **kwargs):
-        code=template.format(**kwargs["email"][attr])
-        rolesuffix="-".join(["%s"]+suffix.split("-")[:-1]+["role"])
-        rolearn=fn_getatt(rolesuffix % kwargs["name"], "Arn")
-        props={"Code": {"ZipFile": code},
-               "Handler": handler,
-               "MemorySize": memory,
-               "Role": rolearn,           
-               "Runtime": fn_sub("python${version}",
-                                 {"version": ref("runtime-version")}),
-               "Timeout": timeout}
-        return "AWS::Lambda::Function", props
-    return UserPoolFunction(template, attr, **kwargs)
+@resource(suffix="custom-message-function")
+def CustomMessageFunction(handler="index.handler",
+                          memory=128,
+                          timeout=30,
+                          **kwargs):
+    code=CustomMessageEmailTemplate.format(**kwargs["custom_message"])
+    rolearn=fn_getatt("%s-custom-message-role" % kwargs["name"], "Arn")
+    props={"Code": {"ZipFile": code},
+           "Handler": handler,
+           "MemorySize": memory,
+           "Role": rolearn,           
+           "Runtime": fn_sub("python${version}",
+                             {"version": ref("runtime-version")}),
+           "Timeout": timeout}
+    return "AWS::Lambda::Function", props
 
-def UserPoolAdminSignupFunction(**kwargs):
-    return UserPoolFunction(suffix="user-pool-admin-signup-function",
-                            template=AdminCreateUserEmailTemplate,
-                            attr="adminCreateUser",
-                            **kwargs)                                
+@resource(suffix="custom-message-role")
+def CustomMessageRole(**kwargs):
+    def role_policy_doc():
+        return DefaultRolePolicyDoc("lambda.amazonaws.com")
+    return IAMRole(rolepolicyfn=role_policy_doc,
+                   defaults=DefaultPermissions,
+                   **kwargs)
 
-def UserPoolRole(suffix, **kwargs):
-    @resource(suffix=suffix)
-    def UserPoolRole(**kwargs):
-        def role_policy_doc():
-            return DefaultRolePolicyDoc("lambda.amazonaws.com")
-        return IAMRole(rolepolicyfn=role_policy_doc,
-                       defaults=DefaultPermissions,
-                       **kwargs)
-    return UserPoolRole(**kwargs)
+@resource(suffix="custom-message-permission")
+def CustomMessagePermission(**kwargs):
+    source=fn_sub(CognitoUserPoolArn,
+                  {"user_pool": ref("%s-user-pool" % kwargs["name"])})
+    target=ref("%s-custom-message-function" % kwargs["name"])
+    props={"Action": "lambda:InvokeFunction",
+           "FunctionName": target,
+           "Principal": "cognito-idp.amazonaws.com",
+           "SourceArn": source}
+    return "AWS::Lambda::Permission", props
 
-def UserPoolAdminSignupRole(**kwargs):
-    return UserPoolRole(suffix="user-pool-admin-signup-role",
-                        **kwargs)
+@resource(suffix="user-pool-web-client")
+def UserPoolWebClient(userattrs=UserAttrs,
+                      authflows=["ALLOW_USER_SRP_AUTH",
+                                 "ALLOW_REFRESH_TOKEN_AUTH"],
+                      **kwargs):
+    userpool=ref("%s-user-pool" % kwargs["name"])
+    props={"UserPoolId": userpool,
+           "PreventUserExistenceErrors": "ENABLED",
+           "ExplicitAuthFlows": authflows}
+    return "AWS::Cognito::UserPoolClient", props
 
-def UserPoolPermission(suffix, **kwargs):
-    @resource(suffix=suffix)
-    def UserPoolPermission(suffix, **kwargs):
-        source=fn_sub(CognitoUserPoolArn,
-                      {"user_pool": ref("%s-user-pool" % kwargs["name"])})
-        funcsuffix="-".join(["%s"]+suffix.split("-")[:-1]+["function"])
-        target=ref(funcsuffix % kwargs["name"])
-        props={"Action": "lambda:InvokeFunction",
-               "FunctionName": target,
-               "Principal": "cognito-idp.amazonaws.com",
-               "SourceArn": source}
-        return "AWS::Lambda::Permission", props
-    return UserPoolPermission(suffix, **kwargs)
-
-def UserPoolAdminSignupPermission(**kwargs):
-    return UserPoolPermission(suffix="user-pool-admin-signup-permission",
-                              **kwargs)
-
-def UserPoolClient(suffix, authflows, **kwargs):
-    @resource(suffix=suffix)
-    def UserPoolClient(authflows, userattrs=UserAttrs,
-                       **kwargs):
-        userpool=ref("%s-user-pool" % kwargs["name"])
-        props={"UserPoolId": userpool,
-               "PreventUserExistenceErrors": "ENABLED",
-               "ExplicitAuthFlows": authflows}
-        return "AWS::Cognito::UserPoolClient", props
-    return UserPoolClient(authflows, **kwargs)
-
-def UserPoolWebClient(**kwargs):
-    return UserPoolClient(suffix="user-pool-web-client",
-                          authflows=["ALLOW_USER_SRP_AUTH",
-                                     "ALLOW_REFRESH_TOKEN_AUTH"],
-                          **kwargs)
-
-def UserPoolAdminClient(**kwargs):
-    return UserPoolClient(suffix="user-pool-admin-client",
-                          authflows=["ALLOW_ADMIN_USER_PASSWORD_AUTH",
-                                     "ALLOW_REFRESH_TOKEN_AUTH"],
-                          **kwargs)
+@resource(suffix="user-pool-admin-client")
+def UserPoolAdminClient(userattrs=UserAttrs,
+                        authflows=["ALLOW_ADMIN_USER_PASSWORD_AUTH",
+                                   "ALLOW_REFRESH_TOKEN_AUTH"],
+                        **kwargs):
+    userpool=ref("%s-user-pool" % kwargs["name"])
+    props={"UserPoolId": userpool,
+           "PreventUserExistenceErrors": "ENABLED",
+           "ExplicitAuthFlows": authflows}
+    return "AWS::Cognito::UserPoolClient", props
 
 @output(suffix="user-pool-id")
 def UserPoolId(**kwargs):
@@ -149,9 +127,9 @@ def synth_userpool(template, **kwargs):
     template.update(Parameters=[parameter(paramname)
                                 for paramname in ParamNames],
                     Resources=[UserPool(**kwargs),
-                               UserPoolAdminSignupFunction(**kwargs),
-                               UserPoolAdminSignupRole(**kwargs),
-                               UserPoolAdminSignupPermission(**kwargs),
+                               CustomMessageFunction(**kwargs),
+                               CustomMessageRole(**kwargs),
+                               CustomMessagePermission(**kwargs),
                                UserPoolWebClient(**kwargs),
                                UserPoolAdminClient(**kwargs)],
                     Outputs=[UserPoolId(**kwargs),

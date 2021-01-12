@@ -9,10 +9,10 @@ components:
       value: bar
   userpools:
     - name: hello-pool
-      email:
-        adminCreateUser:
-          subject: "Welcome to Pareto Demo!"
-          message: "Your username is {username} and your temporary password is {password}"
+      custom_message:
+        subject: "Welcome to Pareto Demo!"
+        sign_up_message: "Your confirmation code is {code}"
+        admin_create_user_message: "Your username is {username} and your temporary password is {password}"
   layers:
     - name: hello-layer-2
       packages:

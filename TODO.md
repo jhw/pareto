@@ -1,10 +1,9 @@
 ### short
 
-- test admin user email
-- add support for standard sign in
-- script to sign in user
-  - but don't admin confirm
-- test standard sign up
+- single function for pool client creation
+- script to sign up
+  - but no admin confirmation
+- test admin create user, sign up
 
 ### medium
 
