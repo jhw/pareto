@@ -1,6 +1,6 @@
 ### short
 
-- refactor user pool attributes as per yancui
+- list and implement differences in yancui user pool config
 
 ### medium
 
