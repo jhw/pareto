@@ -1,15 +1,9 @@
 ### short
 
-- single function for pool client creation
-- script to sign up
-  - but no admin confirmation
-- test admin create user, sign up
+- test sign up with auto generated pwd
+- refactor user pool attributes as per yancui
 
 ### medium
-
-- test sign up with auto generated pwd
-
-- refactor user pool attributes as per yancui
 
 - replace name references with arns
   - but how can lambda then look up a table name ?
@@ -160,6 +154,10 @@
   
 ### done
 
+- single function for pool client creation
+- script to sign up
+  - but no admin confirmation
+- test admin create user, sign up
 - configurable email messaging
 
 ```
