@@ -1,5 +1,6 @@
 ### short
 
+- single function to generate user pool client
 - test sign up with auto generated pwd
 - refactor user pool attributes as per yancui
 
