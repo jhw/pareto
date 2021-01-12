@@ -32,10 +32,16 @@ DefaultPermissions=yaml.safe_load("""
 def UserPool(userattrs=UserAttrs,
              minpasswordlength=8,
              **kwargs):
-    policies={"PasswordPolicy": {"MinimumLength": minpasswordlength}}    
+    policies={"PasswordPolicy": {"MinimumLength": minpasswordlength,
+                                 "RequireLowercase": True,
+                                 "RequireUppercase": True,
+                                 "RequireNumbers": True,
+                                 "RequireSymbols": True}}
     schema=[{"AttributeDataType": "String",
              "Name": attr,
-             "Required": True}
+             "Required": True,
+             "Mutable": True,
+             "StringAttributeConstraints": {"MinLength": "1"}}
             for attr in userattrs]
     funcarn=fn_getatt("%s-custom-message-function" % kwargs["name"], "Arn")
     lambdaconf={"CustomMessage": funcarn}

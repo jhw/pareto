@@ -1,22 +1,13 @@
 ### short
 
-- list and implement differences in yancui user pool config
+- cf templates for every component type
+- separate "container" from template
+- replace function names with arns
 
 ### medium
 
-- replace name references with arns
-  - but how can lambda then look up a table name ?
-  - maybe its just functions you can remove names from ?
-  - if you remove (eg) table name, what name is auto allocated ?
-    - is it human- resolvable ?
-
-- clean up pareto scripts
-- cf templates for every component type
-- separate "container" from template
-
 - apigw metrics and charts
 - replace dlqs with destinations
-- eventbridge
 
 ### thoughts
 
@@ -153,6 +144,7 @@
   
 ### done
 
+- list and implement differences in yancui user pool config
 - single function to generate user pool client
 - test sign up with auto generated pwd
 - single function for pool client creation
