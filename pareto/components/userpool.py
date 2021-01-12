@@ -81,27 +81,29 @@ def CustomMessagePermission(**kwargs):
            "SourceArn": source}
     return "AWS::Lambda::Permission", props
 
-@resource(suffix="user-pool-web-client")
-def UserPoolWebClient(userattrs=UserAttrs,
-                      authflows=["ALLOW_USER_SRP_AUTH",
-                                 "ALLOW_REFRESH_TOKEN_AUTH"],
-                      **kwargs):
-    userpool=ref("%s-user-pool" % kwargs["name"])
-    props={"UserPoolId": userpool,
-           "PreventUserExistenceErrors": "ENABLED",
-           "ExplicitAuthFlows": authflows}
-    return "AWS::Cognito::UserPoolClient", props
+def UserPoolClient(suffix, authflows, **kwargs):    
+    @resource(suffix=suffix)
+    def UserPoolClient(authflows,
+                       userattrs=UserAttrs,
+                       **kwargs):
+        userpool=ref("%s-user-pool" % kwargs["name"])
+        props={"UserPoolId": userpool,
+               "PreventUserExistenceErrors": "ENABLED",
+               "ExplicitAuthFlows": authflows}
+        return "AWS::Cognito::UserPoolClient", props
+    return UserPoolClient(authflows, **kwargs)
 
-@resource(suffix="user-pool-admin-client")
-def UserPoolAdminClient(userattrs=UserAttrs,
-                        authflows=["ALLOW_ADMIN_USER_PASSWORD_AUTH",
+def UserPoolWebClient(**kwargs):
+    return UserPoolClient(suffix="user-pool-web-client",
+                          authflows=["ALLOW_USER_SRP_AUTH",
+                                     "ALLOW_REFRESH_TOKEN_AUTH"],
+                          **kwargs)
+
+def UserPoolAdminClient(**kwargs):
+    return UserPoolClient(suffix="user-pool-admin-client",
+                          authflows=["ALLOW_ADMIN_USER_PASSWORD_AUTH",
                                    "ALLOW_REFRESH_TOKEN_AUTH"],
-                        **kwargs):
-    userpool=ref("%s-user-pool" % kwargs["name"])
-    props={"UserPoolId": userpool,
-           "PreventUserExistenceErrors": "ENABLED",
-           "ExplicitAuthFlows": authflows}
-    return "AWS::Cognito::UserPoolClient", props
+                          **kwargs)
 
 @output(suffix="user-pool-id")
 def UserPoolId(**kwargs):
