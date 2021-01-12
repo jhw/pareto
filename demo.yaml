@@ -10,8 +10,9 @@ components:
   userpools:
     - name: hello-pool
       email:
-        subject: "Welcome to Pareto Demo!"
-        message: "Your username is {username} and your temporary password is {password}"
+        adminCreateUser:
+          subject: "Welcome to Pareto Demo!"
+          message: "Your username is {username} and your temporary password is {password}"
   layers:
     - name: hello-layer-2
       packages:

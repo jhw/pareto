@@ -43,40 +43,64 @@ def UserPool(userattrs=UserAttrs,
            "Schema": schema}
     return "AWS::Cognito::UserPool", props
 
-@resource(suffix="user-pool-admin-signup-function")
-def UserPoolAdminSignupFunction(handler="index.handler",
-                                memory=128,
-                                timeout=30,
-                                **kwargs):
-    code=AdminCreateUserEmailTemplate.format(**kwargs["email"])
-    rolearn=fn_getatt("%s-user-pool-admin-signup-role" % kwargs["name"], "Arn")
-    props={"Code": {"ZipFile": code},
-           "Handler": handler,
-           "MemorySize": memory,
-           "Role": rolearn,           
-           "Runtime": fn_sub("python${version}",
-                             {"version": ref("runtime-version")}),
-           "Timeout": timeout}
-    return "AWS::Lambda::Function", props
+def UserPoolFunction(suffix, template, attr, **kwargs):
+    @resource(suffix=suffix)
+    def UserPoolFunction(tenplate,
+                         attr,
+                         handler="index.handler",
+                         memory=128,
+                         timeout=30,
+                         **kwargs):
+        code=template.format(**kwargs["email"][attr])
+        rolesuffix="-".join(["%s"]+suffix.split("-")[:-1]+["role"])
+        rolearn=fn_getatt(rolesuffix % kwargs["name"], "Arn")
+        props={"Code": {"ZipFile": code},
+               "Handler": handler,
+               "MemorySize": memory,
+               "Role": rolearn,           
+               "Runtime": fn_sub("python${version}",
+                                 {"version": ref("runtime-version")}),
+               "Timeout": timeout}
+        return "AWS::Lambda::Function", props
+    return UserPoolFunction(template, attr, **kwargs)
 
-@resource(suffix="user-pool-admin-signup-role")
+def UserPoolAdminSignupFunction(**kwargs):
+    return UserPoolFunction(suffix="user-pool-admin-signup-function",
+                            template=AdminCreateUserEmailTemplate,
+                            attr="adminCreateUser",
+                            **kwargs)                                
+
+def UserPoolRole(suffix, **kwargs):
+    @resource(suffix=suffix)
+    def UserPoolRole(**kwargs):
+        def role_policy_doc():
+            return DefaultRolePolicyDoc("lambda.amazonaws.com")
+        return IAMRole(rolepolicyfn=role_policy_doc,
+                       defaults=DefaultPermissions,
+                       **kwargs)
+    return UserPoolRole(**kwargs)
+
 def UserPoolAdminSignupRole(**kwargs):
-    def role_policy_doc():
-        return DefaultRolePolicyDoc("lambda.amazonaws.com")
-    return IAMRole(rolepolicyfn=role_policy_doc,
-                   defaults=DefaultPermissions,
-                   **kwargs)
+    return UserPoolRole(suffix="user-pool-admin-signup-role",
+                        **kwargs)
 
-@resource(suffix="user-pool-admin-signup-permission")
+def UserPoolPermission(suffix, **kwargs):
+    @resource(suffix=suffix)
+    def UserPoolPermission(suffix, **kwargs):
+        source=fn_sub(CognitoUserPoolArn,
+                      {"user_pool": ref("%s-user-pool" % kwargs["name"])})
+        funcsuffix="-".join(["%s"]+suffix.split("-")[:-1]+["function"])
+        target=ref(funcsuffix % kwargs["name"])
+        props={"Action": "lambda:InvokeFunction",
+               "FunctionName": target,
+               "Principal": "cognito-idp.amazonaws.com",
+               "SourceArn": source}
+        return "AWS::Lambda::Permission", props
+    return UserPoolPermission(suffix, **kwargs)
+
 def UserPoolAdminSignupPermission(**kwargs):
-    source=fn_sub(CognitoUserPoolArn,
-                  {"user_pool": ref("%s-user-pool" % kwargs["name"])})
-    target=ref("%s-user-pool-admin-signup-function" % kwargs["name"])
-    props={"Action": "lambda:InvokeFunction",
-           "FunctionName": target,
-           "Principal": "cognito-idp.amazonaws.com",
-           "SourceArn": source}
-    return "AWS::Lambda::Permission", props
+    return UserPoolPermission(suffix="user-pool-admin-signup-permission",
+                              **kwargs)
 
 def UserPoolClient(suffix, authflows, **kwargs):
     @resource(suffix=suffix)
